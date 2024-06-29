@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+target
+src/main/resources/static
+*.log
+*.min.js
+*.min.js.map
