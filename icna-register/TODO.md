@@ -5,9 +5,7 @@
 # ▶️ Install and configure react router
 - https://docs.google.com/document/d/12HlTx5Kuw90zIcMjNp6B6eLQsd3ZAvMunCizV0KQ92o/edit
 
-
-
-
+# Install and configure SASS
 
 # Install and configure redux
 - configure multi level redux store
