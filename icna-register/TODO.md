@@ -2,7 +2,7 @@
 - Deployment script
 - Setup environment script
 
-# ▶️ Install and configure react router
+# ✅ Install and configure react router
 - https://docs.google.com/document/d/12HlTx5Kuw90zIcMjNp6B6eLQsd3ZAvMunCizV0KQ92o/edit
 
 # Install and configure SASS
@@ -20,7 +20,13 @@
 - install and configure flyway
 - schema.sql and data.sql
 
-# Architect User DB
+# ▶️ Architect User DB
+
+Event
+  V
+Registration
+  V
+Attendee
 
 # Get domain name
 
