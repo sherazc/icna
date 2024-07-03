@@ -14,7 +14,7 @@ data class Attendee(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long?,
     @ManyToOne
-    @JoinColumn(name = "register_id")
+    @JoinColumn(name = "registration_id")
     val registration: Registration?,
     @Column(nullable = false)
     val firstName: String,
