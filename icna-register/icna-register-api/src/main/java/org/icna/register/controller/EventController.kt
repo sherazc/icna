@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/events")
+@RequestMapping("/api/events")
 @RestController
 class EventController(private val eventService: EventService) {
     @GetMapping("/id/{eventId}")
