@@ -1,4 +1,6 @@
 package org.icna.register.dto
 
-class EventDto {
-}
+data class EventDto(
+    val id: Long?,
+    val eventName: String
+)
