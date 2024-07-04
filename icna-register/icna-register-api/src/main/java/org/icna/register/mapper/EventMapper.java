@@ -5,7 +5,7 @@ import org.icna.register.entity.Event;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface EventMapper2 {
+public interface EventMapper {
     EventDto beanToDto(Event bean);
 
     EventDto dtoToBean(EventDto dto);
