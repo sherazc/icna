@@ -34,8 +34,7 @@ export const addHeadersInRequest = (request: ApiRequest, headers?: ApiHeaders): 
  */
 export const callApi = (request: ApiRequest): Promise<any> => {
     const requestInit: RequestInit = {
-        method: request.method ? request.method : "GET",
-        mode: "no-cors"
+        method: request.method ? request.method : "GET"
     }
 
     if (request.headers) {

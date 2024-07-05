@@ -12,14 +12,13 @@ export const Home: React.FC<Props> = () => {
     const [event, setEvent] = useState<EventDto>(eventDtoDefault());
 
     useEffect(() => {
-        console.log(eventId);
         if (!eventId) {
-
             return;
         }
+
         registerApis()
             .findEventById(eventId)
-            .then((event:EventDto) => {
+            .then((event: EventDto) => {
                 setEvent(event)
             });
     }, [])

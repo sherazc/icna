@@ -1,18 +1,14 @@
 package org.icna.register.configuration;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
 import java.io.IOException;
-import java.util.Collections;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -33,20 +29,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 });
     }
 
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        // corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
-        corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("*"));
-        corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
-        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.applyPermitDefaultValues();
-        corsConfiguration.addExposedHeader("Content-Disposition");
-
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-        return urlBasedCorsConfigurationSource;
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**");
     }
 }
