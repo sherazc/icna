@@ -11,7 +11,7 @@ export default function AppRoutes() {
     return (
         <Routes>
             <Route path="/event/:eventId" element={<AppLayout/>}>
-                <Route index element={<Home eventId={eventId as string}/>}/>
+                <Route index element={<Home eventId={eventId ? eventId : ""}/>}/>
                 <Route path="register" element={<Register eventId={eventId as string} />}/>
                 <Route path="users-list" element={<UserList eventId={eventId as string}/>}/>
             </Route>

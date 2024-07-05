@@ -18,8 +18,6 @@ export type InterceptorCallBacks = {
 
 
 // ############## API Core service
-
-
 export const addHeadersInRequest = (request: ApiRequest, headers?: ApiHeaders): ApiRequest => {
     if (headers) {
         if (!request.headers) {
@@ -36,7 +34,8 @@ export const addHeadersInRequest = (request: ApiRequest, headers?: ApiHeaders): 
  */
 export const callApi = (request: ApiRequest): Promise<any> => {
     const requestInit: RequestInit = {
-        method: request.method ? request.method : "GET"
+        method: request.method ? request.method : "GET",
+        mode: "no-cors"
     }
 
     if (request.headers) {

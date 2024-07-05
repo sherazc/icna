@@ -7,26 +7,27 @@ import {
 } from "./ApiCore";
 import {EventDto} from "../service-types";
 
+export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
+
 /**
  * This method creates all the available endpoints.
- * @param baseUrl
  */
-export const registerEndpoints = (baseUrl: string) => {
+export const registerEndpoints = () => {
+
     return {
-        epEvent: (eventId: string) => `${baseUrl}/api/events/${eventId}`,
+        epEvent: (eventId: string) => `${baseUrl}/api/events/id/${eventId}`,
     }
 }
-
 
 /**
  * Setup all ICNA Register endpoints.
  */
-export const cdbApis = (baseUrl: string, commonHeaders?: ApiHeaders, interceptorCbs?: InterceptorCallBacks) => {
+export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: InterceptorCallBacks) => {
 
-    const endpoints = registerEndpoints(baseUrl);
+    const endpoints = registerEndpoints();
 
     const api = {
-        apiConfigurations: (eventId: string): Promise<EventDto> => {
+        findEventById: (eventId: string): Promise<EventDto> => {
             const endpoint = endpoints.epEvent(eventId);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
