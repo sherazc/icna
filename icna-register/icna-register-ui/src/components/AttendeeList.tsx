@@ -11,7 +11,6 @@ export const AttendeeList: React.FC<Props> = () => {
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
 
-
     useEffect(() => {
         if (!eventId) {
             return;
@@ -24,7 +23,7 @@ export const AttendeeList: React.FC<Props> = () => {
         registerApis()
             .findAttendeeByEventId(eventId)
             .then((attendeesRes) => setAttendees(attendeesRes))
-    }, [])
+    }, []);
 
     const buildAttendeeGrid = () => {
         if (attendees.length < 1) {
