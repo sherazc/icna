@@ -36,7 +36,7 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
-        findAttendeeByEventId: (eventId: string): Promise<[AttendeeDto]> => {
+        findAttendeeByEventId: (eventId: string): Promise<AttendeeDto[]> => {
             const endpoint = endpoints.epAttendeeByEventId(eventId);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
