@@ -42,7 +42,7 @@ export const AttendeeList: React.FC<Props> = () => {
                 </thead>
                 <tbody>
                 {attendees.map((attendee) => (
-                    <tr>
+                    <tr key={attendee.id}>
                         <td>{attendee.id}</td>
                         <td>{attendee.registrationId}</td>
                         <td>{attendee.firstName} {attendee.lastName}</td>
