@@ -17,8 +17,8 @@ interface AttendeeRepository : CrudRepository<Attendee, Long> {
         from Attendee a 
         join Registration r on a.registration = r 
         join Event e on r.event = e
-        where e.id = :id 
+        where e.id = :eventId 
         order by a.firstName, a.lastName
         """)
-    fun findAttendeeByEventId(id: Long): List<AttendeeDto>
+    fun findAttendeeByEventId(eventId: Long): List<AttendeeDto>
 }
