@@ -19,20 +19,36 @@ export const AttendeeList: React.FC<Props> = () => {
 
         registerApis()
             .findEventById(eventId)
-            .then((event: EventDto) => {
-                setEvent(event)
-            });
+            .then((event: EventDto) => setEvent(event));
+
+        registerApis()
+            .findAttendeeByEventId(eventId)
+            .then((attendeesRes) => setAttendees(attendeesRes))
     }, [])
 
     const buildAttendeeGrid = () => {
-        if (attendees.length <) {
-
+        if (attendees.length < 1) {
+            return (<div>Attendee not found</div>);
         }
 
         return (
-            <table>
+            <table border={1}>
                 <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Registration ID</th>
+                    <th>Name</th>
+                </tr>
                 </thead>
+                <tbody>
+                {attendees.map((attendee) => (
+                    <tr>
+                        <td>{attendee.id}</td>
+                        <td>{attendee.registrationId}</td>
+                        <td>{attendee.firstName} {attendee.lastName}</td>
+                    </tr>
+                ))}
+                </tbody>
             </table>
         );
     }
@@ -40,6 +56,7 @@ export const AttendeeList: React.FC<Props> = () => {
     return (
         <div>
             <div>{event.eventName}</div>
+            {buildAttendeeGrid()}
         </div>
     )
 }
