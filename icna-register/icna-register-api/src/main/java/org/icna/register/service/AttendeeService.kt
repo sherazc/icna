@@ -12,4 +12,7 @@ class AttendeeService(private val attendeeRepository: AttendeeRepository) {
 
     fun findAttendeeByAttendeeId(attendeeId: Long): Optional<AttendeeDto> =
         attendeeRepository.findAttendeeByAttendeeId(attendeeId)
+
+    fun findAttendeeByEventIdAndRegistrationId(eventId: Long, registrationId: Long): List<AttendeeDto> =
+        attendeeRepository.findAttendeeByEventIdAndRegistrationId(eventId, registrationId)
 }

@@ -21,7 +21,11 @@ export const AttendeeInfo: React.FC<Props> = () => {
     }, []);
     return (
         <div>
+            <div>Attendee</div>
             <div>{attendee.firstName} {attendee.lastName} </div>
+            <hr/>
+            <div>Group</div>
+
         </div>
     );
 }

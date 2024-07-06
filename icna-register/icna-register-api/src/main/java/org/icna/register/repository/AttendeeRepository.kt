@@ -33,6 +33,21 @@ interface AttendeeRepository : CrudRepository<Attendee, Long> {
         from Attendee a 
         join Registration r on a.registration = r 
         join Event e on r.event = e
+        where e.id = :eventId and r.id = :registrationId 
+        order by a.firstName, a.lastName
+        """)
+    fun findAttendeeByEventIdAndRegistrationId(eventId: Long, registrationId: Long): List<AttendeeDto>
+
+    @Query("""select new org.icna.register.dto.AttendeeDto(
+            a.id,
+            r.id,
+            e.id,
+            e.eventName,
+            a.firstName,
+            a.lastName) 
+        from Attendee a 
+        join Registration r on a.registration = r 
+        join Event e on r.event = e
         where a.id = :attendeeId 
         """)
     fun findAttendeeByAttendeeId(attendeeId: Long): Optional<AttendeeDto>
