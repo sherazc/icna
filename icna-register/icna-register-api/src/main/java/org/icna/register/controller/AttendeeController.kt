@@ -16,4 +16,10 @@ class AttendeeController(private val attendeeService: AttendeeService) {
     fun findAttendeeByEventId(@PathVariable eventId: Long): ResponseEntity<List<AttendeeDto>> =
         ResponseEntity.ok(attendeeService.findAttendeeByEventId(eventId))
 
+    @GetMapping("/id/{attendeeId}")
+    fun getAttendee(@PathVariable attendeeId: Long): ResponseEntity<AttendeeDto> {
+        val attendeeDtoOptional = attendeeService.findAttendeeByAttendeeId(attendeeId)
+        return if (attendeeDtoOptional.isEmpty) ResponseEntity.notFound().build() else ResponseEntity.ok(
+            attendeeDtoOptional.get())
+    }
 }
