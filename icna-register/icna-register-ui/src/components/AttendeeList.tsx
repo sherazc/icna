@@ -25,8 +25,9 @@ export const AttendeeList: React.FC<Props> = () => {
             .then((attendeesRes) => setAttendees(attendeesRes))
     }, []);
 
-    const buildAttendeeGrid = () => {
-        if (attendees.length < 1) {
+    // Use data table
+    const buildAttendeeGrid = (attendeesArray: AttendeeDto[]) => {
+        if (attendeesArray.length < 1) {
             return (<div>Attendee not found</div>);
         }
 
@@ -40,7 +41,7 @@ export const AttendeeList: React.FC<Props> = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {attendees.map((attendee) => (
+                {attendeesArray.map((attendee) => (
                     <tr key={attendee.id}>
                         <td>
                             <Link to={`/event/${attendee.eventId}/attendees/${attendee.id}`}>{attendee.id}</Link>
@@ -57,7 +58,7 @@ export const AttendeeList: React.FC<Props> = () => {
     return (
         <div>
             <div>{event.eventName}</div>
-            {buildAttendeeGrid()}
+            {buildAttendeeGrid(attendees)}
         </div>
     )
 }

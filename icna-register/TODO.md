@@ -53,3 +53,8 @@ Attendee
 - figure out the exact page print size
 - e.g. https://stackoverflow.com/questions/14223843/print-exact-measurements-in-chrome
 
+# Make Attendee list Pageable UI
+
+# Make Attendee list Pageable API
+
+

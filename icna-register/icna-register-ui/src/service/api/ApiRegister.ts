@@ -20,7 +20,7 @@ export const registerEndpoints = () => {
         epEvent: (eventId: string) => `${baseUrl}/api/events/id/${eventId}`,
         epAttendeeByEventId: (eventId: string) => `${baseUrl}/api/attendees/eventId/${eventId}`,
         epFindAttendeeByAttendeeId: (attendeeId: string) => `${baseUrl}/api/attendees/id/${attendeeId}`,
-        epFindAttendeeByEventIdAndRegistrationId: (eventId: string, registrationId: string) => `${baseUrl}api/attendees/eventId/${eventId}/registrationId/${registrationId}`,
+        epFindAttendeeByEventIdAndRegistrationId: (eventId: string, registrationId: string) => `${baseUrl}/api/attendees/eventId/${eventId}/registrationId/${registrationId}`,
     }
 }
 
