@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
 
@@ -43,7 +43,9 @@ export const AttendeeList: React.FC<Props> = () => {
                 <tbody>
                 {attendees.map((attendee) => (
                     <tr key={attendee.id}>
-                        <td>{attendee.id}</td>
+                        <td>
+                            <Link to={`/event/${attendee.eventId}/attendees/${attendee.id}`}>{attendee.id}</Link>
+                        </td>
                         <td>{attendee.registrationId}</td>
                         <td>{attendee.firstName} {attendee.lastName}</td>
                     </tr>
