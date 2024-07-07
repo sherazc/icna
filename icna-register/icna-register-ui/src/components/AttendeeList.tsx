@@ -23,7 +23,7 @@ export const AttendeeList: React.FC<Props> = () => {
         registerApis()
             .findAttendeeByEventId(eventId)
             .then((attendeesRes) => setAttendees(attendeesRes))
-    }, []);
+    }, [eventId]);
 
     // Use data table
     const buildAttendeeGrid = (attendeesArray: AttendeeDto[]) => {
