@@ -19,13 +19,17 @@
 - ✅ schema.sql and data.sql
 
 # ✅ Architect Register DB
-
 ```
-Event
+Event > Event_Program
   V
 Registration
   V
-Attendee
+Attendee 
+
+
+Many to Many
+Attendee *-* Event_Program
+
 ```
 # Get domain name
 
@@ -56,5 +60,24 @@ Attendee
 # Make Attendee list Pageable UI
 
 # Make Attendee list Pageable API
+
+# Add discount codes for registration
+
+# integrate with stripes
+
+# Registration notification to customer with payment details
+
+# Event's addition programs
+
+# Create an Admin Attendee list report for an event
+
+# Quiz competition student categories 
+
+
+
+
+
+
+
 
 
