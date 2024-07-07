@@ -15,11 +15,11 @@ data class EventProgram(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long?,
-    @Column(nullable = false)
-    val programName: String,
     @ManyToOne
-    @JoinColumn(name = "EVENT_ID")
+    @JoinColumn(name = "EVENT_ID", nullable = false)
     val event: Event,
     @ManyToMany(mappedBy = "eventPrograms")
-    val attendees: Set<Attendee>?
+    val attendees: Set<Attendee>?,
+    @Column(nullable = false)
+    val programName: String,
 )
