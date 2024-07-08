@@ -14,6 +14,4 @@ interface EventProgramRepository : CrudRepository<EventProgram, Long> {
         where e.id = :eventId
     """)
     fun findByEventIda(eventId: Long): List<EventProgramDto>
-
-    fun findEventProgramByEvent_Id(eventId: Long) : List<EventProgram>
 }

@@ -7,7 +7,7 @@ import {
 } from "./ApiCore";
 import {
     AttendeeDto,
-    EventDto
+    EventDto, EventProgramDto
 } from "../service-types";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
@@ -18,6 +18,7 @@ export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
 export const registerEndpoints = () => {
     return {
         epEvent: (eventId: string) => `${baseUrl}/api/events/id/${eventId}`,
+        epFindProgramsByEventId: (eventId: string) => `${baseUrl}/api/programs/eventId/${eventId}`,
         epAttendeeByEventId: (eventId: string) => `${baseUrl}/api/attendees/eventId/${eventId}`,
         epFindAttendeeByAttendeeId: (attendeeId: string) => `${baseUrl}/api/attendees/id/${attendeeId}`,
         epFindAttendeeByEventIdAndRegistrationId: (eventId: string, registrationId: string) => `${baseUrl}/api/attendees/eventId/${eventId}/registrationId/${registrationId}`,
@@ -52,6 +53,12 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
         },
         findAttendeeByAttendeeId: (attendeeId: string): Promise<AttendeeDto> => {
             const endpoint = endpoints.epFindAttendeeByAttendeeId(attendeeId);
+            const request: ApiRequest = {endpoint};
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
+        },
+        findProgramsByEventId: (eventId: string): Promise<EventProgramDto[]> => {
+            const endpoint = endpoints.epFindProgramsByEventId(eventId);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);

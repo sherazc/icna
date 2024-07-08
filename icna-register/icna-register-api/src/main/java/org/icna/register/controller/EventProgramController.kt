@@ -17,8 +17,4 @@ class EventProgramController(private val eventProgramService: EventProgramServic
     @GetMapping("/eventId/{eventId}")
     fun findProgramsByEventId(@PathVariable eventId: Long): ResponseEntity<List<EventProgramDto>> =
         ResponseEntity.ok(eventProgramService.findEventById(eventId))
-
-    @GetMapping("/eventId2/{eventId}")
-    fun findProgramsByEventId2(@PathVariable eventId: Long): ResponseEntity<List<EventProgram>> =
-        ResponseEntity.ok(eventProgramService.test(eventId))
 }
