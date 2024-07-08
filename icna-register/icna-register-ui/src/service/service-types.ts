@@ -21,3 +21,15 @@ export const defaultAttendeeDto = (): AttendeeDto => ({
     firstName: "",
     lastName: "",
 });
+
+export type EventProgramDto = {
+    id: number;
+    eventId: number;
+    programName: string;
+};
+
+export const defaultEventProgramDto = (): EventProgramDto => ({
+    id: 0,
+    eventId: 0,
+    programName: "",
+});
