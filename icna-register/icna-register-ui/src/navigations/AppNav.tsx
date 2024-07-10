@@ -10,7 +10,7 @@ export default function AppNav() {
                     <Link to={`/event/${eventId}`}>Home</Link>
                 </li>
                 <li>
-                    <Link to={`/event/${eventId}/register`}>Register</Link>
+                    <Link to={`/event/${eventId}/register/new`}>Register</Link>
                 </li>
                 <li>
                     <Link to={`/event/${eventId}/attendees`}>Attendee List</Link>
