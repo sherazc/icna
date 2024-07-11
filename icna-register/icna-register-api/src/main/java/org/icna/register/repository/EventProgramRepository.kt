@@ -8,10 +8,17 @@ import org.springframework.data.repository.CrudRepository
 interface EventProgramRepository : CrudRepository<EventProgram, Long> {
 
     @Query("""
-        select new org.icna.register.dto.EventProgramDto(ep.id, e.id, ep.programName) 
+        select new org.icna.register.dto.EventProgramDto(ep.id, ep.event.id, ep.programName) 
         from EventProgram ep
-        join Event e on ep.event = e
-        where e.id = :eventId
+        where ep.event.id = :eventId
     """)
-    fun findByEventIda(eventId: Long): List<EventProgramDto>
+    fun findByEventId(eventId: Long): List<EventProgramDto>
+
+    @Query("""
+        select new org.icna.register.dto.EventProgramDto(ep.id, ep.event.id, ep.programName)
+        from Attendee a 
+        join a.eventPrograms ep
+        where a.id = :attendeeId
+    """)
+    fun findByAttendeeId(attendeeId: Long): List<EventProgramDto>
 }
