@@ -8,9 +8,9 @@ export type AttendeeDto = {
     id: number;
     registrationId: number;
     eventId: number;
-    eventName: String;
-    firstName: String;
-    lastName: String;
+    eventName: string;
+    firstName: string;
+    lastName: string;
     eventProgramIds?: number[];
 };
 

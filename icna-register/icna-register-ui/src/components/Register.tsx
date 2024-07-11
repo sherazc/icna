@@ -3,6 +3,10 @@ import {useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto} from "../service/service-types";
 
+const formIdCreate = (attendeeId: number, fieldName: string) => `${attendeeId}_${fieldName}`;
+const formIdBreak = (formId: string) => formId.split('_')
+
+
 interface Props {
 }
 
@@ -35,11 +39,25 @@ export const Register: React.FC<Props> = () => {
         console.log("Submitting", new Date());
     }
 
+    const createAttendeeForm = (attendee: AttendeeDto) => (
+        <div key={attendee.id}>
+            <div>
+                <label>First Name: </label>
+                <input value={attendee.firstName}/>
+            </div>
+            <div>
+                <label>Last Name: </label>
+                <input value={attendee.lastName}/>
+            </div>
+            <hr/>
+        </div>
+    )
+
     return (
         <div>
             <div>Register</div>
             <form action="#" onSubmit={onSubmit}>
-
+            {attendees.map(a => createAttendeeForm(a))}
                 <input type="submit" value="Submit"/>
             </form>
         </div>

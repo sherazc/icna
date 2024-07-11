@@ -46,7 +46,10 @@ export const AttendeeList: React.FC<Props> = () => {
                         <td>
                             <Link to={`/event/${attendee.eventId}/attendees/${attendee.id}`}>{attendee.id}</Link>
                         </td>
-                        <td>{attendee.registrationId}</td>
+                        <td>
+                            <Link to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>{attendee.registrationId}</Link>
+
+                        </td>
                         <td>{attendee.firstName} {attendee.lastName}</td>
                     </tr>
                 ))}
