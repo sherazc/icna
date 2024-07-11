@@ -14,24 +14,33 @@ export const Register: React.FC<Props> = () => {
     const {eventId, registrationId} = useParams();
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
 
+
+
     useEffect(() => {
         if (!eventId || !registrationId) {
             return;
         }
-        const apiCalls = async () => {
-            if (registrationId === 'new') {
-                setAttendees([defaultAttendeeDto()]);
-                return;
-            }
 
-            let regApis = registerApis();
-            const attendeeDtoArray: AttendeeDto[] = await regApis.findAttendeeByEventIdAndRegistrationId(eventId, registrationId);
-            setAttendees(attendeeDtoArray)
-        };
+        loadEventProgrames()
 
-        apiCalls();
+        showLoadingComponent
+        loadAttendees(eventId, registrationId).then(hideLoading);
+
+
+
 
     }, [eventId, registrationId]);
+
+    const loadAttendees = async (eventId: string, registrationId: string) => {
+        if (registrationId === 'new') {
+            setAttendees([defaultAttendeeDto()]);
+            return;
+        }
+
+        let regApis = registerApis();
+        const attendeeDtoArray: AttendeeDto[] = await regApis.findAttendeeByEventIdAndRegistrationId(eventId, registrationId);
+        setAttendees(attendeeDtoArray)
+    };
 
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
