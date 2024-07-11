@@ -11,7 +11,7 @@ export type AttendeeDto = {
     eventName: string;
     firstName: string;
     lastName: string;
-    eventProgramIds?: number[];
+    eventPrograms?: EventProgramDto[];
 };
 
 export const defaultAttendeeDto = (): AttendeeDto => ({

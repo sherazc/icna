@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
-import {AttendeeDto, defaultAttendeeDto} from "../service/service-types";
+import {AttendeeDto, defaultAttendeeDto, EventProgramDto} from "../service/service-types";
 
 const formIdCreate = (attendeeId: number, fieldName: string) => `${attendeeId}_${fieldName}`;
 const formIdBreak = (formId: string) => formId.split('_')
@@ -13,21 +13,18 @@ interface Props {
 export const Register: React.FC<Props> = () => {
     const {eventId, registrationId} = useParams();
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
-
-
+    const [allEventPrograms, setAllEventPrograms] = useState<EventProgramDto[]>([]);
 
     useEffect(() => {
         if (!eventId || !registrationId) {
             return;
         }
 
-        loadEventProgrames()
+        loadEventPrograms(eventId)
 
-        showLoadingComponent
-        loadAttendees(eventId, registrationId).then(hideLoading);
+        loadAttendees(eventId, registrationId).then(() => {
 
-
-
+        });
 
     }, [eventId, registrationId]);
 
@@ -41,6 +38,11 @@ export const Register: React.FC<Props> = () => {
         const attendeeDtoArray: AttendeeDto[] = await regApis.findAttendeeByEventIdAndRegistrationId(eventId, registrationId);
         setAttendees(attendeeDtoArray)
     };
+
+    const loadEventPrograms = async (eventId: string) => {
+        const eventPrograms = await registerApis().findProgramsByEventId(eventId);
+        setAllEventPrograms(eventPrograms);
+    }
 
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -58,17 +60,30 @@ export const Register: React.FC<Props> = () => {
                 <label>Last Name: </label>
                 <input value={attendee.lastName}/>
             </div>
+            {allEventPrograms && createEventProgramForm(allEventPrograms, attendee.eventPrograms)}
             <hr/>
         </div>
-    )
+    );
+
+    const createEventProgramForm = (epAll: EventProgramDto[], epSelected?: EventProgramDto[]) => (
+        <div>
+            {epAll.map(ep => (
+                <input type="checkbox"/>
+            ))}
+        </div>
+    );
+
+
 
     return (
         <div>
             <div>Register</div>
             <form action="#" onSubmit={onSubmit}>
-            {attendees.map(a => createAttendeeForm(a))}
+                {attendees.map(a => createAttendeeForm(a))}
                 <input type="submit" value="Submit"/>
             </form>
         </div>
     );
 };
+
+
