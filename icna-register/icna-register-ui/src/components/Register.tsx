@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto, EventProgramDto} from "../service/service-types";
-import {formIdCreate} from "../service/utilities";
+import {formIdBreak, formIdCreate} from "../service/utilities";
 
 interface Props {
 }
@@ -22,6 +22,23 @@ export const Register: React.FC<Props> = () => {
         loadAttendees(eventId, registrationId).then(() => {
         });
     }, [eventId, registrationId]);
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const [attendeeIdString, fieldName] = formIdBreak(event.target.id)
+        const value = event.target.value;
+
+        const modifiedAttendees = attendees.map(attendee => {
+            if (attendee.id === +attendeeIdString) {
+                const newAttendee:any = {...attendee};
+                newAttendee[fieldName] = value;
+                return newAttendee as AttendeeDto;
+            } else {
+                return attendee;
+            }
+        });
+
+        setAttendees(modifiedAttendees);
+    };
 
     const loadAttendees = async (eventId: string, registrationId: string) => {
         if (registrationId === 'new') {
@@ -51,12 +68,14 @@ export const Register: React.FC<Props> = () => {
                 <label htmlFor={formIdCreate([`${attendee.id}`, 'firstName'])}>First Name: </label>
                 <input
                     id={formIdCreate([`${attendee.id}`, 'firstName'])}
+                    onChange={onChange}
                     value={attendee.firstName}/>
             </div>
             <div>
                 <label htmlFor={formIdCreate([`${attendee.id}`, 'lastName'])}>Last Name: </label>
                 <input
                     id={formIdCreate([`${attendee.id}`, 'lastName'])}
+                    onChange={onChange}
                     value={attendee.lastName}/>
             </div>
             {allEventPrograms && createEventProgramForm(attendee.id, allEventPrograms, attendee.eventPrograms)}
