@@ -2,9 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto, EventProgramDto} from "../service/service-types";
-
-const formIdCreate = (attendeeId: number, fieldName: string) => `${attendeeId}_${fieldName}`;
-const formIdBreak = (formId: string) => formId.split('_')
+import {formIdCreate} from "../service/utilities";
 
 interface Props {
 }
@@ -50,23 +48,30 @@ export const Register: React.FC<Props> = () => {
     const createAttendeeForm = (attendee: AttendeeDto) => (
         <div key={attendee.id}>
             <div>
-                <label>First Name: </label>
-                <input value={attendee.firstName}/>
+                <label htmlFor={formIdCreate([`${attendee.id}`, 'firstName'])}>First Name: </label>
+                <input
+                    id={formIdCreate([`${attendee.id}`, 'firstName'])}
+                    value={attendee.firstName}/>
             </div>
             <div>
-                <label>Last Name: </label>
-                <input value={attendee.lastName}/>
+                <label htmlFor={formIdCreate([`${attendee.id}`, 'lastName'])}>Last Name: </label>
+                <input
+                    id={formIdCreate([`${attendee.id}`, 'lastName'])}
+                    value={attendee.lastName}/>
             </div>
-            {allEventPrograms && createEventProgramForm(allEventPrograms, attendee.eventPrograms)}
+            {allEventPrograms && createEventProgramForm(attendee.id, allEventPrograms, attendee.eventPrograms)}
             <hr/>
         </div>
     );
 
-    const createEventProgramForm = (epAll: EventProgramDto[], epSelected?: EventProgramDto[]) => (
+    const createEventProgramForm = (attendeeId: number, epAll: EventProgramDto[], epSelected?: EventProgramDto[]) => (
         <div>
             {epAll.map(ep => (
-                <div>
-                    <input type="checkbox" checked={isEventProgramInArray(ep, epSelected)}/>
+                <div key={ep.id}>
+                    <input
+                        id={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}
+                        type="checkbox"
+                        checked={isEventProgramInArray(ep, epSelected)}/>
                     <label htmlFor="">{ep.programName}</label>
                 </div>
             ))}
