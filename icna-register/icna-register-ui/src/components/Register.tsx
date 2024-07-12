@@ -6,7 +6,6 @@ import {AttendeeDto, defaultAttendeeDto, EventProgramDto} from "../service/servi
 const formIdCreate = (attendeeId: number, fieldName: string) => `${attendeeId}_${fieldName}`;
 const formIdBreak = (formId: string) => formId.split('_')
 
-
 interface Props {
 }
 
@@ -20,12 +19,10 @@ export const Register: React.FC<Props> = () => {
             return;
         }
 
-        loadEventPrograms(eventId)
-
-        loadAttendees(eventId, registrationId).then(() => {
-
+        loadEventPrograms(eventId).then(() => {
         });
-
+        loadAttendees(eventId, registrationId).then(() => {
+        });
     }, [eventId, registrationId]);
 
     const loadAttendees = async (eventId: string, registrationId: string) => {
@@ -68,12 +65,20 @@ export const Register: React.FC<Props> = () => {
     const createEventProgramForm = (epAll: EventProgramDto[], epSelected?: EventProgramDto[]) => (
         <div>
             {epAll.map(ep => (
-                <input type="checkbox"/>
+                <div>
+                    <input type="checkbox" checked={isEventProgramInArray(ep, epSelected)}/>
+                    <label htmlFor="">{ep.programName}</label>
+                </div>
             ))}
         </div>
     );
 
-
+    const isEventProgramInArray = (ep: EventProgramDto, eps?: EventProgramDto[]) => {
+        if (!eps) {
+            return false;
+        }
+        return eps.some(e => ep.id === e.id);
+    };
 
     return (
         <div>
@@ -85,5 +90,3 @@ export const Register: React.FC<Props> = () => {
         </div>
     );
 };
-
-
