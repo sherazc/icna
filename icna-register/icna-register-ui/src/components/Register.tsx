@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
-import {AttendeeDto, defaultAttendeeDto, EventProgramDto} from "../service/service-types";
-import {formIdBreak, formIdCreate} from "../service/utilities";
+import {AttendeeDto, defaultAttendeeDto, EventProgramDto, RegistrationForm} from "../service/service-types";
+import {castStringToNumber, formIdBreak, formIdCreate} from "../service/utilities";
 
 interface Props {
 }
@@ -21,9 +21,15 @@ export const Register: React.FC<Props> = () => {
 
         loadEventPrograms(eventId).then(() => {
         });
+
         loadAttendees(eventId, registrationId).then(() => {
         });
     }, [eventId, registrationId]);
+
+    const castRegistrationId = (regIdString: string | undefined):number =>
+        (!regIdString || registrationId === 'new') ? -1 : +regIdString
+
+
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const [attendeeIdString, fieldName] = formIdBreak(event.target.id)
@@ -42,7 +48,7 @@ export const Register: React.FC<Props> = () => {
         setAttendees(modifiedAttendees);
     };
 
-    const onChangeChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeCheckedEventProgram = (event: React.ChangeEvent<HTMLInputElement>) => {
         const [attendeeIdString, fieldName, subId] = formIdBreak(event.target.id)
         const checked = event.target.checked;
 
@@ -71,7 +77,9 @@ export const Register: React.FC<Props> = () => {
 
     const loadAttendees = async (eventId: string, registrationId: string) => {
         if (registrationId === 'new') {
-            setAttendees([defaultAttendeeDto()]);
+            let attendeeDto = defaultAttendeeDto();
+            attendeeDto.id = temporaryAttendeeId--;
+            setAttendees([attendeeDto]);
             return;
         }
 
@@ -83,27 +91,32 @@ export const Register: React.FC<Props> = () => {
     const loadEventPrograms = async (eventId: string) => {
         const eventPrograms = await registerApis().findProgramsByEventId(eventId);
         setAllEventPrograms(eventPrograms);
-    }
-
+    };
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log("Submitting", new Date());
-    }
+        const registrationForm: RegistrationForm = {
+            registrationId: castRegistrationId(registrationId),
+            attendees
+        }
+
+        console.log("Submitting", registrationForm, new Date());
+    };
 
     const deleteAttendee = (attendeeId: number) => {
         const newAttendeeArray = attendees.filter(a => a.id !== attendeeId);
         setAttendees(newAttendeeArray);
-    }
+    };
+
     const addAttendee = (attendeeId: number) => {
         const newAttendee = defaultAttendeeDto();
         newAttendee.id = attendeeId
-        newAttendee.eventId = eventId ? +eventId: 0;
+        newAttendee.eventId = castStringToNumber(eventId);
         newAttendee.registrationId = registrationId ? +registrationId: 0;
         const newAttendees = attendees.map(a => a);
         newAttendees.push(newAttendee)
         setAttendees(newAttendees);
-    }
+    };
 
 
     const createAttendeeForm = (attendee: AttendeeDto) => (
@@ -116,6 +129,7 @@ export const Register: React.FC<Props> = () => {
                 <input
                     id={formIdCreate([`${attendee.id}`, 'firstName'])}
                     onChange={onChange}
+                    required
                     value={attendee.firstName}/>
             </div>
             <div>
@@ -123,6 +137,7 @@ export const Register: React.FC<Props> = () => {
                 <input
                     id={formIdCreate([`${attendee.id}`, 'lastName'])}
                     onChange={onChange}
+                    required
                     value={attendee.lastName}/>
             </div>
             {allEventPrograms && createEventProgramForm(attendee.id, allEventPrograms, attendee.eventPrograms)}
@@ -137,7 +152,7 @@ export const Register: React.FC<Props> = () => {
                     <input
                         id={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}
                         type="checkbox"
-                        onChange={onChangeChecked}
+                        onChange={onChangeCheckedEventProgram}
                         checked={isEventProgramInArray(ep, epSelected)}/>
                     <label htmlFor="">{ep.programName}</label>
                 </div>
