@@ -7,6 +7,8 @@ import {formIdBreak, formIdCreate} from "../service/utilities";
 interface Props {
 }
 
+let temporaryAttendeeId = -1
+
 export const Register: React.FC<Props> = () => {
     const {eventId, registrationId} = useParams();
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
@@ -89,8 +91,14 @@ export const Register: React.FC<Props> = () => {
         console.log("Submitting", new Date());
     }
 
+    const deleteAttendee = (attendeeId: number) => {
+        const newAttendeeArray = attendees.filter(a => a.id !== attendeeId);
+        setAttendees(newAttendeeArray);
+    }
+
     const createAttendeeForm = (attendee: AttendeeDto) => (
         <div key={attendee.id}>
+            <div><button type="button" onClick={() => deleteAttendee(attendee.id)}>Delete</button> </div>
             <div>
                 <label htmlFor={formIdCreate([`${attendee.id}`, 'firstName'])}>First Name: </label>
                 <input

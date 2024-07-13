@@ -21,6 +21,7 @@ export const defaultAttendeeDto = (): AttendeeDto => ({
     eventName: "",
     firstName: "",
     lastName: "",
+    eventPrograms: []
 });
 
 export type EventProgramDto = {
