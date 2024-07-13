@@ -29,7 +29,7 @@ export const Register: React.FC<Props> = () => {
 
         const modifiedAttendees = attendees.map(attendee => {
             if (attendee.id === +attendeeIdString) {
-                const newAttendee:any = {...attendee};
+                const newAttendee: any = {...attendee};
                 newAttendee[fieldName] = value;
                 return newAttendee as AttendeeDto;
             } else {
@@ -39,6 +39,33 @@ export const Register: React.FC<Props> = () => {
 
         setAttendees(modifiedAttendees);
     };
+
+    const onChangeChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const [attendeeIdString, fieldName, subId] = formIdBreak(event.target.id)
+        const checked = event.target.checked;
+
+        const modifiedAttendees = attendees.map(attendee => {
+            if (attendee.id === +attendeeIdString) {
+                const newAttendee: AttendeeDto = {...attendee};
+                if (checked) {
+                    const eventProgram
+                        = allEventPrograms.find(ep => ep.id === +subId);
+                    if (eventProgram) {
+                        newAttendee.eventPrograms?.push(eventProgram);
+                    }
+                } else {
+                    newAttendee.eventPrograms = newAttendee.eventPrograms
+                        ?.filter(ep => ep.id !== +subId);
+                }
+
+                return newAttendee as AttendeeDto;
+            } else {
+                return attendee;
+            }
+        });
+
+        setAttendees(modifiedAttendees);
+    }
 
     const loadAttendees = async (eventId: string, registrationId: string) => {
         if (registrationId === 'new') {
@@ -90,6 +117,7 @@ export const Register: React.FC<Props> = () => {
                     <input
                         id={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}
                         type="checkbox"
+                        onChange={onChangeChecked}
                         checked={isEventProgramInArray(ep, epSelected)}/>
                     <label htmlFor="">{ep.programName}</label>
                 </div>
