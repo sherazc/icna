@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class EventController(private val eventService: EventService) {
     @GetMapping("/id/{eventId}")
     fun getEvent(@PathVariable eventId: Long): ResponseEntity<EventDto> {
-        val event = eventService.findEventById(eventId)
+        val event = eventService.findDtoById(eventId)
         return if (event.isEmpty) ResponseEntity.notFound().build() else ResponseEntity.ok(event.get())
     }
 }
