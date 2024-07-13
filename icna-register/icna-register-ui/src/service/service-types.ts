@@ -36,7 +36,7 @@ export const defaultEventProgramDto = (): EventProgramDto => ({
     programName: "",
 });
 
-export type RegistrationForm = {
-    registrationId: number;
+export type RegistrationDto = {
+    id: number;
     attendees: AttendeeDto[];
 }

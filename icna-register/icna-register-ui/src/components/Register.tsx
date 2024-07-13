@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
-import {AttendeeDto, defaultAttendeeDto, EventProgramDto, RegistrationForm} from "../service/service-types";
+import {AttendeeDto, defaultAttendeeDto, EventProgramDto, RegistrationDto} from "../service/service-types";
 import {castStringToNumber, formIdBreak, formIdCreate} from "../service/utilities";
 
 interface Props {
@@ -95,8 +95,8 @@ export const Register: React.FC<Props> = () => {
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const registrationForm: RegistrationForm = {
-            registrationId: castRegistrationId(registrationId),
+        const registrationForm: RegistrationDto = {
+            id: castRegistrationId(registrationId),
             attendees
         }
 
