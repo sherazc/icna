@@ -95,10 +95,22 @@ export const Register: React.FC<Props> = () => {
         const newAttendeeArray = attendees.filter(a => a.id !== attendeeId);
         setAttendees(newAttendeeArray);
     }
+    const addAttendee = (attendeeId: number) => {
+        const newAttendee = defaultAttendeeDto();
+        newAttendee.id = attendeeId
+        newAttendee.eventId = eventId ? +eventId: 0;
+        newAttendee.registrationId = registrationId ? +registrationId: 0;
+        const newAttendees = attendees.map(a => a);
+        newAttendees.push(newAttendee)
+        setAttendees(newAttendees);
+    }
+
 
     const createAttendeeForm = (attendee: AttendeeDto) => (
         <div key={attendee.id}>
-            <div><button type="button" onClick={() => deleteAttendee(attendee.id)}>Delete</button> </div>
+            <div>
+                <button type="button" onClick={() => deleteAttendee(attendee.id)}>Delete Attendee</button>
+            </div>
             <div>
                 <label htmlFor={formIdCreate([`${attendee.id}`, 'firstName'])}>First Name: </label>
                 <input
@@ -143,6 +155,9 @@ export const Register: React.FC<Props> = () => {
     return (
         <div>
             <div>Register</div>
+            <div>
+                <button type="button" onClick={() => addAttendee(temporaryAttendeeId--)}>Add Attendee</button>
+            </div>
             <form action="#" onSubmit={onSubmit}>
                 {attendees.map(a => createAttendeeForm(a))}
                 <input type="submit" value="Submit"/>
