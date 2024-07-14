@@ -1,7 +1,9 @@
 package org.icna.register.entity
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -23,7 +25,7 @@ data class Attendee(
         name = "M2M_EVENT_PROGRAM_ATTENDEE",
         joinColumns = [JoinColumn(name = "ATTENDEE_ID")],
         inverseJoinColumns = [JoinColumn(name = "EVENT_PROGRAM_ID")])
-    var eventPrograms: Set<EventProgram?>?,
+    var eventPrograms: Set<EventProgram>?,
     @Column(nullable = false)
     var firstName: String,
     @Column(nullable = false)

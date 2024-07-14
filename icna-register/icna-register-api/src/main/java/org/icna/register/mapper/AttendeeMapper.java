@@ -13,6 +13,5 @@ public interface AttendeeMapper {
 
     @Mapping(target = "registration", ignore = true)
     @Mapping(target = "eventPrograms", ignore = true)
-    @Mapping(source = "id", target = "id")
     Attendee dtoToBean(AttendeeDto dto);
 }
