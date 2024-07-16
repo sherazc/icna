@@ -35,8 +35,8 @@ export const AttendeeList: React.FC<Props> = () => {
             <table border={1}>
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Registration ID</th>
+                    <th>Attendee ID</th>
                     <th>Name</th>
                 </tr>
                 </thead>
@@ -44,11 +44,12 @@ export const AttendeeList: React.FC<Props> = () => {
                 {attendeesArray.map((attendee) => (
                     <tr key={attendee.id}>
                         <td>
-                            <Link to={`/event/${attendee.eventId}/attendees/${attendee.id}`}>{attendee.id}</Link>
+                            <Link
+                                to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>{attendee.registrationId}
+                            </Link>
                         </td>
                         <td>
-                            <Link to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>{attendee.registrationId}</Link>
-
+                            <Link to={`/event/${attendee.eventId}/attendees/${attendee.id}`}>{attendee.id}</Link>
                         </td>
                         <td>{attendee.firstName} {attendee.lastName}</td>
                     </tr>

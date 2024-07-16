@@ -48,6 +48,7 @@ export const Register: React.FC<Props> = () => {
     };
 
     const onChangeCheckedEventProgram = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // eslint-disable-next-line
         const [attendeeIdString, fieldName, subId] = formIdBreak(event.target.id)
         const checked = event.target.checked;
 

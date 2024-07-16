@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {EventDto, defaultEventDto, EventProgramDto, defaultEventProgramDto} from "../service/service-types";
+import {EventDto, defaultEventDto, EventProgramDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
 import {useParams} from "react-router-dom";
 
@@ -24,7 +24,7 @@ export const Home: React.FC<Props> = () => {
         regApis
             .findProgramsByEventId(eventId)
             .then(eventProgramDtoArrayResponse => setEventProgramDtoArray(eventProgramDtoArrayResponse))
-    }, [])
+    }, [eventId])
 
     return (<div>
         <div>{event.eventName}</div>

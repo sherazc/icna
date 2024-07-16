@@ -5,6 +5,7 @@ import {Home} from "../components/Home";
 import {Register} from "../components/Register";
 import {AttendeeList} from "../components/AttendeeList";
 import {AttendeeInfo} from "../components/AttendeeInfo";
+import {Design} from "../components/Design";
 
 export default function AppRoutes() {
     return (
@@ -15,6 +16,7 @@ export default function AppRoutes() {
                 <Route path="attendees" element={<AttendeeList/>}/>
                 <Route path="attendees/:attendeeId" element={<AttendeeInfo/>}/>
             </Route>
+            <Route path="/design" element={<Design/>}/>
         </Routes>
     );
 }

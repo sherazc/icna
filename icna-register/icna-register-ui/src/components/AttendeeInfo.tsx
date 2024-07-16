@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
-import {AttendeeDto, defaultAttendeeDto, EventDto} from "../service/service-types";
+import {AttendeeDto, defaultAttendeeDto} from "../service/service-types";
 
 interface Props {
 }

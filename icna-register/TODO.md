@@ -26,7 +26,6 @@ Registration
   V
 Attendee 
 
-
 Many to Many
 Attendee *-* Event_Program
 
@@ -35,11 +34,11 @@ Attendee *-* Event_Program
 
 # Configure certbot
 
-# Add register and group(attendee) page and API
+# ✅ Add register and group(attendee) page and API
 
 # ✅ List attendee page and API
 
-# ▶️ attendee info page and API
+# ✅ Attendee info page and API
 
 # Print attendee and register-group page and API
 
@@ -47,9 +46,9 @@ Attendee *-* Event_Program
 
 # Create embeddable script
 
-# Install and configure SASS
+# ▶️ Install and configure SASS
 
-# CSS Style common form element library
+# ▶️ CSS Style common form element library
 
 # CSS Style Layout
 
@@ -59,11 +58,9 @@ Attendee *-* Event_Program
 
 # Make Attendee list Pageable UI
 
-# Make Attendee list Pageable API
-
 # Add discount codes for registration
 
-# integrate with stripes
+# Integrate with stripes
 
 # Registration notification to customer with payment details
 
@@ -73,11 +70,7 @@ Attendee *-* Event_Program
 
 # Quiz competition student categories 
 
-
-
-
-
-
-
-
+# Discuss about creating app for: 
+ - Neighbor net
+ - Retreat
 
