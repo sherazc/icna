@@ -5,7 +5,7 @@ import org.icna.register.entity.Attendee
 import org.icna.register.repository.AttendeeRepository
 import org.icna.register.repository.EventProgramRepository
 import org.springframework.stereotype.Service
-import java.util.Optional
+import java.util.*
 
 @Service
 class AttendeeService(private val attendeeRepository: AttendeeRepository,
@@ -27,7 +27,6 @@ class AttendeeService(private val attendeeRepository: AttendeeRepository,
         return attendees
     }
 
-    fun save(attendee: Attendee) {
-        attendeeRepository.save(attendee);
-    }
+    fun save(attendee: Attendee): Attendee = attendeeRepository.save(attendee)
+
 }

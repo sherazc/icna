@@ -20,7 +20,7 @@ data class Attendee(
     @ManyToOne
     @JoinColumn(name = "registration_id")
     var registration: Registration?,
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(
         name = "M2M_EVENT_PROGRAM_ATTENDEE",
         joinColumns = [JoinColumn(name = "ATTENDEE_ID")],

@@ -34,37 +34,35 @@ class RegistrationService(private val eventService: EventService,
 
         registrationDto.attendees.forEach {
             val attendee = saveAttendee(registration, it)
-
+            saveEventProgram(registration, it, attendee)
 
         }
 
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    fun saveEventProgram(registration: Registration, attendeeDto: AttendeeDto, attendee: Attendee) {
+        attendee.eventPrograms = attendeeDto.eventPrograms?.map {
+            val eventProgramOptional = eventProgramService.findByIdAndAttendeeId(it.id, attendeeDto.id)
+            val eventProgram: EventProgram
+            if (eventProgramOptional.isPresent) {
+                eventProgram = eventProgramOptional.get()
+            } else {
+                eventProgram = eventProgramMapper.dtoToBean(it)
+                eventProgram.event = registration.event
+            }
+            eventProgram
+        }?.toMutableSet() ?: emptySet()
 
+        attendeeService.save(attendee)
+    }
+
+
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     fun saveAttendee(registration: Registration, attendeeDto: AttendeeDto): Attendee {
         val attendee = attendeeMapper.dtoToBean(attendeeDto)
         attendee.registration = registration
-
-        // attendee.eventPrograms = emptySet()
-
-//        attendee.eventPrograms = attendeeDto.eventPrograms?.map {
-//            val eventProgramOptional = eventProgramService.findByIdAndAttendeeId(it.id, attendeeDto.id)
-//            val eventProgram: EventProgram
-//            if (eventProgramOptional.isPresent) {
-//                eventProgram = eventProgramOptional.get()
-//            } else {
-//                eventProgram = eventProgramMapper.dtoToBean(it)
-//                eventProgram.event = registration.event
-//            }
-//            eventProgram
-//        }?.toSet() ?: emptySet<EventProgram>()
-
-//        attendee.eventPrograms = attendeeDto.eventPrograms?.map {
-//            eventProgramService.getById(it.id)
-//        }?.toSet() ?: emptySet<EventProgram>()
-
-        attendeeService.save(attendee)
-        return attendee
+        return attendeeService.save(attendee)
     }
 
     fun getById(registrationId: Long): Registration = registrationRepository.findById(registrationId).orElseThrow {
