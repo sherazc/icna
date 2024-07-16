@@ -24,10 +24,10 @@ class RegistrationService(private val eventService: EventService,
 
         val registration: Registration
         val event: Event = eventService.getEventById(eventId)
-        if (registrationDto.id != null && registrationDto.id!! < 0) {
-            registration = registrationRepository.save(Registration(null, event))
+        registration = if (registrationDto.id != null && registrationDto.id!! < 0) {
+            registrationRepository.save(Registration(null, event))
         } else {
-            registration = getById(registrationDto.id!!)
+            getById(registrationDto.id!!)
         }
 
         val savedAttendees = registrationDto.attendees.map { saveAttendee(registration, it) }

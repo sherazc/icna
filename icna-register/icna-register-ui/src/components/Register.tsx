@@ -26,9 +26,8 @@ export const Register: React.FC<Props> = () => {
         });
     }, [eventId, registrationId]);
 
-    const castRegistrationId = (regIdString: string | undefined):number =>
+    const castRegistrationId = (regIdString: string | undefined): number =>
         (!regIdString || registrationId === 'new') ? -1 : +regIdString
-
 
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,14 +92,15 @@ export const Register: React.FC<Props> = () => {
         setAllEventPrograms(eventPrograms);
     };
 
-    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const registrationForm: RegistrationDto = {
             id: castRegistrationId(registrationId),
             attendees
         }
 
-        console.log("Submitting", registrationForm, new Date());
+        const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
+        console.log(responseRegistrationDto);
     };
 
     const deleteAttendee = (attendeeId: number) => {
@@ -112,7 +112,7 @@ export const Register: React.FC<Props> = () => {
         const newAttendee = defaultAttendeeDto();
         newAttendee.id = attendeeId
         newAttendee.eventId = castStringToNumber(eventId);
-        newAttendee.registrationId = registrationId ? +registrationId: 0;
+        newAttendee.registrationId = registrationId ? +registrationId : 0;
         const newAttendees = attendees.map(a => a);
         newAttendees.push(newAttendee)
         setAttendees(newAttendees);

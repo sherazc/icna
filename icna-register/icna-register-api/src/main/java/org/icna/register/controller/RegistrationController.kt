@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class RegistrationController(private val registrationService: RegistrationService) {
 
     @PostMapping("/eventId/{eventId}")
-    fun findAttendeeByEventId(
+    fun saveRegistration(
         @PathVariable eventId: Long,
         @RequestBody registration: RegistrationDto): ResponseEntity<RegistrationDto> =
         ResponseEntity.ok(registrationService.save(eventId, registration))

@@ -7,7 +7,7 @@ import {
 } from "./ApiCore";
 import {
     AttendeeDto,
-    EventDto, EventProgramDto
+    EventDto, EventProgramDto, RegistrationDto
 } from "../service-types";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
@@ -22,6 +22,7 @@ export const registerEndpoints = () => {
         epAttendeeByEventId: (eventId: string) => `${baseUrl}/api/attendees/eventId/${eventId}`,
         epFindAttendeeByAttendeeId: (attendeeId: string) => `${baseUrl}/api/attendees/id/${attendeeId}`,
         epFindAttendeeByEventIdAndRegistrationId: (eventId: string, registrationId: string) => `${baseUrl}/api/attendees/eventId/${eventId}/registrationId/${registrationId}`,
+        epSaveRegistration: (eventId: string) => `${baseUrl}/api/registrations/eventId/${eventId}`,
     }
 }
 
@@ -62,9 +63,18 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
+        },
+        saveRegistration: (eventId: string, registrationDto:RegistrationDto): Promise<RegistrationDto> => {
+            const endpoint = endpoints.epSaveRegistration(eventId);
+            const request: ApiRequest = {
+                endpoint,
+                method: "POST",
+                payload: registrationDto,
+                headers:[["Content-Type", "application/json"]]
+            };
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
         }
-
-
     }
     return api;
 }
