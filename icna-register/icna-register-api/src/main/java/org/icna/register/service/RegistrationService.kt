@@ -1,6 +1,5 @@
 package org.icna.register.service
 
-import jakarta.transaction.Transactional
 import org.icna.register.dto.AttendeeDto
 import org.icna.register.dto.RegistrationDto
 import org.icna.register.entity.Attendee
@@ -19,8 +18,7 @@ class RegistrationService(private val eventService: EventService,
                           private val attendeeMapper: AttendeeMapper,
                           private val registrationRepository: RegistrationRepository,
                           private val eventProgramMapper: EventProgramMapper,
-                          private val attendeeService: AttendeeService,
-                          private val eventProgramService: EventProgramService) {
+                          private val attendeeService: AttendeeService) {
 
     fun save(eventId: Long, registrationDto: RegistrationDto) {
 
@@ -32,38 +30,20 @@ class RegistrationService(private val eventService: EventService,
             registration = getById(registrationDto.id!!)
         }
 
-        registrationDto.attendees.forEach {
-            val attendee = saveAttendee(registration, it)
-            saveEventProgram(registration, it, attendee)
-
-        }
-
+        registrationDto.attendees.forEach { saveAttendee(registration, it) }
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    fun saveEventProgram(registration: Registration, attendeeDto: AttendeeDto, attendee: Attendee) {
-        attendee.eventPrograms = attendeeDto.eventPrograms?.map {
-            val eventProgramOptional = eventProgramService.findByIdAndAttendeeId(it.id, attendeeDto.id)
-            val eventProgram: EventProgram
-            if (eventProgramOptional.isPresent) {
-                eventProgram = eventProgramOptional.get()
-            } else {
-                eventProgram = eventProgramMapper.dtoToBean(it)
-                eventProgram.event = registration.event
-            }
-            eventProgram
-        }?.toMutableSet() ?: emptySet()
-
-        attendeeService.save(attendee)
-    }
-
-
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
     fun saveAttendee(registration: Registration, attendeeDto: AttendeeDto): Attendee {
         val attendee = attendeeMapper.dtoToBean(attendeeDto)
         attendee.registration = registration
+        attendee.eventPrograms = attendeeDto.eventPrograms?.map {
+            val eventProgram: EventProgram = eventProgramMapper.dtoToBean(it)
+            eventProgram.event = registration.event
+            eventProgram
+        }?.toMutableSet() ?: mutableSetOf()
         return attendeeService.save(attendee)
     }
+
 
     fun getById(registrationId: Long): Registration = registrationRepository.findById(registrationId).orElseThrow {
         ResponseStatusException(

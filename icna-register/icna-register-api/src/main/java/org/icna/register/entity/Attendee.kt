@@ -1,9 +1,7 @@
 package org.icna.register.entity
 
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -20,14 +18,22 @@ data class Attendee(
     @ManyToOne
     @JoinColumn(name = "registration_id")
     var registration: Registration?,
-    @ManyToMany(cascade = [CascadeType.ALL])
-    @JoinTable(
-        name = "M2M_EVENT_PROGRAM_ATTENDEE",
-        joinColumns = [JoinColumn(name = "ATTENDEE_ID")],
-        inverseJoinColumns = [JoinColumn(name = "EVENT_PROGRAM_ID")])
-    var eventPrograms: Set<EventProgram>?,
     @Column(nullable = false)
     var firstName: String,
     @Column(nullable = false)
     var lastName: String,
-)
+) {
+    /**
+     * Creating @ManyToMany relation in primary constructor was causing a lot of issues.
+     * e.g. https://stackoverflow.com/questions/54057136/stackoverflowerror-while-using-manytomany
+     *
+     * Creating Set also caused issues. Made it nullable? MutableSet. I guess this will also be issue
+     * for @OneToMany relation.
+     */
+    @ManyToMany
+    @JoinTable(
+        name = "M2M_EVENT_PROGRAM_ATTENDEE",
+        joinColumns = [JoinColumn(name = "ATTENDEE_ID")],
+        inverseJoinColumns = [JoinColumn(name = "EVENT_PROGRAM_ID")])
+    var eventPrograms: MutableSet<EventProgram>? = mutableSetOf()
+}

@@ -1,6 +1,5 @@
 package org.icna.register.entity
 
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -18,8 +17,9 @@ data class EventProgram(
     @ManyToOne()
     @JoinColumn(name = "EVENT_ID", nullable = false)
     var event: Event,
-    @ManyToMany(mappedBy = "eventPrograms", cascade = [CascadeType.ALL])
-    var attendees: Set<Attendee>?,
     @Column(nullable = false)
     var programName: String,
-)
+) {
+    @ManyToMany(mappedBy = "eventPrograms")
+    var attendees: MutableSet<Attendee>? = mutableSetOf()
+}
