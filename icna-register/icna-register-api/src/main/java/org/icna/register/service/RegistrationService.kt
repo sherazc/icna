@@ -20,17 +20,29 @@ class RegistrationService(private val eventService: EventService,
                           private val eventProgramMapper: EventProgramMapper,
                           private val attendeeService: AttendeeService) {
 
-    fun save(eventId: Long, registrationDto: RegistrationDto) {
+    fun save(eventId: Long, registrationDto: RegistrationDto): RegistrationDto {
 
         val registration: Registration
+        val event: Event = eventService.getEventById(eventId)
         if (registrationDto.id != null && registrationDto.id!! < 0) {
-            val event: Event = eventService.getEventById(eventId)
-            registration = Registration(null, event)
+            registration = registrationRepository.save(Registration(null, event))
         } else {
             registration = getById(registrationDto.id!!)
         }
 
-        registrationDto.attendees.forEach { saveAttendee(registration, it) }
+        val savedAttendees = registrationDto.attendees.map { saveAttendee(registration, it) }
+
+        registrationDto.id = registration.id
+        registrationDto.attendees = savedAttendees.map {
+            val eventProgramDtoList = it.eventPrograms?.map {
+                val eventProgramDto = eventProgramMapper.beanToDto(it)
+                eventProgramDto.eventId = eventId
+                eventProgramDto
+            }
+            AttendeeDto(it.id!!, registration.id!!, eventId, event.eventName, it.firstName, it.lastName, eventProgramDtoList)
+        }
+
+        return registrationDto
     }
 
     fun saveAttendee(registration: Registration, attendeeDto: AttendeeDto): Attendee {
