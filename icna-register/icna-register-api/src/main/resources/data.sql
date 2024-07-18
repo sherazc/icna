@@ -15,6 +15,7 @@ values (100, 10);
 insert into Registration (id, event_id)
 values (110, 10);
 
+
 insert into Attendee (id, registration_id, first_name, last_name)
 values (1000, 100, 'Sheraz', 'Chaudhry');
 
@@ -40,3 +41,9 @@ values (1000, 10010);
 insert into M2M_EVENT_PROGRAM_ATTENDEE (ATTENDEE_ID, EVENT_PROGRAM_ID)
 values (1030, 10000);
 
+
+insert into EVENT_STYLE (ID, EVENT_ID, TYPE, NAME, VALUE)
+values (5000, 10, 'VAR', 'PRIMARY_COLOR', 'red');
+
+insert into EVENT_STYLE (ID, EVENT_ID, TYPE, NAME, VALUE)
+values (5010, 10, 'VAR', 'SECONDARY_COLOR', 'blue');

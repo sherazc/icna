@@ -1,11 +1,21 @@
-import React from "react";
-import styles from "./Design.module.scss";
+import React, {CSSProperties} from "react";
+import formStyles from "./FormStyles.module.scss";
 
 interface Props {
 }
 
+const getVars = () => {
+    return {
+        "--primary-color": "blue"
+    } as CSSProperties
+}
+
 export const Design: React.FC<Props> = () => {
     return (
-        <div className={styles.testStyle}>Design</div>
+        <div style={getVars()}>
+            <div>
+                <input className={formStyles.testClass}/>
+            </div>
+        </div>
     );
 }

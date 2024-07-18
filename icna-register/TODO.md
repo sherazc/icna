@@ -20,12 +20,13 @@
 
 # ✅ Architect Register DB
 ```
-Event > Event_Program
-  V
-Registration
-  V
-Attendee 
-
+Event_Style < Event > Event_Program
+                V
+           Registration
+                V
+             Attendee 
+            
+            
 Many to Many
 Attendee *-* Event_Program
 
@@ -46,7 +47,11 @@ Attendee *-* Event_Program
 
 # Create embeddable script
 
-# ▶️ Install and configure SASS
+# ✅ Install and configure SASS
+
+# ▶️ Custom Event style variables API
+
+# Custom Event style sheet API
 
 # ▶️ CSS Style common form element library
 
