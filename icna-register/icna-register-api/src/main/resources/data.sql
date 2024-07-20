@@ -44,6 +44,3 @@ values (1030, 10000);
 
 insert into EVENT_STYLE (ID, EVENT_ID, TYPE, NAME, VALUE)
 values (5000, 10, 'VAR', 'PRIMARY_COLOR', 'red');
-
-insert into EVENT_STYLE (ID, EVENT_ID, TYPE, NAME, VALUE)
-values (5010, 10, 'VAR', 'SECONDARY_COLOR', 'blue');

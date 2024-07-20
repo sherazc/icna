@@ -10,12 +10,12 @@ interface EventStyleRepository : CrudRepository<EventStyle, Long> {
         select new org.icna.register.dto.EventStyleDto(
             es.id,
             es.event.id,
-            es.type,
+            null,
             es.name,
             es.value
         ) from EventStyle es
         where es.event.id = :eventId
-        and es.type = 'VAR' 
+        
         
     """)
     fun findVarByEventId(eventId: Long): List<EventStyleDto>

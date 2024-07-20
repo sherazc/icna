@@ -9,8 +9,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface AttendeeMapper {
-    AttendeeDto beanToDto(Attendee bean);
-
     @Mapping(target = "registration", ignore = true)
     @Mapping(target = "eventPrograms", ignore = true)
     Attendee dtoToBean(AttendeeDto dto);
