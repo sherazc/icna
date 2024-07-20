@@ -43,4 +43,4 @@ values (1030, 10000);
 
 
 insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
-values (5000, 10, 0, 'PRIMARY_COLOR', 'red');
+values (5000, 10, 0, 'secondaryColor', 'yellow');

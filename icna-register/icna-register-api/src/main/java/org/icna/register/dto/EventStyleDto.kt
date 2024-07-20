@@ -7,6 +7,6 @@ data class EventStyleDto(
     var id: Long?,
     var eventId: Long,
     var type: StyleType,
-    var name: String,
-    var value: String
+    var styleName: String,
+    var styleValue: String
 )

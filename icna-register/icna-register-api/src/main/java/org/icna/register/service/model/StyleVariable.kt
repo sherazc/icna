@@ -1,6 +1,6 @@
 package org.icna.register.service.model
 
-data class StyleVariable(val name: String, val value: String)
+data class StyleVariable(val styleName: String, val styleValue: String)
 
 fun  getDefaultEntityStyleVariables() = listOf(
     StyleVariable("primaryColor", "red"),
