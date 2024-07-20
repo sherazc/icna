@@ -42,5 +42,5 @@ insert into M2M_EVENT_PROGRAM_ATTENDEE (ATTENDEE_ID, EVENT_PROGRAM_ID)
 values (1030, 10000);
 
 
-insert into EVENT_STYLE (ID, EVENT_ID, TYPE, NAME, VALUE)
-values (5000, 10, 'VAR', 'PRIMARY_COLOR', 'red');
+insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
+values (5000, 10, 0, 'PRIMARY_COLOR', 'red');

@@ -9,14 +9,14 @@ import jakarta.persistence.ManyToOne
 
 
 @Entity
-data class EventStyle(
+data class Style(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
     @ManyToOne()
     @JoinColumn(name = "EVENT_ID", nullable = false)
     var event: Event,
-    var type: EventStyleType,
-    var name: String,
-    var value: String
+    var styleType: StyleType,
+    var styleName: String,
+    var styleValue: String
 )
