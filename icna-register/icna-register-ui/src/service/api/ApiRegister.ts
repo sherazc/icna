@@ -7,7 +7,7 @@ import {
 } from "./ApiCore";
 import {
     AttendeeDto,
-    EventDto, EventProgramDto, RegistrationDto
+    EventDto, EventProgramDto, RegistrationDto, StyleVariable
 } from "../service-types";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
@@ -23,6 +23,8 @@ export const registerEndpoints = () => {
         epFindAttendeeByAttendeeId: (attendeeId: string) => `${baseUrl}/api/attendees/id/${attendeeId}`,
         epFindAttendeeByEventIdAndRegistrationId: (eventId: string, registrationId: string) => `${baseUrl}/api/attendees/eventId/${eventId}/registrationId/${registrationId}`,
         epSaveRegistration: (eventId: string) => `${baseUrl}/api/registrations/eventId/${eventId}`,
+        epFindStyleVariablesByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/eventId/${eventId}`,
+
     }
 }
 
@@ -74,7 +76,13 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             };
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
-        }
+        },
+        findStyleVariablesByEventId: (eventId: string): Promise<StyleVariable[]> => {
+            const endpoint = endpoints.epFindStyleVariablesByEventId(eventId);
+            const request: ApiRequest = {endpoint};
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
+        },
     }
     return api;
 }

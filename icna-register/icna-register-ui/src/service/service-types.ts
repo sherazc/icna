@@ -40,3 +40,8 @@ export type RegistrationDto = {
     id: number;
     attendees: AttendeeDto[];
 }
+
+export type StyleVariable = {
+    styleName: string;
+    styleValue: string;
+}
