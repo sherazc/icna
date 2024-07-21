@@ -1,13 +1,8 @@
 import React, {CSSProperties} from "react";
 import "./Global.module.scss";
+import checkRadio from "./CheckRadio.module.scss"
 
 interface Props {
-}
-
-const getVars = () => {
-    return {
-        "--primary-color": "blue"
-    } as CSSProperties
 }
 
 export const Design: React.FC<Props> = () => {
@@ -17,14 +12,24 @@ export const Design: React.FC<Props> = () => {
                 <input type="button" value="Click me"/>
             </div>
             <div style={{margin: "10px"}}>
-                <label htmlFor="inputCheckbox">Input checkbox</label>
-                <input id="inputCheckbox" type="checkbox"/>
+                <label className={checkRadio.checkContainer}>One Check
+                    <input type="checkbox"/>
+                    <span className={checkRadio.checkbox}></span>
+                </label>
+                <label className={checkRadio.checkContainer}>Two Check
+                    <input type="checkbox" checked/>
+                    <span className={checkRadio.checkbox}></span>
+                </label>
             </div>
             <div style={{margin: "10px"}}>
-                <label htmlFor="inputRadio1">Input Radio 1</label>
-                <input id="inputRadio1" type="radio" name="inputRadio"/>
-                <label htmlFor="inputRadio2">Input Radio 2</label>
-                <input id="inputRadio2" type="radio" name="inputRadio"/>
+                <label className={checkRadio.radioContainer}>One Radio
+                    <input type="radio" checked name="radio"/>
+                    <span className={checkRadio.radio}></span>
+                </label>
+                <label className={checkRadio.radioContainer}>Two Radio
+                    <input type="radio" name="radio"/>
+                    <span className={checkRadio.radio}></span>
+                </label>
             </div>
             <div style={{margin: "10px"}}>
                 <label htmlFor="inputText">Input Text</label>
