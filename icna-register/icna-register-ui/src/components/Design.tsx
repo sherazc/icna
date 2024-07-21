@@ -1,5 +1,5 @@
 import React, {CSSProperties} from "react";
-import "./FormStyles.module.scss";
+import "./Global.module.scss";
 
 interface Props {
 }
