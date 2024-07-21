@@ -6,13 +6,13 @@ import {Register} from "../components/Register";
 import {AttendeeList} from "../components/AttendeeList";
 import {AttendeeInfo} from "../components/AttendeeInfo";
 import {Design} from "../components/Design";
-import {StyleVariables} from "../components/StyleVariables";
+import {StyleVar} from "../components/StyleVar";
 
 export default function AppRoutes() {
     return (
         <Routes>
-            <Route path="/design/:eventId" element={<StyleVariables><Design/></StyleVariables>}/>
-            <Route path="/event/:eventId" element={<StyleVariables><AppLayout/></StyleVariables>}>
+            <Route path="/design/:eventId" element={<StyleVar><Design/></StyleVar>}/>
+            <Route path="/event/:eventId" element={<StyleVar><AppLayout/></StyleVar>}>
                 <Route index element={<Home/>}/>
                 <Route path="register/:registrationId" element={<Register/>}/>
                 <Route path="attendees" element={<AttendeeList/>}/>

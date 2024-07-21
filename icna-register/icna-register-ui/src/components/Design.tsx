@@ -12,7 +12,7 @@ const getVars = () => {
 
 export const Design: React.FC<Props> = () => {
     return (
-        <div style={getVars()}>
+        <div>
             <div>
                 <input className={formStyles.testClass}/>
             </div>
