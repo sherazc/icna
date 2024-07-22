@@ -16,5 +16,6 @@ fun  getDefaultEntityStyleVariables() = listOf(
     StyleVariable("sizeH2", "2.2rem"),
     StyleVariable("sizeH3", "2.0rem"),
     StyleVariable("sizeH4", "1.8rem"),
+    StyleVariable("borderRadiusForm", "5px"),
 );
 
