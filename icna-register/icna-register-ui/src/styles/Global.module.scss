@@ -22,11 +22,7 @@
   color: $colorSecondary;
 }
 
-input {
-  @extend .formInput;
-}
-
-textarea {
+input, textarea {
   @extend .formInput;
 }
 
@@ -65,7 +61,8 @@ a:hover, a:focus, a::selection {
   text-decoration: underline;
 }
 
-input[type=button] {
+.button {
+  @extend .formInput;
   background-color: $colorPrimary;
   color: $colorLightText;
   border: $colorPrimaryDarker;
@@ -73,11 +70,15 @@ input[type=button] {
   text-shadow: 1px, 1px, 2px $colorShadow;
 }
 
-input[type=button]:hover {
+.button:hover {
   background-color: $colorPrimaryLighter;
 }
 
-input[type=button]:active {
+.button:active {
   background-color: $colorPrimaryDarker;
   box-shadow: none;
+}
+
+input[type=button], input[type=reset], input[type=submit], button {
+  @extend .button;
 }

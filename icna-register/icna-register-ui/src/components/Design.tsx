@@ -1,4 +1,4 @@
-import React, {CSSProperties} from "react";
+import React from "react";
 import "../styles/Global.module.scss";
 import checkRadio from "../styles/CheckRadio.module.scss"
 

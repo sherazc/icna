@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto, EventProgramDto, RegistrationDto} from "../service/service-types";
 import {castStringToNumber, formIdBreak, formIdCreate} from "../service/utilities";
+import checkRadio from "../styles/CheckRadio.module.scss"
 
 interface Props {
 }
@@ -150,12 +151,15 @@ export const Register: React.FC<Props> = () => {
         <div>
             {epAll.map(ep => (
                 <div key={ep.id}>
-                    <input
-                        id={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}
-                        type="checkbox"
-                        onChange={onChangeCheckedEventProgram}
-                        checked={isEventProgramInArray(ep, epSelected)}/>
-                    <label htmlFor="">{ep.programName}</label>
+                    <label className={checkRadio.checkContainer}
+                        htmlFor={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}>
+                        {ep.programName}
+                        <input id={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}
+                               type="checkbox"
+                               onChange={onChangeCheckedEventProgram}
+                               checked={isEventProgramInArray(ep, epSelected)}/>
+                        <span className={checkRadio.checkbox}></span>
+                    </label>
                 </div>
             ))}
         </div>
