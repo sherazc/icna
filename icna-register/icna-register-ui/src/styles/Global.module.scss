@@ -1,0 +1,80 @@
+@import "StyleVariables.module";
+
+* {
+  font-size: $sizeText;
+  color: $colorDarkText;
+}
+
+.formInput {
+  outline: none !important;
+  border: 2px solid $colorSecondaryLighter;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 2px 2px 5px $colorShadow;
+  margin: 10px;
+}
+
+.formInput:focus {
+  border-bottom:2px solid $colorPrimary;
+}
+
+
+input {
+  @extend .formInput;
+}
+
+textarea {
+  @extend .formInput;
+}
+
+label {
+  font-weight: bold;
+  margin: 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $colorPrimary;
+}
+
+h1 {
+  font-size: $sizeH1;
+}
+
+h2 {
+  font-size: $sizeH2;
+}
+
+h3 {
+  font-size: $sizeH3;
+}
+
+h4, h5, h6 {
+  font-size: $sizeH4;
+}
+
+a {
+  color: $colorPrimary;
+  text-decoration: none;
+}
+
+a:hover, a:focus, a::selection {
+  color: $colorPrimaryLighter;
+  text-decoration: underline;
+}
+
+input[type=button] {
+  background-color: $colorPrimary;
+  color: $colorLightText;
+  border: $colorPrimaryDarker;
+  padding: 10px;
+  text-shadow: 1px, 1px, 2px $colorShadow;
+}
+
+input[type=button]:hover {
+  background-color: $colorPrimaryLighter;
+}
+
+input[type=button]:active {
+  background-color: $colorPrimaryDarker;
+  box-shadow: none;
+}

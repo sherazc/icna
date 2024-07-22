@@ -1,6 +1,6 @@
 import React, {CSSProperties} from "react";
-import "./Global.module.scss";
-import checkRadio from "./CheckRadio.module.scss"
+import "../styles/Global.module.scss";
+import checkRadio from "../styles/CheckRadio.module.scss"
 
 interface Props {
 }
@@ -8,6 +8,36 @@ interface Props {
 export const Design: React.FC<Props> = () => {
     return (
         <div style={{margin: "20px"}}>
+            <div>Some Text in div</div>
+            <div>
+                <p>
+                    Some Text paragraph
+                </p>
+            </div>
+            <div>
+                <pre className="code">
+                    // Pre code text
+                    <br/>
+                    select * from DUAL;
+                </pre>
+            </div>
+            <div>
+                <h1>H1 Text</h1>
+            </div>
+            <div>
+                <h2>H2 Text</h2>
+            </div>
+            <div>
+                <h3>H3 Text</h3>
+            </div>
+            <div>
+                <h4>H4 Text</h4>
+            </div>
+
+            <div>
+                This is an <a href="#">anchor</a> tag.
+            </div>
+
             <div style={{margin: "10px"}}>
                 <input type="button" value="Click me"/>
             </div>
@@ -44,9 +74,9 @@ export const Design: React.FC<Props> = () => {
                 <input id="inputDateTimeLocal" type="datetime-local"/>
             </div>
             <div style={{margin: "10px"}}>
-                <label htmlFor="inputDateTimeLocal">Input Date Time Local</label>
+                <label htmlFor="textArea">Text Area</label>
                 <br/>
-                <textarea name="" id="" cols={30} rows={10}>
+                <textarea id="textArea" cols={30} rows={10}>
                 </textarea>
             </div>
         </div>
