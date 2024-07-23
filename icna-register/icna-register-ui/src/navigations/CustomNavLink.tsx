@@ -9,17 +9,15 @@ interface Props {
 
 export const CustomNavLink: React.FC<Props> = ({to, linkText}) => {
     let resolved = useResolvedPath(to);
-    let match = useMatch({ path: resolved.pathname, end: true });
+    let match = useMatch({path: resolved.pathname, end: true});
 
     console.log(`match ${linkText}`, match);
 
     const activeClassName = match ? styles.navTabActive : "";
 
-    return(
-        <div className={`${styles.navTab} ${activeClassName}`}>
-            <Link to={to}>
-                {linkText}
-            </Link>
-        </div>
+    return (
+        <Link to={to} className={`${styles.navTab} ${activeClassName}`}>
+            {linkText}
+        </Link>
     );
 }

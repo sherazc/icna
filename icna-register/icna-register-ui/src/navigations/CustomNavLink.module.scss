@@ -1,10 +1,32 @@
+@import "../styles/StyleVariables.module";
+
 .navTab {
     height: 50px;
-    width: 100px;
+    width: 200px;
     margin: 0 10px;
-    border: 1px solid black;
+    text-align: center;
+    line-height: 50px;
+    color: $colorDarkText;
+    text-decoration: none;
+    border-bottom: 4px solid $colorSecondary;
+    font-weight: bold;
 }
 
+.navTab:hover, .navTab:focus, .navTab:active, .navTab::selection {
+    color: $colorDarkText;
+    text-decoration: none;
+}
+
+
+.navTab:hover {
+    border-bottom: 4px solid $colorSecondaryLighter;
+}
+
+
 .navTabActive {
-    background-color: red;
+    border-bottom: 4px solid $colorPrimary;
+}
+
+.navTabActive:hover {
+    border-bottom: 4px solid $colorPrimaryLighter;
 }

@@ -27,13 +27,14 @@ export const Home: React.FC<Props> = () => {
     }, [eventId])
 
     return (<div>
-        <div>{event.eventName}</div>
-        <hr/>
-        <div>Event Programs</div>
-        <ul>
-            {eventProgramDtoArray.map(ep => (
-                <li key={ep.id}>{ep.programName}</li>
-            ))}
-        </ul>
+        <div>
+            <h1>{event.eventName}</h1>
+        </div>
+        <div><h2>Event Programs</h2></div>
+
+        {eventProgramDtoArray.map(ep => (
+            <h3 key={ep.id}>{ep.programName}</h3>
+        ))}
+
     </div>)
 }

@@ -1,4 +1,7 @@
+@import "../styles/StyleVariables.module";
+
 .navContainer {
     display: flex;
     flex-direction: row;
+    padding: 20px;
 }
