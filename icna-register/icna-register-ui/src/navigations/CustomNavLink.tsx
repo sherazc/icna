@@ -1,0 +1,25 @@
+import React from "react";
+import {Link, useMatch, useResolvedPath} from "react-router-dom";
+import styles from "./CustomNavLink.module.scss";
+
+interface Props {
+    to: string;
+    linkText: string;
+}
+
+export const CustomNavLink: React.FC<Props> = ({to, linkText}) => {
+    let resolved = useResolvedPath(to);
+    let match = useMatch({ path: resolved.pathname, end: true });
+
+    console.log(`match ${linkText}`, match);
+
+    const activeClassName = match ? styles.navTabActive : "";
+
+    return(
+        <div className={`${styles.navTab} ${activeClassName}`}>
+            <Link to={to}>
+                {linkText}
+            </Link>
+        </div>
+    );
+}
