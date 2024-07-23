@@ -124,9 +124,6 @@ export const Register: React.FC<Props> = () => {
     const createAttendeeForm = (attendee: AttendeeDto) => (
         <div key={attendee.id}>
             <div>
-                <button type="button" onClick={() => deleteAttendee(attendee.id)}>Delete Attendee</button>
-            </div>
-            <div>
                 <label htmlFor={formIdCreate([`${attendee.id}`, 'firstName'])}>First Name: </label>
                 <input
                     id={formIdCreate([`${attendee.id}`, 'firstName'])}
@@ -143,6 +140,9 @@ export const Register: React.FC<Props> = () => {
                     value={attendee.lastName}/>
             </div>
             {allEventPrograms && createEventProgramForm(attendee.id, allEventPrograms, attendee.eventPrograms)}
+            <div>
+                <a href="#" onClick={() => deleteAttendee(attendee.id)}>Delete {attendee.firstName} {attendee.lastName}</a>
+            </div>
             <hr/>
         </div>
     );
@@ -174,10 +174,11 @@ export const Register: React.FC<Props> = () => {
 
     return (
         <div>
-            <div>Register</div>
+            <div><h1>Register</h1></div>
             <div>
-                <button type="button" onClick={() => addAttendee(temporaryAttendeeId--)}>Add Attendee</button>
+                <a href="#" onClick={() => addAttendee(temporaryAttendeeId--)}>Add Attendee</a>
             </div>
+            <hr/>
             <form action="#" onSubmit={onSubmit}>
                 {attendees.map(a => createAttendeeForm(a))}
                 <input type="submit" value="Submit"/>

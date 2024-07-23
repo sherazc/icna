@@ -33,7 +33,7 @@ export const Home: React.FC<Props> = () => {
         <div><h2>Event Programs</h2></div>
 
         {eventProgramDtoArray.map(ep => (
-            <h3 key={ep.id}>{ep.programName}</h3>
+            <div key={ep.id}>{ep.programName}</div>
         ))}
 
     </div>)

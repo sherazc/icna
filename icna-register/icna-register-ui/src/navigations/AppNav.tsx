@@ -10,7 +10,7 @@ export default function AppNav() {
         <nav className={styles.navContainer}>
             <CustomNavLink to={`/event/${eventId}`} linkText="Home"/>
             <CustomNavLink to={`/event/${eventId}/register/new`} linkText="Register"/>
-            <CustomNavLink to={`/event/${eventId}/attendees`} linkText="Attendee List"/>
+            <CustomNavLink to={`/event/${eventId}/attendees`} linkText="Attendees"/>
         </nav>
     );
 }

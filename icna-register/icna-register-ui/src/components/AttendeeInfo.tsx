@@ -38,7 +38,6 @@ export const AttendeeInfo: React.FC<Props> = () => {
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Registration ID</th>
                     <th>Name</th>
                 </tr>
                 </thead>
@@ -48,7 +47,6 @@ export const AttendeeInfo: React.FC<Props> = () => {
                         <td>
                             <Link to={`/event/${attendee.eventId}/attendees/${attendee.id}`}>{attendee.id}</Link>
                         </td>
-                        <td>{attendee.registrationId}</td>
                         <td>{attendee.firstName} {attendee.lastName}</td>
                     </tr>
                 ))}
@@ -60,10 +58,13 @@ export const AttendeeInfo: React.FC<Props> = () => {
 
     return (
         <div>
-            <div>Attendee</div>
-            <div>{attendee.firstName} {attendee.lastName} </div>
+            <div><h1>Attendee Profile</h1></div>
+            <div>Id: {attendee.id}</div>
+            <div>{attendee.firstName} {attendee.lastName}</div>
             <hr/>
-            <div>Registration Group</div>
+
+            <h2>Attendee's Registration Group</h2>
+            <Link to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>Edit Registration {attendee.registrationId}</Link>
             {buildAttendeeGrid(registrationAttendees)}
         </div>
     );

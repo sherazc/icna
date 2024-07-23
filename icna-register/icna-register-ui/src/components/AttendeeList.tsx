@@ -35,23 +35,24 @@ export const AttendeeList: React.FC<Props> = () => {
             <table border={1}>
                 <thead>
                 <tr>
-                    <th>Registration ID</th>
-                    <th>Attendee ID</th>
+                    <th>ID</th>
                     <th>Name</th>
+                    <th>Edit Registration</th>
                 </tr>
                 </thead>
                 <tbody>
                 {attendeesArray.map((attendee) => (
                     <tr key={attendee.id}>
                         <td>
-                            <Link
-                                to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>{attendee.registrationId}
-                            </Link>
-                        </td>
-                        <td>
                             <Link to={`/event/${attendee.eventId}/attendees/${attendee.id}`}>{attendee.id}</Link>
                         </td>
                         <td>{attendee.firstName} {attendee.lastName}</td>
+                        <td>
+                            <Link
+                                to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>
+                                Edit {attendee.registrationId}
+                            </Link>
+                        </td>
                     </tr>
                 ))}
                 </tbody>
@@ -61,7 +62,10 @@ export const AttendeeList: React.FC<Props> = () => {
 
     return (
         <div>
-            <div>{event.eventName}</div>
+            <div>
+                <h1>Attendees</h1>
+                <h2>{event.eventName}</h2>
+            </div>
             {buildAttendeeGrid(attendees)}
         </div>
     )
