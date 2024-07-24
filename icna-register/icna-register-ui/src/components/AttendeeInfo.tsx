@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto} from "../service/service-types";
+import tableGridStyles from "../styles/TableGridStyle.module.scss"
 
 interface Props {
 }
@@ -34,7 +35,7 @@ export const AttendeeInfo: React.FC<Props> = () => {
         }
 
         return (
-            <table border={1}>
+            <table className={tableGridStyles.simpleDataGrid}>
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -64,7 +65,9 @@ export const AttendeeInfo: React.FC<Props> = () => {
             <hr/>
 
             <h2>Attendee's Registration Group</h2>
-            <Link to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>Edit Registration {attendee.registrationId}</Link>
+            <p>
+                <Link to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>Edit Registration {attendee.registrationId}</Link>
+            </p>
             {buildAttendeeGrid(registrationAttendees)}
         </div>
     );
