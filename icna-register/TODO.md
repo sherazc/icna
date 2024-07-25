@@ -62,6 +62,8 @@ Attendee *-* Event_Program
 - make print layout adjustable
 - e.g. https://stackoverflow.com/questions/14223843/print-exact-measurements-in-chrome
 
+# On save registration confirmation page, reload if stay on same page, 
+
 # Make Attendee list Pageable UI
 
 # Add discount codes for registration
@@ -73,6 +75,10 @@ Attendee *-* Event_Program
 # Event's addition programs
 
 # Create an Admin Attendee list report for an event
+
+# Loading spinner Component
+
+# Success and error messages
 
 # Quiz competition student categories 
 

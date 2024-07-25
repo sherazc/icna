@@ -39,6 +39,8 @@ export const AttendeeList: React.FC<Props> = () => {
                     <th>ID</th>
                     <th>Name</th>
                     <th>Edit Registration</th>
+                    <th>Print Registration Badges</th>
+                    <th>Print Attendee Badge</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,6 +54,18 @@ export const AttendeeList: React.FC<Props> = () => {
                             <Link
                                 to={`/event/${attendee.eventId}/register/${attendee.registrationId}`}>
                                 Edit {attendee.registrationId}
+                            </Link>
+                        </td>
+                        <td>
+                            <Link target="_blank"
+                                to={`/event/${attendee.eventId}/print/register/${attendee.registrationId}`}>
+                                Print All
+                            </Link>
+                        </td>
+                        <td>
+                            <Link target="_blank"
+                                to={`/event/${attendee.eventId}/print/attendees/${attendee.id}`}>
+                                Print
                             </Link>
                         </td>
                     </tr>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
+import styles from "./PrintBadge.module.scss";
 
 interface Props {
 }
@@ -44,7 +45,21 @@ export const PrintBadge: React.FC<Props> = () => {
         setAttendees([await regApis.findAttendeeByAttendeeId(attendeeIdArg)]);
     }
 
+    const createAttendeeComponent = (event: EventDto, attendee: AttendeeDto) => (
+        <>
+            <div>{event.eventName}</div>
+            <div>Logo</div>
+            <div>{attendee.firstName} {attendee.lastName}</div>
+        </>
+    );
+
     return (
-        <div>Print badge</div>
+        <div className={styles.printContainer}>
+            {attendees.map((attendee: AttendeeDto) => (
+                <div key={attendee.id} className={styles.printItem}>
+                    {createAttendeeComponent(event, attendee)}
+                </div>
+            ))}
+        </div>
     );
 };
