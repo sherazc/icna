@@ -5,7 +5,8 @@ import styles from "./CustomNavLink.module.scss";
 interface Props {
     to: string;
     linkText: string;
-
+    // TODO: matchingUrls: string[];
+    //   matchingUrls is list of react router urls where menu will stay active.
 }
 
 export const CustomNavLink: React.FC<Props> = ({to, linkText}) => {

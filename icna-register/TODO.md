@@ -49,16 +49,17 @@ Attendee *-* Event_Program
 
 # ✅ Install and configure SASS
 
-# ▶️ Custom Event style variables API
+# ✅ Custom Event style variables API
 
-# Custom Event style sheet API
+# ✅ Custom Event style sheet API
 
-# ▶️ CSS Style common form element library
+# ✅ CSS Style common form element library
 
-# CSS Style Layout
+# ✅ CSS Style Layout
 
-# Create print attendee and group page
+# ▶️ Create print attendee and group page
 - figure out the exact page print size
+- make print layout adjustable
 - e.g. https://stackoverflow.com/questions/14223843/print-exact-measurements-in-chrome
 
 # Make Attendee list Pageable UI

@@ -7,6 +7,7 @@ import {AttendeeList} from "../components/AttendeeList";
 import {AttendeeInfo} from "../components/AttendeeInfo";
 import {Design} from "../components/Design";
 import {StyleVar} from "../components/StyleVar";
+import {PrintBadge} from "../components/PrintBadge";
 
 export default function AppRoutes() {
     return (
@@ -18,6 +19,8 @@ export default function AppRoutes() {
                 <Route path="attendees" element={<AttendeeList/>}/>
                 <Route path="attendees/:attendeeId" element={<AttendeeInfo/>}/>
             </Route>
+            <Route path="/event/:eventId/print/register/:registrationId" element={<PrintBadge/>}></Route>
+            <Route path="/event/:eventId/print/attendees/:attendeeId" element={<PrintBadge/>}></Route>
         </Routes>
     );
 }
