@@ -30,6 +30,8 @@ export const registerEndpoints = () => {
 
 /**
  * Setup all ICNA Register endpoints.
+ *
+ * TODO: create and export instead of creating it different places.
  */
 export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: InterceptorCallBacks) => {
 
