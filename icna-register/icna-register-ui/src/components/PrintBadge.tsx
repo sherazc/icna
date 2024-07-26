@@ -13,7 +13,7 @@ const pixelPerInch = 96;
 
 const pageWidthInches = 8.5;
 const pageHeightInches = 11;
-const pagePaddingTopBottom = 0.5
+const pagePaddingTopBottom = 1
 const pagePaddingLeftRight = 0.25
 
 const cardWidthInches = 4;
