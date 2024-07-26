@@ -26,6 +26,12 @@ insert into Attendee (id, registration_id, first_name, last_name)
 values (1020, 100, 'Faraz', 'Chaudhry');
 
 insert into Attendee (id, registration_id, first_name, last_name)
+values (1021, 100, 'Sagheer', 'Nizami');
+
+insert into Attendee (id, registration_id, first_name, last_name)
+values (1022, 100, 'Muhammad', 'Nadeem');
+
+insert into Attendee (id, registration_id, first_name, last_name)
 values (1030, 110, 'Muhammad', 'Bakar');
 
 insert into Attendee (id, registration_id, first_name, last_name)

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto, EventProgramDto, RegistrationDto} from "../service/service-types";
 import {castStringToNumber, formIdBreak, formIdCreate} from "../service/utilities";
@@ -140,8 +140,17 @@ export const Register: React.FC<Props> = () => {
                     value={attendee.lastName}/>
             </div>
             {allEventPrograms && createEventProgramForm(attendee.id, allEventPrograms, attendee.eventPrograms)}
+            {attendee.id > 0 &&
+                <div>
+                    <Link target="_blank"
+                          to={`/event/${attendee.eventId}/print/attendees/${attendee.id}`}>
+                        Print Badge
+                    </Link>
+                </div>
+            }
             <div>
-                <a href="#" onClick={() => deleteAttendee(attendee.id)}>Delete {attendee.firstName} {attendee.lastName}</a>
+                <a href="#"
+                   onClick={() => deleteAttendee(attendee.id)}>Delete {attendee.firstName} {attendee.lastName}</a>
             </div>
             <hr/>
         </div>
