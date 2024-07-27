@@ -3,14 +3,13 @@ import {useParams} from "react-router-dom";
 import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
 import styles from "./PrintBadge.module.scss";
-import "../styles/StyleVariables.module.scss"
-// import "../styles/Global.module.scss";
 
 interface Props {
 }
 
 let regApis = registerApis();
 
+// CONSTANTS
 const pixelPerInch = 96;
 
 const pageWidthInches = 8.5;
@@ -21,44 +20,59 @@ const pagePaddingLeftRight = 0.25
 const cardWidthInches = 4;
 const cardHeightInches = 3;
 
+// UTILITIES
 const inchToPixel = (inch: number) => `${pixelPerInch * inch}px`;
+const pixelToInch = (pixel: string) => {
+    const pixes = pixel.split("px");
+    if (pixes.length < 2 || !isNaN(+pixes[0])) {
+        return 0;
+    }
+    return roundTo2Decimal(+pixes[0] / pixelPerInch);
+}
 
-const defaultPageStyle: CSSProperties = {
+const roundTo2Decimal = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
+
+// DEFAULTS
+const defaultPageStyle = (): CSSProperties => ({
     width: inchToPixel(pageWidthInches),
     height: inchToPixel(pageHeightInches),
     paddingTop: inchToPixel(pagePaddingTopBottom),
     paddingBottom: inchToPixel(pagePaddingTopBottom),
     paddingLeft: inchToPixel(pagePaddingLeftRight),
     paddingRight: inchToPixel(pagePaddingLeftRight),
-}
+});
 
-const defaultCardStyle: CSSProperties = {
+const defaultCardStyle = (): CSSProperties => ({
     width: inchToPixel(cardWidthInches),
     height: inchToPixel(cardHeightInches),
-}
+});
 
-type CardTextSize = {
+const defaultBadgeStyle = (): BadgeStyle => ({
+    eventName: "1.5rem",
+    attendeeName: "2rem",
+    cardId: ".7rem",
+    programName: "1rem",
+});
+
+// TYPES
+type BadgeStyle = {
     eventName: string;
     attendeeName: string;
     cardId: string;
     programName: string;
 }
 
-const defaultCardTextSize: CardTextSize = {
-    eventName: "1.5rem",
-    attendeeName: "2rem",
-    cardId: ".7rem",
-    programName: "1rem",
-}
 
-
+// COMPONENT
 export const PrintBadge: React.FC<Props> = () => {
     const {eventId, registrationId, attendeeId} = useParams();
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
-    const [pageStyle, setPageStyle] = useState<CSSProperties>(defaultPageStyle);
-    const [cardStyle, setCardStyle] = useState<CSSProperties>(defaultCardStyle);
-    const [cardTextSize, setCardTextSize] = useState<CardTextSize>(defaultCardTextSize);
+    const [pageStyle, setPageStyle] = useState<CSSProperties>(defaultPageStyle());
+    const [cardStyle, setCardStyle] = useState<CSSProperties>(defaultCardStyle());
+    const [nameBadgeStyle, setNameBadgeStyle] = useState<BadgeStyle>(defaultBadgeStyle());
+    const [showMenu, setShowMenu] = useState<boolean>(false);
+
 
     useEffect(() => {
         if (!eventId || !registrationId) {
@@ -95,7 +109,7 @@ export const PrintBadge: React.FC<Props> = () => {
             <div className={styles.cardBorderOuter}>
                 <div className={styles.cardBorderOuter}>
                     <div style={{
-                        fontSize: cardTextSize.eventName
+                        fontSize: nameBadgeStyle.eventName
                     }}>
                         {event.eventName}
                     </div>
@@ -115,18 +129,18 @@ export const PrintBadge: React.FC<Props> = () => {
                         LOGO
                     </div>
                     <div style={{
-                        fontSize: cardTextSize.attendeeName
+                        fontSize: nameBadgeStyle.attendeeName
                     }}>
                         {attendee.firstName} {attendee.lastName}
                     </div>
                     <div style={{
-                        fontSize: cardTextSize.cardId
+                        fontSize: nameBadgeStyle.cardId
                     }}>
                         {event.id}-{attendee.registrationId}-{attendee.id}
                     </div>
                     {attendee.eventPrograms && attendee.eventPrograms.map(p => (
                         <div key={p.id} style={{
-                            fontSize: cardTextSize.programName
+                            fontSize: nameBadgeStyle.programName
                         }}>
                             {p.programName}
                         </div>
@@ -138,18 +152,19 @@ export const PrintBadge: React.FC<Props> = () => {
 
     return (
         <div>
-            <div className={styles.page} style={pageStyle}>
+            {/* Badges Page */}
+            <div className={styles.page} style={pageStyle} onClick={() => setShowMenu(true)}>
                 {attendees.map((attendee: AttendeeDto) => (createAttendeeComponent(event, attendee)))}
             </div>
-            <div style={{
-                width: "100%",
-                backgroundColor: "#ddd",
-                position: "fixed",
-                bottom: "0",
-                padding: "20px",
-                // display: "none"
-            }}>
-                <a href="#" style={{fontWeight: "bold"}}>X</a> All dimensions are in inches.
+
+            {/* Settings Menu */}
+            <div className={styles.settingsMenu} style={{display: showMenu ? 'block' : 'none'}}>
+                <div style={{textAlign: "right"}}>
+                    <a href="#" style={{fontWeight: "bold"}} onClick={() => setShowMenu(false)}>
+                        X
+                    </a>
+                </div>
+                <div>All dimensions are in inches.</div>
                 <br/>
                 <label>Pixel per inch</label>
                 <input type="number"/>
@@ -163,6 +178,7 @@ export const PrintBadge: React.FC<Props> = () => {
                 <br/>
                 <label>Padding top & bottom</label>
                 <input type="number"/>
+                <br/>
                 <label>Padding left & right</label>
                 <input type="number"/>
 
