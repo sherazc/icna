@@ -21,8 +21,7 @@ const cardHeightInches = 3;
 
 const inchToPixel = (inch: number) => `${pixelPerInch * inch}px`;
 
-const defaultPrintContainerStyle: CSSProperties = {
-    backgroundColor: "purple",
+const defaultPageStyle: CSSProperties = {
     width: inchToPixel(pageWidthInches),
     height: inchToPixel(pageHeightInches),
     paddingTop: inchToPixel(pagePaddingTopBottom),
@@ -31,18 +30,33 @@ const defaultPrintContainerStyle: CSSProperties = {
     paddingRight: inchToPixel(pagePaddingLeftRight),
 }
 
-const defaultPrintItemStyle: CSSProperties = {
-    backgroundColor: "green",
+const defaultCardStyle: CSSProperties = {
     width: inchToPixel(cardWidthInches),
-    height: inchToPixel(cardHeightInches)
+    height: inchToPixel(cardHeightInches),
 }
+
+type CardTextSize = {
+    eventName: string;
+    attendeeName: string;
+    cardId: string;
+    programName: string;
+}
+
+const defaultCardTextSize: CardTextSize = {
+    eventName: "1.5rem",
+    attendeeName: "2rem",
+    cardId: ".7rem",
+    programName: "1rem",
+}
+
 
 export const PrintBadge: React.FC<Props> = () => {
     const {eventId, registrationId, attendeeId} = useParams();
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
-    const [printContainerStyle, setPrintContainerStyle] = useState<CSSProperties>(defaultPrintContainerStyle);
-    const [printItemStyle, setPrintItemStyle] = useState<CSSProperties>(defaultPrintItemStyle);
+    const [pageStyle, setPageStyle] = useState<CSSProperties>(defaultPageStyle);
+    const [cardStyle, setCardStyle] = useState<CSSProperties>(defaultCardStyle);
+    const [cardTextSize, setCardTextSize] = useState<CardTextSize>(defaultCardTextSize);
 
     useEffect(() => {
         if (!eventId || !registrationId) {
@@ -75,15 +89,52 @@ export const PrintBadge: React.FC<Props> = () => {
     }
 
     const createAttendeeComponent = (event: EventDto, attendee: AttendeeDto) => (
-        <div key={attendee.id} className={styles.printCard} style={printItemStyle}>
-            <div>{event.eventName}</div>
-            <div>Logo</div>
-            <div>{attendee.firstName} {attendee.lastName}</div>
+        <div key={attendee.id} className={styles.card} style={cardStyle}>
+            <div className={styles.cardBorderOuter}>
+                <div className={styles.cardBorderOuter}>
+                    <div style={{
+                        fontSize: cardTextSize.eventName
+                    }}>
+                        {event.eventName}
+                    </div>
+                    <div style={{
+                        height: "70px",
+                        width: "70px",
+                        //backgroundColor: "red",
+                        margin: "0 auto",
+                        alignContent: "center",
+                        borderRadius: "50%",
+                        border: "2px solid black",
+                        boxSizing: "border-box",
+                        padding: "10px",
+                        fontWeight: "bold"
+                    }}>
+                        LOGO
+                    </div>
+                    <div style={{
+                        fontSize: cardTextSize.attendeeName
+                    }}>
+                        {attendee.firstName} {attendee.lastName}
+                    </div>
+                    <div  style={{
+                        fontSize: cardTextSize.cardId
+                    }}>
+                        {event.id}-{attendee.registrationId}-{attendee.id}
+                    </div>
+                    {attendee.eventPrograms && attendee.eventPrograms.map(p => (
+                        <div key={p.id} style={{
+                            fontSize: cardTextSize.programName
+                        }}>
+                            {p.programName}
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 
     return (
-        <div className={styles.printPage} style={printContainerStyle}>
+        <div className={styles.page} style={pageStyle}>
             {attendees.map((attendee: AttendeeDto) => (createAttendeeComponent(event, attendee)))}
         </div>
     );

@@ -2,9 +2,9 @@
   margin: 0;
 }
 
-.printPage {
+.page {
   // border: 1px solid brown;
-  background-color: yellow;
+  // background-color: coral;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -13,9 +13,23 @@
 
 }
 
-.printCard {
-  border: 1px solid blue;
-  background-color: hotpink;
+.card {
+  // border: 1px solid blue;
+  //background-color: cyan;
   // margin-right: auto;
   box-sizing: border-box;
+  padding: 10px;
+}
+
+.cardBorderOuter {
+  border: 2px solid black;
+  width: 100%;
+  border-radius: 5px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 2px;
+  align-content: center;
+  justify-content: center;
+  // align-self: center;
+  text-align: center;
 }
