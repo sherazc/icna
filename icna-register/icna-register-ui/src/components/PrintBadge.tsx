@@ -3,6 +3,8 @@ import {useParams} from "react-router-dom";
 import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
 import styles from "./PrintBadge.module.scss";
+import "../styles/StyleVariables.module.scss"
+// import "../styles/Global.module.scss";
 
 interface Props {
 }
@@ -107,7 +109,8 @@ export const PrintBadge: React.FC<Props> = () => {
                         border: "2px solid black",
                         boxSizing: "border-box",
                         padding: "10px",
-                        fontWeight: "bold"
+                        fontWeight: "bold",
+                        fontSize: "1rem"
                     }}>
                         LOGO
                     </div>
@@ -116,7 +119,7 @@ export const PrintBadge: React.FC<Props> = () => {
                     }}>
                         {attendee.firstName} {attendee.lastName}
                     </div>
-                    <div  style={{
+                    <div style={{
                         fontSize: cardTextSize.cardId
                     }}>
                         {event.id}-{attendee.registrationId}-{attendee.id}
@@ -134,8 +137,42 @@ export const PrintBadge: React.FC<Props> = () => {
     );
 
     return (
-        <div className={styles.page} style={pageStyle}>
-            {attendees.map((attendee: AttendeeDto) => (createAttendeeComponent(event, attendee)))}
+        <div>
+            <div className={styles.page} style={pageStyle}>
+                {attendees.map((attendee: AttendeeDto) => (createAttendeeComponent(event, attendee)))}
+            </div>
+            <div style={{
+                width: "100%",
+                backgroundColor: "#ddd",
+                position: "fixed",
+                bottom: "0",
+                padding: "20px",
+                // display: "none"
+            }}>
+                <a href="#" style={{fontWeight: "bold"}}>X</a> All dimensions are in inches.
+                <br/>
+                <label>Pixel per inch</label>
+                <input type="number"/>
+
+                <div style={{fontSize: "2rem"}}>Page</div>
+                <br/>
+                <label>Width</label>
+                <input type="number"/>
+                <label>Height</label>
+                <input type="number"/>
+                <br/>
+                <label>Padding top & bottom</label>
+                <input type="number"/>
+                <label>Padding left & right</label>
+                <input type="number"/>
+
+                <div style={{fontSize: "2rem"}}>Card</div>
+                <br/>
+                <label>Width</label>
+                <input type="number"/>
+                <label>Height</label>
+                <input type="number"/>
+            </div>
         </div>
     );
 };

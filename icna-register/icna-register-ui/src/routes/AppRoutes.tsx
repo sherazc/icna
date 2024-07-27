@@ -19,8 +19,8 @@ export default function AppRoutes() {
                 <Route path="attendees" element={<AttendeeList/>}/>
                 <Route path="attendees/:attendeeId" element={<AttendeeInfo/>}/>
             </Route>
-            <Route path="/event/:eventId/print/register/:registrationId" element={<PrintBadge/>}></Route>
-            <Route path="/event/:eventId/print/attendees/:attendeeId" element={<PrintBadge/>}></Route>
+            <Route path="/event/:eventId/print/register/:registrationId" element={<StyleVar><PrintBadge/></StyleVar>}></Route>
+            <Route path="/event/:eventId/print/attendees/:attendeeId" element={<StyleVar><PrintBadge/></StyleVar>}></Route>
         </Routes>
     );
 }
