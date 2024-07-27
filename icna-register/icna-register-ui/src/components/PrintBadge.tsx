@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
 import styles from "./PrintBadge.module.scss";
+import checkRadio from "../styles/CheckRadio.module.scss";
 
 interface Props {
 }
@@ -165,6 +166,13 @@ export const PrintBadge: React.FC<Props> = () => {
                     </a>
                 </div>
                 <div>All dimensions are in inches.</div>
+                <br/>
+                <a href="#">Reset TODO</a>
+                <br/>
+                <label className={checkRadio.checkContainer}>Show Highlights TODO
+                    <input type="checkbox"/>
+                    <span className={checkRadio.checkbox}></span>
+                </label>
                 <br/>
                 <label>Pixel per inch</label>
                 <input type="number"/>

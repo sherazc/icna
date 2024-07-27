@@ -57,10 +57,9 @@ Attendee *-* Event_Program
 
 # ✅ CSS Style Layout
 
-# ▶️ Create print attendee and group page
-- figure out the exact page print size
-- make print layout adjustable
-- e.g. https://stackoverflow.com/questions/14223843/print-exact-measurements-in-chrome
+# ✅ Create print attendee and group page
+- ✅ figure out the exact page print size
+- ▶️ make print layout adjustable
 
 # On save registration confirmation page, reload if stay on same page, 
 
