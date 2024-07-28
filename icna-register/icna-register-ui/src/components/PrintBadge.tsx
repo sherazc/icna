@@ -4,6 +4,7 @@ import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
 import styles from "./PrintBadge.module.scss";
 import checkRadio from "../styles/CheckRadio.module.scss";
+import {Property} from "csstype";
 
 interface Props {
 }
@@ -37,31 +38,55 @@ type PrintPaper = {
 }
 
 // UTILITIES
-const inchToPixel = (inch: number) => `${PIXEL_PER_INCH * inch}px`;
-const pixelToInch = (pixel: string) => {
+const inchToPixel = (inch: number, pixelPerInch: number) => `${pixelPerInch * inch}px`;
+
+const pixelToInch = (pixel: string, pixelPerInch: number) => {
     const pixes = pixel.split("px");
-    if (pixes.length < 2 || !isNaN(+pixes[0])) {
+    if (pixes.length < 2 || isNaN(+pixes[0])) {
         return 0;
     }
-    return roundTo2Decimal(+pixes[0] / PIXEL_PER_INCH);
+    return roundTo2Decimal(+pixes[0] / pixelPerInch);
 }
 
 const roundTo2Decimal = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
 
+const updateCSSPropertyPpi = (cssProperties: CSSProperties, field: keyof React.CSSProperties, previousPpi: number, newPpi: number) => {
+    const value = cssProperties[field];
+    const inches = pixelToInch(value as string, previousPpi);
+    return inchToPixel(inches, newPpi);
+}
+
 // DEFAULTS
 const defaultPageStyle = (): CSSProperties => ({
-    width: inchToPixel(PAGE_WIDTH_INCHES),
-    height: inchToPixel(PAGE_HEIGHT_INCHES),
-    paddingTop: inchToPixel(PAGE_PADDING_TOP_BOTTOM_INCHES),
-    paddingBottom: inchToPixel(PAGE_PADDING_TOP_BOTTOM_INCHES),
-    paddingLeft: inchToPixel(PAGE_PADDING_LEFT_RIGHT_INCHES),
-    paddingRight: inchToPixel(PAGE_PADDING_LEFT_RIGHT_INCHES),
+    width: inchToPixel(PAGE_WIDTH_INCHES, PIXEL_PER_INCH),
+    height: inchToPixel(PAGE_HEIGHT_INCHES, PIXEL_PER_INCH),
+    paddingTop: inchToPixel(PAGE_PADDING_TOP_BOTTOM_INCHES, PIXEL_PER_INCH),
+    paddingBottom: inchToPixel(PAGE_PADDING_TOP_BOTTOM_INCHES, PIXEL_PER_INCH),
+    paddingLeft: inchToPixel(PAGE_PADDING_LEFT_RIGHT_INCHES, PIXEL_PER_INCH),
+    paddingRight: inchToPixel(PAGE_PADDING_LEFT_RIGHT_INCHES, PIXEL_PER_INCH),
+});
+
+const updatePageStyle = (pageStyle: CSSProperties, previousPpi: number, newPpi: number): CSSProperties => ({
+    ...pageStyle,
+    width: updateCSSPropertyPpi(pageStyle, "width", previousPpi, newPpi),
+    height: updateCSSPropertyPpi(pageStyle, "height", previousPpi, newPpi),
+    paddingTop: updateCSSPropertyPpi(pageStyle, "paddingTop", previousPpi, newPpi),
+    paddingBottom: updateCSSPropertyPpi(pageStyle, "paddingBottom", previousPpi, newPpi),
+    paddingLeft: updateCSSPropertyPpi(pageStyle, "paddingLeft", previousPpi, newPpi),
+    paddingRight: updateCSSPropertyPpi(pageStyle, "paddingRight", previousPpi, newPpi),
 });
 
 const defaultCardStyle = (): CSSProperties => ({
-    width: inchToPixel(CARD_WIDTH_INCHES),
-    height: inchToPixel(CARD_HEIGHT_INCHES),
+    width: inchToPixel(CARD_WIDTH_INCHES, PIXEL_PER_INCH),
+    height: inchToPixel(CARD_HEIGHT_INCHES, PIXEL_PER_INCH),
 });
+
+const updateCardStyle = (cardStyle: CSSProperties, previousPpi: number, newPpi: number): CSSProperties => ({
+    ...cardStyle,
+    width: updateCSSPropertyPpi(cardStyle, "width", previousPpi, newPpi),
+    height: updateCSSPropertyPpi(cardStyle, "height", previousPpi, newPpi)
+});
+
 
 const defaultBadgeStyle = (): BadgeStyle => ({
     eventName: "1.5rem",
@@ -164,9 +189,76 @@ export const PrintBadge: React.FC<Props> = () => {
         </div>
     );
 
+    const onChangePixelPer = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newPageStyle = updatePageStyle(printPaper.pageStyle, printPaper.pixelPerInch, +event.target.value);
+        const newCardStyle = updateCardStyle(printPaper.cardStyle, printPaper.pixelPerInch, +event.target.value);
+
+        const newPrintPaper = {
+            ...printPaper,
+            pageStyle: newPageStyle,
+            cardStyle: newCardStyle,
+            pixelPerInch: +event.target.value,
+
+        }
+        setPrintPaper(newPrintPaper);
+    }
+
+    const onChangePageStyle = (event: React.ChangeEvent<HTMLInputElement>, field: keyof CSSProperties) => {
+        const newPageStyle = {...printPaper.pageStyle};
+
+        // @ts-ignore
+        newPageStyle[field] = inchToPixel(+event.target.value, printPaper.pixelPerInch);
+
+        const newPrintPaper = {
+            ...printPaper,
+            pageStyle: newPageStyle
+        }
+        setPrintPaper(newPrintPaper);
+    }
+
+    const onChangeCardStyle = (event: React.ChangeEvent<HTMLInputElement>, field: keyof CSSProperties) => {
+        const newCardStyle = {...printPaper.cardStyle};
+
+        // @ts-ignore
+        newCardStyle[field] = inchToPixel(+event.target.value, printPaper.pixelPerInch);
+
+        const newPrintPaper = {
+            ...printPaper,
+            cardStyle: newCardStyle
+        }
+        setPrintPaper(newPrintPaper);
+    }
+
+    const onChangePagePaddingTopBottom = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newPageStyle = {...printPaper.pageStyle,
+            paddingTop: inchToPixel(+event.target.value, printPaper.pixelPerInch),
+            paddingBottom: inchToPixel(+event.target.value, printPaper.pixelPerInch),
+        };
+
+        const newPrintPaper = {
+            ...printPaper,
+            pageStyle: newPageStyle
+        }
+        setPrintPaper(newPrintPaper);
+    }
+
+    const onChangePagePaddingLeftRight = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newPageStyle = {...printPaper.pageStyle,
+            paddingLeft: inchToPixel(+event.target.value, printPaper.pixelPerInch),
+            paddingRight: inchToPixel(+event.target.value, printPaper.pixelPerInch),
+        };
+
+        const newPrintPaper = {
+            ...printPaper,
+            pageStyle: newPageStyle
+        }
+        setPrintPaper(newPrintPaper);
+    }
+
     return (
         <div>
             {/* Badges Page */}
+            {/* TODO: Repeat this div for multiple pages.*/}
             <div className={styles.page} style={printPaper.pageStyle} onClick={() => setShowMenu(true)}>
                 {attendees.map((attendee: AttendeeDto) => (createAttendeeComponent(event, attendee)))}
             </div>
@@ -188,27 +280,39 @@ export const PrintBadge: React.FC<Props> = () => {
                 </label>
                 <br/>
                 <label>Pixel per inch</label>
-                <input type="number"/>
+                <input type="number" value={printPaper.pixelPerInch} name="pixelPerInch" onChange={onChangePixelPer}/>
 
                 <div style={{fontSize: "2rem"}}>Page</div>
                 <br/>
                 <label>Width</label>
-                <input type="number"/>
+                <input type="number"
+                       value={pixelToInch(printPaper.pageStyle.width as string, printPaper.pixelPerInch)}
+                       onChange={e => onChangePageStyle(e, "width")}/>
                 <label>Height</label>
-                <input type="number"/>
+                <input type="number"
+                       value={pixelToInch(printPaper.pageStyle.height as string, printPaper.pixelPerInch)}
+                       onChange={e => onChangePageStyle(e, "height")}/>
                 <br/>
                 <label>Padding top & bottom</label>
-                <input type="number"/>
+                <input type="number"
+                       value={pixelToInch(printPaper.pageStyle.paddingTop as string, printPaper.pixelPerInch)}
+                       onChange={onChangePagePaddingTopBottom}/>
                 <br/>
                 <label>Padding left & right</label>
-                <input type="number"/>
+                <input type="number"
+                       value={pixelToInch(printPaper.pageStyle.paddingLeft as string, printPaper.pixelPerInch)}
+                       onChange={onChangePagePaddingLeftRight}/>
 
                 <div style={{fontSize: "2rem"}}>Card</div>
                 <br/>
                 <label>Width</label>
-                <input type="number"/>
+                <input type="number"
+                       value={pixelToInch(printPaper.cardStyle.width as string, printPaper.pixelPerInch)}
+                       onChange={e => onChangeCardStyle(e, "width")}/>
                 <label>Height</label>
-                <input type="number"/>
+                <input type="number"
+                       value={pixelToInch(printPaper.cardStyle.height as string, printPaper.pixelPerInch)}
+                       onChange={e => onChangeCardStyle(e, "height")}/>
             </div>
         </div>
     );
