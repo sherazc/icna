@@ -4,7 +4,7 @@ import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
 import styles from "./PrintBadge.module.scss";
 import checkRadio from "../styles/CheckRadio.module.scss";
-import {Property} from "csstype";
+import {formIdBreak} from "../service/utilities";
 
 interface Props {
 }
@@ -119,6 +119,7 @@ export const PrintBadge: React.FC<Props> = () => {
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
 
     const [showMenu, setShowMenu] = useState<boolean>(false);
+    const [showHighlights, setShowHighlights] = useState<boolean>(false);
 
     const [printPaper, setPrintPaper] = useState<PrintPaper>(defaultPrintPaper());
 
@@ -274,7 +275,28 @@ export const PrintBadge: React.FC<Props> = () => {
             badgeStyle: newBadeStyle
         }
         setPrintPaper(newPrintPaper);
+    }
 
+    const onChangeCheckedShowHighlights = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const checked = event.target.checked;
+        const newPageStyle:CSSProperties = {...printPaper.pageStyle}
+        const newCardStyle:CSSProperties = {...printPaper.cardStyle}
+        setShowHighlights(checked);
+        if (checked) {
+            newPageStyle.backgroundColor = "coral";
+            newCardStyle.border = "1px solid blue";
+            newCardStyle.backgroundColor = "cyan";
+        } else {
+            delete newPageStyle.backgroundColor;
+            delete newCardStyle.border;
+            delete newCardStyle.backgroundColor;
+        }
+        const newPrintPaper = {
+            ...printPaper,
+            cardStyle: newCardStyle,
+            pageStyle: newPageStyle
+        }
+        setPrintPaper(newPrintPaper);
     }
 
     return (
@@ -297,7 +319,7 @@ export const PrintBadge: React.FC<Props> = () => {
                 <a href="#">Reset TODO</a>
                 <br/>
                 <label className={checkRadio.checkContainer}>Show Highlights TODO
-                    <input type="checkbox"/>
+                    <input type="checkbox" checked={showHighlights} onChange={onChangeCheckedShowHighlights}/>
                     <span className={checkRadio.checkbox}></span>
                 </label>
                 <br/>
