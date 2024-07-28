@@ -38,14 +38,24 @@ type PrintPaper = {
 }
 
 // UTILITIES
-const inchToPixel = (inch: number, pixelPerInch: number) => `${pixelPerInch * inch}px`;
+const inchToPixel = (inch: number, pixelPerInch: number) => pixelNumberToUnit(pixelPerInch * inch);
 
-const pixelToInch = (pixel: string, pixelPerInch: number) => {
-    const pixes = pixel.split("px");
+const pixelNumberToUnit = (num: number): string => `${num}px`;
+
+const pixelUnitNumber = (pixelUnit: string): number => {
+    const pixes = pixelUnit.split("px");
     if (pixes.length < 2 || isNaN(+pixes[0])) {
         return 0;
     }
-    return roundTo2Decimal(+pixes[0] / pixelPerInch);
+    return +pixes[0];
+}
+
+const pixelToInch = (pixelUnit: string, pixelPerInch: number) => {
+    const pixels = pixelUnitNumber(pixelUnit);
+    if (pixelPerInch == 0) {
+        return 0;
+    }
+    return roundTo2Decimal(pixels / pixelPerInch);
 }
 
 const roundTo2Decimal = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
@@ -89,10 +99,10 @@ const updateCardStyle = (cardStyle: CSSProperties, previousPpi: number, newPpi: 
 
 
 const defaultBadgeStyle = (): BadgeStyle => ({
-    eventName: "1.5rem",
-    attendeeName: "2rem",
-    cardId: ".7rem",
-    programName: "1rem",
+    eventName: "25px",
+    attendeeName: "32px",
+    cardId: "10px",
+    programName: "16px",
 });
 
 const defaultPrintPaper = (): PrintPaper => ({
@@ -255,6 +265,18 @@ export const PrintBadge: React.FC<Props> = () => {
         setPrintPaper(newPrintPaper);
     }
 
+    const onChangeBadgePixel = (event: React.ChangeEvent<HTMLInputElement>, field: keyof BadgeStyle) => {
+        const newBadeStyle:BadgeStyle = {...printPaper.badgeStyle};
+
+        newBadeStyle[field] = pixelNumberToUnit(+event.target.value);
+        const newPrintPaper = {
+            ...printPaper,
+            badgeStyle: newBadeStyle
+        }
+        setPrintPaper(newPrintPaper);
+
+    }
+
     return (
         <div>
             {/* Badges Page */}
@@ -313,6 +335,27 @@ export const PrintBadge: React.FC<Props> = () => {
                 <input type="number"
                        value={pixelToInch(printPaper.cardStyle.height as string, printPaper.pixelPerInch)}
                        onChange={e => onChangeCardStyle(e, "height")}/>
+                <div style={{fontSize: "2rem"}}>Badge</div>
+                <br/>
+                <label>Event Name Size</label>
+                <input type="number"
+                       value={pixelUnitNumber(printPaper.badgeStyle.eventName)}
+                       onChange={e => onChangeBadgePixel(e, "eventName")}/>
+                <br/>
+                <label>Attendee Name Size</label>
+                <input type="number"
+                       value={pixelUnitNumber(printPaper.badgeStyle.attendeeName)}
+                       onChange={e => onChangeBadgePixel(e, "attendeeName")}/>
+                <br/>
+                <label>Card ID Size</label>
+                <input type="number"
+                       value={pixelUnitNumber(printPaper.badgeStyle.cardId)}
+                       onChange={e => onChangeBadgePixel(e, "cardId")}/>
+                <br/>
+                <label>Program Name Size</label>
+                <input type="number"
+                       value={pixelUnitNumber(printPaper.badgeStyle.programName)}
+                       onChange={e => onChangeBadgePixel(e, "programName")}/>
             </div>
         </div>
     );
