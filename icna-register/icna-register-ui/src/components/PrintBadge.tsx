@@ -28,6 +28,8 @@ type BadgeStyle = {
     attendeeName: string;
     cardId: string;
     programName: string;
+    logoWidth: string;
+    logoHeight: string;
 }
 
 type PrintPaper = {
@@ -42,7 +44,7 @@ const inchToPixel = (inch: number, pixelPerInch: number) => pixelNumberToUnit(pi
 
 const pixelNumberToUnit = (num: number): string => `${num}px`;
 
-const pixelUnitNumber = (pixelUnit: string): number => {
+const pixelUnitToNumber = (pixelUnit: string): number => {
     const pixes = pixelUnit.split("px");
     if (pixes.length < 2 || isNaN(+pixes[0])) {
         return 0;
@@ -51,7 +53,7 @@ const pixelUnitNumber = (pixelUnit: string): number => {
 }
 
 const pixelToInch = (pixelUnit: string, pixelPerInch: number) => {
-    const pixels = pixelUnitNumber(pixelUnit);
+    const pixels = pixelUnitToNumber(pixelUnit);
     if (pixelPerInch == 0) {
         return 0;
     }
@@ -103,6 +105,8 @@ const defaultBadgeStyle = (): BadgeStyle => ({
     attendeeName: "32px",
     cardId: "10px",
     programName: "16px",
+    logoWidth: "75px",
+    logoHeight: "75px",
 });
 
 const defaultPrintPaper = (): PrintPaper => ({
@@ -164,8 +168,8 @@ export const PrintBadge: React.FC<Props> = () => {
                         {event.eventName}
                     </div>
                     <div style={{
-                        height: "70px",
-                        width: "70px",
+                        height: printPaper.badgeStyle.logoHeight,
+                        width: printPaper.badgeStyle.logoWidth,
                         //backgroundColor: "red",
                         margin: "0 auto",
                         alignContent: "center",
@@ -299,6 +303,11 @@ export const PrintBadge: React.FC<Props> = () => {
         setPrintPaper(newPrintPaper);
     }
 
+    const onReset = () => {
+        setShowHighlights(false);
+        setPrintPaper(defaultPrintPaper());
+    }
+
     return (
         <div>
             {/* Badges Page */}
@@ -314,11 +323,11 @@ export const PrintBadge: React.FC<Props> = () => {
                         X
                     </a>
                 </div>
-                <div>All dimensions are in inches.</div>
+                <div>Page and Card dimensions are in inches.</div>
                 <br/>
-                <a href="#">Reset TODO</a>
+                <a href="#" onClick={onReset}>Reset all</a>
                 <br/>
-                <label className={checkRadio.checkContainer}>Show Highlights TODO
+                <label className={checkRadio.checkContainer}>Show Highlights
                     <input type="checkbox" checked={showHighlights} onChange={onChangeCheckedShowHighlights}/>
                     <span className={checkRadio.checkbox}></span>
                 </label>
@@ -361,23 +370,32 @@ export const PrintBadge: React.FC<Props> = () => {
                 <br/>
                 <label>Event Name Size</label>
                 <input type="number"
-                       value={pixelUnitNumber(printPaper.badgeStyle.eventName)}
+                       value={pixelUnitToNumber(printPaper.badgeStyle.eventName)}
                        onChange={e => onChangeBadgePixel(e, "eventName")}/>
                 <br/>
                 <label>Attendee Name Size</label>
                 <input type="number"
-                       value={pixelUnitNumber(printPaper.badgeStyle.attendeeName)}
+                       value={pixelUnitToNumber(printPaper.badgeStyle.attendeeName)}
                        onChange={e => onChangeBadgePixel(e, "attendeeName")}/>
                 <br/>
                 <label>Card ID Size</label>
                 <input type="number"
-                       value={pixelUnitNumber(printPaper.badgeStyle.cardId)}
+                       value={pixelUnitToNumber(printPaper.badgeStyle.cardId)}
                        onChange={e => onChangeBadgePixel(e, "cardId")}/>
                 <br/>
                 <label>Program Name Size</label>
                 <input type="number"
-                       value={pixelUnitNumber(printPaper.badgeStyle.programName)}
+                       value={pixelUnitToNumber(printPaper.badgeStyle.programName)}
                        onChange={e => onChangeBadgePixel(e, "programName")}/>
+                <br/>
+                <label>Logo width</label>
+                <input type="number"
+                       value={pixelUnitToNumber(printPaper.badgeStyle.logoWidth)}
+                       onChange={e => onChangeBadgePixel(e, "logoWidth")}/>
+                <label>Logo height</label>
+                <input type="number"
+                       value={pixelUnitToNumber(printPaper.badgeStyle.logoHeight)}
+                       onChange={e => onChangeBadgePixel(e, "logoHeight")}/>
             </div>
         </div>
     );
