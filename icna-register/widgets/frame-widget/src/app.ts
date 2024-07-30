@@ -1,5 +1,7 @@
 import "./app.scss";
 
+const messageDimensionKey = "messageDimensionKey";
+
 (() => {
     // @ts-ignore
     const appName = appNamePrefix;
@@ -26,7 +28,7 @@ import "./app.scss";
     // sends message to iframe. iframe resizes it self.
     window.addEventListener("message", function (event) {
         const iframe = document.getElementById(`${appName}Iframe`);
-        const dimensions = event.data.dimensions;
+        const dimensions = event.data[messageDimensionKey];
         if (iframe && dimensions && dimensions.height && dimensions.height > 0) {
             // @ts-ignore
             iframe.height = dimensions.height + 20;

@@ -9,9 +9,9 @@
 </head>
 <body>
 <script>
-    // http://localhost:3000/static/frame-widget/index-dev-min-requirements.html?url=expense/hic
+    // http://localhost:3000/static/frame-widget/index-dev-min-requirements.html?url=event/10
     var appNamePrefix = "frameWidget01";
-    window[`${appNamePrefix}ServerUrl`] = "http://localhost:3000";  // dev testing
+    window[`${appNamePrefix}ServerUrl`] = "http://localhost:8080";  // dev testing
     window[`${appNamePrefix}AppUrl`] = (new URLSearchParams(window.location.search)).get("url");
 </script>
 <script type="application/javascript" src="app.min.js"></script>
