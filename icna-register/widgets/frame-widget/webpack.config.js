@@ -12,7 +12,7 @@ if (process.env.BUILD_TYPE === "PROD") {
 module.exports = {
     entry: "./src/app.ts",
     output: {
-        path: path.resolve(__dirname, "../../ui/public/static/frame-widget"),
+        path: path.resolve(__dirname, "../../icna-register-ui/public/static/frame-widget"),
         filename: "app.min.js",
         // publicPath: "/dist"
     },

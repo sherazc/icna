@@ -35,3 +35,5 @@ build/
 
 local.properties
 .env
+
+icna-register-ui/public/static/frame-widget/*.min.*
