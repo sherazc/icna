@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Widget</title>
+</head>
+<body>
+<script>
+    // http://localhost:3000/static/frame-widget/index-dev-min-requirements.html?url=expense/hic
+    var appNamePrefix = "frameWidget01";
+    window[`${appNamePrefix}ServerUrl`] = "http://localhost:8085";  // dev testing
+    window[`${appNamePrefix}AppUrl`] = (new URLSearchParams(window.location.search)).get("url");
+</script>
+<script type="application/javascript" src="app.min.js"></script>
+</body>
+</html>

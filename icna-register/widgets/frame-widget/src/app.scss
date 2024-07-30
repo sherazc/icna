@@ -1,0 +1,24 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  height: 100%
+
+}
+
+.iframeContainer {
+}
+
+.iframeContainer iframe {
+  width: 100%;
+  border: 0;
+}
+
+.iframeContainer iframe:focus {
+  outline: none;
+}
+
+.iframeContainer iframe[seamless] {
+  display: block;
+}

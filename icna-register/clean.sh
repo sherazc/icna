@@ -16,12 +16,13 @@ rm -rf $icna_register_ui_dir/node_modules
 # rm -rf misc/logs/archived
 # mkdir misc/logs/archived
 
-# Clean rod-widget
-# rm -rf widgets/rod-widget/yarn.lock
-# rm -rf widgets/rod-widget/package-lock.json
-# rm -rf widgets/rod-widget/yarn-error.log
-# rm -rf widgets/rod-widget/node_modules
-# rm -rf ui/public/static/rod-widget/app.min.*
+# Clean frame-widget
+rm -rf widgets/frame-widget/yarn.lock
+rm -rf widgets/frame-widget/package-lock.json
+rm -rf widgets/frame-widget/yarn-error.log
+rm -rf widgets/frame-widget/node_modules
+rm -rf ui/public/static/frame-widget/app.min.*
+
 
 
 # Clean API

@@ -12,6 +12,12 @@
 
 # Configure spring security
 
+# authenticate API
+
+# authenticate React router links
+
+# unauthenticated guest version UI
+
 # Local DB docker container
 
 # ✅ Local DB schema creation
@@ -41,11 +47,11 @@ Attendee *-* Event_Program
 
 # ✅ Attendee info page and API
 
-# Print attendee and register-group page and API
+# ✅ Print attendee and register-group page and API
 
-# Create iframe widget
+# ▶️ Create iframe widget
 
-# Create embeddable script
+# ▶️ Create embeddable script
 
 # ✅ Install and configure SASS
 
@@ -59,7 +65,9 @@ Attendee *-* Event_Program
 
 # ✅ Create print attendee and group page
 - ✅ figure out the exact page print size
-- ▶️ make print layout adjustable
+- ✅ make print layout adjustable
+
+# Multi print page support
 
 # On save registration confirmation page, reload if stay on same page, 
 
