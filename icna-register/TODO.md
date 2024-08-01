@@ -49,9 +49,11 @@ Attendee *-* Event_Program
 
 # ✅ Print attendee and register-group page and API
 
-# ▶️ Create iframe widget
+# ▶️ rewrite widgets/readme.md
 
-# ▶️ Create embeddable script
+# ✅ Create iframe widget
+
+# ✅ Create embeddable script
 
 # ✅ Install and configure SASS
 
