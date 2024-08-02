@@ -5,7 +5,7 @@
 # ✅ Install and configure react router
 - https://docs.google.com/document/d/12HlTx5Kuw90zIcMjNp6B6eLQsd3ZAvMunCizV0KQ92o/edit
 
-# Install and configure redux
+# ▶️ Install and configure redux
 - configure multi level redux store
 
 # ✅Configure abstract API call 
@@ -49,7 +49,7 @@ Attendee *-* Event_Program
 
 # ✅ Print attendee and register-group page and API
 
-# ▶️ rewrite widgets/readme.md
+# ✅ rewrite widgets/readme.md
 
 # ✅ Create iframe widget
 

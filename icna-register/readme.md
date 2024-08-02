@@ -27,7 +27,7 @@ Run below steps in a new terminal.
 `$ npm run dev`
 
 ## 4. Create Test HTML file
-Create a temporary HTML file and add this script in it:
+Create a temporary HTML file, add this script in it and open it in Chrome browser
 
 ```html
 <script>
@@ -48,7 +48,11 @@ Commands below will generate production jar `icna-register/icna-register-api/tar
 `$ ./build.sh`
 
 
-# Deployment of ICNA register
+# Deployment
+???
+
+# Configure client website
+
 Add below script in wordpress page.
 Replace event id in the AppUrl
 ````html
