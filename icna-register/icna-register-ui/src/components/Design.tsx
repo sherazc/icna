@@ -1,13 +1,64 @@
-import React from "react";
+import React, {useContext} from "react";
 import "../styles/Global.module.scss";
 import checkRadio from "../styles/CheckRadio.module.scss"
+import {AppContext} from "../store/context";
+import {ActionNameLoading} from "../store/loadingMessageReducer";
+import {ActionNameAuthUser} from "../store/authUserReducer";
 
 interface Props {
 }
 
 export const Design: React.FC<Props> = () => {
+    const [ state, dispatch ] = useContext(AppContext);
+
+
+    const addLoading = () => {
+        dispatch({
+            type: ActionNameLoading.loadingMessageAdd,
+            payload: {
+                message: "yes",
+                id: 100
+            }
+        });
+    }
+
+    const loginUser = () => {
+        dispatch({
+            type: ActionNameAuthUser.authUserLogin,
+            payload: {userName: "Sheraz", authToken: "", roles: []}
+        });
+    }
+
+    const logoutUser = () => {
+        dispatch({
+            type: ActionNameAuthUser.authUserLogout
+        });
+    }
+
     return (
         <div style={{margin: "20px"}}>
+
+            <button onClick={addLoading}>
+                Add Loading
+            </button>
+
+            <button onClick={loginUser}>
+                Login
+            </button>
+
+            <button onClick={logoutUser}>
+                Logout
+            </button>
+
+            <hr/>
+            {state.loadingMessages.map((lm, index) => <div key={index}>{lm.message}</div>)}
+            <hr/>
+
+            <hr/>
+            {state.authUser.userName}
+            <hr/>
+
+
             <div>Some Text in div</div>
             <div>
                 <p>
