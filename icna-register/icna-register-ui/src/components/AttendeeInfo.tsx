@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto} from "../service/service-types";
 import tableGridStyles from "../styles/TableGridStyle.module.scss"
+import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
+import {AppContext} from "../store/context";
 
 interface Props {
 }
@@ -11,6 +13,7 @@ export const AttendeeInfo: React.FC<Props> = () => {
     const {attendeeId, eventId} = useParams();
     const [attendee, setAttendee] = useState<AttendeeDto>(defaultAttendeeDto());
     const [registrationAttendees, setRegistrationAttendees] = useState<AttendeeDto[]>([]);
+    const [{}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (!attendeeId || !eventId) {
@@ -18,14 +21,21 @@ export const AttendeeInfo: React.FC<Props> = () => {
         }
 
         let regApis = registerApis();
+        const loadingAttendee = createLoadingActionShow("Loading Attendee");
+        dispatch(loadingAttendee);
         regApis
             .findAttendeeByAttendeeId(attendeeId)
             .then((attendeeResponse) => {
-                setAttendee(attendeeResponse)
-
+                setAttendee(attendeeResponse);
+                dispatch(createLoadingActionHide(loadingAttendee.payload.id));
+                const loadingRegistration = createLoadingActionShow("Loading Registration");
+                dispatch(loadingRegistration);
                 regApis
                     .findAttendeeByEventIdAndRegistrationId(eventId, `${attendeeResponse.registrationId}`)
-                    .then((registrationAttendeesResponse) => setRegistrationAttendees(registrationAttendeesResponse))
+                    .then((registrationAttendeesResponse) => {
+                        setRegistrationAttendees(registrationAttendeesResponse);
+                        dispatch(createLoadingActionHide(loadingRegistration.payload.id));
+                    })
             })
     }, [eventId, attendeeId]);
 

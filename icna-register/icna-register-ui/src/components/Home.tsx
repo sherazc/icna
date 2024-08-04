@@ -21,24 +21,22 @@ export const Home: React.FC<Props> = () => {
 
         let regApis = registerApis();
 
-
-
-        const eventLoading = createLoadingActionShow("Loading Events");
-        dispatch(eventLoading);
+        const loadingEvent = createLoadingActionShow("Loading Events");
+        dispatch(loadingEvent);
         regApis
             .findEventById(eventId)
             .then(event => {
                 setEvent(event);
-                dispatch(createLoadingActionHide(eventLoading.payload.id))
+                dispatch(createLoadingActionHide(loadingEvent.payload.id))
             });
 
-        const programLoading = createLoadingActionShow("Loading programs");
-        dispatch(programLoading);
+        const loadingProgram = createLoadingActionShow("Loading programs");
+        dispatch(loadingProgram);
         regApis
             .findProgramsByEventId(eventId)
             .then(eventProgramDtoArrayResponse => {
                 setEventProgramDtoArray(eventProgramDtoArrayResponse);
-                dispatch(createLoadingActionHide(programLoading.payload.id))
+                dispatch(createLoadingActionHide(loadingProgram.payload.id))
             })
     }, [eventId])
 
