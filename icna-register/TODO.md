@@ -5,8 +5,8 @@
 # ✅ Install and configure react router
 - https://docs.google.com/document/d/12HlTx5Kuw90zIcMjNp6B6eLQsd3ZAvMunCizV0KQ92o/edit
 
-# ▶️ Install and configure redux
-- configure multi level redux store
+# ✅ Install and configure redux
+- ✅ configure multi level redux store
 
 # ✅Configure abstract API call 
 
@@ -71,7 +71,7 @@ Attendee *-* Event_Program
 
 # Multi print page support
 
-# On save registration confirmation page, reload if stay on same page, 
+# ▶️ On save registration confirmation page, reload if stay on same page, 
 
 # Make Attendee list Pageable UI
 
@@ -85,7 +85,7 @@ Attendee *-* Event_Program
 
 # Create an Admin Attendee list report for an event
 
-# Loading spinner Component
+# ✅ Loading spinner Component
 
 # Success and error messages
 
