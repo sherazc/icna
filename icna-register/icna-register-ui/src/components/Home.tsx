@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {EventDto, defaultEventDto, EventProgramDto} from "../service/service-types";
 import {registerApis} from "../service/api/ApiRegister";
 import {useParams} from "react-router-dom";
+import {AppContext} from "../store/context";
+import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 
 interface Props {
 }
@@ -10,6 +12,7 @@ export const Home: React.FC<Props> = () => {
     const {eventId} = useParams();
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [eventProgramDtoArray, setEventProgramDtoArray] = useState<EventProgramDto[]>([]);
+    const [{}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (!eventId) {
@@ -18,12 +21,25 @@ export const Home: React.FC<Props> = () => {
 
         let regApis = registerApis();
 
+
+
+        const eventLoading = createLoadingActionShow("Loading Events");
+        dispatch(eventLoading);
         regApis
             .findEventById(eventId)
-            .then(event => setEvent(event));
+            .then(event => {
+                setEvent(event);
+                dispatch(createLoadingActionHide(eventLoading.payload.id))
+            });
+
+        const programLoading = createLoadingActionShow("Loading programs");
+        dispatch(programLoading);
         regApis
             .findProgramsByEventId(eventId)
-            .then(eventProgramDtoArrayResponse => setEventProgramDtoArray(eventProgramDtoArrayResponse))
+            .then(eventProgramDtoArrayResponse => {
+                setEventProgramDtoArray(eventProgramDtoArrayResponse);
+                dispatch(createLoadingActionHide(programLoading.payload.id))
+            })
     }, [eventId])
 
     return (<div>

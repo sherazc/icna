@@ -2,6 +2,7 @@ import AppNav from "../navigations/AppNav";
 import {Outlet} from "react-router-dom";
 import styles from "./AppLayout.module.scss";
 import {useEffect} from "react";
+import {Loading} from "../components/Loading";
 
 const rootElementId = "registerRoot";
 const messageDimensionKey = "messageDimensionKey";
@@ -22,19 +23,22 @@ export default function AppLayout() {
             const height = rootContainer.scrollHeight;
             console.log("width", width);
             console.log("height", height);
-            const message:any = {}
+            const message: any = {}
             message[messageDimensionKey] = {width, height}
 
             window.parent.postMessage(message, "*");
         }
     }
 
-    return(
-        <div id={rootElementId} className={styles.appBackground}>
-            <div className={styles.appContainer}>
-                <AppNav />
-                <Outlet />
+    return (
+        <>
+            <div id={rootElementId} className={styles.appBackground}>
+                <div className={styles.appContainer}>
+                    <AppNav/>
+                    <Outlet/>
+                </div>
             </div>
-        </div>
+            <Loading/>
+        </>
     );
 }

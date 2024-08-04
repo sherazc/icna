@@ -1,8 +1,8 @@
 import {LoadingMessage} from "./context";
 
 export enum ActionNameLoading {
-    loadingMessageAdd = 'LOADING_MESSAGE_ADD',
-    loadingMessageRemove = 'LOADING_MESSAGE_REMOVE'
+    loadingShow = 'LOADING_MESSAGE_SHOW',
+    loadingHide = 'LOADING_MESSAGE_HIDE'
 }
 
 export type LoadingAction = {
@@ -13,7 +13,7 @@ export type LoadingAction = {
 
 export const loadingMessagesReducer = (loadingMessagesState: LoadingMessage[], action: LoadingAction): LoadingMessage[] => {
     switch (action.type) {
-        case ActionNameLoading.loadingMessageAdd :
+        case ActionNameLoading.loadingShow :
             return [
                 ...loadingMessagesState,
                 {
@@ -21,7 +21,7 @@ export const loadingMessagesReducer = (loadingMessagesState: LoadingMessage[], a
                     message: action.payload.message
                 }
             ]
-        case ActionNameLoading.loadingMessageRemove :
+        case ActionNameLoading.loadingHide :
             return [...loadingMessagesState.filter(ls => ls.id !== action.payload.id)]
         default:
             return loadingMessagesState;

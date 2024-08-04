@@ -14,7 +14,7 @@ export const Design: React.FC<Props> = () => {
 
     const addLoading = () => {
         dispatch({
-            type: ActionNameLoading.loadingMessageAdd,
+            type: ActionNameLoading.loadingShow,
             payload: {
                 message: "yes",
                 id: 100
