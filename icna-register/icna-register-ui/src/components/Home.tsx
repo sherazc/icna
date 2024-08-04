@@ -19,7 +19,7 @@ export const Home: React.FC<Props> = () => {
             return;
         }
 
-        let regApis = registerApis();
+        const regApis = registerApis();
 
         const loadingEvent = createLoadingActionShow("Loading Events");
         dispatch(loadingEvent);

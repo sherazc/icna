@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto, EventProgramDto, RegistrationDto} from "../service/service-types";
 import {castStringToNumber, formIdBreak, formIdCreate} from "../service/utilities";
 import checkRadio from "../styles/CheckRadio.module.scss"
+import {AppContext} from "../store/context";
+import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 
 interface Props {
 }
@@ -14,6 +16,7 @@ export const Register: React.FC<Props> = () => {
     const {eventId, registrationId} = useParams();
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
     const [allEventPrograms, setAllEventPrograms] = useState<EventProgramDto[]>([]);
+    const [{}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (!eventId || !registrationId) {
@@ -84,14 +87,20 @@ export const Register: React.FC<Props> = () => {
             return;
         }
 
-        let regApis = registerApis();
+        const loadingAttendee = createLoadingActionShow("Loading Attendee");
+        dispatch(loadingAttendee);
+        const regApis = registerApis();
         const attendeeDtoArray: AttendeeDto[] = await regApis.findAttendeeByEventIdAndRegistrationId(eventId, registrationId);
-        setAttendees(attendeeDtoArray)
+        setAttendees(attendeeDtoArray);
+        dispatch(createLoadingActionHide(loadingAttendee.payload.id));
     };
 
     const loadEventPrograms = async (eventId: string) => {
+        const loadingEvent = createLoadingActionShow("Loading Events");
+        dispatch(loadingEvent);
         const eventPrograms = await registerApis().findProgramsByEventId(eventId);
         setAllEventPrograms(eventPrograms);
+        dispatch(createLoadingActionHide(loadingEvent.payload.id));
     };
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -101,8 +110,10 @@ export const Register: React.FC<Props> = () => {
             attendees
         }
 
+        const loadingSaving = createLoadingActionShow("Saving Registration");
+        dispatch(loadingSaving);
         const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
-        console.log(responseRegistrationDto);
+        dispatch(createLoadingActionHide(loadingSaving.payload.id));
     };
 
     const deleteAttendee = (attendeeId: number) => {
