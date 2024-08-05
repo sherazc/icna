@@ -21,8 +21,6 @@ export default function AppLayout() {
         if (rootContainer) {
             const width = rootContainer.scrollWidth;
             const height = rootContainer.scrollHeight;
-            console.log("width", width);
-            console.log("height", height);
             const message: any = {}
             message[messageDimensionKey] = {width, height}
 

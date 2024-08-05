@@ -15,7 +15,7 @@ data class EventProgram(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
     @ManyToOne()
-    @JoinColumn(name = "EVENT_ID", nullable = false)
+    @JoinColumn(name = "event_id", nullable = false)
     var event: Event,
     @Column(nullable = false)
     var programName: String,
