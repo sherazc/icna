@@ -1,4 +1,4 @@
-package org.icna.register.entity
+package org.icna.register.entity.event
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

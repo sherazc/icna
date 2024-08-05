@@ -1,7 +1,7 @@
 package org.icna.register.repository
 
 import org.icna.register.dto.AttendeeDto
-import org.icna.register.entity.Attendee
+import org.icna.register.entity.event.Attendee
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import java.util.Optional

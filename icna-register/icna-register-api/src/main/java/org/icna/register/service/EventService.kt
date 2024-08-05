@@ -1,7 +1,7 @@
 package org.icna.register.service
 
 import org.icna.register.dto.EventDto
-import org.icna.register.entity.Event
+import org.icna.register.entity.event.Event
 import org.icna.register.mapper.EventMapper
 import org.icna.register.repository.EventRepository
 import org.springframework.http.HttpStatus

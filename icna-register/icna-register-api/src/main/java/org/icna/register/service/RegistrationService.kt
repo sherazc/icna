@@ -2,10 +2,10 @@ package org.icna.register.service
 
 import org.icna.register.dto.AttendeeDto
 import org.icna.register.dto.RegistrationDto
-import org.icna.register.entity.Attendee
-import org.icna.register.entity.Event
-import org.icna.register.entity.EventProgram
-import org.icna.register.entity.Registration
+import org.icna.register.entity.event.Attendee
+import org.icna.register.entity.event.Event
+import org.icna.register.entity.event.EventProgram
+import org.icna.register.entity.event.Registration
 import org.icna.register.mapper.AttendeeMapper
 import org.icna.register.mapper.EventProgramMapper
 import org.icna.register.repository.RegistrationRepository

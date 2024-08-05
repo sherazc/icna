@@ -1,4 +1,4 @@
-package org.icna.register.entity
+package org.icna.register.entity.auth
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -8,6 +8,9 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
+import org.icna.register.entity.event.Event
+import org.icna.register.entity.event.EventProgram
+import org.icna.register.entity.event.Registration
 
 @Entity
 data class UserProfile(

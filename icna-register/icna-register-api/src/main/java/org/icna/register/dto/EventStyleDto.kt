@@ -1,6 +1,6 @@
 package org.icna.register.dto
 
-import org.icna.register.entity.StyleType
+import org.icna.register.entity.ui.StyleType
 
 
 data class EventStyleDto(

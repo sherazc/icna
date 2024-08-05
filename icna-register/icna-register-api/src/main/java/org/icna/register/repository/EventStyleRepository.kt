@@ -1,7 +1,7 @@
 package org.icna.register.repository
 
 import org.icna.register.dto.EventStyleDto
-import org.icna.register.entity.Style
+import org.icna.register.entity.ui.Style
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 

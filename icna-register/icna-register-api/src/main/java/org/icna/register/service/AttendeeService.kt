@@ -1,7 +1,7 @@
 package org.icna.register.service
 
 import org.icna.register.dto.AttendeeDto
-import org.icna.register.entity.Attendee
+import org.icna.register.entity.event.Attendee
 import org.icna.register.repository.AttendeeRepository
 import org.icna.register.repository.EventProgramRepository
 import org.springframework.stereotype.Service

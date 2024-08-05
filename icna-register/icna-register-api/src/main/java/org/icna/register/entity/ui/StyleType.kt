@@ -1,4 +1,4 @@
-package org.icna.register.entity
+package org.icna.register.entity.ui
 
 enum class StyleType {
     VAR, STYLE_SHEET
