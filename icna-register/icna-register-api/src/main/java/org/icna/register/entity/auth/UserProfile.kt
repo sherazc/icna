@@ -34,5 +34,5 @@ data class UserProfile(
         name = "M2M_USER_PROFILE_USER_ROLE",
         joinColumns = [JoinColumn(name = "USER_PROFILE_ID")],
         inverseJoinColumns = [JoinColumn(name = "USER_ROLE_ID")])
-    var eventPrograms: MutableSet<EventProgram>? = mutableSetOf()
+    var eventPrograms: MutableSet<UserRole>? = mutableSetOf()
 }
