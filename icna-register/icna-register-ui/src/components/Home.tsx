@@ -57,8 +57,13 @@ export const Home: React.FC<Props> = () => {
                 <div className={styles.loginContainer}>
                     <div className={styles.loginBox}>
                         Login
+                        <input placeholder="Email" />
                     </div>
                 </div>
+            </div>
+
+            <div>
+                <div></div>
             </div>
 
         </div>
