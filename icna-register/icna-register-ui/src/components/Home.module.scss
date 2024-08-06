@@ -1,0 +1,20 @@
+.eventProgramsLoginContainer {
+  display: flex;
+  background-color: green;
+}
+
+.eventProgramsContainer {
+  background-color: yellow;
+  flex-grow: 1;
+}
+
+.loginContainer {
+  background-color: coral;
+  width: 400px;
+}
+
+.loginBox {
+  background-color: brown;
+  margin: 20px;
+  padding: 20px;
+}

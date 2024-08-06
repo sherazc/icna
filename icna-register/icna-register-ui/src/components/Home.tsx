@@ -4,6 +4,7 @@ import {registerApis} from "../service/api/ApiRegister";
 import {useParams} from "react-router-dom";
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
+import styles from "./Home.module.scss"
 
 interface Props {
 }
@@ -40,15 +41,26 @@ export const Home: React.FC<Props> = () => {
             })
     }, [eventId])
 
-    return (<div>
+    return (
         <div>
-            <h1>{event.eventName}</h1>
+            <div>
+                <h1>{event.eventName}</h1>
+            </div>
+
+            <div className={styles.eventProgramsLoginContainer}>
+                <div className={styles.eventProgramsContainer}>
+                    <div><h2>Event Programs</h2></div>
+                    {eventProgramDtoArray.map(ep => (
+                        <div key={ep.id}>{ep.programName}</div>
+                    ))}
+                </div>
+                <div className={styles.loginContainer}>
+                    <div className={styles.loginBox}>
+                        Login
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div><h2>Event Programs</h2></div>
-
-        {eventProgramDtoArray.map(ep => (
-            <div key={ep.id}>{ep.programName}</div>
-        ))}
-
-    </div>)
+    );
 }

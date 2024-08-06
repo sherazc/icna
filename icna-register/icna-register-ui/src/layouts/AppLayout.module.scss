@@ -1,11 +1,13 @@
+@import "../styles/StyleVariables.module";
+
 .appBackground {
-  background-color: #f8f8f8;
+  background-color: $white2;
 }
 
 .appContainer {
-  background-color: #fefefe;
+  background-color: $white1;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 50px 50px 50px;
-  border: 1px solid #eee;
+  border: 1px solid $white5;
 }
