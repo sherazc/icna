@@ -48,6 +48,7 @@ export const Home: React.FC<Props> = () => {
             </div>
 
             <div className={styles.eventProgramsLoginContainer}>
+                <div>Register </div>
                 <div className={styles.eventProgramsContainer}>
                     <div><h2>Event Programs</h2></div>
                     {eventProgramDtoArray.map(ep => (
@@ -63,7 +64,21 @@ export const Home: React.FC<Props> = () => {
             </div>
 
             <div>
-                <div></div>
+                <div>
+                    <svg
+                        // width="100px"
+                        // height="100px"
+                        style={{
+                            width: "100px", height: "100px",
+                            color: "red", backgroundColor: "purple"
+                        }}
+                        stroke="#ff0000"
+                        fill="#00ff00"
+                        viewBox="0 0 100 100">
+                        <path d="M37.34 99.381l37.224-49.585L36.877.618 25.435 10.744l30.009 39.158-29.639 39.481z" />
+                    </svg>
+
+                </div>
             </div>
 
         </div>
