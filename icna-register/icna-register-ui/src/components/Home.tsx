@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./Home.module.scss"
+import {Icon} from "../images/Icon";
 import {IconArrowRight} from "../images/IconArrowRight";
 
 interface Props {
@@ -66,7 +67,7 @@ export const Home: React.FC<Props> = () => {
 
             <div>
                 <div>
-                    <IconArrowRight/>
+                    <IconArrowRight />
 
                 </div>
             </div>
