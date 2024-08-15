@@ -55,6 +55,9 @@ h4, h5, h6 {
 a {
   color: $colorPrimary;
   text-decoration: none;
+  // These 2 below properties are used so that text is vertically center aligned with icon
+  display: flex;
+  align-items: center;
 }
 
 a:hover, a:focus, a::selection {
