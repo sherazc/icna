@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain
 import javax.crypto.spec.SecretKeySpec
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableMethodSecurity(
     jsr250Enabled = true,
     prePostEnabled = true,

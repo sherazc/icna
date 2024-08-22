@@ -1,5 +1,6 @@
 package org.icna.register.service.security
 
+import org.icna.register.dto.UserProfileDto
 import org.icna.register.dto.UserProfileUserDetails
 import org.icna.register.entity.auth.UserRole
 import org.icna.register.repository.UserProfileRepository
@@ -8,21 +9,29 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import java.util.Collections
-import java.util.Optional
 
 @Service
 class RegisterSecurityUserDetailService(
     val userProfileRepository: UserProfileRepository
 ) : UserDetailsService {
 
-    override fun loadUserByUsername(email: String?): UserDetails {
-        if (email == null) throw UsernameNotFoundException("Email is null")
+    val userNameRegex: Regex = "[0-9]*\\/.{2,}@.{2,}\\..{2,}".toRegex()
 
-        return userProfileRepository.findByEmailIgnoreCase(email)
-            .map { userProfile -> UserProfileUserDetails(userProfile, getRoleNames(userProfile.userRoles)) }
-            .orElseThrow { UsernameNotFoundException("Can not find user: $email") }
+    override fun loadUserByUsername(userName: String?): UserDetails {
+
+        if (userName == null || !userNameRegex.matches(userName)) throw UsernameNotFoundException("Invalid user name. $userName")
+        val userNameParts = userName.split("/")
+        val eventId: Long = userNameParts[0].trim().toLong()
+        val email: String = userNameParts[1]
+
+        return userProfileRepository.findByEventAndEmail(eventId, email)
+            .map { userProfile ->  UserProfileUserDetails(userProfile, getRoles(eventId, email))}
+            .orElseThrow { UsernameNotFoundException("Can not find user. eve$eventId $email") }
     }
 
-    private fun getRoleNames(userRoles: MutableSet<UserRole>?): Collection<String>
-        = userRoles?.map { role -> role.roleName } ?: Collections.emptyList()
+    private fun getRoles(eventId: Long, email: String): List<String> =
+        userProfileRepository.findRolesByEventAndEmail(eventId, email)
+            .map { it.roleName }
+
+
 }
