@@ -71,13 +71,13 @@ values (420, 'BASIC_USER');
 
 
 insert into user_profile(id, email, user_password, event_id, registration_id)
-values (700, 'admin@icna.org', 'abc', 10, null);
+values (700, 'admin@icna.org', '{noop}abc', 10, null);
 
 insert into user_profile(id, email, user_password, event_id, registration_id)
-values (710, 'assitant@icna.org', 'abc', 10, null);
+values (710, 'assitant@icna.org', '{noop}abc', 10, null);
 
 insert into user_profile(id, email, user_password, event_id, registration_id)
-values (720, 'basic_user@icna.org', 'abc', 10, 100);
+values (720, 'basic_user@icna.org', '{noop}abc', 10, 100);
 
 
 insert into m2m_user_profile_user_role(user_profile_id, user_role_id)

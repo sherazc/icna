@@ -1,14 +1,11 @@
 package org.icna.register.service.security
 
-import org.icna.register.dto.UserProfileDto
 import org.icna.register.dto.UserProfileUserDetails
-import org.icna.register.entity.auth.UserRole
 import org.icna.register.repository.UserProfileRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.util.Collections
 
 @Service
 class RegisterSecurityUserDetailService(
@@ -32,6 +29,4 @@ class RegisterSecurityUserDetailService(
     private fun getRoles(eventId: Long, email: String): List<String> =
         userProfileRepository.findRolesByEventAndEmail(eventId, email)
             .map { it.roleName }
-
-
 }
