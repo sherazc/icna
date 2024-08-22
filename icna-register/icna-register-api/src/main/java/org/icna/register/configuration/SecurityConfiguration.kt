@@ -39,8 +39,9 @@ class SecurityConfiguration(@Value("\${jwt.key}")
         return http
             .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { auth ->
-                auth.requestMatchers("/h2-console/**").permitAll()
-                    .anyRequest().authenticated()
+                // auth.requestMatchers("/h2-console/**").permitAll()
+                   //  .anyRequest().authenticated()
+                auth.anyRequest().permitAll()
             }
             .headers { headers -> headers.frameOptions { options -> options.disable() } }
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }

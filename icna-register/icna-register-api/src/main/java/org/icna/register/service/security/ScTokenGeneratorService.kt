@@ -1,6 +1,7 @@
 package org.icna.register.service.security
 
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm
 import org.springframework.security.oauth2.jwt.JwsHeader
 import org.springframework.security.oauth2.jwt.JwtClaimsSet
@@ -14,12 +15,12 @@ import java.util.stream.Collectors
 @Service
 class ScTokenGeneratorService(private val encoder: JwtEncoder) {
 
-    fun generateToken(authentication: Authentication, requestedScopes: Array<String>): String {
+    fun generateToken(authentication: Authentication): String {
         val now = Instant.now()
 
         val scope = authentication.authorities.stream()
-            .map { it.authority }
-            .filter { requestedScopes.contains(it) }
+            .map { simpleGrantedAuthority -> simpleGrantedAuthority.authority }
+            // .filter { requestedScopes.contains(it) } // only set "role/scope/authority" that the client requested for.
             .collect(Collectors.joining(" "))
 
         val claims = JwtClaimsSet.builder()
