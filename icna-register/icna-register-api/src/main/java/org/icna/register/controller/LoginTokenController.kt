@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class LoginTokenController(private val scTokenGeneratorService: ScTokenGeneratorService) {
 
     @GetMapping("/token")
-    @PreAuthorize("hasAuthority('BASIC_USER')")
+    @PreAuthorize("hasAuthority(T(org.icna.register.service.model.AuthRole).BASIC_USER)")
     fun token(authentication: Authentication) =
         scTokenGeneratorService.generateToken(authentication)
 }

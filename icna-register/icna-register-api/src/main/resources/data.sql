@@ -60,10 +60,6 @@ values (1030, 10000);
 
 -- Auth
 
--- BASIC_USER = Users who register for the event
--- ASSISTANT = Users who work on registration desk
--- ADMIN = Users who Manage Event
-
 insert into user_role(id, role_name)
 values (400, 'ADMIN');
 
