@@ -1,7 +1,8 @@
 package org.icna.register.service.security
 
+import org.icna.register.dto.LoginTokenDto
+import org.icna.register.dto.UserProfileUserDetails
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm
 import org.springframework.security.oauth2.jwt.JwsHeader
 import org.springframework.security.oauth2.jwt.JwtClaimsSet
@@ -9,30 +10,37 @@ import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
-import java.util.stream.Collectors
 
 @Service
 class ScTokenGeneratorService(private val encoder: JwtEncoder) {
 
-    fun generateToken(authentication: Authentication): String {
+    fun generateToken(authentication: Authentication): LoginTokenDto {
         val now = Instant.now()
+        val user: UserProfileUserDetails = authentication.principal as UserProfileUserDetails
 
-        val scope = authentication.authorities.stream()
+        val roles = authentication.authorities.stream()
             .map { simpleGrantedAuthority -> simpleGrantedAuthority.authority }
             // .filter { requestedScopes.contains(it) } // only set "role/scope/authority" that the client requested for.
-            .collect(Collectors.joining(" "))
+            .toList()
 
-        val claims = JwtClaimsSet.builder()
+        val expiresAt = now.plus(1, ChronoUnit.HOURS)
+
+        val jwt = JwtClaimsSet.builder()
             .issuer("self")
             .issuedAt(now)
-            .expiresAt(now.plus(1, ChronoUnit.HOURS))
+            .expiresAt(expiresAt)
             .subject(authentication.name)
-            .claim("scope", scope)
+            .claim("roles", roles)
+            .claim("eventId", user.getEventId())
             .build()
 
-        val encoderParameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS512).build(), claims)
+        val encoderParameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS512).build(), jwt)
 
-        return this.encoder.encode(encoderParameters).tokenValue
+        val tokenValue = this.encoder.encode(encoderParameters).tokenValue
+
+        return LoginTokenDto(authentication.name, LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")), roles, tokenValue)
     }
 }

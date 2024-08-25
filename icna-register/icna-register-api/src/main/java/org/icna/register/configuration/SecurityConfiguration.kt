@@ -58,8 +58,8 @@ class SecurityConfiguration(@Value("\${jwt.key}")
         val converter = JwtAuthenticationConverter()
 
         converter.setJwtGrantedAuthoritiesConverter { jwt ->
-            val scopesString = jwt.getClaim<String>("scope")
-            scopesString.split("\\s".toRegex())
+            val scopesString = jwt.getClaim<String>("roles")
+            scopesString.split(",")
                 .map { scope -> SimpleGrantedAuthority(scope) }
         }
 

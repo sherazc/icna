@@ -1,6 +1,5 @@
 package org.icna.register.dto
 
-import org.icna.register.entity.auth.UserProfile
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -12,6 +11,7 @@ class UserProfileUserDetails(
     override fun getAuthorities(): Collection<GrantedAuthority> = roles
         .filter { it.isNotBlank() }
         .map { SimpleGrantedAuthority(it) }
+    fun getEventId() = user.eventId
 
     override fun getPassword(): String = user.userPassword
     override fun getUsername(): String = user.email

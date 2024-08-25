@@ -85,6 +85,9 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
+        login: (eventId: string, email: string, userPassword: string) => {
+
+        }
     }
     return api;
 }

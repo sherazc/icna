@@ -1,5 +1,6 @@
 package org.icna.register.controller
 
+import org.icna.register.dto.LoginTokenDto
 import org.icna.register.service.security.ScTokenGeneratorService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
@@ -13,6 +14,5 @@ class LoginTokenController(private val scTokenGeneratorService: ScTokenGenerator
 
     @GetMapping("/token")
     @PreAuthorize("hasAuthority(T(org.icna.register.service.model.AuthRole).BASIC_USER)")
-    fun token(authentication: Authentication) =
-        scTokenGeneratorService.generateToken(authentication)
+    fun token(authentication: Authentication): LoginTokenDto = scTokenGeneratorService.generateToken(authentication)
 }
