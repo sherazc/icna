@@ -45,3 +45,10 @@ export type StyleVariable = {
     styleName: string;
     styleValue: string;
 }
+
+export type LoginTokenDto = {
+    subject: string;
+    expiresAtUtc: string;
+    roles: string[];
+    token: string;
+}
