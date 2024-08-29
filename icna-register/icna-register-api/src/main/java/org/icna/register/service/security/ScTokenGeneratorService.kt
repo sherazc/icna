@@ -1,6 +1,6 @@
 package org.icna.register.service.security
 
-import org.icna.register.dto.LoginTokenDto
+import org.icna.register.dto.AuthUserTokenDto
 import org.icna.register.dto.UserProfileUserDetails
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm
@@ -17,7 +17,7 @@ import java.time.temporal.ChronoUnit
 @Service
 class ScTokenGeneratorService(private val encoder: JwtEncoder) {
 
-    fun generateToken(authentication: Authentication): LoginTokenDto {
+    fun generateToken(authentication: Authentication): AuthUserTokenDto {
         val now = Instant.now()
         val user: UserProfileUserDetails = authentication.principal as UserProfileUserDetails
 
@@ -41,6 +41,6 @@ class ScTokenGeneratorService(private val encoder: JwtEncoder) {
 
         val tokenValue = this.encoder.encode(encoderParameters).tokenValue
 
-        return LoginTokenDto(authentication.name, LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")), roles, tokenValue)
+        return AuthUserTokenDto(authentication.name, LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")), roles, tokenValue)
     }
 }

@@ -6,8 +6,8 @@ import {
     InterceptorCallBacks
 } from "./ApiCore";
 import {
-    AttendeeDto,
-    EventDto, EventProgramDto, LoginTokenDto, RegistrationDto, StyleVariable
+    AttendeeDto, AuthUserTokenDto,
+    EventDto, EventProgramDto, RegistrationDto, StyleVariable
 } from "../service-types";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
@@ -86,7 +86,7 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
-        loginToken: (eventId: string, email: string, userPassword: string): Promise<LoginTokenDto> => {
+        loginToken: (eventId: string, email: string, userPassword: string): Promise<AuthUserTokenDto> => {
             const endpoint = endpoints.epLoginToken();
             const request: ApiRequest = {endpoint};
 

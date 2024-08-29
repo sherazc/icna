@@ -4,6 +4,7 @@ import checkRadio from "../styles/CheckRadio.module.scss"
 import {AppContext} from "../store/context";
 import {ActionNameLoading} from "../store/loadingMessageReducer";
 import {ActionNameAuthUser} from "../store/authUserReducer";
+import {defaultAuthUserTokenDto} from "../service/service-types";
 
 interface Props {
 }
@@ -25,7 +26,7 @@ export const Design: React.FC<Props> = () => {
     const loginUser = () => {
         dispatch({
             type: ActionNameAuthUser.authUserLogin,
-            payload: {userName: "Sheraz", authToken: "", roles: []}
+            payload: {...defaultAuthUserTokenDto(), subject: "sheraz@icna.org"}
         });
     }
 
@@ -55,7 +56,7 @@ export const Design: React.FC<Props> = () => {
             <hr/>
 
             <hr/>
-            {state.authUser.userName}
+            {state.authUserToken.subject}
             <hr/>
 
 

@@ -1,30 +1,24 @@
-import {AuthUser} from "./context";
-import {touchString} from "../service/utilities";
+import {AuthUserTokenDto, defaultAuthUserTokenDto} from "../service/service-types";
 
 export enum ActionNameAuthUser {
     authUserLogin = "AUTH_USER_LOGIN",
     authUserLogout = "AUTH_USER_LOGOUT"
 }
 
-type ActionPayload = AuthUser;
+type ActionPayload = AuthUserTokenDto;
 
 export type AuthUserAction = {
     type: ActionNameAuthUser;
     payload?: ActionPayload;
 }
 
-export const authUserReducer = (authUser: AuthUser, action: AuthUserAction): AuthUser => {
+export const authUserReducer = (authUser: AuthUserTokenDto, action: AuthUserAction): AuthUserTokenDto => {
     switch (action.type) {
         case ActionNameAuthUser.authUserLogin:
-            return {
-                userName: touchString(action.payload?.userName),
-                authToken: touchString(action.payload?.authToken),
-                roles: action.payload?.roles ? action.payload.roles : []
-            }
+            return action.payload ? action.payload : defaultAuthUserTokenDto();
         case ActionNameAuthUser.authUserLogout:
-            return {userName: "", authToken: "", roles: []};
+            return defaultAuthUserTokenDto();
         default:
             return authUser;
     }
 }
-

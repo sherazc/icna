@@ -46,9 +46,16 @@ export type StyleVariable = {
     styleValue: string;
 }
 
-export type LoginTokenDto = {
+export type AuthUserTokenDto = {
     subject: string;
     expiresAtUtc: string;
     roles: string[];
     token: string;
 }
+
+export const defaultAuthUserTokenDto = (): AuthUserTokenDto => ({
+    subject: "",
+    expiresAtUtc: "",
+    roles: [],
+    token: ""
+})

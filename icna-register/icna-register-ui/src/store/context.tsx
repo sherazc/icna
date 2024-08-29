@@ -1,6 +1,7 @@
 import React, {createContext, useReducer} from "react";
 import {LoadingAction, loadingMessagesReducer} from "./loadingMessageReducer";
 import {AuthUserAction, authUserReducer} from "./authUserReducer";
+import {AuthUserTokenDto, defaultAuthUserTokenDto} from "../service/service-types";
 
 export type Action = {
     type: string;
@@ -11,24 +12,18 @@ export type LoadingMessage = {
     message: string;
 }
 
-export type AuthUser = {
-    userName: string;
-    authToken: string;
-    roles: string[];
-}
-
 type RootStateType = {
     /**
      * Empty array means do not show loading.
      * showLoading() function will dispatch
      */
     loadingMessages: LoadingMessage[];
-    authUser: AuthUser;
+    authUserToken: AuthUserTokenDto;
 }
 
 const initialAppState: RootStateType = {
     loadingMessages: [],
-    authUser: {userName: "", authToken: "", roles: []}
+    authUserToken: defaultAuthUserTokenDto()
 }
 
 const AppContext = createContext<[
@@ -42,9 +37,9 @@ const AppContext = createContext<[
 type RootAction = LoadingAction | AuthUserAction;
 
 
-const mainReducer = ({loadingMessages, authUser}: RootStateType, action: RootAction) => ({
+const mainReducer = ({loadingMessages, authUserToken}: RootStateType, action: RootAction) => ({
     loadingMessages: loadingMessagesReducer(loadingMessages, action as LoadingAction),
-    authUser: authUserReducer(authUser, action as AuthUserAction)
+    authUserToken: authUserReducer(authUserToken, action as AuthUserAction)
 });
 
 interface Props {
