@@ -6,6 +6,7 @@ import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./Home.module.scss"
 import {IconArrowRight} from "../images/IconArrowRight";
+import {Login} from "./Login";
 
 interface Props {
 }
@@ -58,20 +59,7 @@ export const Home: React.FC<Props> = () => {
                         <Link to={`/event/${eventId}/register/new`}>Register <IconArrowRight/></Link>
                     </div>
                 </div>
-                <div className={styles.loginContainer}>
-                    <div className={styles.loginBox}>
-                        <div style={{marginBottom: "20px"}}>
-                            <label htmlFor="">Login</label>
-                        </div>
-                        <input placeholder="Email" style={{width: "290px"}}/>
-                        <a style={{justifyContent: "right", marginTop: "20px"}} href="#">
-                            Login with password <IconArrowRight />
-                        </a>
-                        <a style={{justifyContent: "right", marginTop: "20px"}} href="#">
-                            Login email code <IconArrowRight />
-                        </a>
-                    </div>
-                </div>
+                <Login />
             </div>
         </div>
     );
