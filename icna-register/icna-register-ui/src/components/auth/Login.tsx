@@ -46,13 +46,25 @@ export const Login: React.FC<Props> = () => {
         });
     }
 
+    if (loginState === LoginState.LOGIN_SUCCESS) {
+        return (
+            <div className={styles.loginContainer}>
+                <div className={styles.loginBox}>
+                    Login successfully!
+                    <br/>
+                     👋 {authUserToken.subject}
+                </div>
+            </div>
+        );
+    }
+
     if (isValidAuthUserToken(authUserToken)) {
         return <></>;
     }
 
     return (
         <div className={styles.loginContainer}>
-            <div className={styles.loginBox}>
+        <div className={styles.loginBox}>
                 <div style={{marginBottom: "20px"}}>
                     <label htmlFor="">Login</label>
                 </div>

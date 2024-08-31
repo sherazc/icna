@@ -46,32 +46,38 @@ export type RegistrationDto = {
 export type StyleVariable = {
     styleName: string;
     styleValue: string;
-}
+};
 
 export type LoginRequest = {
     eventId: string,
     email: string,
     userPassword?: string
     oneTimeUseCode?: string;
-}
+};
 
 export const defaultLoginRequest = (eventId: string | undefined):LoginRequest => ({
     email: "",
     eventId: touchString(eventId),
     userPassword: "",
     oneTimeUseCode: ""
-})
+});
 
 export type AuthUserTokenDto = {
     subject: string;
     expiresAtUtc: string;
     roles: string[];
     token: string;
-}
+};
 
 export const defaultAuthUserTokenDto = (): AuthUserTokenDto => ({
     subject: "",
     expiresAtUtc: "",
     roles: [],
     token: ""
-})
+});
+
+export enum AuthRole {
+    BASIC_USER, // Users who register for the event
+    ASSISTANT, // Users who work on the registration desk
+    ADMIN // Users who Manage Event
+}
