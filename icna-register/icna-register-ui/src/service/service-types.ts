@@ -55,7 +55,12 @@ export type LoginRequest = {
     oneTimeUseCode?: string;
 }
 
-export const defaultLoginRequest = (eventId: string | undefined):LoginRequest => ({email: "", eventId: touchString(eventId)})
+export const defaultLoginRequest = (eventId: string | undefined):LoginRequest => ({
+    email: "",
+    eventId: touchString(eventId),
+    userPassword: "",
+    oneTimeUseCode: ""
+})
 
 export type AuthUserTokenDto = {
     subject: string;

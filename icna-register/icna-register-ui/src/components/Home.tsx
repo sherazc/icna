@@ -7,6 +7,7 @@ import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./Home.module.scss"
 import {IconArrowRight} from "../images/IconArrowRight";
 import {Login} from "./Login";
+import {isValidAuthUserToken} from "../service/common-services";
 
 interface Props {
 }
@@ -15,7 +16,7 @@ export const Home: React.FC<Props> = () => {
     const {eventId} = useParams();
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [eventProgramDtoArray, setEventProgramDtoArray] = useState<EventProgramDto[]>([]);
-    const [{}, dispatch] = useContext(AppContext);
+    const [{authUserToken}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (!eventId) {
@@ -55,11 +56,15 @@ export const Home: React.FC<Props> = () => {
                         <div key={ep.id}>{ep.programName}</div>
                     ))}
 
-                    <div style={{marginTop: "32px"}}>
-                        <Link to={`/event/${eventId}/register/new`}>Register <IconArrowRight/></Link>
-                    </div>
+                    {!isValidAuthUserToken(authUserToken) &&
+                        <div style={{marginTop: "32px"}}>
+                            <Link to={`/event/${eventId}/register/new`}>Register <IconArrowRight/></Link>
+                        </div>
+                    }
+
+
                 </div>
-                <Login />
+                <Login/>
             </div>
         </div>
     );
