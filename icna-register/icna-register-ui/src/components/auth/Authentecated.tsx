@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
-import {AuthRole} from "../../service/service-types";
+import {AuthRole, AuthUserTokenDto} from "../../service/service-types";
 import {AppContext} from "../../store/context";
-import {isValidAuthUserToken} from "../../service/common-services";
+import {isContainsAllRoles, isValidAuthUserToken} from "../../service/authentication-services";
 
 interface Props {
     authenticated?: boolean;
@@ -19,7 +19,7 @@ export const Authenticated: React.FC<Props> = (
     if (!authenticated && !isValidAuthUserToken(authUserToken)) return <>{children}</>;
     if (authenticated && !isValidAuthUserToken(authUserToken)) return <></>;
 
-
+    const containsAllRoles = isContainsAllRoles(authUserToken, shouldHaveRoles);
 
     return <>{children}</>;
 }

@@ -7,7 +7,7 @@ import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./Home.module.scss"
 import {IconArrowRight} from "../images/IconArrowRight";
 import {Login} from "./auth/Login";
-import {isValidAuthUserToken} from "../service/common-services";
+import {isValidAuthUserToken} from "../service/authentication-services";
 
 interface Props {
 }

@@ -7,7 +7,7 @@ import {registerApis} from "../../service/api/ApiRegister";
 import {defaultLoginRequest, LoginRequest} from "../../service/service-types";
 import {AppContext} from "../../store/context";
 import {ActionNameAuthUser} from "../../store/authUserReducer";
-import {isValidAuthUserToken} from "../../service/common-services";
+import {isValidAuthUserToken} from "../../service/authentication-services";
 
 interface Props {
 }

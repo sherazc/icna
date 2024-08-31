@@ -65,7 +65,7 @@ export const defaultLoginRequest = (eventId: string | undefined):LoginRequest =>
 export type AuthUserTokenDto = {
     subject: string;
     expiresAtUtc: string;
-    roles: string[];
+    roles: AuthRole[];
     token: string;
 };
 
