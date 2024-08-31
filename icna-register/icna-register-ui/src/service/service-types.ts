@@ -1,3 +1,5 @@
+import {touchString} from "./utilities";
+
 export type EventDto = {
     id: number;
     eventName: string;
@@ -45,6 +47,15 @@ export type StyleVariable = {
     styleName: string;
     styleValue: string;
 }
+
+export type LoginRequest = {
+    eventId: string,
+    email: string,
+    userPassword?: string
+    oneTimeUseCode?: string;
+}
+
+export const defaultLoginRequest = (eventId: string | undefined):LoginRequest => ({email: "", eventId: touchString(eventId)})
 
 export type AuthUserTokenDto = {
     subject: string;

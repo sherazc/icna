@@ -7,7 +7,7 @@ import {
 } from "./ApiCore";
 import {
     AttendeeDto, AuthUserTokenDto,
-    EventDto, EventProgramDto, RegistrationDto, StyleVariable
+    EventDto, EventProgramDto, LoginRequest, RegistrationDto, StyleVariable
 } from "../service-types";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
@@ -86,11 +86,13 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
-        loginToken: (eventId: string, email: string, userPassword: string): Promise<AuthUserTokenDto> => {
+        login: (loginRequest: LoginRequest): Promise<AuthUserTokenDto> => {
             const endpoint = endpoints.epLoginToken();
             const request: ApiRequest = {endpoint};
 
-            const encodedUserPassword = btoa(`${email}:${userPassword}`);
+            const encodedUserPassword =
+                btoa(`${loginRequest.eventId}/${loginRequest.email}:${loginRequest.userPassword}`);
+
             const authenticationHeaders: ApiHeaders = [["Authorization", `Basic ${encodedUserPassword}`]];
 
             addHeadersInRequest(request, commonHeaders);

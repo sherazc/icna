@@ -2,20 +2,12 @@ import React, {useState} from "react";
 import styles from "./Login.module.scss";
 import {IconArrowRight} from "../images/IconArrowRight";
 import {useParams} from "react-router-dom";
-import {touchString} from "../service/utilities";
 import {IconArrowLeft} from "../images/IconArrowLeft";
+import {registerApis} from "../service/api/ApiRegister";
+import {defaultLoginRequest, LoginRequest} from "../service/service-types";
 
 interface Props {
 }
-
-type LoginRequest = {
-    eventId: string,
-    email: string,
-    userPassword?: string
-    oneTimeUseCode?: string;
-}
-
-const defaultLoginRequest = (eventId: string | undefined):LoginRequest => ({email: "", eventId: touchString(eventId)})
 
 enum LoginState {
     SHOW_EMAIL, SHOW_PASSWORD, LOADING, SHOW_SUBMIT,
@@ -34,6 +26,11 @@ export const Login: React.FC<Props> = () => {
         const { id, value } = event.target;
         setLoginRequest(prevData => ({ ...prevData, [id]: value }));
     };
+
+    const onSubmitLogin = () => {
+        registerApis().login(loginRequest).then(a => console.log(a))
+            .catch(e => console.log(e));
+    }
 
     return (
         <div className={styles.loginContainer}>
@@ -86,7 +83,7 @@ export const Login: React.FC<Props> = () => {
                             </a>
                         </div>
                         <div style={{flexGrow: 1, textAlign: "right"}}>
-                            <input type="button" value="Submit"/>
+                            <input type="button" value="Submit" onClick={onSubmitLogin}/>
                         </div>
                     </div>
                 </>)}
