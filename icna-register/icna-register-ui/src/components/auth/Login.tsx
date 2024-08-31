@@ -1,14 +1,13 @@
 import React, {useContext, useState} from "react";
 import styles from "./Login.module.scss";
-import {IconArrowRight} from "../images/IconArrowRight";
+import {IconArrowRight} from "../../images/IconArrowRight";
 import {useParams} from "react-router-dom";
-import {IconArrowLeft} from "../images/IconArrowLeft";
-import {registerApis} from "../service/api/ApiRegister";
-import {AuthUserTokenDto, defaultLoginRequest, LoginRequest} from "../service/service-types";
-import {AppContext} from "../store/context";
-import {ActionNameAuthUser} from "../store/authUserReducer";
-import {isNotBlankString} from "../service/utilities";
-import {isValidAuthUserToken} from "../service/common-services";
+import {IconArrowLeft} from "../../images/IconArrowLeft";
+import {registerApis} from "../../service/api/ApiRegister";
+import {defaultLoginRequest, LoginRequest} from "../../service/service-types";
+import {AppContext} from "../../store/context";
+import {ActionNameAuthUser} from "../../store/authUserReducer";
+import {isValidAuthUserToken} from "../../service/common-services";
 
 interface Props {
 }

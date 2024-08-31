@@ -6,7 +6,7 @@ import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./Home.module.scss"
 import {IconArrowRight} from "../images/IconArrowRight";
-import {Login} from "./Login";
+import {Login} from "./auth/Login";
 import {isValidAuthUserToken} from "../service/common-services";
 
 interface Props {
