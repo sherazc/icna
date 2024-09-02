@@ -8,6 +8,7 @@ import styles from "./Home.module.scss"
 import {IconArrowRight} from "../images/IconArrowRight";
 import {Login} from "./auth/Login";
 import {isValidAuthUserToken} from "../service/authentication-services";
+import {Authenticated} from "./auth/Authentecated";
 
 interface Props {
 }
@@ -55,14 +56,11 @@ export const Home: React.FC<Props> = () => {
                     {eventProgramDtoArray.map(ep => (
                         <div key={ep.id}>{ep.programName}</div>
                     ))}
-
-                    {!isValidAuthUserToken(authUserToken) &&
+                    <Authenticated authenticated={false}>
                         <div style={{marginTop: "32px"}}>
                             <Link to={`/event/${eventId}/register/new`}>Register <IconArrowRight/></Link>
                         </div>
-                    }
-
-
+                    </Authenticated>
                 </div>
                 <Login/>
             </div>

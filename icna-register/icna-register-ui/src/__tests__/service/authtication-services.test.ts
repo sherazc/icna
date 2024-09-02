@@ -1,5 +1,5 @@
 import {AuthRole, defaultAuthUserTokenDto} from "../../service/service-types";
-import {isContainsAllRoles, isNotContainsAllRoles, isValidAuthUserToken} from "../../service/authentication-services";
+import {isContainsAllRoles, isContainsAnyRoles, isValidAuthUserToken} from "../../service/authentication-services";
 
 describe('authentication-service', () => {
     test("isValidAuthUserToken", () => {
@@ -26,19 +26,16 @@ describe('authentication-service', () => {
         expect(isContainsAllRoles(testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT, AuthRole.BASIC_USER])).toBeFalsy();
     });
 
-    test("isNotContainsAllRoles", () => {
+    test("isContainsAnyRoles", () => {
         const testToken = defaultAuthUserTokenDto();
-        expect(isNotContainsAllRoles(testToken, [])).toBeTruthy();
-        expect(isNotContainsAllRoles(testToken, [AuthRole.ADMIN])).toBeTruthy();
+        expect(isContainsAnyRoles(testToken, [])).toBeTruthy();
+        expect(isContainsAnyRoles(testToken, [AuthRole.ADMIN])).toBeFalsy();
 
         testToken.roles = [AuthRole.ADMIN]
-        expect(isNotContainsAllRoles(testToken, [AuthRole.ADMIN])).toBeFalsy();
-        expect(isNotContainsAllRoles(testToken, [AuthRole.BASIC_USER])).toBeTruthy();
-        expect(isNotContainsAllRoles(testToken, [AuthRole.BASIC_USER, AuthRole.ASSISTANT])).toBeTruthy();
+        expect(isContainsAnyRoles(testToken, [AuthRole.ADMIN])).toBeTruthy();
+        testToken.roles = [AuthRole.ASSISTANT]
+        expect(isContainsAnyRoles(testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
 
-        testToken.roles.push(AuthRole.ASSISTANT);
-        expect(isNotContainsAllRoles(testToken, [AuthRole.BASIC_USER])).toBeTruthy();
-        expect(isNotContainsAllRoles(testToken, [AuthRole.ADMIN, AuthRole.BASIC_USER])).toBeFalsy();
 
     });
 });

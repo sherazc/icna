@@ -1,27 +1,24 @@
 import React, {useContext} from "react";
-import {AuthRole, AuthUserTokenDto} from "../../service/service-types";
+import {AuthRole} from "../../service/service-types";
 import {AppContext} from "../../store/context";
-import {isContainsAllRoles, isNotContainsAllRoles, isValidAuthUserToken} from "../../service/authentication-services";
+import {
+    isAuthenticate
+} from "../../service/authentication-services";
 
 interface Props {
     authenticated?: boolean;
     children: React.ReactNode;
     shouldHaveRoles?: AuthRole[];
-    shouldNotHaveRoles?: AuthRole[];
+    shouldHaveAnyRoles?: AuthRole[];
 }
 
 export const Authenticated: React.FC<Props> = (
-    {authenticated = true, children,
-    shouldHaveRoles = [], shouldNotHaveRoles = []}) => {
+    {authenticated, children,
+    shouldHaveRoles, shouldHaveAnyRoles }) => {
 
     const [ {authUserToken}] = useContext(AppContext);
 
-    if (!authenticated && !isValidAuthUserToken(authUserToken)) return <>{children}</>;
-    if (authenticated && !isValidAuthUserToken(authUserToken)) return <></>;
-
-    const containsAllRoles = isContainsAllRoles(authUserToken, shouldHaveRoles);
-    const notContainsAllRoles = isNotContainsAllRoles(authUserToken, shouldNotHaveRoles);
-
-    return (containsAllRoles && notContainsAllRoles) ? <>{children}</> : <></>;
+    const showContent = isAuthenticate(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles);
+    return showContent ? <>{children}</> : <></>;
 };
 
