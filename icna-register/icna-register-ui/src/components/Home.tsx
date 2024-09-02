@@ -7,7 +7,6 @@ import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./Home.module.scss"
 import {IconArrowRight} from "../images/IconArrowRight";
 import {Login} from "./auth/Login";
-import {isValidAuthUserToken} from "../service/authentication-services";
 import {Authenticated} from "./auth/Authentecated";
 
 interface Props {
@@ -17,7 +16,7 @@ export const Home: React.FC<Props> = () => {
     const {eventId} = useParams();
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [eventProgramDtoArray, setEventProgramDtoArray] = useState<EventProgramDto[]>([]);
-    const [{authUserToken}, dispatch] = useContext(AppContext);
+    const [{}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (!eventId) {

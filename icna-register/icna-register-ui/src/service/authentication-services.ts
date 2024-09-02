@@ -1,6 +1,5 @@
 import {AuthRole, AuthUserTokenDto} from "./service-types";
 import {isNotBlankString} from "./utilities";
-import React from "react";
 
 export const isValidAuthUserToken = (aut: AuthUserTokenDto | undefined) => isNotBlankString(aut?.token)
 
