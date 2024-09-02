@@ -79,6 +79,21 @@ describe('authentication-service', () => {
         expect(isAuthenticate(true, testToken, [AuthRole.ADMIN])).toBeTruthy();
         expect(isAuthenticate(true, testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
         expect(isAuthenticate(true, testToken, [AuthRole.ADMIN, AuthRole.BASIC_USER])).toBeFalsy();
+    });
 
+    test("isAuthenticate shouldHaveAnyRoles", () => {
+        const testToken = defaultAuthUserTokenDto();
+        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN])).toBeFalsy();
+        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeFalsy();
+
+        testToken.token = "abc"
+        testToken.roles.push(AuthRole.ADMIN)
+        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
+
+        testToken.roles.push(AuthRole.ASSISTANT)
+        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN, AuthRole.BASIC_USER])).toBeTruthy();
     });
 });
