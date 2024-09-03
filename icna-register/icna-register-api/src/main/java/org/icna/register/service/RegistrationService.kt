@@ -2,6 +2,7 @@ package org.icna.register.service
 
 import org.icna.register.dto.AttendeeDto
 import org.icna.register.dto.RegistrationDto
+import org.icna.register.entity.auth.UserProfile
 import org.icna.register.entity.event.Attendee
 import org.icna.register.entity.event.Event
 import org.icna.register.entity.event.EventProgram
@@ -25,7 +26,10 @@ class RegistrationService(private val eventService: EventService,
         val registration: Registration
         val event: Event = eventService.getEventById(eventId)
         registration = if (registrationDto.id != null && registrationDto.id!! < 0) {
-            registrationRepository.save(Registration(null, event))
+            val userProfile = UserProfile(null, event, null, registrationDto.userProfile.email, registrationDto.userProfile.userPassword)
+            val registrationNew = Registration(null, event, userProfile)
+            userProfile.registration = registrationNew
+            registrationRepository.save(registrationNew)
         } else {
             getById(registrationDto.id!!)
         }

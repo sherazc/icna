@@ -10,7 +10,7 @@ import java.util.*
 interface UserProfileRepository : CrudRepository<UserProfile, Long> {
     @Query("""
         select new org.icna.register.dto.UserProfileDto(
-            u.email, u.userPassword, u.event.id)
+            u.id, u.email, u.userPassword, u.event.id)
         from UserProfile u
         where u.email = :email
         and u.event.id = :event

@@ -71,7 +71,7 @@ Attendee *-* Event_Program
 
 # Multi print page support
 
-# ▶️ On save registration confirmation page, reload if stay on same page, 
+ 
 
 # Make Attendee list Pageable UI
 
@@ -94,4 +94,18 @@ Attendee *-* Event_Program
 # Discuss about creating app for: 
  - Neighbor net
  - Retreat
+
+
+
+# ▶️ On save registration confirmation page, reload if stay on same page,
+## Created RegisterConfirmation.tsx
+
+# On Register create a USER_PROFILE with BASIC_USER role and give option to create password
+
+# Make one time use passcode login flow
+
+
+# Create and edit event flow. Multiple Events UI
+
+# Configure event. Event features. Location. Time, Payment, Programs, Coupon codes. Print Badges. 
 

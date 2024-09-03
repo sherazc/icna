@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import org.icna.register.entity.auth.UserProfile
 
 /**
  * Defines relation between Event and group of Attendee.
@@ -17,5 +18,8 @@ data class Registration(
     val id: Long?,
     @ManyToOne
     @JoinColumn(name = "event_id")
-    val event: Event
+    val event: Event,
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    val userProfile: UserProfile,
 )
