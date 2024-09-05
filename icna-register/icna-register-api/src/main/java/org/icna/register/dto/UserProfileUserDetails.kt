@@ -13,7 +13,8 @@ class UserProfileUserDetails(
         .map { SimpleGrantedAuthority(it) }
     fun getEventId() = user.eventId
 
-    override fun getPassword(): String = user.userPassword
+    // override fun getPassword(): String = user.userPassword!!
+    override fun getPassword(): String = if (user.userPassword.isNullOrEmpty()) "" else user.userPassword
     override fun getUsername(): String = user.email
     override fun isAccountNonExpired(): Boolean = true
     override fun isAccountNonLocked(): Boolean = true

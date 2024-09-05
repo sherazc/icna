@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToOne
 import org.icna.register.entity.auth.UserProfile
 
 /**
@@ -19,7 +20,7 @@ data class Registration(
     @ManyToOne
     @JoinColumn(name = "event_id")
     val event: Event,
-    @ManyToOne
-    @JoinColumn(name = "provider_id")
+    @OneToOne
+    @JoinColumn(name = "user_profile_id")
     val userProfile: UserProfile,
 )
