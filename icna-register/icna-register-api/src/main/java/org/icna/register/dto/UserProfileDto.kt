@@ -1,7 +1,7 @@
 package org.icna.register.dto
 
 class UserProfileDto(
-    val id: Long?,
-    val email: String,
-    val userPassword: String?,
-    val eventId: Long)
+    var id: Long?,
+    var email: String,
+    var userPassword: String?,
+    var eventId: Long)
