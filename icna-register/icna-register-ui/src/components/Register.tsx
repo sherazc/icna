@@ -169,15 +169,21 @@ export const Register: React.FC<Props> = () => {
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        // Delete it
         const registrationForm: RegistrationDto = {
             id: castRegistrationId(registrationId),
             attendees,
             userProfile: defaultUserProfileDto()
         }
+        // Delete it
+
+        const registrationForm2: RegistrationDto = {...registrationDto}
+        registrationForm2.id = castRegistrationId(registrationId);
 
         const loadingSaving = createLoadingActionShow("Saving Registration");
         dispatch(loadingSaving);
-        const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
+        // const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
+        const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm2);
         dispatch(createLoadingActionHide(loadingSaving.payload.id));
     };
 
@@ -277,7 +283,12 @@ export const Register: React.FC<Props> = () => {
             </div>
             <hr/>
             <form action="#" onSubmit={onSubmit}>
-                {attendees.map(a => createAttendeeForm(a))}
+                {/*Delete it*/}
+                {// attendees.map(a => createAttendeeForm(a))
+                }
+                {/*Delete it*/}
+
+                {registrationDto.attendees.map(a => createAttendeeForm(a))}
                 <input type="submit" value="Submit"/>
             </form>
         </div>
