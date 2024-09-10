@@ -24,7 +24,6 @@ export const Register: React.FC<Props> = () => {
     const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
     const [{}, dispatch] = useContext(AppContext);
 
-
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
 
     useEffect(() => {
@@ -48,6 +47,7 @@ export const Register: React.FC<Props> = () => {
         const [attendeeIdString, fieldName] = formIdBreak(event.target.id)
         const value = event.target.value;
 
+        // Delete it
         const modifiedAttendees = attendees.map(attendee => {
             if (attendee.id === +attendeeIdString) {
                 const newAttendee: any = {...attendee};
@@ -57,8 +57,19 @@ export const Register: React.FC<Props> = () => {
                 return attendee;
             }
         });
-
         setAttendees(modifiedAttendees);
+        // Delete it
+
+        const modifiedAttendees2 = registrationDto.attendees.map(attendee => {
+            if (attendee.id === +attendeeIdString) {
+                const newAttendee: any = {...attendee};
+                newAttendee[fieldName] = value;
+                return newAttendee as AttendeeDto;
+            } else {
+                return attendee;
+            }
+        });
+        setRegistrationDto({...registrationDto, attendees: modifiedAttendees2});
     };
 
     const onChangeCheckedEventProgram = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +77,7 @@ export const Register: React.FC<Props> = () => {
         const [attendeeIdString, fieldName, subId] = formIdBreak(event.target.id)
         const checked = event.target.checked;
 
+        // Delete it
         const modifiedAttendees = attendees.map(attendee => {
             if (attendee.id === +attendeeIdString) {
                 const newAttendee: AttendeeDto = {...attendee};
@@ -85,10 +97,32 @@ export const Register: React.FC<Props> = () => {
                 return attendee;
             }
         });
-
         setAttendees(modifiedAttendees);
+        // Delete it
+
+        const modifiedAttendees2 = registrationDto.attendees.map(attendee => {
+            if (attendee.id === +attendeeIdString) {
+                const newAttendee: AttendeeDto = {...attendee};
+                if (checked) {
+                    const eventProgram
+                        = allEventPrograms.find(ep => ep.id === +subId);
+                    if (eventProgram) {
+                        newAttendee.eventPrograms?.push(eventProgram);
+                    }
+                } else {
+                    newAttendee.eventPrograms = newAttendee.eventPrograms
+                        ?.filter(ep => ep.id !== +subId);
+                }
+
+                return newAttendee as AttendeeDto;
+            } else {
+                return attendee;
+            }
+        });
+        setRegistrationDto({...registrationDto, attendees: modifiedAttendees2});
     }
 
+    // Delete it
     const loadAttendees = async (eventId: string, registrationId: string) => {
         if (registrationId === 'new') {
             let attendeeDto = defaultAttendeeDto();
@@ -104,6 +138,7 @@ export const Register: React.FC<Props> = () => {
         setAttendees(attendeeDtoArray);
         dispatch(createLoadingActionHide(loadingAttendee.payload.id));
     };
+    // Delete it
 
     const loadRegistration = async (registrationId: string) => {
         if (registrationId === 'new') {
@@ -147,8 +182,13 @@ export const Register: React.FC<Props> = () => {
     };
 
     const deleteAttendee = (attendeeId: number) => {
+        // Delete it
         const newAttendeeArray = attendees.filter(a => a.id !== attendeeId);
         setAttendees(newAttendeeArray);
+        // Delete it
+
+        const newAttendeeArray2 = registrationDto.attendees.filter(a => a.id !== attendeeId);
+        setRegistrationDto({...registrationDto, attendees: newAttendeeArray2});
     };
 
     const addAttendee = (attendeeId: number) => {
@@ -156,9 +196,16 @@ export const Register: React.FC<Props> = () => {
         newAttendee.id = attendeeId
         newAttendee.eventId = castStringToNumber(eventId);
         newAttendee.registrationId = registrationId ? +registrationId : 0;
+
+        // Delete it
         const newAttendees = attendees.map(a => a);
         newAttendees.push(newAttendee)
         setAttendees(newAttendees);
+        // Delete it
+
+        const newAttendees2 = registrationDto.attendees.map(a => a);
+        newAttendees2.push(newAttendee)
+        setRegistrationDto({...registrationDto, attendees: newAttendees2})
     };
 
 
