@@ -22,7 +22,7 @@ class RegistrationController(private val registrationService: RegistrationServic
 
 
     @GetMapping("/{registrationId}")
-    fun getRegistration(@PathVariable registrationId: Long): ResponseEntity<RegistrationDto> {
+    fun findRegistrationByRegistrationId(@PathVariable registrationId: Long): ResponseEntity<RegistrationDto> {
         val registration = registrationService.findRegistration(registrationId)
         return if (registration.isEmpty) ResponseEntity.notFound().build() else ResponseEntity.ok(registration.get())
     }

@@ -64,7 +64,7 @@ class RegistrationService(
         return registrationDto
     }
 
-    fun saveAttendee(registration: Registration, attendeeDto: AttendeeDto): Attendee {
+    private fun saveAttendee(registration: Registration, attendeeDto: AttendeeDto): Attendee {
         val attendee = attendeeMapper.dtoToBean(attendeeDto)
         attendee.registration = registration
         attendee.eventPrograms = attendeeDto.eventPrograms?.map {
@@ -97,3 +97,4 @@ class RegistrationService(
         return Optional.of(registrationDto)
     }
 }
+

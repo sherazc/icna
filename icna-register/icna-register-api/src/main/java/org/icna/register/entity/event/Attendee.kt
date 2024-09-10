@@ -10,6 +10,10 @@ import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 
+/**
+ * Person who is attending the event.
+ * Person whose badge will be printed
+ */
 @Entity
 data class Attendee(
     @Id

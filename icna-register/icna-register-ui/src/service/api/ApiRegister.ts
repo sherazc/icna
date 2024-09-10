@@ -22,6 +22,7 @@ export const registerEndpoints = () => {
         epAttendeeByEventId: (eventId: string) => `${baseUrl}/api/attendees/eventId/${eventId}`,
         epFindAttendeeByAttendeeId: (attendeeId: string) => `${baseUrl}/api/attendees/id/${attendeeId}`,
         epFindAttendeeByEventIdAndRegistrationId: (eventId: string, registrationId: string) => `${baseUrl}/api/attendees/eventId/${eventId}/registrationId/${registrationId}`,
+        epFindRegistrationByRegistrationId: (registrationId: string) => `${baseUrl}/api/registrations/${registrationId}`,
         epSaveRegistration: (eventId: string) => `${baseUrl}/api/registrations/eventId/${eventId}`,
         epFindStyleVariablesByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/eventId/${eventId}`,
         epLoginToken: () => `${baseUrl}/api/login/token`
@@ -53,6 +54,12 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
         },
         findAttendeeByEventIdAndRegistrationId: (eventId: string, registrationId: string): Promise<AttendeeDto[]> => {
             const endpoint = endpoints.epFindAttendeeByEventIdAndRegistrationId(eventId, registrationId);
+            const request: ApiRequest = {endpoint};
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
+        },
+        findRegistrationByRegistrationId: (registrationId: string): Promise<RegistrationDto> => {
+            const endpoint = endpoints.epFindRegistrationByRegistrationId(registrationId);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);

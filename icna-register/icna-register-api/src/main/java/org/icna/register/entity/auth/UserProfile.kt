@@ -14,6 +14,11 @@ import org.icna.register.entity.event.Event
 import org.icna.register.entity.event.EventProgram
 import org.icna.register.entity.event.Registration
 
+/**
+ * Identify Logged-in user and registration's user.
+ *
+ * Could be the user who runs the application or basic user who has registered.
+ */
 @Entity
 data class UserProfile(
     @Id

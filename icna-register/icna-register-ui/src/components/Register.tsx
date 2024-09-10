@@ -1,7 +1,13 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
-import {AttendeeDto, defaultAttendeeDto, EventProgramDto, RegistrationDto} from "../service/service-types";
+import {
+    AttendeeDto,
+    defaultAttendeeDto, defaultRegistrationDto,
+    defaultUserProfileDto,
+    EventProgramDto,
+    RegistrationDto
+} from "../service/service-types";
 import {castStringToNumber, formIdBreak, formIdCreate} from "../service/utilities";
 import checkRadio from "../styles/CheckRadio.module.scss"
 import {AppContext} from "../store/context";
@@ -14,9 +20,12 @@ let temporaryAttendeeId = -1
 
 export const Register: React.FC<Props> = () => {
     const {eventId, registrationId} = useParams();
-    const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
     const [allEventPrograms, setAllEventPrograms] = useState<EventProgramDto[]>([]);
+    const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
     const [{}, dispatch] = useContext(AppContext);
+
+
+    const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
 
     useEffect(() => {
         if (!eventId || !registrationId) {
@@ -25,8 +34,9 @@ export const Register: React.FC<Props> = () => {
 
         loadEventPrograms(eventId).then(() => {
         });
-
         loadAttendees(eventId, registrationId).then(() => {
+        });
+        loadRegistration(registrationId).then(() => {
         });
     }, [eventId, registrationId]);
 
@@ -95,6 +105,25 @@ export const Register: React.FC<Props> = () => {
         dispatch(createLoadingActionHide(loadingAttendee.payload.id));
     };
 
+    const loadRegistration = async (registrationId: string) => {
+        if (registrationId === 'new') {
+            let registrationDtoNew = defaultRegistrationDto();
+            registrationDtoNew.id = -1
+            let attendeeDto = defaultAttendeeDto();
+            attendeeDto.id = temporaryAttendeeId--;
+            registrationDtoNew.attendees = [attendeeDto];
+            setRegistrationDto(registrationDtoNew);
+            return;
+        }
+
+        const loadingAction = createLoadingActionShow("Loading Registration");
+        dispatch(loadingAction);
+        const regApis = registerApis();
+        const registrationDtoResponse: RegistrationDto = await regApis.findRegistrationByRegistrationId(registrationId);
+        setRegistrationDto(registrationDtoResponse);
+        dispatch(createLoadingActionHide(loadingAction.payload.id));
+    };
+
     const loadEventPrograms = async (eventId: string) => {
         const loadingEvent = createLoadingActionShow("Loading Events");
         dispatch(loadingEvent);
@@ -107,7 +136,8 @@ export const Register: React.FC<Props> = () => {
         event.preventDefault();
         const registrationForm: RegistrationDto = {
             id: castRegistrationId(registrationId),
-            attendees
+            attendees,
+            userProfile: defaultUserProfileDto()
         }
 
         const loadingSaving = createLoadingActionShow("Saving Registration");
@@ -172,7 +202,7 @@ export const Register: React.FC<Props> = () => {
             {epAll.map(ep => (
                 <div key={ep.id}>
                     <label className={checkRadio.checkContainer}
-                        htmlFor={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}>
+                           htmlFor={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}>
                         {ep.programName}
                         <input id={formIdCreate([`${attendeeId}`, 'eventPrograms', `${ep.id}`])}
                                type="checkbox"
