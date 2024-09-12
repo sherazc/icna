@@ -8,7 +8,7 @@ import {
     EventProgramDto,
     RegistrationDto
 } from "../service/service-types";
-import {castStringToNumber, formIdBreak, formIdCreate} from "../service/utilities";
+import {castStringToNumber, formIdBreak, formIdCreate, touchNumber} from "../service/utilities";
 import checkRadio from "../styles/CheckRadio.module.scss"
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
@@ -40,7 +40,7 @@ export const Register: React.FC<Props> = () => {
     }, [eventId, registrationId]);
 
     const castRegistrationId = (regIdString: string | undefined): number =>
-        (!regIdString || registrationId === 'new') ? -1 : +regIdString
+        (!regIdString || regIdString === 'new') ? -1 : +regIdString
 
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,8 +144,11 @@ export const Register: React.FC<Props> = () => {
         if (registrationId === 'new') {
             let registrationDtoNew = defaultRegistrationDto();
             registrationDtoNew.id = -1
+            registrationDtoNew.userProfile.id = -1;
+            registrationDtoNew.userProfile.eventId = eventId ? +eventId : 0;
             let attendeeDto = defaultAttendeeDto();
             attendeeDto.id = temporaryAttendeeId--;
+            attendeeDto.registrationId = -1;
             registrationDtoNew.attendees = [attendeeDto];
             setRegistrationDto(registrationDtoNew);
             return;

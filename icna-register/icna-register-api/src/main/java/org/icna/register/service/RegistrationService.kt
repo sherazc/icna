@@ -2,7 +2,6 @@ package org.icna.register.service
 
 import org.icna.register.dto.AttendeeDto
 import org.icna.register.dto.RegistrationDto
-import org.icna.register.dto.UserProfileDto
 import org.icna.register.entity.auth.UserProfile
 import org.icna.register.entity.event.Attendee
 import org.icna.register.entity.event.Event
@@ -12,8 +11,10 @@ import org.icna.register.mapper.AttendeeMapper
 import org.icna.register.mapper.EventProgramMapper
 import org.icna.register.mapper.RegistrationMapper
 import org.icna.register.repository.RegistrationRepository
+import org.icna.register.repository.UserProfileRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 import java.util.Optional
 
@@ -24,8 +25,10 @@ class RegistrationService(
     private val registrationMapper: RegistrationMapper,
     private val registrationRepository: RegistrationRepository,
     private val eventService: EventService,
-    private val attendeeService: AttendeeService) {
+    private val attendeeService: AttendeeService,
+    private val userProfileRepository: UserProfileRepository) {
 
+    @Transactional
     fun save(eventId: Long, registrationDto: RegistrationDto): RegistrationDto {
 
         // Save registration
@@ -34,12 +37,15 @@ class RegistrationService(
         registration = if (registrationDto.id != null && registrationDto.id!! < 0) {
             val userProfileNew =
                 UserProfile(null, event, registrationDto.userProfile.email, registrationDto.userProfile.userPassword)
-            val registrationNew = Registration(null, event, userProfileNew)
+            val userProfileSaved = userProfileRepository.save(userProfileNew)
+            val registrationNew = Registration(null, event, userProfileSaved)
 
             registrationRepository.save(registrationNew)
         } else {
             getById(registrationDto.id!!)
         }
+
+        if (true) throw Exception("Broken after save")
 
         // Save Attendee
         val savedAttendees = registrationDto.attendees!!.map { saveAttendee(registration, it) }
