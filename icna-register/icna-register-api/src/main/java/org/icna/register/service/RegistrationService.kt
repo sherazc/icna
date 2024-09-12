@@ -14,6 +14,8 @@ import org.icna.register.repository.RegistrationRepository
 import org.icna.register.repository.UserProfileRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Isolation
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 import java.util.Optional
@@ -28,7 +30,7 @@ class RegistrationService(
     private val attendeeService: AttendeeService,
     private val userProfileRepository: UserProfileRepository) {
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     fun save(eventId: Long, registrationDto: RegistrationDto): RegistrationDto {
 
         // Save registration
@@ -40,12 +42,12 @@ class RegistrationService(
             val userProfileSaved = userProfileRepository.save(userProfileNew)
             val registrationNew = Registration(null, event, userProfileSaved)
 
+            if (true) throw Exception("Broken after save")
             registrationRepository.save(registrationNew)
         } else {
             getById(registrationDto.id!!)
         }
 
-        if (true) throw Exception("Broken after save")
 
         // Save Attendee
         val savedAttendees = registrationDto.attendees!!.map { saveAttendee(registration, it) }
