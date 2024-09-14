@@ -30,7 +30,7 @@ class RegistrationService(
     private val attendeeService: AttendeeService,
     private val userProfileRepository: UserProfileRepository) {
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     fun save(eventId: Long, registrationDto: RegistrationDto): RegistrationDto {
 
         // Save registration
@@ -42,7 +42,7 @@ class RegistrationService(
             val userProfileSaved = userProfileRepository.save(userProfileNew)
             val registrationNew = Registration(null, event, userProfileSaved)
 
-            if (true) throw Exception("Broken after save")
+            if (true) throw RuntimeException("Broken after save")
             registrationRepository.save(registrationNew)
         } else {
             getById(registrationDto.id!!)

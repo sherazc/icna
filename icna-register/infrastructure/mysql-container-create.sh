@@ -7,9 +7,11 @@ dataDir=$baseDir/event-register-db
 
 # Clean up
 docker stop event-register-db
+docker rm -f event-register-db
 rm -rf $dataDir
 mkdir $dataDir
-docker rm -f event-register-db
+
+sleep 3
 
 # Create container
 docker run \
@@ -22,3 +24,6 @@ docker run \
   --env="MYSQL_PASSWORD=password" \
   -v $dataDir:/var/lib/mysql \
   mysql:latest
+
+sleep 5
+echo "Created DB container."
