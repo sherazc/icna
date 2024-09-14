@@ -7,50 +7,38 @@ import org.icna.register.entity.event.Attendee
 import org.icna.register.entity.event.Event
 import org.icna.register.entity.event.EventProgram
 import org.icna.register.entity.event.Registration
+import org.icna.register.exception.ErExceptionBadRequest
 import org.icna.register.mapper.AttendeeMapper
 import org.icna.register.mapper.EventProgramMapper
 import org.icna.register.mapper.RegistrationMapper
 import org.icna.register.repository.RegistrationRepository
-import org.icna.register.repository.UserProfileRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Isolation
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 import java.util.Optional
 
 @Service
 class RegistrationService(
-    private val attendeeMapper: AttendeeMapper,
     private val eventProgramMapper: EventProgramMapper,
     private val registrationMapper: RegistrationMapper,
     private val registrationRepository: RegistrationRepository,
     private val eventService: EventService,
     private val attendeeService: AttendeeService,
-    private val userProfileRepository: UserProfileRepository) {
+    private val userProfileService: UserProfileService) {
 
     @Transactional
     fun save(eventId: Long, registrationDto: RegistrationDto): RegistrationDto {
 
-        // Save registration
-        val registration: Registration
+        validate(eventId, registrationDto)
+
         val event: Event = eventService.getEventById(eventId)
-        registration = if (registrationDto.id != null && registrationDto.id!! < 0) {
-            val userProfileNew =
-                UserProfile(null, event, registrationDto.userProfile.email, registrationDto.userProfile.userPassword)
-            val userProfileSaved = userProfileRepository.save(userProfileNew)
-            val registrationNew = Registration(null, event, userProfileSaved)
 
-            if (true) throw RuntimeException("Broken after save")
-            registrationRepository.save(registrationNew)
-        } else {
-            getById(registrationDto.id!!)
-        }
-
+        // Save registration & UserProfile
+        val registration: Registration = createOrGetRegistration(registrationDto, event)
 
         // Save Attendee
-        val savedAttendees = registrationDto.attendees!!.map { saveAttendee(registration, it) }
+        val savedAttendees = registrationDto.attendees!!.map { attendeeService.save(registration, it) }
 
         // Build Response
         registrationDto.id = registration.id
@@ -72,15 +60,28 @@ class RegistrationService(
         return registrationDto
     }
 
-    private fun saveAttendee(registration: Registration, attendeeDto: AttendeeDto): Attendee {
-        val attendee = attendeeMapper.dtoToBean(attendeeDto)
-        attendee.registration = registration
-        attendee.eventPrograms = attendeeDto.eventPrograms?.map {
-            val eventProgram: EventProgram = eventProgramMapper.dtoToBean(it)
-            eventProgram.event = registration.event
-            eventProgram
-        }?.toMutableSet() ?: mutableSetOf()
-        return attendeeService.save(attendee)
+    private fun createOrGetRegistration(registrationDto: RegistrationDto,
+                             event: Event): Registration {
+        val registration: Registration = if (registrationDto.id == null || registrationDto.id!! < 0) {
+            val userProfileSaved = userProfileService.save(event, registrationDto.userProfile)
+            val registrationNew = Registration(null, event, userProfileSaved)
+            registrationRepository.save(registrationNew)
+        } else {
+            getById(registrationDto.id!!)
+        }
+        return registration
+    }
+
+    private fun validate(eventId: Long, registrationDto: RegistrationDto) {
+        if (registrationDto.id != null && registrationDto.id!! < 0 && registrationDto.userProfile.id != null && registrationDto.userProfile.id!! > 0) {
+            throw ErExceptionBadRequest("Failed to register. UserProfile already exists. UserProfile should not exist for new Registrations.")
+        }
+        userProfileService.findByEventIdAndUserEmailNoPassword(eventId, registrationDto.userProfile.email)
+            .ifPresent{throw ErExceptionBadRequest("""
+                Failed to register. UserProfile already exists. UserProfile should not exist for new Registrations. 
+                eventId=$eventId
+                email=${registrationDto.userProfile.email}
+            """.trimIndent())}
     }
 
 
