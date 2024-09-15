@@ -6,7 +6,7 @@ import {
     defaultAttendeeDto, defaultRegistrationDto,
     defaultUserProfileDto,
     EventProgramDto,
-    RegistrationDto
+    RegistrationDto, UserProfileDto
 } from "../service/service-types";
 import {castStringToNumber, formIdBreak, formIdCreate, touchNumber} from "../service/utilities";
 import checkRadio from "../styles/CheckRadio.module.scss"
@@ -218,6 +218,40 @@ export const Register: React.FC<Props> = () => {
         setRegistrationDto({...registrationDto, attendees: newAttendees2})
     };
 
+    const onChangeUserProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    }
+
+
+    const createUserProfileForm = (userProfile: UserProfileDto) => (
+        <div>
+            <div>
+                <label htmlFor="eamil">Email: </label>
+                <input
+                    id="email"
+                    onChange={onChange}
+                    required
+                    value={userProfile.email}/>
+            </div>
+
+            <div>
+                <label htmlFor="userPassword">Password: </label>
+                <input
+                    id="userPassword"
+                    onChange={onChange}
+                    required
+                    value={userProfile.userPassword}/>
+            </div>
+            <div>
+                <label htmlFor="eamil">Confirm Password: </label>
+                <input
+                    id="userPasswordConfirm"
+                    onChange={onChange}
+                    required
+                    value={userProfile.userPassword}/>
+            </div>
+        </div>
+    );
 
     const createAttendeeForm = (attendee: AttendeeDto) => (
         <div key={attendee.id}>
@@ -280,21 +314,24 @@ export const Register: React.FC<Props> = () => {
     };
 
     return (
+        <form action="#" onSubmit={onSubmit}>
         <div>
             <div><h1>Register</h1></div>
+            {createUserProfileForm(registrationDto.userProfile)}
             <div>
                 <a href="#" onClick={() => addAttendee(temporaryAttendeeId--)}>Add Attendee</a>
             </div>
             <hr/>
-            <form action="#" onSubmit={onSubmit}>
                 {/*Delete it*/}
                 {// attendees.map(a => createAttendeeForm(a))
                 }
                 {/*Delete it*/}
 
+
+
                 {registrationDto.attendees.map(a => createAttendeeForm(a))}
                 <input type="submit" value="Submit"/>
-            </form>
         </div>
+        </form>
     );
 };

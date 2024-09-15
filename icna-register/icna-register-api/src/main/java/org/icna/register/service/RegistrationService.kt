@@ -74,14 +74,10 @@ class RegistrationService(
 
     private fun validate(eventId: Long, registrationDto: RegistrationDto) {
         if (registrationDto.id != null && registrationDto.id!! < 0 && registrationDto.userProfile.id != null && registrationDto.userProfile.id!! > 0) {
-            throw ErExceptionBadRequest("Failed to register. UserProfile already exists. UserProfile should not exist for new Registrations.")
+            throw ErExceptionBadRequest("Failed to save registration. UserProfile already exists. UserProfile should not exist for new Registrations.")
         }
-        userProfileService.findByEventIdAndUserEmailNoPassword(eventId, registrationDto.userProfile.email)
-            .ifPresent{throw ErExceptionBadRequest("""
-                Failed to register. UserProfile already exists. UserProfile should not exist for new Registrations. 
-                eventId=$eventId
-                email=${registrationDto.userProfile.email}
-            """.trimIndent())}
+
+        userProfileService.validateEmail(eventId, registrationDto.userProfile)
     }
 
 

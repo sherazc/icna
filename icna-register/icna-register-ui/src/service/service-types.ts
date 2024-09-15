@@ -22,7 +22,7 @@ export type AttendeeDto = {
 
 export const defaultAttendeeDto = (): AttendeeDto => ({
     id: 0,
-    registrationId: 0,
+    registrationId: undefined,
     eventId: 0,
     eventName: "",
     firstName: "",
