@@ -39,8 +39,8 @@ export const Register: React.FC<Props> = () => {
         });
     }, [eventId, registrationId]);
 
-    const castRegistrationId = (regIdString: string | undefined): number =>
-        (!regIdString || regIdString === 'new') ? -1 : +regIdString
+    const castRegistrationId = (regIdString: string | undefined): number | undefined =>
+        (!regIdString || regIdString === 'new') ? undefined : +regIdString
 
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,12 +143,13 @@ export const Register: React.FC<Props> = () => {
     const loadRegistration = async (registrationId: string) => {
         if (registrationId === 'new') {
             let registrationDtoNew = defaultRegistrationDto();
-            registrationDtoNew.id = -1
-            registrationDtoNew.userProfile.id = -1;
-            registrationDtoNew.userProfile.eventId = eventId ? +eventId : 0;
+            registrationDtoNew.id = undefined
+            registrationDtoNew.userProfile.id = undefined;
+            registrationDtoNew.userProfile.eventId = castStringToNumber(eventId);
             let attendeeDto = defaultAttendeeDto();
             attendeeDto.id = temporaryAttendeeId--;
-            attendeeDto.registrationId = -1;
+            attendeeDto.registrationId = undefined;
+            attendeeDto.eventId = castStringToNumber(eventId);
             registrationDtoNew.attendees = [attendeeDto];
             setRegistrationDto(registrationDtoNew);
             return;
@@ -204,7 +205,7 @@ export const Register: React.FC<Props> = () => {
         const newAttendee = defaultAttendeeDto();
         newAttendee.id = attendeeId
         newAttendee.eventId = castStringToNumber(eventId);
-        newAttendee.registrationId = registrationId ? +registrationId : 0;
+        newAttendee.registrationId = registrationId ? +registrationId : undefined;
 
         // Delete it
         const newAttendees = attendees.map(a => a);

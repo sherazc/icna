@@ -12,7 +12,7 @@ export const defaultEventDto = (): EventDto => ({id: 0, eventName: ""});
  */
 export type AttendeeDto = {
     id: number;
-    registrationId: number;
+    registrationId?: number;
     eventId: number;
     eventName: string;
     firstName: string;
@@ -48,7 +48,7 @@ export const defaultEventProgramDto = (): EventProgramDto => ({
  * Could be the user who runs the application or basic user who has registered.
  */
 export type UserProfileDto = {
-    id: number;
+    id?: number;
     email: string;
     userPassword?: string;
     eventId: number;
@@ -61,7 +61,7 @@ export const defaultUserProfileDto = (): UserProfileDto => ({
 })
 
 export type RegistrationDto = {
-    id: number;
+    id?: number;
     attendees: AttendeeDto[];
     userProfile: UserProfileDto;
 }
