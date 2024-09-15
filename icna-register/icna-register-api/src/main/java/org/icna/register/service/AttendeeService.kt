@@ -33,7 +33,11 @@ class AttendeeService(private val attendeeMapper: AttendeeMapper,
         return attendees
     }
 
-    fun save(registration: Registration, attendeeDto: AttendeeDto): Attendee {
+    fun saveAttendees(registration: Registration, attendeeDtoList: List<AttendeeDto>?): List<Attendee> {
+        return attendeeDtoList?.map { save(registration, it) } ?: ArrayList<Attendee>()
+    }
+
+    private fun save(registration: Registration, attendeeDto: AttendeeDto): Attendee {
         val attendee = attendeeMapper.dtoToBean(attendeeDto)
         if (attendee.id!! < 0 ) {
             attendee.id = null
@@ -46,5 +50,6 @@ class AttendeeService(private val attendeeMapper: AttendeeMapper,
         }?.toMutableSet() ?: mutableSetOf()
         return attendeeRepository.save(attendee)
     }
+
 
 }

@@ -38,7 +38,7 @@ class RegistrationService(
         val registration: Registration = createOrGetRegistration(registrationDto, event)
 
         // Save Attendee
-        val savedAttendees = registrationDto.attendees!!.map { attendeeService.save(registration, it) }
+        val savedAttendees = attendeeService.saveAttendees(registration, registrationDto.attendees)
 
         // Build Response
         registrationDto.id = registration.id
