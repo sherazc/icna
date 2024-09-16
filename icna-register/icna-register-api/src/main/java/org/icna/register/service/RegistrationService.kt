@@ -2,13 +2,12 @@ package org.icna.register.service
 
 import org.icna.register.dto.AttendeeDto
 import org.icna.register.dto.RegistrationDto
-import org.icna.register.entity.auth.UserProfile
 import org.icna.register.entity.event.Attendee
 import org.icna.register.entity.event.Event
-import org.icna.register.entity.event.EventProgram
 import org.icna.register.entity.event.Registration
 import org.icna.register.exception.ErExceptionBadRequest
 import org.icna.register.mapper.AttendeeMapper
+import org.icna.register.mapper.AttendeeMapperImpl
 import org.icna.register.mapper.EventProgramMapper
 import org.icna.register.mapper.RegistrationMapper
 import org.icna.register.repository.RegistrationRepository
@@ -20,8 +19,8 @@ import java.util.Optional
 
 @Service
 class RegistrationService(
-    private val eventProgramMapper: EventProgramMapper,
     private val registrationMapper: RegistrationMapper,
+    private val attendeeMapper: AttendeeMapper,
     private val registrationRepository: RegistrationRepository,
     private val eventService: EventService,
     private val attendeeService: AttendeeService,
@@ -41,29 +40,18 @@ class RegistrationService(
         val savedAttendees = attendeeService.saveAttendees(registration, registrationDto.attendees)
 
         return buildResponse(registration, savedAttendees)
+    }
 
-        // Build Response
-        registrationDto.id = registration.id
-        registrationDto.attendees = savedAttendees.map {
-            val eventProgramDtoList = it.eventPrograms?.map {
-                val eventProgramDto = eventProgramMapper.beanToDto(it)
-                eventProgramDto.eventId = eventId
-                eventProgramDto
-            }
-            AttendeeDto(it.id!!,
-                registration.id!!,
-                eventId,
-                event.eventName,
-                it.firstName,
-                it.lastName,
-                eventProgramDtoList)
-        }
+    private fun buildResponse(registration: Registration, attendee: List<Attendee>): RegistrationDto {
+        val registrationDto = registrationMapper.beanToDto(registration)
+
+        registrationDto.attendees = attendee.map { attendeeMapper.beanToDto(it) }
 
         return registrationDto
     }
 
     private fun createOrGetRegistration(registrationDto: RegistrationDto,
-                             event: Event): Registration {
+                                        event: Event): Registration {
         val registration: Registration = if (registrationDto.id == null || registrationDto.id!! < 0) {
             val userProfileSaved = userProfileService.save(event, registrationDto.userProfile)
             val registrationNew = Registration(null, event, userProfileSaved)

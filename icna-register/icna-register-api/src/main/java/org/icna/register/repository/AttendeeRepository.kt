@@ -12,7 +12,6 @@ interface AttendeeRepository : CrudRepository<Attendee, Long> {
             a.id,
             r.id,
             e.id,
-            e.eventName,
             a.firstName,
             a.lastName, null) 
         from Attendee a 
@@ -27,7 +26,6 @@ interface AttendeeRepository : CrudRepository<Attendee, Long> {
             a.id,
             a.registration.id,
             a.registration.event.id,
-            a.registration.event.eventName,
             a.firstName,
             a.lastName, null) 
         from Attendee a
@@ -41,7 +39,6 @@ interface AttendeeRepository : CrudRepository<Attendee, Long> {
             a.id,
             a.registration.id,
             a.registration.event.id,
-            a.registration.event.eventName,
             a.firstName,
             a.lastName, null) 
         from Attendee a 
