@@ -1,14 +1,19 @@
 package org.icna.register.service
 
 import org.icna.register.dto.UserProfileDto
+import org.icna.register.exception.ErExceptionBadRequest
 import org.icna.register.repository.UserProfileRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.mockito.Mockito.anyLong
 import org.mockito.Mockito.anyString
 
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import java.util.Optional
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -58,6 +63,22 @@ class UserProfileServiceTest {
 
     @Test
     fun validateEmail() {
+        val email = "email@example.com"
+
+        val expected = UserProfileDto(100, email, null, 1)
+        Mockito.`when`(userProfileRepository.findByEventAndEmail(anyLong(), anyString()))
+            .thenReturn(Optional.of(expected))
+
+        // On update, same record is found
+        assertDoesNotThrow { underTest.validateEmail(1, UserProfileDto(100, email, null, 1)) }
+
+        // On new registration
+        assertThrows<ErExceptionBadRequest> { underTest.validateEmail(1, UserProfileDto(null, email, null, 1)) }
+
+        // On update, different record is found with the same email.
+        assertThrows<ErExceptionBadRequest> { underTest.validateEmail(1, UserProfileDto(200, email, null, 1)) }
+
+        verify(userProfileRepository, times(3)).findByEventAndEmail(anyLong(), anyString())
     }
 
     @Test
