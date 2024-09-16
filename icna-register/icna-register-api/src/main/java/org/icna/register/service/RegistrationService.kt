@@ -40,6 +40,8 @@ class RegistrationService(
         // Save Attendee
         val savedAttendees = attendeeService.saveAttendees(registration, registrationDto.attendees)
 
+        return buildResponse(registration, savedAttendees)
+
         // Build Response
         registrationDto.id = registration.id
         registrationDto.attendees = savedAttendees.map {

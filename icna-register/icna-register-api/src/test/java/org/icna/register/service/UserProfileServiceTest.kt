@@ -69,7 +69,7 @@ class UserProfileServiceTest {
         Mockito.`when`(userProfileRepository.findByEventAndEmail(anyLong(), anyString()))
             .thenReturn(Optional.of(expected))
 
-        // On update, same record is found
+        // On update, the same record is found
         assertDoesNotThrow { underTest.validateEmail(1, UserProfileDto(100, email, null, 1)) }
 
         // On new registration
