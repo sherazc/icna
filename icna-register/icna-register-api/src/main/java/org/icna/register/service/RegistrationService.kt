@@ -1,20 +1,17 @@
 package org.icna.register.service
 
-import org.icna.register.dto.AttendeeDto
 import org.icna.register.dto.RegistrationDto
+import org.icna.register.entity.auth.UserProfile
 import org.icna.register.entity.event.Attendee
 import org.icna.register.entity.event.Event
 import org.icna.register.entity.event.Registration
 import org.icna.register.exception.ErExceptionBadRequest
+import org.icna.register.exception.ErExceptionNotFound
 import org.icna.register.mapper.AttendeeMapper
-import org.icna.register.mapper.AttendeeMapperImpl
-import org.icna.register.mapper.EventProgramMapper
 import org.icna.register.mapper.RegistrationMapper
 import org.icna.register.repository.RegistrationRepository
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.server.ResponseStatusException
 import java.util.Optional
 
 @Service
@@ -33,33 +30,38 @@ class RegistrationService(
 
         val event: Event = eventService.getEventById(eventId)
 
-        // Save registration & UserProfile
-        val registration: Registration = createOrGetRegistration(registrationDto, event)
+        // Save UserProfile
+        val userProfileSaved = userProfileService.save(event, registrationDto.userProfile)
+
+        // Save registration
+        val registration: Registration = saveRegistration(event, registrationDto, userProfileSaved)
 
         // Save Attendee
         val savedAttendees = attendeeService.saveAttendees(registration, registrationDto.attendees)
 
+        // Build response from the saved entities.
         return buildResponse(registration, savedAttendees)
     }
 
     private fun buildResponse(registration: Registration, attendee: List<Attendee>): RegistrationDto {
         val registrationDto = registrationMapper.beanToDto(registration)
-
         registrationDto.attendees = attendee.map { attendeeMapper.beanToDto(it) }
-
         return registrationDto
     }
 
-    private fun createOrGetRegistration(registrationDto: RegistrationDto,
-                                        event: Event): Registration {
+    private fun saveRegistration(event: Event,
+                                 registrationDto: RegistrationDto,
+                                 userProfile: UserProfile): Registration {
+
         val registration: Registration = if (registrationDto.id == null || registrationDto.id!! < 0) {
-            val userProfileSaved = userProfileService.save(event, registrationDto.userProfile)
-            val registrationNew = Registration(null, event, userProfileSaved)
-            registrationRepository.save(registrationNew)
+            Registration(null, event, userProfile)
+
         } else {
-            getById(registrationDto.id!!)
+            registrationRepository.findById(registrationDto.id!!).orElseThrow {
+                ErExceptionNotFound("Can not save User Profile. ${registrationDto.id} not found")
+            }
         }
-        return registration
+        return registrationRepository.save(registration)
     }
 
     private fun validate(eventId: Long, registrationDto: RegistrationDto) {
@@ -69,13 +71,6 @@ class RegistrationService(
 
         userProfileService.validateEmail(eventId, registrationDto.userProfile)
     }
-
-
-    private fun getById(registrationId: Long): Registration =
-        registrationRepository.findById(registrationId).orElseThrow {
-            ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Registration $registrationId not found")
-        }
 
     fun findRegistration(registrationId: Long): Optional<RegistrationDto> {
         val registrationOptional = registrationRepository.findById(registrationId)

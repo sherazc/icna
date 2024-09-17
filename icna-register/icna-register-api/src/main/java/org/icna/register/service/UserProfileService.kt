@@ -4,6 +4,7 @@ import org.icna.register.dto.UserProfileDto
 import org.icna.register.entity.auth.UserProfile
 import org.icna.register.entity.event.Event
 import org.icna.register.exception.ErExceptionBadRequest
+import org.icna.register.exception.ErExceptionNotFound
 import org.icna.register.repository.UserProfileRepository
 import org.springframework.stereotype.Service
 import java.util.*
@@ -21,8 +22,27 @@ class UserProfileService(val userProfileRepository: UserProfileRepository) {
             }
     }
 
-    fun save(event: Event, userProfileDto: UserProfileDto): UserProfile = userProfileRepository.save(
-            UserProfile(null, event, userProfileDto.email, userProfileDto.userPassword))
+    fun save(event: Event, userProfileDto: UserProfileDto): UserProfile {
+
+        val userProfile = if (userProfileDto.id == null) {
+            UserProfile(null, event, userProfileDto.email, userProfileDto.userPassword)
+        } else {
+            val u = userProfileRepository.findById(userProfileDto.id!!)
+                .orElseThrow{ErExceptionNotFound("Can not save User Profile. ${userProfileDto.id} not found")}
+            setNewUserProfileValues(userProfileDto, u)
+            u
+        }
+
+
+        return userProfileRepository.save(userProfile)
+    }
+
+    private fun setNewUserProfileValues(userProfileDto: UserProfileDto, userProfile: UserProfile) {
+        userProfile.email = userProfileDto.email
+        if (userProfileDto.userPassword != null) {
+            userProfile.userPassword = userProfileDto.userPassword
+        }
+    }
 
     private fun isValidEmail(eventId: Long, userProfileDto: UserProfileDto): Boolean {
         val userProfileOptional = findByEventIdAndUserEmailNoPassword(eventId, userProfileDto.email)
