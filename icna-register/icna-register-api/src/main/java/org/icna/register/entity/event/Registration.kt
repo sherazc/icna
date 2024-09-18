@@ -16,11 +16,11 @@ import org.icna.register.entity.auth.UserProfile
 data class Registration(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long?,
+    var id: Long?,
     @ManyToOne
     @JoinColumn(name = "event_id")
-    val event: Event,
+    var event: Event,
     @OneToOne
     @JoinColumn(name = "user_profile_id")
-    val userProfile: UserProfile,
+    var userProfile: UserProfile,
 )

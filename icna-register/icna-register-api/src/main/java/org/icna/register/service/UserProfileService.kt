@@ -33,7 +33,6 @@ class UserProfileService(val userProfileRepository: UserProfileRepository) {
             u
         }
 
-
         return userProfileRepository.save(userProfile)
     }
 
