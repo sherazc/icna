@@ -14,7 +14,6 @@ export type AttendeeDto = {
     id: number;
     registrationId?: number;
     eventId: number;
-    eventName: string;
     firstName: string;
     lastName: string;
     eventPrograms?: EventProgramDto[];
@@ -24,7 +23,6 @@ export const defaultAttendeeDto = (): AttendeeDto => ({
     id: 0,
     registrationId: undefined,
     eventId: 0,
-    eventName: "",
     firstName: "",
     lastName: "",
     eventPrograms: []
