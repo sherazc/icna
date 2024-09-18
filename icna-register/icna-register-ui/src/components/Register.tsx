@@ -3,8 +3,8 @@ import {Link, useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {
     AttendeeDto,
-    defaultAttendeeDto, defaultRegistrationDto,
-    defaultUserProfileDto,
+    defaultAttendeeDto,
+    defaultRegistrationDto,
     EventProgramDto,
     RegistrationDto, UserProfileDto
 } from "../service/service-types";
@@ -26,31 +26,21 @@ export const Register: React.FC<Props> = () => {
     const [{}, dispatch] = useContext(AppContext);
     const [registrationPassword, setRegistrationPassword] = useState<FormPassword>({passwordField: "", passwordConfirm: ""})
 
-    const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
-
     useEffect(() => {
         if (!eventId || !registrationId) {
             return;
         }
-
         loadEventPrograms(eventId).then(() => {
-        });
-        loadAttendees(eventId, registrationId).then(() => {
         });
         loadRegistration(registrationId).then(() => {
         });
     }, [eventId, registrationId]);
 
-    const castRegistrationId = (regIdString: string | undefined): number | undefined =>
-        (!regIdString || regIdString === 'new') ? undefined : +regIdString
-
-
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const [attendeeIdString, fieldName] = formIdBreak(event.target.id)
         const value = event.target.value;
 
-        // Delete it
-        const modifiedAttendees = attendees.map(attendee => {
+        const modifiedAttendees = registrationDto.attendees.map(attendee => {
             if (attendee.id === +attendeeIdString) {
                 const newAttendee: any = {...attendee};
                 newAttendee[fieldName] = value;
@@ -59,19 +49,7 @@ export const Register: React.FC<Props> = () => {
                 return attendee;
             }
         });
-        setAttendees(modifiedAttendees);
-        // Delete it
-
-        const modifiedAttendees2 = registrationDto.attendees.map(attendee => {
-            if (attendee.id === +attendeeIdString) {
-                const newAttendee: any = {...attendee};
-                newAttendee[fieldName] = value;
-                return newAttendee as AttendeeDto;
-            } else {
-                return attendee;
-            }
-        });
-        setRegistrationDto({...registrationDto, attendees: modifiedAttendees2});
+        setRegistrationDto({...registrationDto, attendees: modifiedAttendees});
     };
 
     const onChangeCheckedEventProgram = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,8 +57,7 @@ export const Register: React.FC<Props> = () => {
         const [attendeeIdString, fieldName, subId] = formIdBreak(event.target.id)
         const checked = event.target.checked;
 
-        // Delete it
-        const modifiedAttendees = attendees.map(attendee => {
+        const modifiedAttendees = registrationDto.attendees.map(attendee => {
             if (attendee.id === +attendeeIdString) {
                 const newAttendee: AttendeeDto = {...attendee};
                 if (checked) {
@@ -99,48 +76,9 @@ export const Register: React.FC<Props> = () => {
                 return attendee;
             }
         });
-        setAttendees(modifiedAttendees);
-        // Delete it
-
-        const modifiedAttendees2 = registrationDto.attendees.map(attendee => {
-            if (attendee.id === +attendeeIdString) {
-                const newAttendee: AttendeeDto = {...attendee};
-                if (checked) {
-                    const eventProgram
-                        = allEventPrograms.find(ep => ep.id === +subId);
-                    if (eventProgram) {
-                        newAttendee.eventPrograms?.push(eventProgram);
-                    }
-                } else {
-                    newAttendee.eventPrograms = newAttendee.eventPrograms
-                        ?.filter(ep => ep.id !== +subId);
-                }
-
-                return newAttendee as AttendeeDto;
-            } else {
-                return attendee;
-            }
-        });
-        setRegistrationDto({...registrationDto, attendees: modifiedAttendees2});
+        setRegistrationDto({...registrationDto, attendees: modifiedAttendees});
     }
 
-    // Delete it
-    const loadAttendees = async (eventId: string, registrationId: string) => {
-        if (registrationId === 'new') {
-            let attendeeDto = defaultAttendeeDto();
-            attendeeDto.id = temporaryAttendeeId--;
-            setAttendees([attendeeDto]);
-            return;
-        }
-
-        const loadingAttendee = createLoadingActionShow("Loading Attendee");
-        dispatch(loadingAttendee);
-        const regApis = registerApis();
-        const attendeeDtoArray: AttendeeDto[] = await regApis.findAttendeeByEventIdAndRegistrationId(eventId, registrationId);
-        setAttendees(attendeeDtoArray);
-        dispatch(createLoadingActionHide(loadingAttendee.payload.id));
-    };
-    // Delete it
 
     const loadRegistration = async (registrationId: string) => {
         if (registrationId === 'new') {
@@ -175,16 +113,9 @@ export const Register: React.FC<Props> = () => {
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Delete it
-        const registrationForm: RegistrationDto = {
-            id: castRegistrationId(registrationId),
-            attendees,
-            userProfile: defaultUserProfileDto()
-        }
-        // Delete it
-
         const registrationForm2: RegistrationDto = {...registrationDto}
-        registrationForm2.id = castRegistrationId(registrationId);
+
+        registrationForm2.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
 
         const loadingSaving = createLoadingActionShow("Saving Registration");
         dispatch(loadingSaving);
@@ -194,11 +125,6 @@ export const Register: React.FC<Props> = () => {
     };
 
     const deleteAttendee = (attendeeId: number) => {
-        // Delete it
-        const newAttendeeArray = attendees.filter(a => a.id !== attendeeId);
-        setAttendees(newAttendeeArray);
-        // Delete it
-
         const newAttendeeArray2 = registrationDto.attendees.filter(a => a.id !== attendeeId);
         setRegistrationDto({...registrationDto, attendees: newAttendeeArray2});
     };
@@ -209,15 +135,9 @@ export const Register: React.FC<Props> = () => {
         newAttendee.eventId = castStringToNumber(eventId);
         newAttendee.registrationId = registrationId ? +registrationId : undefined;
 
-        // Delete it
-        const newAttendees = attendees.map(a => a);
+        const newAttendees = registrationDto.attendees.map(a => a);
         newAttendees.push(newAttendee)
-        setAttendees(newAttendees);
-        // Delete it
-
-        const newAttendees2 = registrationDto.attendees.map(a => a);
-        newAttendees2.push(newAttendee)
-        setRegistrationDto({...registrationDto, attendees: newAttendees2})
+        setRegistrationDto({...registrationDto, attendees: newAttendees})
     };
 
     const onChangeUserProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -244,7 +164,6 @@ export const Register: React.FC<Props> = () => {
                 <input
                     id="userPassword"
                     onChange={onChangeUserProfile}
-                    required
                     value={userProfile.userPassword}/>
             </div>
             <div>
@@ -252,7 +171,6 @@ export const Register: React.FC<Props> = () => {
                 <input
                     id="userPasswordConfirm"
                     onChange={onChangeUserProfile}
-                    required
                     value={userProfile.userPassword}/>
             </div>
         </div>
@@ -327,13 +245,6 @@ export const Register: React.FC<Props> = () => {
                 <a href="#" onClick={() => addAttendee(temporaryAttendeeId--)}>Add Attendee</a>
             </div>
             <hr/>
-                {/*Delete it*/}
-                {// attendees.map(a => createAttendeeForm(a))
-                }
-                {/*Delete it*/}
-
-
-
                 {registrationDto.attendees.map(a => createAttendeeForm(a))}
                 <input type="submit" value="Submit"/>
         </div>
