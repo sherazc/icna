@@ -5,3 +5,8 @@ export type RegisterFormType = {
     eventId: number;
     attendees: AttendeeDto[];
 }
+
+export type FormPassword = {
+    passwordField: string;
+    passwordConfirm: string;
+}

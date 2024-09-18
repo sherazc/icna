@@ -12,6 +12,7 @@ import {castStringToNumber, formIdBreak, formIdCreate, touchNumber} from "../ser
 import checkRadio from "../styles/CheckRadio.module.scss"
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
+import {FormPassword} from "../service/form-types";
 
 interface Props {
 }
@@ -23,6 +24,7 @@ export const Register: React.FC<Props> = () => {
     const [allEventPrograms, setAllEventPrograms] = useState<EventProgramDto[]>([]);
     const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
     const [{}, dispatch] = useContext(AppContext);
+    const [registrationPassword, setRegistrationPassword] = useState<FormPassword>({passwordField: "", passwordConfirm: ""})
 
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
 
@@ -219,7 +221,10 @@ export const Register: React.FC<Props> = () => {
     };
 
     const onChangeUserProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
-
+        const existingUserProfile = registrationDto.userProfile
+        const registrationDtoNew: RegistrationDto = {...registrationDto,
+            userProfile: {...existingUserProfile, [event.target.id]: event.target.value}};
+        setRegistrationDto(registrationDtoNew);
     }
 
 
@@ -229,7 +234,7 @@ export const Register: React.FC<Props> = () => {
                 <label htmlFor="eamil">Email: </label>
                 <input
                     id="email"
-                    onChange={onChange}
+                    onChange={onChangeUserProfile}
                     required
                     value={userProfile.email}/>
             </div>
@@ -238,7 +243,7 @@ export const Register: React.FC<Props> = () => {
                 <label htmlFor="userPassword">Password: </label>
                 <input
                     id="userPassword"
-                    onChange={onChange}
+                    onChange={onChangeUserProfile}
                     required
                     value={userProfile.userPassword}/>
             </div>
@@ -246,7 +251,7 @@ export const Register: React.FC<Props> = () => {
                 <label htmlFor="eamil">Confirm Password: </label>
                 <input
                     id="userPasswordConfirm"
-                    onChange={onChange}
+                    onChange={onChangeUserProfile}
                     required
                     value={userProfile.userPassword}/>
             </div>
