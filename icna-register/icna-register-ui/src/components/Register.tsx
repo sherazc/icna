@@ -163,17 +163,6 @@ export const Register: React.FC<Props> = () => {
         setRegistrationPassword({passwordConfirm: "", passwordField: ""});
     }
 
-    const isValidForm = (): boolean => {
-        if (isBlankString(registrationDto.userProfile.email)) {
-            return false;
-        }
-        return true;
-    }
-
-    const addFieldError = (errors: FieldError[], error: FieldError) => {
-        !errors.find(e => e.fieldName === error.fieldName) && errors.push(error);
-    }
-
     const createUserProfileForm = (userProfile: UserProfileDto) => (
         <div>
             <div>
