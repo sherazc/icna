@@ -116,3 +116,9 @@ export enum AuthRole {
     ASSISTANT, // Users who work on the registration desk
     ADMIN // Users who Manage Event
 }
+
+
+export type FieldError = {
+    fieldName: string;
+    message: string;
+}

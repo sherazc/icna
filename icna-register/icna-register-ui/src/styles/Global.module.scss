@@ -83,6 +83,10 @@ a:hover, a:focus, a::selection {
   box-shadow: none;
 }
 
+.button:disabled {
+  background-color: $gray5;
+}
+
 input[type=button], input[type=reset], input[type=submit], button {
   @extend .button;
 }

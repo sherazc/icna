@@ -5,10 +5,10 @@ import {
     AttendeeDto,
     defaultAttendeeDto,
     defaultRegistrationDto,
-    EventProgramDto,
+    EventProgramDto, FieldError,
     RegistrationDto, UserProfileDto
 } from "../service/service-types";
-import {castStringToNumber, formIdBreak, formIdCreate, touchNumber} from "../service/utilities";
+import {castStringToNumber, formIdBreak, formIdCreate, isBlankString, touchNumber} from "../service/utilities";
 import checkRadio from "../styles/CheckRadio.module.scss"
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
@@ -24,7 +24,12 @@ export const Register: React.FC<Props> = () => {
     const [allEventPrograms, setAllEventPrograms] = useState<EventProgramDto[]>([]);
     const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
     const [{}, dispatch] = useContext(AppContext);
-    const [registrationPassword, setRegistrationPassword] = useState<FormPassword>({passwordField: "", passwordConfirm: ""})
+    const [registrationPassword, setRegistrationPassword] = useState<FormPassword>({
+        passwordField: "",
+        passwordConfirm: ""
+    })
+    const [createPassword, setCreatePassword] = useState<boolean>(false)
+    const [errors, setErrors] = useState<FieldError[]>([]);
 
     useEffect(() => {
         if (!eventId || !registrationId) {
@@ -142,11 +147,32 @@ export const Register: React.FC<Props> = () => {
 
     const onChangeUserProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const existingUserProfile = registrationDto.userProfile
-        const registrationDtoNew: RegistrationDto = {...registrationDto,
-            userProfile: {...existingUserProfile, [event.target.id]: event.target.value}};
+        const registrationDtoNew: RegistrationDto = {
+            ...registrationDto,
+            userProfile: {...existingUserProfile, [event.target.id]: event.target.value}
+        };
         setRegistrationDto(registrationDtoNew);
     }
 
+    const onChangeRegistrationPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRegistrationPassword({...registrationPassword, [event.target.id]: event.target.value});
+    }
+
+    const onChangeCreatePassword = () => {
+        setCreatePassword(!createPassword);
+        setRegistrationPassword({passwordConfirm: "", passwordField: ""});
+    }
+
+    const isValidForm = (): boolean => {
+        if (isBlankString(registrationDto.userProfile.email)) {
+            return false;
+        }
+        return true;
+    }
+
+    const addFieldError = (errors: FieldError[], error: FieldError) => {
+        !errors.find(e => e.fieldName === error.fieldName) && errors.push(error);
+    }
 
     const createUserProfileForm = (userProfile: UserProfileDto) => (
         <div>
@@ -160,19 +186,32 @@ export const Register: React.FC<Props> = () => {
             </div>
 
             <div>
-                <label htmlFor="userPassword">Password: </label>
-                <input
-                    id="userPassword"
-                    onChange={onChangeUserProfile}
-                    value={userProfile.userPassword}/>
+                <label className={checkRadio.checkContainer}>
+                    Create Password
+                    <input type="checkbox" checked={createPassword}
+                           onChange={onChangeCreatePassword}/>
+                    <span className={checkRadio.checkbox}></span>
+                </label>
             </div>
-            <div>
-                <label htmlFor="eamil">Confirm Password: </label>
-                <input
-                    id="userPasswordConfirm"
-                    onChange={onChangeUserProfile}
-                    value={userProfile.userPassword}/>
-            </div>
+
+            {createPassword && (<>
+                <div>
+                    <label htmlFor="userPassword">Password: </label>
+                    <input
+                        id="passwordField"
+                        onChange={onChangeRegistrationPassword}
+                        value={registrationPassword.passwordField}/>
+                </div>
+                <div>
+                    <label htmlFor="eamil">Confirm Password: </label>
+                    <input
+                        id="passwordConfirm"
+                        onChange={onChangeRegistrationPassword}
+                        value={registrationPassword.passwordConfirm}/>
+                </div>
+            </>)
+            }
+
         </div>
     );
 
@@ -238,16 +277,16 @@ export const Register: React.FC<Props> = () => {
 
     return (
         <form action="#" onSubmit={onSubmit}>
-        <div>
-            <div><h1>Register</h1></div>
-            {createUserProfileForm(registrationDto.userProfile)}
             <div>
-                <a href="#" onClick={() => addAttendee(temporaryAttendeeId--)}>Add Attendee</a>
-            </div>
-            <hr/>
+                <div><h1>Register</h1></div>
+                {createUserProfileForm(registrationDto.userProfile)}
+                <div>
+                    <a href="#" onClick={() => addAttendee(temporaryAttendeeId--)}>Add Attendee</a>
+                </div>
+                <hr/>
                 {registrationDto.attendees.map(a => createAttendeeForm(a))}
                 <input type="submit" value="Submit"/>
-        </div>
+            </div>
         </form>
     );
 };
