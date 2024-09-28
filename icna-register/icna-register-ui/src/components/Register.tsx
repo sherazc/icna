@@ -13,6 +13,9 @@ import checkRadio from "../styles/CheckRadio.module.scss"
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import {FormPassword} from "../service/form-types";
+import {errorClass, validateRegistrationForm} from "../service/errors-helpers";
+import {Error} from "./Error";
+import errorStyles from "./Error.module.scss"
 
 interface Props {
 }
@@ -118,15 +121,21 @@ export const Register: React.FC<Props> = () => {
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const registrationForm2: RegistrationDto = {...registrationDto}
+        const registrationForm2: RegistrationDto = {...registrationDto};
 
-        registrationForm2.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
+        const errors = validateRegistrationForm(registrationForm2);
 
-        const loadingSaving = createLoadingActionShow("Saving Registration");
-        dispatch(loadingSaving);
-        // const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
-        const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm2);
-        dispatch(createLoadingActionHide(loadingSaving.payload.id));
+        if (errors.length > 0) {
+            setErrors(errors);
+        } else {
+            registrationForm2.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
+
+            const loadingSaving = createLoadingActionShow("Saving Registration");
+            dispatch(loadingSaving);
+            // const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
+            const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm2);
+            dispatch(createLoadingActionHide(loadingSaving.payload.id));
+        }
     };
 
     const deleteAttendee = (attendeeId: number) => {
@@ -171,7 +180,9 @@ export const Register: React.FC<Props> = () => {
                     id="email"
                     onChange={onChangeUserProfile}
                     required
+                    className={errorClass(errors, "userProfile.email", errorStyles.formInputError)}
                     value={userProfile.email}/>
+                <Error errors={errors} fieldName="userProfile.email" />
             </div>
 
             <div>
