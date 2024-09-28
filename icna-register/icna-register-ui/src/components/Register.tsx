@@ -125,9 +125,13 @@ export const Register: React.FC<Props> = () => {
 
         const errors = validateRegistrationForm(registrationForm2);
 
+
+
         if (errors.length > 0) {
             setErrors(errors);
         } else {
+            // validateEmailExists()
+
             registrationForm2.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
 
             const loadingSaving = createLoadingActionShow("Saving Registration");

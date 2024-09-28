@@ -7,7 +7,7 @@ import {
 } from "./ApiCore";
 import {
     AttendeeDto, AuthUserTokenDto,
-    EventDto, EventProgramDto, LoginRequest, RegistrationDto, StyleVariable
+    EventDto, EventProgramDto, LoginRequest, RegistrationDto, StyleVariable, UserProfileDto
 } from "../service-types";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
@@ -25,8 +25,8 @@ export const registerEndpoints = () => {
         epFindRegistrationByRegistrationId: (registrationId: string) => `${baseUrl}/api/registrations/${registrationId}`,
         epSaveRegistration: (eventId: string) => `${baseUrl}/api/registrations/eventId/${eventId}`,
         epFindStyleVariablesByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/eventId/${eventId}`,
-        epLoginToken: () => `${baseUrl}/api/login/token`
-
+        epLoginToken: () => `${baseUrl}/api/login/token`,
+        epFindUserProfile: (eventId: string, email: string) => `${baseUrl}/api/user-profile/find?eventId=${eventId}&userEmail=${email}`,
     }
 }
 
@@ -106,7 +106,13 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             addHeadersInRequest(request, authenticationHeaders);
 
             return callApiIntercept(request, interceptorCbs);
-        }
+        },
+        findUserProfile: (eventId: string, email: string): Promise<UserProfileDto[]> => {
+            const endpoint = endpoints.epFindStyleVariablesByEventId(eventId);
+            const request: ApiRequest = {endpoint};
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
+        },
     }
     return api;
 }
