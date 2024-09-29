@@ -107,8 +107,8 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
 
             return callApiIntercept(request, interceptorCbs);
         },
-        findUserProfile: (eventId: string, email: string): Promise<UserProfileDto[]> => {
-            const endpoint = endpoints.epFindStyleVariablesByEventId(eventId);
+        findUserProfile: (eventId: string, email: string): Promise<UserProfileDto> => {
+            const endpoint = endpoints.epFindUserProfile(eventId, email);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);

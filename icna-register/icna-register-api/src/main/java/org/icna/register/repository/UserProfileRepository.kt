@@ -12,7 +12,7 @@ interface UserProfileRepository : CrudRepository<UserProfile, Long> {
         select new org.icna.register.dto.UserProfileDto(
             u.id, u.email, u.userPassword, u.event.id)
         from UserProfile u
-        where u.email = :email
+        where lower(u.email) = lower(:email)
         and u.event.id = :event
     """)
     fun findByEventAndEmail(event:Long, email: String): Optional<UserProfileDto>
@@ -20,7 +20,7 @@ interface UserProfileRepository : CrudRepository<UserProfile, Long> {
 
     @Query("""
         select u.userRoles from UserProfile u
-        where u.email = :email
+        where lower(u.email) = lower(:email)
         and u.event.id = :event
     """)
     fun findRolesByEventAndEmail(event:Long, email: String): Set<UserRole>

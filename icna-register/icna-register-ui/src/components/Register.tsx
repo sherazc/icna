@@ -8,7 +8,14 @@ import {
     EventProgramDto, FieldError,
     RegistrationDto, UserProfileDto
 } from "../service/service-types";
-import {castStringToNumber, formIdBreak, formIdCreate, isBlankString, touchNumber} from "../service/utilities";
+import {
+    castStringToNumber,
+    formIdBreak,
+    formIdCreate,
+    isBlankString,
+    isEqualStringsIgnoreCase,
+    touchNumber, touchString
+} from "../service/utilities";
 import checkRadio from "../styles/CheckRadio.module.scss"
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
@@ -119,6 +126,27 @@ export const Register: React.FC<Props> = () => {
         dispatch(createLoadingActionHide(loadingEvent.payload.id));
     };
 
+    const isEmailAlreadyExists = async (eventId: string, email: string): Promise<boolean> => {
+
+        registerApis().findUserProfile(eventId, email).then((up) => {
+            console.log(up);
+        }, (error1) => {
+            console.log(error1);
+        }).catch((error) => {
+            console.log(error);
+        })
+
+        let result: boolean;
+        try {
+            const userProfile = await registerApis().findUserProfile(eventId, email);
+            result = userProfile == undefined || isEqualStringsIgnoreCase(userProfile.email, email);
+        } catch (error) {
+            console.log(error);
+            result = true;
+        }
+        return result;
+    }
+
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const registrationForm2: RegistrationDto = {...registrationDto};
@@ -126,18 +154,25 @@ export const Register: React.FC<Props> = () => {
         const errors = validateRegistrationForm(registrationForm2);
 
 
-
         if (errors.length > 0) {
             setErrors(errors);
         } else {
-            // validateEmailExists()
-
-            registrationForm2.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
 
             const loadingSaving = createLoadingActionShow("Saving Registration");
             dispatch(loadingSaving);
-            // const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
-            const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm2);
+            const emailAlreadyExists = await isEmailAlreadyExists(touchString(eventId), registrationForm2.userProfile.email);
+            console.log(emailAlreadyExists);
+
+            if (emailAlreadyExists) {
+                setErrors([{
+                    fieldName: "userProfile.email",
+                    message: "Email already exists",
+                }]);
+            } else {
+                registrationForm2.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
+                // const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
+                const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm2);
+            }
             dispatch(createLoadingActionHide(loadingSaving.payload.id));
         }
     };
@@ -186,7 +221,7 @@ export const Register: React.FC<Props> = () => {
                     required
                     className={errorClass(errors, "userProfile.email", errorStyles.formInputError)}
                     value={userProfile.email}/>
-                <Error errors={errors} fieldName="userProfile.email" />
+                <Error errors={errors} fieldName="userProfile.email"/>
             </div>
 
             <div>
