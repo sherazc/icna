@@ -7,7 +7,7 @@ import {
 } from "./ApiCore";
 import {
     AttendeeDto, AuthUserTokenDto,
-    EventDto, EventProgramDto, LoginRequest, RegistrationDto, StyleVariable, UserProfileDto
+    EventDto, EventProgramDto, FlagDto, LoginRequest, RegistrationDto, StyleVariable, UserProfileDto
 } from "../service-types";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
@@ -27,6 +27,7 @@ export const registerEndpoints = () => {
         epFindStyleVariablesByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/eventId/${eventId}`,
         epLoginToken: () => `${baseUrl}/api/login/token`,
         epFindUserProfile: (eventId: string, email: string) => `${baseUrl}/api/user-profile/find?eventId=${eventId}&userEmail=${email}`,
+        epIsEmailAlreadyExist: (eventId: string, email: string) => `${baseUrl}/api/user-profile/email/exists?eventId=${eventId}&userEmail=${email}`,
     }
 }
 
@@ -113,6 +114,13 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
+        isEmailAlreadyExist: (eventId: string, email: string): Promise<FlagDto> => {
+            const endpoint = endpoints.epIsEmailAlreadyExist(eventId, email);
+            const request: ApiRequest = {endpoint};
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
+        }
+
     }
     return api;
 }

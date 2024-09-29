@@ -117,8 +117,11 @@ export enum AuthRole {
     ADMIN // Users who Manage Event
 }
 
-
 export type FieldError = {
     fieldName: string;
     message: string;
+}
+
+export type FlagDto = {
+    value: boolean;
 }
