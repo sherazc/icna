@@ -126,55 +126,46 @@ export const Register: React.FC<Props> = () => {
         dispatch(createLoadingActionHide(loadingEvent.payload.id));
     };
 
-    const isEmailAlreadyExists = async (eventId: string, email: string): Promise<boolean> => {
-
-        registerApis().findUserProfile(eventId, email).then((up) => {
-            console.log(up);
-        }, (error1) => {
-            console.log(error1);
-        }).catch((error) => {
-            console.log(error);
-        })
-
-        let result: boolean;
-        try {
-            const userProfile = await registerApis().findUserProfile(eventId, email);
-            result = userProfile == undefined || isEqualStringsIgnoreCase(userProfile.email, email);
-        } catch (error) {
-            console.log(error);
-            result = true;
+    // TODO move it in Register.tsx helper
+    const validateEmailAlreadyExists = async (eventId: string | undefined, email: string): Promise<FieldError[]> => {
+        const emailAlreadyExists = await registerApis().isEmailAlreadyExist(eventId as string, email);
+        if (emailAlreadyExists.value) {
+            return [{
+                fieldName: "userProfile.email",
+                message: "Email already exists",
+            }]
+        } else {
+            return [];
         }
-        return result;
+    }
+
+    // TODO move it in Register.tsx helper
+    const validateCreatePassword = (cp: boolean, rp: FormPassword): FieldError[] => {
+
+        return []
     }
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const registrationForm2: RegistrationDto = {...registrationDto};
+        const loadingSaving = createLoadingActionShow("Saving Registration");
+        dispatch(loadingSaving);
+        const submitErrors: FieldError[] = [];
+        const registrationForm: RegistrationDto = {...registrationDto};
 
-        const errors = validateRegistrationForm(registrationForm2);
+        submitErrors.push(...validateRegistrationForm(registrationForm));
+        submitErrors.push(...validateCreatePassword(createPassword, registrationPassword));
 
-
-        if (errors.length > 0) {
-            setErrors(errors);
-        } else {
-
-            const loadingSaving = createLoadingActionShow("Saving Registration");
-            dispatch(loadingSaving);
-            const emailAlreadyExists = await isEmailAlreadyExists(touchString(eventId), registrationForm2.userProfile.email);
-            console.log(emailAlreadyExists);
-
-            if (emailAlreadyExists) {
-                setErrors([{
-                    fieldName: "userProfile.email",
-                    message: "Email already exists",
-                }]);
-            } else {
-                registrationForm2.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
-                // const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
-                const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm2);
-            }
-            dispatch(createLoadingActionHide(loadingSaving.payload.id));
+        if (submitErrors.length < 1) {
+            submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
         }
+
+        if (errors.length < 1) {
+            registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
+            const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
+        }
+
+        setErrors(submitErrors);
+        dispatch(createLoadingActionHide(loadingSaving.payload.id));
     };
 
     const deleteAttendee = (attendeeId: number) => {
