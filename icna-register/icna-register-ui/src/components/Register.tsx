@@ -12,9 +12,7 @@ import {
     castStringToNumber,
     formIdBreak,
     formIdCreate,
-    isBlankString,
-    isEqualStringsIgnoreCase,
-    touchNumber, touchString
+    isEqualStrings,
 } from "../service/utilities";
 import checkRadio from "../styles/CheckRadio.module.scss"
 import {AppContext} from "../store/context";
@@ -140,9 +138,25 @@ export const Register: React.FC<Props> = () => {
     }
 
     // TODO move it in Register.tsx helper
-    const validateCreatePassword = (cp: boolean, rp: FormPassword): FieldError[] => {
+    const validateCreatePassword = (conformPass: boolean, registerPass: FormPassword): FieldError[] => {
+        if (!conformPass) return [];
+        const passwordRegex: RegExp = /^.{5,}$/;
+        const fieldErrors: FieldError[] = [];
 
-        return []
+        if (passwordRegex.test(registerPass.passwordField)) {
+            if (!isEqualStrings(registerPass.passwordField, registerPass.passwordConfirm)) {
+                fieldErrors.push({
+                    fieldName: "passwordConfirm",
+                    message: "Password and confirm password do not match.",
+                });
+            }
+        } else {
+            fieldErrors.push({
+                fieldName: "passwordField",
+                message: "Password should be 5 or more character long.",
+            });
+        }
+        return fieldErrors;
     }
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -159,7 +173,7 @@ export const Register: React.FC<Props> = () => {
             submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
         }
 
-        if (errors.length < 1) {
+        if (submitErrors.length < 1) {
             registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
             const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
         }
@@ -230,14 +244,18 @@ export const Register: React.FC<Props> = () => {
                     <input
                         id="passwordField"
                         onChange={onChangeRegistrationPassword}
+                        className={errorClass(errors, "passwordField", errorStyles.formInputError)}
                         value={registrationPassword.passwordField}/>
+                    <Error errors={errors} fieldName="passwordField"/>
                 </div>
                 <div>
                     <label htmlFor="eamil">Confirm Password: </label>
                     <input
                         id="passwordConfirm"
                         onChange={onChangeRegistrationPassword}
+                        className={errorClass(errors, "passwordConfirm", errorStyles.formInputError)}
                         value={registrationPassword.passwordConfirm}/>
+                    <Error errors={errors} fieldName="passwordConfirm"/>
                 </div>
             </>)
             }
