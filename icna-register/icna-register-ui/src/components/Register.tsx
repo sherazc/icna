@@ -175,7 +175,12 @@ export const Register: React.FC<Props> = () => {
 
         if (submitErrors.length < 1) {
             registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
+            if (createPassword) {
+                registrationForm.userProfile.userPassword = registrationPassword.passwordField;
+            }
             const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
+
+            console.log(responseRegistrationDto);
         }
 
         setErrors(submitErrors);
