@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 icna_register_dir=$(pwd)
-icna_register_ui_dir=$icna_register_dir/icna-register-ui
-icna_register_api_dir=$icna_register_dir/icna-register-api
+icna_register_ui_dir=$icna_register_dir/event-register-ui
+icna_register_api_dir=$icna_register_dir/event-register-api
 
 # Clean UI
 rm $icna_register_ui_dir/yarn.lock

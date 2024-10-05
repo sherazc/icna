@@ -2,9 +2,9 @@
 # export NODE_OPTIONS=--openssl-legacy-provider
 
 icna_register_dir=$(pwd)
-icna_register_ui_dir=$icna_register_dir/icna-register-ui
+icna_register_ui_dir=$icna_register_dir/event-register-ui
 icna_register_frame_widget_dir=$icna_register_dir/widgets/frame-widget
-icna_register_api_dir=$icna_register_dir/icna-register-api
+icna_register_api_dir=$icna_register_dir/event-register-api
 
 # Install/Update npm
 npm install npm -g

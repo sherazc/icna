@@ -180,7 +180,14 @@ export const Register: React.FC<Props> = () => {
             }
             const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
 
-            console.log(responseRegistrationDto);
+            if (responseRegistrationDto.id !== undefined && responseRegistrationDto.id > 0) {
+                // Success. Redirect to confirm
+            } else {
+                submitErrors.push({
+                    fieldName: "registrationDto",
+                    message: "Failed to save registration.",
+                });
+            }
         }
 
         setErrors(submitErrors);

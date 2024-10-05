@@ -2,9 +2,9 @@
 Run below steps in a new terminal.
 
 ## 1. Start ICNA Register API
-`$ cd icna-register-api`
+`$ cd event-register-api`
 
-`$ cd icna-register-api`
+`$ cd event-register-api`
 
 `$ ./mvnw clean install`
 
@@ -12,7 +12,7 @@ Run below steps in a new terminal.
 
 ## 2. Start UI Project
 
-`$ cd icna-register-ui`
+`$ cd event-register-ui`
 
 `$ npm install`
 
@@ -41,7 +41,7 @@ Create a temporary HTML file, add this script in it and open it in Chrome browse
 
 # Production build
 
-Commands below will generate production jar `icna-register/icna-register-api/target/icna-register.jar`
+Commands below will generate production jar `event-register/event-register-api/target/event-register.jar`
 
 `$ ./clean.sh`
 

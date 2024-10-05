@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.icna.register</groupId>
-    <artifactId>icna-register-api</artifactId>
+    <artifactId>event-register-api</artifactId>
     <version>1.0</version>
-    <name>icna-register-api</name>
+    <name>event-register-api</name>
     <description>Register icna users</description>
     <url/>
     <licenses>
@@ -116,7 +116,7 @@
     </dependencies>
 
     <build>
-        <finalName>icna-register</finalName>
+        <finalName>event-register</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
