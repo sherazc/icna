@@ -1,7 +1,7 @@
-package org.icna.register.service.security
+package org.event.register.service.security
 
-import org.icna.register.dto.AuthUserTokenDto
-import org.icna.register.dto.UserProfileUserDetails
+import org.event.register.dto.AuthUserTokenDto
+import org.event.register.dto.UserProfileUserDetails
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm
 import org.springframework.security.oauth2.jwt.JwsHeader

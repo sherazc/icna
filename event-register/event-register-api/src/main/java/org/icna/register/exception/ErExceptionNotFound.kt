@@ -1,4 +1,4 @@
-package org.icna.register.exception
+package org.event.register.exception
 
 class ErExceptionNotFound: ErException {
     constructor(message: String) : super(message)

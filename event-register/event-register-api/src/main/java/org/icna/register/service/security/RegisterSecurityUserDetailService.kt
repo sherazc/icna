@@ -1,7 +1,7 @@
-package org.icna.register.service.security
+package org.event.register.service.security
 
-import org.icna.register.dto.UserProfileUserDetails
-import org.icna.register.repository.UserProfileRepository
+import org.event.register.dto.UserProfileUserDetails
+import org.event.register.repository.UserProfileRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException

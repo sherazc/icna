@@ -1,9 +1,9 @@
-package org.icna.register.controller
+package org.event.register.controller
 
-import org.icna.register.dto.FlagDto
-import org.icna.register.dto.UserProfileDto
-import org.icna.register.service.RegistrationService
-import org.icna.register.service.UserProfileService
+import org.event.register.dto.FlagDto
+import org.event.register.dto.UserProfileDto
+import org.event.register.service.RegistrationService
+import org.event.register.service.UserProfileService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

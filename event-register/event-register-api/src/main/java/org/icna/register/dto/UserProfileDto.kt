@@ -1,4 +1,4 @@
-package org.icna.register.dto
+package org.event.register.dto
 
 /**
  * Identify Logged-in user and registration's user.

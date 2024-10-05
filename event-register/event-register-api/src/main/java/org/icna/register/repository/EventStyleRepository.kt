@@ -1,13 +1,13 @@
-package org.icna.register.repository
+package org.event.register.repository
 
-import org.icna.register.dto.EventStyleDto
-import org.icna.register.entity.ui.Style
+import org.event.register.dto.EventStyleDto
+import org.event.register.entity.ui.Style
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
 interface EventStyleRepository : CrudRepository<Style, Long> {
     @Query("""
-        select new org.icna.register.dto.EventStyleDto(
+        select new org.event.register.dto.EventStyleDto(
             es.id,
             es.event.id,
             es.styleType,

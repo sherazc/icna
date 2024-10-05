@@ -1,15 +1,15 @@
-package org.icna.register.repository
+package org.event.register.repository
 
-import org.icna.register.dto.UserProfileDto
-import org.icna.register.entity.auth.UserProfile
-import org.icna.register.entity.auth.UserRole
+import org.event.register.dto.UserProfileDto
+import org.event.register.entity.auth.UserProfile
+import org.event.register.entity.auth.UserRole
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import java.util.*
 
 interface UserProfileRepository : CrudRepository<UserProfile, Long> {
     @Query("""
-        select new org.icna.register.dto.UserProfileDto(
+        select new org.event.register.dto.UserProfileDto(
             u.id, u.email, u.userPassword, u.event.id)
         from UserProfile u
         where lower(u.email) = lower(:email)

@@ -1,4 +1,4 @@
-package org.icna.register.entity.auth
+package org.event.register.entity.auth
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -10,9 +10,9 @@ import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToOne
-import org.icna.register.entity.event.Event
-import org.icna.register.entity.event.EventProgram
-import org.icna.register.entity.event.Registration
+import org.event.register.entity.event.Event
+import org.event.register.entity.event.EventProgram
+import org.event.register.entity.event.Registration
 
 /**
  * Identify Logged-in user and registration's user.

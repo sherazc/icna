@@ -1,4 +1,4 @@
-package org.icna.register.configuration
+package org.event.register.configuration
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret
 import org.springframework.beans.factory.annotation.Value

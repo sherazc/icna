@@ -1,4 +1,4 @@
-package org.icna.register.service.model
+package org.event.register.service.model
 
 enum class AuthRole {
     BASIC_USER, // Users who register for the event

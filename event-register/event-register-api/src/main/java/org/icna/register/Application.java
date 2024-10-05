@@ -1,4 +1,4 @@
-package org.icna.register;
+package org.event.register;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

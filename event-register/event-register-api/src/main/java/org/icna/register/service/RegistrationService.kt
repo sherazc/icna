@@ -1,15 +1,15 @@
-package org.icna.register.service
+package org.event.register.service
 
-import org.icna.register.dto.RegistrationDto
-import org.icna.register.entity.auth.UserProfile
-import org.icna.register.entity.event.Attendee
-import org.icna.register.entity.event.Event
-import org.icna.register.entity.event.Registration
-import org.icna.register.exception.ErExceptionBadRequest
-import org.icna.register.exception.ErExceptionNotFound
-import org.icna.register.mapper.AttendeeMapper
-import org.icna.register.mapper.RegistrationMapper
-import org.icna.register.repository.RegistrationRepository
+import org.event.register.dto.RegistrationDto
+import org.event.register.entity.auth.UserProfile
+import org.event.register.entity.event.Attendee
+import org.event.register.entity.event.Event
+import org.event.register.entity.event.Registration
+import org.event.register.exception.ErExceptionBadRequest
+import org.event.register.exception.ErExceptionNotFound
+import org.event.register.mapper.AttendeeMapper
+import org.event.register.mapper.RegistrationMapper
+import org.event.register.repository.RegistrationRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.Optional

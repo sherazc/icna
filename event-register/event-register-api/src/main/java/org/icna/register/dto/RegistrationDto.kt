@@ -1,4 +1,4 @@
-package org.icna.register.dto
+package org.event.register.dto
 
 data class RegistrationDto(
     var id: Long?,

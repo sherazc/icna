@@ -1,7 +1,7 @@
-package org.icna.register.mapper;
+package org.event.register.mapper;
 
-import org.icna.register.dto.AttendeeDto;
-import org.icna.register.entity.event.Attendee;
+import org.event.register.dto.AttendeeDto;
+import org.event.register.entity.event.Attendee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

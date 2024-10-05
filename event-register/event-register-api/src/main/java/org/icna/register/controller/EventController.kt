@@ -1,7 +1,7 @@
-package org.icna.register.controller
+package org.event.register.controller
 
-import org.icna.register.dto.EventDto
-import org.icna.register.service.EventService
+import org.event.register.dto.EventDto
+import org.event.register.service.EventService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping

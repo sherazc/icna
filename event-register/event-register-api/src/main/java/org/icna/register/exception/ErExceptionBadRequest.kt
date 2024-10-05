@@ -1,4 +1,4 @@
-package org.icna.register.exception
+package org.event.register.exception
 
 class ErExceptionBadRequest: ErException {
     constructor(message: String) : super(message)

@@ -1,8 +1,8 @@
-package org.icna.register.service
+package org.event.register.service
 
-import org.icna.register.dto.UserProfileDto
-import org.icna.register.exception.ErExceptionBadRequest
-import org.icna.register.repository.UserProfileRepository
+import org.event.register.dto.UserProfileDto
+import org.event.register.exception.ErExceptionBadRequest
+import org.event.register.repository.UserProfileRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

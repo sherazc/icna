@@ -1,7 +1,7 @@
-package org.icna.register.mapper;
+package org.event.register.mapper;
 
-import org.icna.register.dto.EventDto;
-import org.icna.register.entity.event.Event;
+import org.event.register.dto.EventDto;
+import org.event.register.entity.event.Event;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

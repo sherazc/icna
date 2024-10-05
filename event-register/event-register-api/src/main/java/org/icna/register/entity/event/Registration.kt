@@ -1,4 +1,4 @@
-package org.icna.register.entity.event
+package org.event.register.entity.event
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -7,7 +7,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToOne
-import org.icna.register.entity.auth.UserProfile
+import org.event.register.entity.auth.UserProfile
 
 /**
  * Defines relation between Event and group of Attendee.

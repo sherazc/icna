@@ -1,7 +1,7 @@
 # Development
 Run below steps in a new terminal.
 
-## 1. Start ICNA Register API
+## 1. Start EVENT Register API
 `$ cd event-register-api`
 
 `$ cd event-register-api`
@@ -31,7 +31,7 @@ Create a temporary HTML file, add this script in it and open it in Chrome browse
 
 ```html
 <script>
-    var appNamePrefix = "icnaRegisterWidget";
+    var appNamePrefix = "eventRegisterWidget";
     window[`${appNamePrefix}ServerUrl`] = "http://localhost:3000";
     window[`${appNamePrefix}AppUrl`] = "/event/10";
 </script>
@@ -57,7 +57,7 @@ Add below script in wordpress page.
 Replace event id in the AppUrl
 ````html
 <script>
-    var appNamePrefix = "icnaRegisterWidget";
+    var appNamePrefix = "eventRegisterWidget";
     window[`${appNamePrefix}ServerUrl`] = "";
     window[`${appNamePrefix}AppUrl`] = "/event/10";
 </script>

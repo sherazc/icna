@@ -1,8 +1,8 @@
-package org.icna.register.service
+package org.event.register.service
 
-import org.icna.register.repository.EventStyleRepository
-import org.icna.register.service.model.StyleVariable
-import org.icna.register.service.model.getDefaultEntityStyleVariables
+import org.event.register.repository.EventStyleRepository
+import org.event.register.service.model.StyleVariable
+import org.event.register.service.model.getDefaultEntityStyleVariables
 import org.springframework.stereotype.Service
 
 @Service

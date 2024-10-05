@@ -1,13 +1,13 @@
-package org.icna.register.service
+package org.event.register.service
 
-import org.icna.register.dto.AttendeeDto
-import org.icna.register.entity.event.Attendee
-import org.icna.register.entity.event.EventProgram
-import org.icna.register.entity.event.Registration
-import org.icna.register.mapper.AttendeeMapper
-import org.icna.register.mapper.EventProgramMapper
-import org.icna.register.repository.AttendeeRepository
-import org.icna.register.repository.EventProgramRepository
+import org.event.register.dto.AttendeeDto
+import org.event.register.entity.event.Attendee
+import org.event.register.entity.event.EventProgram
+import org.event.register.entity.event.Registration
+import org.event.register.mapper.AttendeeMapper
+import org.event.register.mapper.EventProgramMapper
+import org.event.register.repository.AttendeeRepository
+import org.event.register.repository.EventProgramRepository
 import org.springframework.stereotype.Service
 import java.util.*
 

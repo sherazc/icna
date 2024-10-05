@@ -1,4 +1,4 @@
-package org.icna.register.service.model
+package org.event.register.service.model
 
 data class StyleVariable(val styleName: String, val styleValue: String)
 

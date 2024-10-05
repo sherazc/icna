@@ -1,14 +1,14 @@
-package org.icna.register.repository
+package org.event.register.repository
 
-import org.icna.register.dto.AttendeeDto
-import org.icna.register.entity.event.Attendee
+import org.event.register.dto.AttendeeDto
+import org.event.register.entity.event.Attendee
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import java.util.Optional
 
 interface AttendeeRepository : CrudRepository<Attendee, Long> {
 
-    @Query("""select new org.icna.register.dto.AttendeeDto(
+    @Query("""select new org.event.register.dto.AttendeeDto(
             a.id,
             r.id,
             e.id,
@@ -22,7 +22,7 @@ interface AttendeeRepository : CrudRepository<Attendee, Long> {
         """)
     fun findAttendeeByEventId(eventId: Long): List<AttendeeDto>
 
-    @Query("""select new org.icna.register.dto.AttendeeDto(
+    @Query("""select new org.event.register.dto.AttendeeDto(
             a.id,
             a.registration.id,
             a.registration.event.id,
@@ -35,7 +35,7 @@ interface AttendeeRepository : CrudRepository<Attendee, Long> {
     fun findAttendeeByEventIdAndRegistrationId(eventId: Long, registrationId: Long): List<AttendeeDto>
 
 
-    @Query("""select new org.icna.register.dto.AttendeeDto(
+    @Query("""select new org.event.register.dto.AttendeeDto(
             a.id,
             a.registration.id,
             a.registration.event.id,

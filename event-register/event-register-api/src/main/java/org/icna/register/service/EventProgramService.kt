@@ -1,7 +1,7 @@
-package org.icna.register.service
+package org.event.register.service
 
-import org.icna.register.dto.EventProgramDto
-import org.icna.register.repository.EventProgramRepository
+import org.event.register.dto.EventProgramDto
+import org.event.register.repository.EventProgramRepository
 import org.springframework.stereotype.Service
 
 @Service

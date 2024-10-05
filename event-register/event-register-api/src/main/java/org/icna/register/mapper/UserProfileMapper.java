@@ -1,7 +1,7 @@
-package org.icna.register.mapper;
+package org.event.register.mapper;
 
-import org.icna.register.dto.UserProfileDto;
-import org.icna.register.entity.auth.UserProfile;
+import org.event.register.dto.UserProfileDto;
+import org.event.register.entity.auth.UserProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

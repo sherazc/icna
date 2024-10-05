@@ -26,7 +26,7 @@ export const Design: React.FC<Props> = () => {
     const loginUser = () => {
         dispatch({
             type: ActionNameAuthUser.authUserLogin,
-            payload: {...defaultAuthUserTokenDto(), subject: "sheraz@icna.org"}
+            payload: {...defaultAuthUserTokenDto(), subject: "sheraz@event.org"}
         });
     }
 

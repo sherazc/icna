@@ -1,4 +1,4 @@
-package org.icna.register.configuration;
+package org.event.register.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;

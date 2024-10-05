@@ -32,7 +32,7 @@ export const registerEndpoints = () => {
 }
 
 /**
- * Setup all ICNA Register endpoints.
+ * Setup all EVENT Register endpoints.
  *
  * TODO: create and export instead of creating it different places.
  */

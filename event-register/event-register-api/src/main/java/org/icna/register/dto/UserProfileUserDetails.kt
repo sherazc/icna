@@ -1,4 +1,4 @@
-package org.icna.register.dto
+package org.event.register.dto
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority

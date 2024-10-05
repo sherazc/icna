@@ -1,9 +1,9 @@
-package org.icna.register.service
+package org.event.register.service
 
-import org.icna.register.dto.EventDto
-import org.icna.register.entity.event.Event
-import org.icna.register.mapper.EventMapper
-import org.icna.register.repository.EventRepository
+import org.event.register.dto.EventDto
+import org.event.register.entity.event.Event
+import org.event.register.mapper.EventMapper
+import org.event.register.repository.EventRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException

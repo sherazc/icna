@@ -1,7 +1,7 @@
-package org.icna.register.controller
+package org.event.register.controller
 
-import org.icna.register.dto.AttendeeDto
-import org.icna.register.service.AttendeeService
+import org.event.register.dto.AttendeeDto
+import org.event.register.service.AttendeeService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

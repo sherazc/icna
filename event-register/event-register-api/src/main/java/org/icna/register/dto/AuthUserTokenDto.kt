@@ -1,4 +1,4 @@
-package org.icna.register.dto
+package org.event.register.dto
 
 import java.time.LocalDateTime
 

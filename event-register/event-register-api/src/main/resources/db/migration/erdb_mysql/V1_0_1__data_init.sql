@@ -1,6 +1,6 @@
 -- Event
 insert into event (id, event_name)
-values (10, 'ICNA Conference 2024');
+values (10, 'EVENT Conference 2024');
 
 insert into event_program (id, event_id, program_name)
 values (10000, 10, 'Lecture Mounzer Taleb');
@@ -22,16 +22,16 @@ values (420, 'BASIC_USER');
 
 
 insert into user_profile(id, email, user_password, event_id)
-values (700, 'admin@icna.org', '{noop}abc', 10);
+values (700, 'admin@event.org', '{noop}abc', 10);
 
 insert into user_profile(id, email, user_password, event_id)
-values (710, 'assitant@icna.org', '{noop}abc', 10);
+values (710, 'assitant@event.org', '{noop}abc', 10);
 
 insert into user_profile(id, email, user_password, event_id)
-values (720, 'basic_user_sheraz@icna.org', '{noop}abc', 10);
+values (720, 'basic_user_sheraz@event.org', '{noop}abc', 10);
 
 insert into user_profile(id, email, user_password, event_id)
-values (730, 'basic_user_baker@icna.org', '{noop}abc', 10);
+values (730, 'basic_user_baker@event.org', '{noop}abc', 10);
 
 
 insert into m2m_user_profile_user_role(user_profile_id, user_role_id)

@@ -1,11 +1,11 @@
-package org.icna.register.service
+package org.event.register.service
 
-import org.icna.register.dto.UserProfileDto
-import org.icna.register.entity.auth.UserProfile
-import org.icna.register.entity.event.Event
-import org.icna.register.exception.ErExceptionBadRequest
-import org.icna.register.exception.ErExceptionNotFound
-import org.icna.register.repository.UserProfileRepository
+import org.event.register.dto.UserProfileDto
+import org.event.register.entity.auth.UserProfile
+import org.event.register.entity.event.Event
+import org.event.register.exception.ErExceptionBadRequest
+import org.event.register.exception.ErExceptionNotFound
+import org.event.register.repository.UserProfileRepository
 import org.springframework.stereotype.Service
 import java.util.*
 

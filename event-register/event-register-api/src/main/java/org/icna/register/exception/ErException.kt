@@ -1,4 +1,4 @@
-package org.icna.register.exception
+package org.event.register.exception
 
 open class ErException: RuntimeException {
     constructor(message: String) : super(message)
