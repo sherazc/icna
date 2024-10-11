@@ -1,0 +1,13 @@
+[Unit]
+Description=Event Register
+After=syslog.target network.target docker.service
+
+[Service]
+User=sheraz
+Type=simple
+WorkingDirectory=/opt/sheraz-infra/event-register/
+ExecStart=/opt/sheraz-infra/event-register/event-register.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,3 +1,9 @@
+-- -----------------
+-- Deprecated:
+-- This was created for h2 db. Dont need this any more.
+-- -----------------
+
+
 -- Event
 insert into event (id, event_name)
 values (10, 'EVENT Conference 2024');
