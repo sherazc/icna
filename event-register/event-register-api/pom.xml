@@ -33,12 +33,6 @@
         <lombok.version>1.18.34</lombok.version>
     </properties>
     <dependencies>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -64,7 +58,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -114,7 +107,6 @@
             <version>${mapstruct.version}</version>
         </dependency>
     </dependencies>
-
     <build>
         <finalName>event-register</finalName>
         <plugins>
@@ -256,5 +248,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

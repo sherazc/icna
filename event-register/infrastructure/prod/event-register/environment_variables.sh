@@ -1,0 +1,3 @@
+EVENT_DATA_SOURCE_URL=jdbc:mysql://localhost:3306/eventdb
+EVENT_DATA_SOURCE_USERNAME=eventdbuser
+EVENT_DATA_SOURCE_PASSWORD=password
