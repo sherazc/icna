@@ -1,8 +1,8 @@
-package org.event.register.service
+package com.sc.event.service
 
-import org.event.register.dto.UserProfileDto
-import org.event.register.exception.ErExceptionBadRequest
-import org.event.register.repository.UserProfileRepository
+import com.sc.event.dto.UserProfileDto
+import com.sc.event.exception.ErExceptionBadRequest
+import com.sc.event.repository.UserProfileRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
