@@ -26,6 +26,7 @@ mkdir -p $event_register_api_dir/src/main/resources/static
 
 # Copy static files
 cp -r $event_register_ui_dir/build/* $event_register_api_dir/src/main/resources/static
+# TODO copy frame widget
 
 # Building API + UI jar
 cd $event_register_api_dir
