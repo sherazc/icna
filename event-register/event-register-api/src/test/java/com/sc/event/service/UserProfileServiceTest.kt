@@ -14,6 +14,7 @@ import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.Optional
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -21,13 +22,15 @@ import kotlin.test.assertTrue
 class UserProfileServiceTest {
 
     lateinit var userProfileRepository: UserProfileRepository
+    lateinit var passwordEncoder: PasswordEncoder
 
     lateinit var underTest: UserProfileService
 
     @BeforeEach
     fun setUp() {
         userProfileRepository = mock(UserProfileRepository::class.java)
-        underTest = UserProfileService(userProfileRepository)
+        passwordEncoder = mock(PasswordEncoder::class.java)
+        underTest = UserProfileService(userProfileRepository, passwordEncoder)
     }
 
     @Test

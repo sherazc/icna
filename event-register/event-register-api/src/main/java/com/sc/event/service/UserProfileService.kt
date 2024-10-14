@@ -6,40 +6,42 @@ import com.sc.event.entity.event.Event
 import com.sc.event.exception.ErExceptionBadRequest
 import com.sc.event.exception.ErExceptionNotFound
 import com.sc.event.repository.UserProfileRepository
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class UserProfileService(val userProfileRepository: UserProfileRepository) {
+class UserProfileService(
+    val userProfileRepository: UserProfileRepository,
+    val passwordEncoder: PasswordEncoder) {
 
     fun findByEventIdAndUserEmailNoPassword(eventId: Long, userEmail: String): Optional<UserProfileDto> {
         if (userEmail.isEmpty()) {
             return Optional.empty()
         }
         return userProfileRepository.findByEventAndEmail(eventId, userEmail)
-            .map { u -> u.userPassword = null
+            .map { u ->
+                u.userPassword = null
                 u
             }
     }
 
     fun save(event: Event, userProfileDto: UserProfileDto): UserProfile {
-
         val userProfile = if (userProfileDto.id == null) {
-            UserProfile(null, event, userProfileDto.email, userProfileDto.userPassword)
+            UserProfile(null, event, userProfileDto.email, encodePassword(userProfileDto.userPassword))
         } else {
             val u = userProfileRepository.findById(userProfileDto.id!!)
-                .orElseThrow{ErExceptionNotFound("Can not save User Profile. ${userProfileDto.id} not found")}
+                .orElseThrow { ErExceptionNotFound("Can not save User Profile. ${userProfileDto.id} not found") }
             setNewUserProfileValues(userProfileDto, u)
             u
         }
-
         return userProfileRepository.save(userProfile)
     }
 
     private fun setNewUserProfileValues(userProfileDto: UserProfileDto, userProfile: UserProfile) {
         userProfile.email = userProfileDto.email
         if (userProfileDto.userPassword != null) {
-            userProfile.userPassword = userProfileDto.userPassword
+            userProfile.userPassword = encodePassword(userProfileDto.userPassword)
         }
     }
 
@@ -68,4 +70,7 @@ class UserProfileService(val userProfileRepository: UserProfileRepository) {
             """.trimIndent())
         }
     }
+
+    private fun encodePassword(password: String?): String? =
+        if (password.isNullOrEmpty()) password else passwordEncoder.encode(password)
 }
