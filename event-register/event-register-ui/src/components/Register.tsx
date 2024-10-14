@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {registerApis} from "../service/api/ApiRegister";
 import {
     AttendeeDto,
@@ -38,6 +38,8 @@ export const Register: React.FC<Props> = () => {
     })
     const [createPassword, setCreatePassword] = useState<boolean>(false)
     const [errors, setErrors] = useState<FieldError[]>([]);
+    const navigate = useNavigate();
+    const regApis = registerApis()
 
     useEffect(() => {
         if (!eventId || !registrationId) {
@@ -110,7 +112,6 @@ export const Register: React.FC<Props> = () => {
 
         const loadingAction = createLoadingActionShow("Loading Registration");
         dispatch(loadingAction);
-        const regApis = registerApis();
         const registrationDtoResponse: RegistrationDto = await regApis.findRegistrationByRegistrationId(registrationId);
         setRegistrationDto(registrationDtoResponse);
         dispatch(createLoadingActionHide(loadingAction.payload.id));
@@ -119,14 +120,14 @@ export const Register: React.FC<Props> = () => {
     const loadEventPrograms = async (eventId: string) => {
         const loadingEvent = createLoadingActionShow("Loading Events");
         dispatch(loadingEvent);
-        const eventPrograms = await registerApis().findProgramsByEventId(eventId);
+        const eventPrograms = await regApis.findProgramsByEventId(eventId);
         setAllEventPrograms(eventPrograms);
         dispatch(createLoadingActionHide(loadingEvent.payload.id));
     };
 
     // TODO move it in Register.tsx helper
     const validateEmailAlreadyExists = async (eventId: string | undefined, email: string): Promise<FieldError[]> => {
-        const emailAlreadyExists = await registerApis().isEmailAlreadyExist(eventId as string, email);
+        const emailAlreadyExists = await regApis.isEmailAlreadyExist(eventId as string, email);
         if (emailAlreadyExists.value) {
             return [{
                 fieldName: "userProfile.email",
@@ -169,19 +170,30 @@ export const Register: React.FC<Props> = () => {
         submitErrors.push(...validateRegistrationForm(registrationForm));
         submitErrors.push(...validateCreatePassword(createPassword, registrationPassword));
 
+        registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
+
         if (submitErrors.length < 1) {
-            submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
+            if (registrationForm.id) {
+                const existingRegistration = await regApis.findRegistrationByRegistrationId("" + registrationForm.id);
+                const sameEmail = isEqualStrings(existingRegistration.userProfile.email, registrationForm.userProfile.email);
+                if (!sameEmail) {
+                    submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
+                }
+            } else {
+                submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
+            }
         }
 
         if (submitErrors.length < 1) {
-            registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
             if (createPassword) {
                 registrationForm.userProfile.userPassword = registrationPassword.passwordField;
             }
-            const responseRegistrationDto = await registerApis().saveRegistration(eventId as string, registrationForm);
+            const responseRegistrationDto = await regApis.saveRegistration(eventId as string, registrationForm);
 
             if (responseRegistrationDto.id !== undefined && responseRegistrationDto.id > 0) {
-                // Success. Redirect to confirm
+                let confirmationUrl = `/event/${eventId}/register-confirmation/${responseRegistrationDto.id}`
+                confirmationUrl = `${confirmationUrl}?isNew=${registrationForm.id ? 'false' : 'true'}`
+                navigate(confirmationUrl)
             } else {
                 submitErrors.push({
                     fieldName: "registrationDto",

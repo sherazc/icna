@@ -37,9 +37,9 @@ Many to Many
 Attendee *-* Event_Program
 
 ```
-# Get domain name
+# ✅ Get domain name
 
-# Configure certbot
+# ✅ Configure certbot
 
 # ✅ Add register and group(attendee) page and API
 
@@ -95,7 +95,7 @@ Attendee *-* Event_Program
  - Neighbor net
  - Retreat
 
-
+# Make webapp mobile friendly
 
 # ▶️ On save registration confirmation page, reload if stay on same page,
 ## Created RegisterConfirmation.tsx

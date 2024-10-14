@@ -5,7 +5,7 @@ export const castStringToNumber = (num?: string | undefined): number => {
     return isNaN(result) ? 0 : result;
 };
 
-export const touchString = (str?: string | undefined) : string => str ? str : "";
+export const touchString = (str?: string | undefined | null) : string => str ? str : "";
 export const touchNumber = (num?: number | undefined) : number => num ? num : 0;
 
 export const isEqualStrings = (s1?: string, s2?: string): boolean => s1 !== undefined && s2 !== undefined && s1 === s2;
