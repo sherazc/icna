@@ -23,6 +23,7 @@ class UserProfileServiceTest {
 
     lateinit var userProfileRepository: UserProfileRepository
     lateinit var passwordEncoder: PasswordEncoder
+    lateinit var userRoleService: UserRoleService
 
     lateinit var underTest: UserProfileService
 
@@ -30,7 +31,8 @@ class UserProfileServiceTest {
     fun setUp() {
         userProfileRepository = mock(UserProfileRepository::class.java)
         passwordEncoder = mock(PasswordEncoder::class.java)
-        underTest = UserProfileService(userProfileRepository, passwordEncoder)
+        userRoleService = mock(UserRoleService::class.java)
+        underTest = UserProfileService(userProfileRepository, passwordEncoder, userRoleService)
     }
 
     @Test

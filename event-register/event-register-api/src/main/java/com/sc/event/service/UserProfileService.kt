@@ -2,10 +2,12 @@ package com.sc.event.service
 
 import com.sc.event.dto.UserProfileDto
 import com.sc.event.entity.auth.UserProfile
+import com.sc.event.entity.auth.UserRole
 import com.sc.event.entity.event.Event
 import com.sc.event.exception.ErExceptionBadRequest
 import com.sc.event.exception.ErExceptionNotFound
 import com.sc.event.repository.UserProfileRepository
+import com.sc.event.service.model.AuthRole
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -13,7 +15,8 @@ import java.util.*
 @Service
 class UserProfileService(
     val userProfileRepository: UserProfileRepository,
-    val passwordEncoder: PasswordEncoder) {
+    val passwordEncoder: PasswordEncoder,
+    val userRoleService: UserRoleService) {
 
     fun findByEventIdAndUserEmailNoPassword(eventId: Long, userEmail: String): Optional<UserProfileDto> {
         if (userEmail.isEmpty()) {
@@ -35,6 +38,9 @@ class UserProfileService(
             setNewUserProfileValues(userProfileDto, u)
             u
         }
+
+        userRoleService.addRoles(userProfile, AuthRole.BASIC_USER)
+
         return userProfileRepository.save(userProfile)
     }
 
