@@ -9,7 +9,7 @@ rm $event_register_ui_dir/yarn.lock
 rm $event_register_ui_dir/package-lock.json
 rm $event_register_ui_dir/yarn-error.log
 rm -rf $event_register_ui_dir/build
-rm -rf $event_register_ui_dir/node_modules
+# rm -rf $event_register_ui_dir/node_modules
 
 # Clean Logs
 # rm rf misc/logs/*.log
@@ -20,7 +20,7 @@ rm -rf $event_register_ui_dir/node_modules
 rm -rf widgets/frame-widget/yarn.lock
 rm -rf widgets/frame-widget/package-lock.json
 rm -rf widgets/frame-widget/yarn-error.log
-rm -rf widgets/frame-widget/node_modules
+# rm -rf widgets/frame-widget/node_modules
 rm -rf ui/public/static/frame-widget/app.min.*
 
 
