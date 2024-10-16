@@ -2,6 +2,7 @@ package com.sc.event.service
 
 import com.sc.event.dto.UserProfileDto
 import com.sc.event.exception.ErExceptionBadRequest
+import com.sc.event.mapper.UserProfileMapper
 import com.sc.event.repository.UserProfileRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,6 +25,7 @@ class UserProfileServiceTest {
     lateinit var userProfileRepository: UserProfileRepository
     lateinit var passwordEncoder: PasswordEncoder
     lateinit var userRoleService: UserRoleService
+    lateinit var userProfileMapper: UserProfileMapper
 
     lateinit var underTest: UserProfileService
 
@@ -32,7 +34,8 @@ class UserProfileServiceTest {
         userProfileRepository = mock(UserProfileRepository::class.java)
         passwordEncoder = mock(PasswordEncoder::class.java)
         userRoleService = mock(UserRoleService::class.java)
-        underTest = UserProfileService(userProfileRepository, passwordEncoder, userRoleService)
+        userProfileMapper = mock(UserProfileMapper::class.java)
+        underTest = UserProfileService(userProfileRepository, passwordEncoder, userRoleService, userProfileMapper)
     }
 
     @Test

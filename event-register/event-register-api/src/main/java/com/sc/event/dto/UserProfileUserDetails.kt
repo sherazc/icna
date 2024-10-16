@@ -12,6 +12,7 @@ class UserProfileUserDetails(
         .filter { it.isNotBlank() }
         .map { SimpleGrantedAuthority(it) }
     fun getEventId() = user.eventId
+    fun getUserProfileId():Long = user.id!!
 
     // override fun getPassword(): String = user.userPassword!!
     override fun getPassword(): String = if (user.userPassword.isNullOrEmpty()) "" else user.userPassword!!

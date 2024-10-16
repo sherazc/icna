@@ -41,6 +41,6 @@ class ScTokenGeneratorService(private val encoder: JwtEncoder) {
 
         val tokenValue = this.encoder.encode(encoderParameters).tokenValue
 
-        return AuthUserTokenDto(authentication.name, LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")), roles, tokenValue)
+        return AuthUserTokenDto(user.getUserProfileId(), authentication.name, LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")), roles, tokenValue)
     }
 }

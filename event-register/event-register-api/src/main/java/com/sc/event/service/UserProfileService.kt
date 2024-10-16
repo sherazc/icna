@@ -6,6 +6,8 @@ import com.sc.event.entity.auth.UserRole
 import com.sc.event.entity.event.Event
 import com.sc.event.exception.ErExceptionBadRequest
 import com.sc.event.exception.ErExceptionNotFound
+import com.sc.event.mapper.AttendeeMapper
+import com.sc.event.mapper.UserProfileMapper
 import com.sc.event.repository.UserProfileRepository
 import com.sc.event.service.model.AuthRole
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -16,7 +18,11 @@ import java.util.*
 class UserProfileService(
     val userProfileRepository: UserProfileRepository,
     val passwordEncoder: PasswordEncoder,
-    val userRoleService: UserRoleService) {
+    val userRoleService: UserRoleService,
+    val userProfileMapper: UserProfileMapper) {
+
+    fun getUserProfile(userProfileId: Long): Optional<UserProfileDto> =
+        userProfileRepository.findById(userProfileId).map { userProfileMapper.beanToDto(it) }
 
     fun findByEventIdAndUserEmailNoPassword(eventId: Long, userEmail: String): Optional<UserProfileDto> {
         if (userEmail.isEmpty()) {
