@@ -1,12 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import {defaultRegistrationDto, defaultUserProfileDto, RegistrationDto, UserProfileDto} from "../service/service-types";
 
 interface Props {
 }
 
 /*
-
-secure all APIs. Use auth token in UI to make API calls
 
 Call API to Load User profile in this page. API will take event ID and User Profile ID
 
@@ -16,10 +15,14 @@ If this user is admin show manage Event component
 
 If this user is Assistant show manage Attendee component
 
+secure all APIs. Use auth token in UI to make API calls
+
 */
 
-export const MyProfile: React.FC<Props> = () => {
+export const UserProfile: React.FC<Props> = () => {
     const {userProfileId} = useParams();
+    const [userProfileDto, setUserProfileDto] = useState<UserProfileDto>(defaultUserProfileDto())
+    const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto())
 
     useEffect(() => {
     }, [userProfileId])
