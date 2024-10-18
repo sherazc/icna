@@ -2,9 +2,7 @@ package com.sc.event.controller
 
 import com.sc.event.dto.FlagDto
 import com.sc.event.dto.UserProfileDto
-import com.sc.event.service.RegistrationService
 import com.sc.event.service.UserProfileService
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
