@@ -34,7 +34,6 @@ export const Login: React.FC<Props> = () => {
 
     const onSubmitLogin = () => {
         registerApis().login(loginRequest).then(aut => {
-            console.log(aut);
             dispatch({
                 type: ActionNameAuthUser.authUserLogin,
                 payload: aut

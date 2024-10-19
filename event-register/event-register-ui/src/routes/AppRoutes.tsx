@@ -21,7 +21,7 @@ export default function AppRoutes() {
                 <Route path="register-confirmation/:registrationId" element={<RegisterConfirmation/>}/>
                 <Route path="attendees" element={<AttendeeList/>}/>
                 <Route path="attendees/:attendeeId" element={<AttendeeInfo/>}/>
-                <Route path="user-profile/:userProfileId" element={<UserProfile/>}/>
+                <Route path="user-profile" element={<UserProfile/>}/>
             </Route>
             <Route path="/event/:eventId/print/register/:registrationId" element={<StyleVar><PrintBadge/></StyleVar>}></Route>
             <Route path="/event/:eventId/print/attendees/:attendeeId" element={<StyleVar><PrintBadge/></StyleVar>}></Route>

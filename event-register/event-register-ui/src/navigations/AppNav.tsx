@@ -8,7 +8,6 @@ import {AppContext} from "../store/context";
 
 export default function AppNav() {
     const {eventId} = useParams();
-    const [{authUserToken}] = useContext(AppContext);
 
     return (
         <nav className={styles.navContainer}>
@@ -23,7 +22,7 @@ export default function AppNav() {
                 <CustomNavLink to={`/event/${eventId}/attendees`} linkText="Attendees"/>
             </Authenticated>
             <Authenticated authenticated={true}>
-                <CustomNavLink to={`/event/${eventId}/user-profile/${authUserToken.userProfileId}`} linkText="My Profile"/>
+                <CustomNavLink to={`/event/${eventId}/user-profile`} linkText="My Profile"/>
             </Authenticated>
         </nav>
     );
