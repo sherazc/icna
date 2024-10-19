@@ -1,6 +1,6 @@
 -- Event
-insert into event (id, event_name)
-values (10, 'EVENT Conference 2024');
+insert into event (id, event_name, start_date, end_date, active)
+values (10, 'EVENT Conference 2024', '2025-01-01:00:00:00', '2025-01-05:00:00:00', true);
 
 insert into event_program (id, event_id, program_name)
 values (10000, 10, 'Lecture Mounzer Taleb');

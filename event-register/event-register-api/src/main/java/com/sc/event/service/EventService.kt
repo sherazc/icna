@@ -13,6 +13,7 @@ import java.util.Optional
 class EventService(
     private val eventRepository: EventRepository,
     private val eventMapper: EventMapper) {
+
     fun findDtoById(eventId: Long): Optional<EventDto> {
         val eventOptional = eventRepository.findById(eventId)
         return eventOptional.map { eventMapper.beanToDto(it) }

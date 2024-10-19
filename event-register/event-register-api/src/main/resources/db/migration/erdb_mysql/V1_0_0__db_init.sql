@@ -11,6 +11,9 @@ create table event
 (
     id         bigint       not null auto_increment,
     event_name varchar(255) not null,
+    start_date datetime,
+    end_date datetime,
+    active boolean,
     primary key (id)
 );
 
