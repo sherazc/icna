@@ -34,7 +34,7 @@ class UserProfileController(private val userProfileService: UserProfileService) 
     }
 
     @GetMapping("/email/exists")
-    fun isEmailAlreadyExist(
+    fun isEmailExist(
         @RequestParam(required = true, name = "eventId") eventId: Long,
         @RequestParam(required = true, name = "userEmail") userEmail: String): ResponseEntity<FlagDto> {
 

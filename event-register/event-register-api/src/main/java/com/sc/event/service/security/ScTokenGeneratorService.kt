@@ -2,6 +2,7 @@ package com.sc.event.service.security
 
 import com.sc.event.dto.AuthUserTokenDto
 import com.sc.event.dto.UserProfileUserDetails
+import com.sc.event.service.RegistrationService
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm
 import org.springframework.security.oauth2.jwt.JwsHeader
@@ -15,7 +16,10 @@ import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 @Service
-class ScTokenGeneratorService(private val encoder: JwtEncoder) {
+class ScTokenGeneratorService(
+    private val encoder: JwtEncoder,
+    private val registrationService: RegistrationService
+) {
 
     fun generateToken(authentication: Authentication): AuthUserTokenDto {
         val now = Instant.now()
@@ -40,7 +44,14 @@ class ScTokenGeneratorService(private val encoder: JwtEncoder) {
         val encoderParameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS512).build(), jwt)
 
         val tokenValue = this.encoder.encode(encoderParameters).tokenValue
+        val registrationId = registrationService.getIdByUserProfileId(user.getUserProfileId()).orElse(0)
 
-        return AuthUserTokenDto(user.getUserProfileId(), authentication.name, LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")), roles, tokenValue)
+        return AuthUserTokenDto(
+            user.getUserProfileId(),
+            registrationId,
+            authentication.name,
+            LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")),
+            roles,
+            tokenValue)
     }
 }

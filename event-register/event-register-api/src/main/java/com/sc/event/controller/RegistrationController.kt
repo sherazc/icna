@@ -1,5 +1,6 @@
 package com.sc.event.controller
 
+import com.sc.event.dto.FlagDto
 import com.sc.event.dto.RegistrationDto
 import com.sc.event.service.RegistrationSaveService
 import com.sc.event.service.RegistrationService
@@ -16,10 +17,6 @@ import org.springframework.web.bind.annotation.RestController
 class RegistrationController(
     private val registrationService: RegistrationService,
     private val registrationSaveService: RegistrationSaveService) {
-
-    @GetMapping("/exists/user-profile/{userProfileId}")
-    fun existsByUserProfileId(@PathVariable userProfileId: Long): ResponseEntity<Boolean> =
-        ResponseEntity.ok(registrationService.existsByUserProfileId(userProfileId))
 
     @GetMapping("/user-profile/{userProfileId}")
     fun findByUserProfileId(@PathVariable userProfileId: Long): ResponseEntity<RegistrationDto> {

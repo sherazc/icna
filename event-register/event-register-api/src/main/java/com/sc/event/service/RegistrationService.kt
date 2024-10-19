@@ -13,7 +13,7 @@ class RegistrationService(
     private val registrationRepository: RegistrationRepository,
     private val attendeeService: AttendeeService) {
 
-    fun existsByUserProfileId(userProfileId: Long) = registrationRepository.existsByUserProfileId(userProfileId)
+    fun getIdByUserProfileId(userProfileId: Long) = registrationRepository.getIdByUserProfileId(userProfileId)
 
     fun findByUserProfileId(userProfileId: Long) : Optional<RegistrationDto>
      = registrationRepository.getByUserProfileId(userProfileId)

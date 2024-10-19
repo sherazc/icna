@@ -127,7 +127,7 @@ export const Register: React.FC<Props> = () => {
 
     // TODO move it in Register.tsx helper
     const validateEmailAlreadyExists = async (eventId: string | undefined, email: string): Promise<FieldError[]> => {
-        const emailAlreadyExists = await regApis.isEmailAlreadyExist(eventId as string, email);
+        const emailAlreadyExists = await regApis.isEmailExist(eventId as string, email);
         if (emailAlreadyExists.value) {
             return [{
                 fieldName: "userProfile.email",

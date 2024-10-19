@@ -29,7 +29,7 @@ export const registerEndpoints = () => {
         epLoginToken: () => `${baseUrl}/api/login/token`,
         epGetUserProfile: (userProfileId: string) => `${baseUrl}/api/user-profile/${userProfileId}`,
         epFindUserProfile: (eventId: string, email: string) => `${baseUrl}/api/user-profile/find?eventId=${eventId}&userEmail=${email}`,
-        epIsEmailAlreadyExist: (eventId: string, email: string) => `${baseUrl}/api/user-profile/email/exists?eventId=${eventId}&userEmail=${email}`,
+        epIsEmailExist: (eventId: string, email: string) => `${baseUrl}/api/user-profile/email/exists?eventId=${eventId}&userEmail=${email}`,
     }
 }
 
@@ -128,8 +128,8 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
-        isEmailAlreadyExist: (eventId: string, email: string): Promise<FlagDto> => {
-            const endpoint = endpoints.epIsEmailAlreadyExist(eventId, email);
+        isEmailExist: (eventId: string, email: string): Promise<FlagDto> => {
+            const endpoint = endpoints.epIsEmailExist(eventId, email);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
