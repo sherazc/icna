@@ -11,12 +11,15 @@ import {PrintBadge} from "../components/PrintBadge";
 import {RegisterConfirmation} from "../components/RegisterConfirmation";
 import {UserProfile} from "../components/UserProfile";
 import {MainHome} from "../components/MainHome";
+import AppLayout from "../layouts/AppLayout";
 
 export default function AppRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<StyleVar><MainHome/></StyleVar>}/>
-            <Route path="/design/:eventId" element={<StyleVar><Design/></StyleVar>}/>
+            <Route path="/" element={<StyleVar><AppLayout/></StyleVar>}>
+                <Route index element={<MainHome/>}/>
+            </Route>
+
             <Route path="/event/:eventId" element={<StyleVar><EventLayout/></StyleVar>}>
                 <Route index element={<Home/>}/>
                 <Route path="register/:registrationId" element={<Register/>}/>
@@ -25,6 +28,7 @@ export default function AppRoutes() {
                 <Route path="attendees/:attendeeId" element={<AttendeeInfo/>}/>
                 <Route path="user-profile" element={<UserProfile/>}/>
             </Route>
+            <Route path="/design/:eventId" element={<StyleVar><Design/></StyleVar>}/>
             <Route path="/event/:eventId/print/register/:registrationId" element={<StyleVar><PrintBadge/></StyleVar>}></Route>
             <Route path="/event/:eventId/print/attendees/:attendeeId" element={<StyleVar><PrintBadge/></StyleVar>}></Route>
         </Routes>

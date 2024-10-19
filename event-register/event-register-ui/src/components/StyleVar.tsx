@@ -13,22 +13,26 @@ export const StyleVar: React.FC<Props> = ({children}) => {
     const {eventId} = useParams();
     const [styleVariables, setStyleVariables] = useState<StyleVariable[]>([]);
     const [{}, dispatch] = useContext(AppContext);
+    const regApis = registerApis();
 
     useEffect(() => {
         loadStyleVariables()
-            .then(() => {});
+            .then(() => {
+            });
     }, [eventId])
 
 
     const loadStyleVariables = async () => {
-        if (!eventId) {
-            return;
-        }
 
         const loadingStyles = createLoadingActionShow("Loading Styles");
         dispatch(loadingStyles);
-        const styleVariablesResponse= await registerApis()
-            .findStyleVariablesByEventId(eventId);
+        let styleVariablesResponse;
+
+        if (eventId) {
+            styleVariablesResponse = await regApis.findStyleVariablesByEventId(eventId);
+        } else {
+            styleVariablesResponse = await regApis.getDefaultVariables();
+        }
         setStyleVariables(styleVariablesResponse);
         dispatch(createLoadingActionHide(loadingStyles.payload.id));
     }

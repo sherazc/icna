@@ -25,6 +25,7 @@ export const registerEndpoints = () => {
         epFindRegistrationByRegistrationId: (registrationId: string) => `${baseUrl}/api/registrations/${registrationId}`,
         epFindRegistrationByUserProfileId: (userProfileId: string) => `${baseUrl}/api/registrations/user-profile/${userProfileId}`,
         epSaveRegistration: (eventId: string) => `${baseUrl}/api/registrations/eventId/${eventId}`,
+        epGetDefaultVariables: () => `${baseUrl}/api/styles/variables/default`,
         epFindStyleVariablesByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/eventId/${eventId}`,
         epLoginToken: () => `${baseUrl}/api/login/token`,
         epGetUserProfile: (userProfileId: string) => `${baseUrl}/api/user-profile/${userProfileId}`,
@@ -93,6 +94,12 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
                 payload: registrationDto,
                 headers:[["Content-Type", "application/json"]]
             };
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
+        },
+        getDefaultVariables: (): Promise<StyleVariable[]> => {
+            const endpoint = endpoints.epGetDefaultVariables();
+            const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },

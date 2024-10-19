@@ -1,9 +1,10 @@
 import React from "react";
 
+
 export const MainHome: React.FC = () => {
     return (
         <div>
-            Main Home
+            <h1>Conference Events</h1>
         </div>
     );
 }
