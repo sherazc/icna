@@ -17,8 +17,6 @@ export const Authenticated: React.FC<Props> = (
     shouldHaveRoles, shouldHaveAnyRoles }) => {
 
     const [ {authUserToken}] = useContext(AppContext);
-
     const showContent = isAuthenticate(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles);
     return showContent ? <>{children}</> : <></>;
 };
-

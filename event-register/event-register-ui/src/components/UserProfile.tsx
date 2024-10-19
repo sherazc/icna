@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {defaultRegistrationDto, defaultUserProfileDto, RegistrationDto, UserProfileDto} from "../service/service-types";
 import {AppContext} from "../store/context";
 import {registerApis} from "../service/api/ApiRegister";
 import {UnAuthRedirect} from "./auth/UnAuthRedirect";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
+import {ActionNameAuthUser} from "../store/authUserReducer";
+import {IconArrowRight} from "../images/IconArrowRight";
 
 interface Props {
 }
@@ -52,6 +54,18 @@ export const UserProfile: React.FC<Props> = () => {
         dispatch(createLoadingActionHide(loading.payload.id));
     }
 
+    const onLogout = () => {
+        dispatch({type: ActionNameAuthUser.authUserLogout})
+    }
+
+    const createRegistrationSection = () => {
+        return (
+            <div>
+                <Link to={`/event/${eventId}/register/${registrationDto.id}`}>Edit Register <IconArrowRight/></Link>
+            </div>
+        );
+    }
+
     return (
         <div>
             <UnAuthRedirect/>
@@ -59,11 +73,12 @@ export const UserProfile: React.FC<Props> = () => {
                 <h1>My Profile</h1>
             </div>
             <div>
-                <button>Logout</button>
+                <button onClick={onLogout}>Logout</button>
             </div>
             <div>
                 Email: {userProfileDto.email}
             </div>
+            {registrationDto.id && registrationDto.id > 0 && createRegistrationSection()}
         </div>
     );
 }

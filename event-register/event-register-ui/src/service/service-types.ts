@@ -113,11 +113,16 @@ export const defaultAuthUserTokenDto = (): AuthUserTokenDto => ({
     token: ""
 });
 
-export enum AuthRole {
-    BASIC_USER, // Users who register for the event
-    ASSISTANT, // Users who work on the registration desk
-    ADMIN // Users who Manage Event
-}
+// export enum AuthRole {
+//     BASIC_USER, // Users who register for the event
+//     ASSISTANT, // Users who work on the registration desk
+//     ADMIN // Users who Manage Event
+// }
+
+export type AuthRole  = 'BASIC_USER' // Users who register for the event
+    | 'ASSISTANT' // Users who work on the registration desk
+    | 'ADMIN' // Users who Manage Event
+;
 
 export type FieldError = {
     fieldName: string;

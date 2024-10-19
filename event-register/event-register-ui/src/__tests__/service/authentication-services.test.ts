@@ -1,4 +1,4 @@
-import {AuthRole, defaultAuthUserTokenDto} from "../../service/service-types";
+import {defaultAuthUserTokenDto} from "../../service/service-types";
 import {
     isAuthenticate,
     isContainsAllRoles,
@@ -21,25 +21,25 @@ describe('authentication-service', () => {
     test("isContainsAllRoles", () => {
         const testToken = defaultAuthUserTokenDto();
         expect(isContainsAllRoles(testToken, [])).toBeTruthy();
-        expect(isContainsAllRoles(testToken, [AuthRole.ADMIN])).toBeFalsy();
-        testToken.roles = [AuthRole.ADMIN]
-        expect(isContainsAllRoles(testToken, [AuthRole.ADMIN])).toBeTruthy();
+        expect(isContainsAllRoles(testToken, ['ADMIN'])).toBeFalsy();
+        testToken.roles = ['ADMIN']
+        expect(isContainsAllRoles(testToken, ['ADMIN'])).toBeTruthy();
 
-        testToken.roles.push(AuthRole.ASSISTANT);
-        expect(isContainsAllRoles(testToken, [AuthRole.ADMIN])).toBeTruthy();
-        expect(isContainsAllRoles(testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
-        expect(isContainsAllRoles(testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT, AuthRole.BASIC_USER])).toBeFalsy();
+        testToken.roles.push('ASSISTANT');
+        expect(isContainsAllRoles(testToken, ['ADMIN'])).toBeTruthy();
+        expect(isContainsAllRoles(testToken, ['ADMIN', 'ASSISTANT'])).toBeTruthy();
+        expect(isContainsAllRoles(testToken, ['ADMIN', 'ASSISTANT', 'BASIC_USER'])).toBeFalsy();
     });
 
     test("isContainsAnyRoles", () => {
         const testToken = defaultAuthUserTokenDto();
         expect(isContainsAnyRoles(testToken, [])).toBeTruthy();
-        expect(isContainsAnyRoles(testToken, [AuthRole.ADMIN])).toBeFalsy();
+        expect(isContainsAnyRoles(testToken, ['ADMIN'])).toBeFalsy();
 
-        testToken.roles = [AuthRole.ADMIN]
-        expect(isContainsAnyRoles(testToken, [AuthRole.ADMIN])).toBeTruthy();
-        testToken.roles = [AuthRole.ASSISTANT]
-        expect(isContainsAnyRoles(testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
+        testToken.roles = ['ADMIN']
+        expect(isContainsAnyRoles(testToken, ['ADMIN'])).toBeTruthy();
+        testToken.roles = ['ASSISTANT']
+        expect(isContainsAnyRoles(testToken, ['ADMIN', 'ASSISTANT'])).toBeTruthy();
     });
 
     test("isAuthenticate unauthenticated", () => {
@@ -67,33 +67,33 @@ describe('authentication-service', () => {
 
     test("isAuthenticate shouldHaveRoles", () => {
         const testToken = defaultAuthUserTokenDto();
-        expect(isAuthenticate(true, testToken, [AuthRole.ADMIN])).toBeFalsy();
-        expect(isAuthenticate(true, testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT], [])).toBeFalsy();
+        expect(isAuthenticate(true, testToken, ['ADMIN'])).toBeFalsy();
+        expect(isAuthenticate(true, testToken, ['ADMIN', 'ASSISTANT'], [])).toBeFalsy();
 
         testToken.token = "abc"
-        testToken.roles.push(AuthRole.ADMIN)
-        expect(isAuthenticate(true, testToken, [AuthRole.ADMIN])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeFalsy();
+        testToken.roles.push('ADMIN')
+        expect(isAuthenticate(true, testToken, ['ADMIN'])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, ['ADMIN', 'ASSISTANT'])).toBeFalsy();
 
-        testToken.roles.push(AuthRole.ASSISTANT)
-        expect(isAuthenticate(true, testToken, [AuthRole.ADMIN])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [AuthRole.ADMIN, AuthRole.BASIC_USER])).toBeFalsy();
+        testToken.roles.push('ASSISTANT')
+        expect(isAuthenticate(true, testToken, ['ADMIN'])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, ['ADMIN', 'ASSISTANT'])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, ['ADMIN', 'BASIC_USER'])).toBeFalsy();
     });
 
     test("isAuthenticate shouldHaveAnyRoles", () => {
         const testToken = defaultAuthUserTokenDto();
-        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN])).toBeFalsy();
-        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeFalsy();
+        expect(isAuthenticate(true, testToken, [], ['ADMIN'])).toBeFalsy();
+        expect(isAuthenticate(true, testToken, [], ['ADMIN', 'ASSISTANT'])).toBeFalsy();
 
         testToken.token = "abc"
-        testToken.roles.push(AuthRole.ADMIN)
-        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
+        testToken.roles.push('ADMIN')
+        expect(isAuthenticate(true, testToken, [], ['ADMIN'])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, [], ['ADMIN', 'ASSISTANT'])).toBeTruthy();
 
-        testToken.roles.push(AuthRole.ASSISTANT)
-        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN, AuthRole.ASSISTANT])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [], [AuthRole.ADMIN, AuthRole.BASIC_USER])).toBeTruthy();
+        testToken.roles.push('ASSISTANT')
+        expect(isAuthenticate(true, testToken, [], ['ADMIN'])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, [], ['ADMIN', 'ASSISTANT'])).toBeTruthy();
+        expect(isAuthenticate(true, testToken, [], ['ADMIN', 'BASIC_USER'])).toBeTruthy();
     });
 });
