@@ -5,5 +5,6 @@ import org.springframework.data.repository.CrudRepository
 import java.util.Optional
 
 interface RegistrationRepository : CrudRepository<Registration, Long> {
-    fun getByUserProfileId(userProfile_id: Long):Optional<Registration>
+    fun getByUserProfileId(userProfileId: Long):Optional<Registration>
+    fun existsByUserProfileId(userProfileId: Long):Boolean
 }

@@ -17,6 +17,10 @@ class RegistrationController(
     private val registrationService: RegistrationService,
     private val registrationSaveService: RegistrationSaveService) {
 
+    @GetMapping("/exists/user-profile/{userProfileId}")
+    fun existsByUserProfileId(@PathVariable userProfileId: Long): ResponseEntity<Boolean> =
+        ResponseEntity.ok(registrationService.existsByUserProfileId(userProfileId))
+
     @GetMapping("/user-profile/{userProfileId}")
     fun findByUserProfileId(@PathVariable userProfileId: Long): ResponseEntity<RegistrationDto> {
         val registration = registrationService.findByUserProfileId(userProfileId)
