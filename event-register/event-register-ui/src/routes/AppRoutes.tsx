@@ -1,6 +1,6 @@
 import {Route, Routes} from "react-router-dom";
 import React from "react";
-import AppLayout from "../layouts/AppLayout";
+import EventLayout from "../layouts/EventLayout";
 import {Home} from "../components/Home";
 import {Register} from "../components/Register";
 import {AttendeeList} from "../components/AttendeeList";
@@ -10,12 +10,14 @@ import {StyleVar} from "../components/StyleVar";
 import {PrintBadge} from "../components/PrintBadge";
 import {RegisterConfirmation} from "../components/RegisterConfirmation";
 import {UserProfile} from "../components/UserProfile";
+import {MainHome} from "../components/MainHome";
 
 export default function AppRoutes() {
     return (
         <Routes>
+            <Route path="/" element={<StyleVar><MainHome/></StyleVar>}/>
             <Route path="/design/:eventId" element={<StyleVar><Design/></StyleVar>}/>
-            <Route path="/event/:eventId" element={<StyleVar><AppLayout/></StyleVar>}>
+            <Route path="/event/:eventId" element={<StyleVar><EventLayout/></StyleVar>}>
                 <Route index element={<Home/>}/>
                 <Route path="register/:registrationId" element={<Register/>}/>
                 <Route path="register-confirmation/:registrationId" element={<RegisterConfirmation/>}/>

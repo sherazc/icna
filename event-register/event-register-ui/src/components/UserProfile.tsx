@@ -55,6 +55,14 @@ export const UserProfile: React.FC<Props> = () => {
                     <Link to={`/event/${eventId}/register/${authUserToken.registrationId}`}>Edit Register <IconArrowRight/></Link>
                 </div>
             )}
+            <div>
+                Roles:
+            </div>
+            <div>
+                <ul>
+                    {authUserToken.roles.map((role) => (<li key={role}>{role}</li>))}
+                </ul>
+            </div>
         </div>
     );
 }

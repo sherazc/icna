@@ -1,13 +1,13 @@
 import AppNav from "../navigations/AppNav";
 import {Outlet} from "react-router-dom";
-import styles from "./AppLayout.module.scss";
+import styles from "./EventLayout.module.scss";
 import {useEffect} from "react";
 import {Loading} from "../components/Loading";
 
 const rootElementId = "registerRoot";
 const messageDimensionKey = "messageDimensionKey";
 
-export default function AppLayout() {
+export default function EventLayout() {
 
     useEffect(() => {
         const rootContainer = document.getElementById(rootElementId);

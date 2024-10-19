@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class StyleService(private val eventStyleRepository: EventStyleRepository) {
+    fun getDefaultVariables(): List<StyleVariable> = getDefaultEntityStyleVariables()
+
     fun findVarByEventId(eventId: Long): List<StyleVariable> {
         // TODO move getDefaultEntityStyleVariables() in spring component.
         //   Because to mock top level function are mocked using io.mockk:mockk
