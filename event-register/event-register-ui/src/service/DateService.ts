@@ -8,10 +8,13 @@ import {
 export const REGX_TIME_24 = /([01]?[0-9]|2[0-3]):[0-5][0-9].*/;
 
 // https://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime
-export const REGX_DATE_TIME = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
+// export const REGX_DATE_TIME = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
 // export const DATE_TIME_REGX = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d)/;
 
-export const REGX_DATE = /\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01]).*/;
+// Created my own. Much relaxed version.
+export const REGX_DATE_TIME = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d(:[0-5]\d)?[:.+\-0-9Zz]{0,11}/;
+
+export const REGX_DATE = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d(:[0-5]\d)?[:.+\-0-9Zz]{0,11}/;
 
 export const REGX_HIJRI_STRING = /^([0-9]{4})\/([01]?[0-9])\/([0123]?[0-9])$/;
 
