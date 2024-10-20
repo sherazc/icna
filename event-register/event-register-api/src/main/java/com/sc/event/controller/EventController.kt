@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController
 class EventController(private val eventService: EventService) {
 
     @PreAuthorize("permitAll()")
+    @GetMapping("/future/active")
+    fun getFutureActive(): ResponseEntity<List<EventDto>> = ResponseEntity.ok(eventService.FutureActive())
+
+    @PreAuthorize("permitAll()")
     @GetMapping("/id/{eventId}")
     fun getEvent(@PathVariable eventId: Long): ResponseEntity<EventDto> {
         val event = eventService.findDtoById(eventId)

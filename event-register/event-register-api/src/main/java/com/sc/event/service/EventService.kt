@@ -7,12 +7,16 @@ import com.sc.event.repository.EventRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDateTime
 import java.util.Optional
 
 @Service
 class EventService(
     private val eventRepository: EventRepository,
     private val eventMapper: EventMapper) {
+
+    fun FutureActive(): List<EventDto> = eventRepository
+        .findAllByActiveIsTrueAndStartDateAfter(LocalDateTime.now()).map { eventMapper.beanToDto(it) }
 
     fun findDtoById(eventId: Long): Optional<EventDto> {
         val eventOptional = eventRepository.findById(eventId)

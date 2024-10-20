@@ -9,6 +9,7 @@ import {
     AttendeeDto, AuthUserTokenDto,
     EventDto, EventProgramDto, FlagDto, LoginRequest, RegistrationDto, StyleVariable, UserProfileDto
 } from "../service-types";
+import {parseObjectsIsoDateToMdDate} from "../DateService";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
 
@@ -48,7 +49,8 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             const endpoint = endpoints.epEvent(eventId);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
-            return callApiIntercept(request, interceptorCbs);
+            const interceptors = addMdDateParserInterceptor(interceptorCbs);
+            return callApiIntercept(request, interceptors);
         },
         findAttendeeByEventId: (eventId: string): Promise<AttendeeDto[]> => {
             const endpoint = endpoints.epAttendeeByEventId(eventId);
@@ -144,4 +146,15 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
 
     }
     return api;
+}
+
+const addMdDateParserInterceptor = (interceptorCbs?: InterceptorCallBacks): InterceptorCallBacks => {
+    let interceptor: InterceptorCallBacks = interceptorCbs ? interceptorCbs : {};
+    interceptor.afterSuccess = interceptor.afterSuccess ? interceptor.afterSuccess : [];
+    interceptor.afterError = interceptor.afterError ? interceptor.afterError : [];
+    const containsParser = interceptor.afterSuccess.find(fn => fn == parseObjectsIsoDateToMdDate);
+    if (!containsParser) {
+        interceptor.afterSuccess.push(parseObjectsIsoDateToMdDate)
+    }
+    return interceptor;
 }

@@ -12,3 +12,21 @@ export const isEqualStrings = (s1?: string, s2?: string): boolean => s1 !== unde
 export const isEqualStringsIgnoreCase = (s1?: string, s2?: string): boolean => s1 !== undefined && s2 !== undefined && s1.toLowerCase() === s2.toLowerCase();
 export const isNotBlankString = (s?: string): boolean => s !== undefined && typeof s === 'string' && s.trim().length > 0;
 export const isBlankString = (s?: string): boolean => !isNotBlankString(s);
+
+export const numberNaNToZero = (num?: number | null): number => {
+    return (num && num != null) ? num : 0;
+};
+export const numberTo2DigitsString = (num?: number | null): string => {
+    num = numberNaNToZero(num);
+    if (num && num != null) {
+        return num < 10 && num > -1 ? `0${num}` : num + "";
+    } else {
+        return "00";
+    }
+};
+export const padLeft = (input: (number | string), length: number, padString: string = '0') => {
+    if (length < 2) {
+        return input;
+    }
+    return `${padString.repeat(length - 1)}${input}`.slice(-length);
+}

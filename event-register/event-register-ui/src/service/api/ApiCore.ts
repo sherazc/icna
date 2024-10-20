@@ -12,8 +12,8 @@ export type ApiRequest = {
 
 export type InterceptorCallBacks = {
     before?: Function;
-    afterSuccess?: (response?: any) => void;
-    afterError?: (error?: any) => void;
+    afterSuccess?: ((response?: any) => void)[];
+    afterError?: ((error?: any) => void)[];
 }
 
 
@@ -92,12 +92,12 @@ export const callApiIntercept = (request: ApiRequest, interceptorCbs?: Intercept
         responsePromise.then(response => {
             resolve(response);
             if (interceptorCbs && interceptorCbs.afterSuccess) {
-                interceptorCbs.afterSuccess(response);
+                interceptorCbs.afterSuccess.forEach(postSuccess => postSuccess(response));
             }
         }, error => {
             reject(error);
             if (interceptorCbs && interceptorCbs.afterError) {
-                interceptorCbs.afterError(error);
+                interceptorCbs.afterError.forEach(postError => postError(error));
             }
         })
     });

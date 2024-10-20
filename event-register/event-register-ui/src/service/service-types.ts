@@ -1,10 +1,14 @@
 import {touchString} from "./utilities";
+import {MdDate} from "./DateService";
 
 export type EventDto = {
     id: number;
     eventName: string;
+    startDate: MdDate,
+    endDate?: MdDate,
+    active: boolean
 }
-export const defaultEventDto = (): EventDto => ({id: 0, eventName: ""});
+export const defaultEventDto = (): EventDto => ({id: 0, eventName: "", startDate: MdDate.currentSystemMdDate(), endDate: undefined, active: false});
 
 /**
  * Person who is attending the event.
