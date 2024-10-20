@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository
 import java.time.LocalDateTime
 
 interface EventRepository : CrudRepository<Event, Long> {
-    fun findAllByActiveIsTrueAndStartDateAfter(startDate: LocalDateTime): List<Event>
+    fun findAllByActiveIsTrueAndStartDateAfterOrderByStartDate(startDate: LocalDateTime): List<Event>
 }

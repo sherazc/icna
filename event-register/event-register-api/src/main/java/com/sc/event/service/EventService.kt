@@ -15,8 +15,9 @@ class EventService(
     private val eventRepository: EventRepository,
     private val eventMapper: EventMapper) {
 
-    fun FutureActive(): List<EventDto> = eventRepository
-        .findAllByActiveIsTrueAndStartDateAfter(LocalDateTime.now()).map { eventMapper.beanToDto(it) }
+    fun futureActive(): List<EventDto> = eventRepository
+        .findAllByActiveIsTrueAndStartDateAfterOrderByStartDate(LocalDateTime.now())
+        .map { eventMapper.beanToDto(it) }
 
     fun findDtoById(eventId: Long): Optional<EventDto> {
         val eventOptional = eventRepository.findById(eventId)

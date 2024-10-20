@@ -19,6 +19,7 @@ export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
 export const registerEndpoints = () => {
     return {
         epEvent: (eventId: string) => `${baseUrl}/api/events/id/${eventId}`,
+        epEventFutureActive: () => `${baseUrl}/api/events/future/active`,
         epFindProgramsByEventId: (eventId: string) => `${baseUrl}/api/programs/eventId/${eventId}`,
         epAttendeeByEventId: (eventId: string) => `${baseUrl}/api/attendees/eventId/${eventId}`,
         epFindAttendeeByAttendeeId: (attendeeId: string) => `${baseUrl}/api/attendees/id/${attendeeId}`,
@@ -47,6 +48,13 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
     const api = {
         findEventById: (eventId: string): Promise<EventDto> => {
             const endpoint = endpoints.epEvent(eventId);
+            const request: ApiRequest = {endpoint};
+            addHeadersInRequest(request, commonHeaders);
+            const interceptors = addMdDateParserInterceptor(interceptorCbs);
+            return callApiIntercept(request, interceptors);
+        },
+        eventFutureActive: (): Promise<EventDto[]> => {
+            const endpoint = endpoints.epEventFutureActive();
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             const interceptors = addMdDateParserInterceptor(interceptorCbs);

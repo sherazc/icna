@@ -15,7 +15,7 @@ class EventController(private val eventService: EventService) {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/future/active")
-    fun getFutureActive(): ResponseEntity<List<EventDto>> = ResponseEntity.ok(eventService.FutureActive())
+    fun getFutureActive(): ResponseEntity<List<EventDto>> = ResponseEntity.ok(eventService.futureActive())
 
     @PreAuthorize("permitAll()")
     @GetMapping("/id/{eventId}")
