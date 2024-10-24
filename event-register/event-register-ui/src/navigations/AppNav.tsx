@@ -37,6 +37,9 @@ export default function AppNav() {
             <Authenticated authenticated={true}>
                 <CustomNavLink to={`/event/${eventId}/user-profile`} linkText="My Profile"/>
             </Authenticated>
+            <Authenticated authenticated={true} shouldHaveAnyRoles={['ADMIN']}>
+                <CustomNavLink to={`/event/${eventId}/manage`} linkText="Manage Event"/>
+            </Authenticated>
         </nav>
     );
 }

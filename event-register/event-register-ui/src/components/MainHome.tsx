@@ -3,7 +3,7 @@ import {registerApis} from "../service/api/ApiRegister";
 import {EventDto} from "../service/service-types";
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import styles from "./MainHome.module.scss";
 
 /*
@@ -16,6 +16,8 @@ export const MainHome: React.FC = () => {
     const [events, setEvents] = useState<EventDto[]>([])
     const regApis = registerApis();
     const [{}, dispatch] = useContext(AppContext);
+    const navigate = useNavigate();
+
     useEffect(() => {
         loadData()
     }, []);
@@ -40,9 +42,11 @@ export const MainHome: React.FC = () => {
     return (
         <div>
             <h1>Conference Events</h1>
-
             <div>
-                {events.map(e => buildEventTile(e))}
+                <button onClick={() => navigate("/create-event")}>Create Event</button>
+            </div>
+            <div>
+            {events.map(e => buildEventTile(e))}
             </div>
         </div>
     );

@@ -12,16 +12,19 @@ import {RegisterConfirmation} from "../components/RegisterConfirmation";
 import {UserProfile} from "../components/UserProfile";
 import {MainHome} from "../components/MainHome";
 import AppLayout from "../layouts/AppLayout";
+import {ManageEvent} from "../components/ManageEvent";
 
 export default function AppRoutes() {
     return (
         <Routes>
             <Route path="/" element={<StyleVar><AppLayout/></StyleVar>}>
                 <Route index element={<MainHome/>}/>
+                <Route path="create-event" element={<ManageEvent/>}/>
             </Route>
 
             <Route path="/event/:eventId" element={<StyleVar><EventLayout/></StyleVar>}>
                 <Route index element={<Home/>}/>
+                <Route path="manage" element={<ManageEvent/>}/>
                 <Route path="register/:registrationId" element={<Register/>}/>
                 <Route path="register-confirmation/:registrationId" element={<RegisterConfirmation/>}/>
                 <Route path="attendees" element={<AttendeeList/>}/>
