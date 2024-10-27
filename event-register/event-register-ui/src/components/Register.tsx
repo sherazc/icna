@@ -243,7 +243,7 @@ export const Register: React.FC<Props> = () => {
     const createUserProfileForm = (userProfile: UserProfileDto) => (
         <div>
             <div>
-                <label htmlFor="eamil">Email: </label>
+                <label htmlFor="email">Email: </label>
                 <input
                     id="email"
                     onChange={onChangeUserProfile}

@@ -119,12 +119,6 @@ export const defaultAuthUserTokenDto = (): AuthUserTokenDto => ({
     token: ""
 });
 
-// export enum AuthRole {
-//     BASIC_USER, // Users who register for the event
-//     ASSISTANT, // Users who work on the registration desk
-//     ADMIN // Users who Manage Event
-// }
-
 export type AuthRole  = 'BASIC_USER' // Users who register for the event
     | 'ASSISTANT' // Users who work on the registration desk
     | 'ADMIN' // Users who Manage Event
@@ -138,3 +132,17 @@ export type FieldError = {
 export type FlagDto = {
     value: boolean;
 }
+
+export type EventFormDto = {
+    userProfile: UserProfileDto;
+    event: EventDto,
+    programs: EventProgramDto[],
+    styleVariable: StyleVariable[],
+}
+
+export const defaultEventFormDto = ():EventFormDto => ({
+    userProfile: defaultUserProfileDto(),
+    event: defaultEventDto(),
+    programs: [],
+    styleVariable: []
+});

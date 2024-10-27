@@ -30,3 +30,8 @@ export const padLeft = (input: (number | string), length: number, padString: str
     }
     return `${padString.repeat(length - 1)}${input}`.slice(-length);
 }
+export const trimToLength = (str: (string | undefined | null), length: number) => {
+    if (!str) return "";
+    if (str.length < length) return str;
+    return str.substring(0, length);
+}
