@@ -102,11 +102,10 @@ export const ManageEvent = () => {
     const createEventDtoForm = (eventDto: EventDto) => (
         <div>
             <div>
-                <label htmlFor="eventName">Event name:</label>
+                <label htmlFor="eventName">Event Name </label>
                 <input
                     id="eventName"
                     onChange={onChangeEventDto}
-                    required
                     className={errorClass(errors, "event.eventName", errorStyles.formInputError)}
                     value={eventFormDto.event.eventName}
                 />
@@ -114,11 +113,10 @@ export const ManageEvent = () => {
             </div>
 
             <div>
-                <label htmlFor="startDate">Start Date:</label>
+                <label htmlFor="startDate">Event Date </label>
                 <input
                     id="startDate"
                     onChange={onChangeEventDtoDate}
-                    required
                     type="datetime-local"
                     className={errorClass(errors, "event.startDate", errorStyles.formInputError)}
                     value={trimToLength(eventFormDto.event.startDate.isoDate, 16)}
@@ -127,7 +125,7 @@ export const ManageEvent = () => {
             </div>
 
             <div>
-                <label htmlFor="startDate">End Date:</label>
+                <label htmlFor="startDate">End Date </label>
                 <input
                     id="endDate"
                     onChange={onChangeEventDtoDate}
@@ -135,7 +133,7 @@ export const ManageEvent = () => {
                     className={errorClass(errors, "event.endDate", errorStyles.formInputError)}
                     value={trimToLength(eventFormDto.event.endDate?.isoDate, 16)}
                 />
-                <Error errors={errors} fieldName="event.startDate"/>
+                <Error errors={errors} fieldName="event.endDate"/>
             </div>
             <div>
                 <label className={checkRadio.checkContainer}>
@@ -152,7 +150,7 @@ export const ManageEvent = () => {
     const createUserProfileForm = (userProfile: UserProfileDto) => (
         <div>
             <div>
-                <label htmlFor="email">Email: </label>
+                <label htmlFor="email">Email </label>
                 <input
                     id="email"
                     onChange={onChangeUserProfile}
@@ -173,7 +171,7 @@ export const ManageEvent = () => {
 
             {createPassword && (<>
                 <div>
-                    <label htmlFor="userPassword">Password: </label>
+                    <label htmlFor="userPassword">Password </label>
                     <input
                         id="passwordField"
                         onChange={onChangePassword}
@@ -182,7 +180,7 @@ export const ManageEvent = () => {
                     <Error errors={errors} fieldName="passwordField"/>
                 </div>
                 <div>
-                    <label htmlFor="eamil">Confirm Password: </label>
+                    <label htmlFor="eamil">Confirm Password </label>
                     <input
                         id="passwordConfirm"
                         onChange={onChangePassword}
@@ -202,7 +200,6 @@ export const ManageEvent = () => {
                 <input
                     id={formIdCreate([`${program.id}`, 'programName'])}
                     onChange={onEventProgramChange}
-                    required
                     value={program.programName}/>
             </div>
             <div>

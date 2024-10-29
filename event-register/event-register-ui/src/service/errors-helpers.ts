@@ -28,11 +28,34 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Fiel
 export const validateEventFormDto = (eventFormDto: EventFormDto): FieldError[] => {
     const errors: FieldError[] = [];
 
+    if (isBlankString(eventFormDto.event.eventName)) {
+        addFieldError(errors, {
+            fieldName: "event.eventName",
+            message: "Event name is required",
+        });
+    }
+
+    if (!eventFormDto.event.startDate) {
+        addFieldError(errors, {
+            fieldName: "event.startDate",
+            message: "Event date is required",
+        });
+    }
+
+    if (eventFormDto.event.startDate && eventFormDto.event.endDate
+        && eventFormDto.event.endDate.jsDate.getTime() < eventFormDto.event.startDate.jsDate.getTime()) {
+        addFieldError(errors, {
+            fieldName: "event.endDate",
+            message: "Event end date should be after event date.",
+        });
+    }
+
     if (isBlankString(eventFormDto.userProfile.email) || !EMAIL_REGEX.test(eventFormDto.userProfile.email)) {
         addFieldError(errors, {
             fieldName: "userProfile.email",
             message: "Invalid email address",
         });
     }
+
     return errors;
 }
