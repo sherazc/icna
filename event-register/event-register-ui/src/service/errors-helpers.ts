@@ -1,4 +1,4 @@
-import {FieldError, RegistrationDto} from "./service-types";
+import {EventFormDto, FieldError, RegistrationDto} from "./service-types";
 import {isBlankString} from "./utilities";
 
 const EMAIL_REGEX:RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -17,6 +17,18 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Fiel
     const errors: FieldError[] = [];
 
     if (isBlankString(registrationDto.userProfile.email) || !EMAIL_REGEX.test(registrationDto.userProfile.email)) {
+        addFieldError(errors, {
+            fieldName: "userProfile.email",
+            message: "Invalid email address",
+        });
+    }
+    return errors;
+}
+
+export const validateEventFormDto = (eventFormDto: EventFormDto): FieldError[] => {
+    const errors: FieldError[] = [];
+
+    if (isBlankString(eventFormDto.userProfile.email) || !EMAIL_REGEX.test(eventFormDto.userProfile.email)) {
         addFieldError(errors, {
             fieldName: "userProfile.email",
             message: "Invalid email address",

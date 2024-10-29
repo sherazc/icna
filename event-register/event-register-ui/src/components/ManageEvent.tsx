@@ -1,21 +1,22 @@
 import React, {useContext, useState} from "react";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {AppContext} from "../store/context";
-import {errorClass} from "../service/errors-helpers";
+import {errorClass, validateEventFormDto, validateRegistrationForm} from "../service/errors-helpers";
 import errorStyles from "./Error.module.scss";
 import {Error} from "./Error";
 import {
     defaultEventFormDto, defaultEventProgramDto,
     EventDto,
     EventFormDto, EventProgramDto,
-    FieldError,
+    FieldError, RegistrationDto,
     UserProfileDto
 } from "../service/service-types";
 import {FormPassword} from "../service/form-types";
 import {registerApis} from "../service/api/ApiRegister";
 import checkRadio from "../styles/CheckRadio.module.scss";
 import {MdDate, REGX_DATE_TIME} from "../service/DateService";
-import {castStringToNumber, formIdBreak, formIdCreate, trimToLength} from "../service/utilities";
+import {castStringToNumber, formIdBreak, formIdCreate, isEqualStrings, trimToLength} from "../service/utilities";
+import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 
 let temporaryId = -1;
 
@@ -226,7 +227,55 @@ export const ManageEvent = () => {
     }
 
 
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const loadingSaving = createLoadingActionShow("Saving Event");
+        dispatch(loadingSaving);
+        const submitErrors: FieldError[] = [];
+        const newEventFormDto: EventFormDto = {...eventFormDto};
+
+        submitErrors.push(...validateEventFormDto(newEventFormDto));
+        // submitErrors.push(...validateCreatePassword(createPassword, registrationPassword));
+        //
+        // registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
+        //
+        // if (submitErrors.length < 1) {
+        //     if (registrationForm.id) {
+        //         const existingRegistration = await regApis.findRegistrationByRegistrationId("" + registrationForm.id);
+        //         const sameEmail = isEqualStrings(existingRegistration.userProfile.email, registrationForm.userProfile.email);
+        //         if (!sameEmail) {
+        //             submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
+        //         }
+        //     } else {
+        //         submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
+        //     }
+        // }
+        //
+        // if (submitErrors.length < 1) {
+        //     if (createPassword) {
+        //         registrationForm.userProfile.userPassword = registrationPassword.passwordField;
+        //     }
+        //     const responseRegistrationDto = await regApis.saveRegistration(eventId as string, registrationForm);
+        //
+        //     if (responseRegistrationDto.id !== undefined && responseRegistrationDto.id > 0) {
+        //         let confirmationUrl = `/event/${eventId}/register-confirmation/${responseRegistrationDto.id}`
+        //         confirmationUrl = `${confirmationUrl}?isNew=${registrationForm.id ? 'false' : 'true'}`
+        //         navigate(confirmationUrl)
+        //     } else {
+        //         submitErrors.push({
+        //             fieldName: "registrationDto",
+        //             message: "Failed to save registration.",
+        //         });
+        //     }
+        // }
+
+        setErrors(submitErrors);
+        dispatch(createLoadingActionHide(loadingSaving.payload.id));
+    };
+
+
     return (
+        <form action="#" onSubmit={onSubmit}>
         <div>
             <h1>Event</h1>
             {adminUser ? "I am admin." : "I am not admin."}
@@ -241,8 +290,10 @@ export const ManageEvent = () => {
             </div>
             {eventFormDto.programs.map(p => createEventProgramForm(p))}
             <div>
+                <input type="submit" value="Submit"/>
                 <button onClick={() => navigate(cancelLink)}>Cancel</button>
             </div>
         </div>
+        </form>
     );
 }
