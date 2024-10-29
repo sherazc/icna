@@ -15,7 +15,7 @@ import {FormPassword} from "../service/form-types";
 import {registerApis} from "../service/api/ApiRegister";
 import checkRadio from "../styles/CheckRadio.module.scss";
 import {MdDate, REGX_DATE_TIME} from "../service/DateService";
-import {castStringToNumber, trimToLength} from "../service/utilities";
+import {castStringToNumber, formIdBreak, formIdCreate, trimToLength} from "../service/utilities";
 
 let temporaryId = -1;
 
@@ -45,7 +45,11 @@ export const ManageEvent = () => {
         setEventPassword({passwordConfirm: "", passwordField: ""});
     }
 
-    const onChangeRegistrationPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeEventActive = () => {
+        setEventFormDto({...eventFormDto, event: {...eventFormDto.event, active: !eventFormDto.event.active}});
+    }
+
+    const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEventPassword({...eventPassword, [event.target.id]: event.target.value});
     }
 
@@ -77,6 +81,22 @@ export const ManageEvent = () => {
         };
         setEventFormDto(eventFormDtoNew);
     }
+
+    const onEventProgramChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const [programIdString, fieldName] = formIdBreak(event.target.id)
+        const value = event.target.value;
+
+        const modifiedProgram = eventFormDto.programs.map(program => {
+            if (program.id === +programIdString) {
+                const newProgram: any = {...program};
+                newProgram[fieldName] = value;
+                return newProgram as EventProgramDto;
+            } else {
+                return program;
+            }
+        });
+        setEventFormDto({...eventFormDto, programs: modifiedProgram});
+    };
 
     const createEventDtoForm = (eventDto: EventDto) => (
         <div>
@@ -116,6 +136,14 @@ export const ManageEvent = () => {
                 />
                 <Error errors={errors} fieldName="event.startDate"/>
             </div>
+            <div>
+                <label className={checkRadio.checkContainer}>
+                    Active event
+                    <input type="checkbox" checked={eventDto.active}
+                           onChange={onChangeEventActive}/>
+                    <span className={checkRadio.checkbox}></span>
+                </label>
+            </div>
         </div>
     );
 
@@ -147,7 +175,7 @@ export const ManageEvent = () => {
                     <label htmlFor="userPassword">Password: </label>
                     <input
                         id="passwordField"
-                        onChange={onChangeRegistrationPassword}
+                        onChange={onChangePassword}
                         className={errorClass(errors, "passwordField", errorStyles.formInputError)}
                         value={eventPassword.passwordField}/>
                     <Error errors={errors} fieldName="passwordField"/>
@@ -156,7 +184,7 @@ export const ManageEvent = () => {
                     <label htmlFor="eamil">Confirm Password: </label>
                     <input
                         id="passwordConfirm"
-                        onChange={onChangeRegistrationPassword}
+                        onChange={onChangePassword}
                         className={errorClass(errors, "passwordConfirm", errorStyles.formInputError)}
                         value={eventPassword.passwordConfirm}/>
                     <Error errors={errors} fieldName="passwordConfirm"/>
@@ -167,21 +195,34 @@ export const ManageEvent = () => {
         </div>
     );
 
-    const createEventProgramsForm = (programs: EventProgramDto[]) => (
-        <div>
-
-            <a href="#" onClick={() => addEventProgram(temporaryId--)} >Add Program</a>
+    const createEventProgramForm = (program: EventProgramDto) => (
+        <div key={program.id}>
+            <div>
+                <input
+                    id={formIdCreate([`${program.id}`, 'programName'])}
+                    onChange={onEventProgramChange}
+                    required
+                    value={program.programName}/>
+            </div>
+            <div>
+                <a href="#" onClick={() => deleteEventProgram(program.id)}>❌</a>
+            </div>
         </div>
     );
 
-    const addEventProgram = (id: number) => {
+    const addEventProgram = (programId: number) => {
         const newEventProgram = defaultEventProgramDto();
-        newEventProgram.id = id;
+        newEventProgram.id = programId;
         newEventProgram.eventId = castStringToNumber(eventId);
 
         const newEventPrograms = eventFormDto.programs.map(a => a);
         newEventPrograms.push(newEventProgram);
         setEventFormDto({...eventFormDto, programs: newEventPrograms});
+    }
+
+    const deleteEventProgram = (programId: number) => {
+        const newProgramsArray = eventFormDto.programs.filter(a => a.id !== programId);
+        setEventFormDto({...eventFormDto, programs: newProgramsArray});
     }
 
 
@@ -195,7 +236,10 @@ export const ManageEvent = () => {
             <h2>Admin User</h2>
             {createUserProfileForm(eventFormDto.userProfile)}
             <h2>Event Programs</h2>
-            {createEventProgramsForm(eventFormDto.programs)}
+            <div>
+                <a href="#" onClick={() => addEventProgram(temporaryId--)}>Add Program</a>
+            </div>
+            {eventFormDto.programs.map(p => createEventProgramForm(p))}
             <div>
                 <button onClick={() => navigate(cancelLink)}>Cancel</button>
             </div>
