@@ -1,5 +1,5 @@
 import {EventFormDto, FieldError, RegistrationDto} from "./service-types";
-import {isBlankString} from "./utilities";
+import {formIdCreate, isBlankString} from "./utilities";
 
 const EMAIL_REGEX:RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
@@ -56,6 +56,15 @@ export const validateEventFormDto = (eventFormDto: EventFormDto): FieldError[] =
             message: "Invalid email address",
         });
     }
+
+    eventFormDto.programs.forEach(program => {
+        if (isBlankString(program.programName)) {
+            addFieldError(errors, {
+                fieldName: formIdCreate([`${program.id}`, 'programName']),
+                message: "Program name is required",
+            });
+        }
+    })
 
     return errors;
 }

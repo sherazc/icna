@@ -200,7 +200,9 @@ export const ManageEvent = () => {
                 <input
                     id={formIdCreate([`${program.id}`, 'programName'])}
                     onChange={onEventProgramChange}
+                    className={errorClass(errors, formIdCreate([`${program.id}`, 'programName']), errorStyles.formInputError)}
                     value={program.programName}/>
+                <Error errors={errors} fieldName={formIdCreate([`${program.id}`, 'programName'])}/>
             </div>
             <div>
                 <a href="#" onClick={() => deleteEventProgram(program.id)}>❌</a>
@@ -224,6 +226,29 @@ export const ManageEvent = () => {
     }
 
 
+    // TODO move it in Register.tsx helper
+    const validateCreatePassword = (conformPass: boolean, pass: FormPassword): FieldError[] => {
+        if (!conformPass) return [];
+        const passwordRegex: RegExp = /^.{5,}$/;
+        const fieldErrors: FieldError[] = [];
+
+        if (passwordRegex.test(pass.passwordField)) {
+            if (!isEqualStrings(pass.passwordField, pass.passwordConfirm)) {
+                fieldErrors.push({
+                    fieldName: "passwordConfirm",
+                    message: "Password and confirm password do not match.",
+                });
+            }
+        } else {
+            fieldErrors.push({
+                fieldName: "passwordField",
+                message: "Password should be 5 or more character long.",
+            });
+        }
+        return fieldErrors;
+    }
+
+
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const loadingSaving = createLoadingActionShow("Saving Event");
@@ -232,7 +257,7 @@ export const ManageEvent = () => {
         const newEventFormDto: EventFormDto = {...eventFormDto};
 
         submitErrors.push(...validateEventFormDto(newEventFormDto));
-        // submitErrors.push(...validateCreatePassword(createPassword, registrationPassword));
+        submitErrors.push(...validateCreatePassword(createPassword, eventPassword));
         //
         // registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
         //
