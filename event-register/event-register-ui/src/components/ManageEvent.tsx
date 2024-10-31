@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {AppContext} from "../store/context";
 import {errorClass, validateEventFormDto, validateRegistrationForm} from "../service/errors-helpers";
@@ -154,7 +154,6 @@ export const ManageEvent = () => {
                 <input
                     id="email"
                     onChange={onChangeUserProfile}
-                    required
                     className={errorClass(errors, "userProfile.email", errorStyles.formInputError)}
                     value={userProfile.email}/>
                 <Error errors={errors} fieldName="userProfile.email"/>
@@ -194,10 +193,10 @@ export const ManageEvent = () => {
         </div>
     );
 
-    const createEventProgramForm = (program: EventProgramDto) => (
+    const createEventProgramForm = (program: EventProgramDto, index: number) => (
         <div key={program.id}>
             <div>
-                <input
+                {index + 1}. <input
                     id={formIdCreate([`${program.id}`, 'programName'])}
                     onChange={onEventProgramChange}
                     className={errorClass(errors, formIdCreate([`${program.id}`, 'programName']), errorStyles.formInputError)}
@@ -310,7 +309,7 @@ export const ManageEvent = () => {
             <div>
                 <a href="#" onClick={() => addEventProgram(temporaryId--)}>Add Program</a>
             </div>
-            {eventFormDto.programs.map(p => createEventProgramForm(p))}
+            {eventFormDto.programs.map((p, index) => createEventProgramForm(p, index))}
             <div>
                 <input type="submit" value="Submit"/>
                 <button onClick={() => navigate(cancelLink)}>Cancel</button>

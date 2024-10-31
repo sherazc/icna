@@ -8,7 +8,7 @@ export type EventDto = {
     endDate?: MdDate,
     active: boolean
 }
-export const defaultEventDto = (): EventDto => ({id: 0, eventName: "", startDate: MdDate.currentSystemMdDate(), endDate: undefined, active: false});
+export const defaultEventDto = (): EventDto => ({id: 0, eventName: "", startDate: MdDate.currentSystemMdDate(), endDate: undefined, active: true});
 
 /**
  * Person who is attending the event.
