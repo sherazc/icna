@@ -94,12 +94,12 @@ values (1030, 10000);
 
 -- UI
 
--- insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
--- values (5000, 10, 0, 'colorPrimary', '#B8478B');
---
--- insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
--- values (5010, 10, 0, 'colorSecondary', '#47B874');
---
--- insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
--- values (5020, 10, 0, 'borderRadiusForm', '20px');
+insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
+values (5000, 10, 'VAR_COLOR', 'colorPrimary', '#B8478B');
+
+insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
+values (5010, 10, 'VAR_COLOR', 'colorSecondary', '#47B874');
+
+insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
+values (5020, 10, 'VAR_COLOR', 'borderRadiusForm', '20px');
 

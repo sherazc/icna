@@ -1,21 +1,25 @@
 package com.sc.event.service.model
 
-data class StyleVariable(val styleName: String, val styleValue: String)
+import com.sc.event.entity.ui.StyleType
 
-fun  getDefaultEntityStyleVariables() = listOf(
-    StyleVariable("colorPrimary", "#3e598e"),
-    StyleVariable("colorSecondary", "#bbb"),
-    StyleVariable("colorTertiary", "gray"),
-    StyleVariable("colorDarkText", "#222"),
-    StyleVariable("colorLightText", "#ffffffdd"),
-    StyleVariable("colorDarkHeading", "#blue"),
-    StyleVariable("colorLightHeading", "#eee"),
-    StyleVariable("colorShadow", "#00000033"),
-    StyleVariable("sizeText", "1.5rem"),
-    StyleVariable("sizeH1", "2.5rem"),
-    StyleVariable("sizeH2", "2.2rem"),
-    StyleVariable("sizeH3", "2.0rem"),
-    StyleVariable("sizeH4", "1.8rem"),
-    StyleVariable("borderRadiusForm", "5px"),
-);
+data class StyleVariable(
+    val styleName: String,
+    val styleValue: String,
+    val styleType: StyleType)
 
+fun getDefaultEntityStyleVariables() = listOf(
+    StyleVariable("colorPrimary", "#3e598e", StyleType.VAR_COLOR),
+    StyleVariable("colorSecondary", "#bbb", StyleType.VAR_COLOR),
+    StyleVariable("colorTertiary", "gray", StyleType.VAR_COLOR),
+    StyleVariable("colorDarkText", "#222", StyleType.VAR_COLOR),
+    StyleVariable("colorLightText", "#ffffffdd", StyleType.VAR_COLOR),
+    StyleVariable("colorDarkHeading", "#blue", StyleType.VAR_COLOR),
+    StyleVariable("colorLightHeading", "#eee", StyleType.VAR_COLOR),
+    StyleVariable("colorShadow", "#00000033", StyleType.VAR_COLOR),
+    StyleVariable("sizeText", "1.5rem", StyleType.VAR_SIZE),
+    StyleVariable("sizeH1", "2.5rem", StyleType.VAR_SIZE),
+    StyleVariable("sizeH2", "2.2rem", StyleType.VAR_SIZE),
+    StyleVariable("sizeH3", "2.0rem", StyleType.VAR_SIZE),
+    StyleVariable("sizeH4", "1.8rem", StyleType.VAR_SIZE),
+    StyleVariable("borderRadiusForm", "5px", StyleType.VAR_SIZE),
+)

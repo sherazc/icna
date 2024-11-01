@@ -1,5 +1,12 @@
 package com.sc.event.entity.ui
 
 enum class StyleType {
-    VAR, STYLE_SHEET
+    VAR_COLOR,
+    VAR_SIZE,
+    VAR_STRING;
+
+    companion object {
+        private val map = entries.associateBy(StyleType::name)
+        fun fromString(type: String): StyleType? = map[type]
+    }
 }

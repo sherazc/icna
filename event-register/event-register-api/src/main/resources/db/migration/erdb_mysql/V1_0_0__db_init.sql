@@ -51,7 +51,7 @@ create table style
 (
     id          bigint not null auto_increment,
     style_name  varchar(255),
-    style_type  tinyint check (style_type between 0 and 1),
+    style_type  varchar(255),
     style_value varchar(255),
     event_id    bigint not null,
     primary key (id)

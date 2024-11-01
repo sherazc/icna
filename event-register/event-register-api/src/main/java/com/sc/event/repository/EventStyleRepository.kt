@@ -15,7 +15,10 @@ interface EventStyleRepository : CrudRepository<Style, Long> {
             es.styleValue
         ) from Style es
         where es.event.id = :eventId
-        and es.styleType = 0
+        and es.styleType in (
+            com.sc.event.entity.ui.StyleType.VAR_COLOR,
+            com.sc.event.entity.ui.StyleType.VAR_SIZE,
+            com.sc.event.entity.ui.StyleType.VAR_STRING)
     """)
     fun findVarByEventId(eventId: Long): List<EventStyleDto>
 }

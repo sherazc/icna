@@ -15,7 +15,7 @@ class StyleService(private val eventStyleRepository: EventStyleRepository) {
         val defaultStyleVariables = getDefaultEntityStyleVariables()
 
         val overrideStyleVariables = eventStyleRepository.findVarByEventId(eventId)
-            .map { StyleVariable(it.styleName, it.styleValue) }
+            .map { StyleVariable(it.styleName, it.styleValue, it.type) }
 
         return defaultStyleVariables.map { default ->
             overrideStyleVariables.find { override ->
