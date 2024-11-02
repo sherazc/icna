@@ -8,7 +8,7 @@ import {
     defaultEventFormDto, defaultEventProgramDto,
     EventDto,
     EventFormDto, EventProgramDto,
-    FieldError, RegistrationDto,
+    FieldError, RegistrationDto, StyleVariable,
     UserProfileDto
 } from "../service/service-types";
 import {FormPassword} from "../service/form-types";
@@ -17,6 +17,8 @@ import checkRadio from "../styles/CheckRadio.module.scss";
 import {MdDate, REGX_DATE_TIME} from "../service/DateService";
 import {castStringToNumber, formIdBreak, formIdCreate, isEqualStrings, trimToLength} from "../service/utilities";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
+import styles from "./ManageEvent.module.scss";
+import {ColorPicker} from "./ColorPicker";
 
 let temporaryId = -1;
 
@@ -35,10 +37,25 @@ export const ManageEvent = () => {
     const [createPassword, setCreatePassword] = useState<boolean>(false)
     const [errors, setErrors] = useState<FieldError[]>([]);
     const [eventFormDto, setEventFormDto] = useState<EventFormDto>(defaultEventFormDto());
+    const [defaultStyleVariable, setDefaultStyleVariable] = useState<StyleVariable[]>([]);
     const regApis = registerApis()
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     if (authenticated && !adminUser) {
         return <Navigate to={`/event/${eventId}`}/>
+    }
+
+
+    const loadData = async () => {
+        const loadingEvent = createLoadingActionShow("Loading default data");
+        dispatch(loadingEvent);
+
+        setDefaultStyleVariable(await regApis.getDefaultVariables());
+
+        dispatch(createLoadingActionHide(loadingEvent.payload.id));
     }
 
     const onChangeCreatePassword = () => {
@@ -294,6 +311,21 @@ export const ManageEvent = () => {
         dispatch(createLoadingActionHide(loadingSaving.payload.id));
     };
 
+    const createStyleVariableForm = (styleVariable: StyleVariable, index: number) => (
+        <tr key={index}>
+            <td>{styleVariable.styleName}</td>
+            <td>{styleVariable.styleValue}</td>
+            <td><input type="text"/></td>
+            <td>
+                {styleVariable.styleType === "VAR_COLOR" &&
+                    <input className={styles.styleVariableInput} type="color"
+                       id="body" name="body" value={styleVariable.styleValue}/>}
+
+                <ColorPicker />
+            </td>
+
+        </tr>
+    );
 
     return (
         <form action="#" onSubmit={onSubmit}>
@@ -310,6 +342,22 @@ export const ManageEvent = () => {
                     <a href="#" onClick={() => addEventProgram(temporaryId--)}>Add Program</a>
                 </div>
                 {eventFormDto.programs.map((p, index) => createEventProgramForm(p, index))}
+
+                <h2>Style Variable</h2>
+                <table border={1}>
+                    <thead>
+                    <tr key="1000">
+                        <td>Name</td>
+                        <td>Default value</td>
+                        <td>Override value</td>
+                        <td></td>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {defaultStyleVariable.map((s, i) => createStyleVariableForm(s, i))}
+                    </tbody>
+                </table>
                 <div>
                     <input type="submit" value="Submit"/>
                     <button onClick={() => navigate(cancelLink)}>Cancel</button>

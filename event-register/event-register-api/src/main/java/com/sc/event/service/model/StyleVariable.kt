@@ -9,12 +9,12 @@ data class StyleVariable(
 
 fun getDefaultEntityStyleVariables() = listOf(
     StyleVariable("colorPrimary", "#3e598e", StyleType.VAR_COLOR),
-    StyleVariable("colorSecondary", "#bbb", StyleType.VAR_COLOR),
-    StyleVariable("colorTertiary", "gray", StyleType.VAR_COLOR),
-    StyleVariable("colorDarkText", "#222", StyleType.VAR_COLOR),
+    StyleVariable("colorSecondary", "#bbbbbb", StyleType.VAR_COLOR),
+    StyleVariable("colorTertiary", "#808080", StyleType.VAR_COLOR),
+    StyleVariable("colorDarkText", "#222222", StyleType.VAR_COLOR),
     StyleVariable("colorLightText", "#ffffffdd", StyleType.VAR_COLOR),
-    StyleVariable("colorDarkHeading", "#blue", StyleType.VAR_COLOR),
-    StyleVariable("colorLightHeading", "#eee", StyleType.VAR_COLOR),
+    StyleVariable("colorDarkHeading", "#0000ff", StyleType.VAR_COLOR),
+    StyleVariable("colorLightHeading", "#eeeeee", StyleType.VAR_COLOR),
     StyleVariable("colorShadow", "#00000033", StyleType.VAR_COLOR),
     StyleVariable("sizeText", "1.5rem", StyleType.VAR_SIZE),
     StyleVariable("sizeH1", "2.5rem", StyleType.VAR_SIZE),
