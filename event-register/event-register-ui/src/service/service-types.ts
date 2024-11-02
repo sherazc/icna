@@ -74,10 +74,12 @@ export const defaultRegistrationDto = (): RegistrationDto => ({
     userProfile: defaultUserProfileDto()
 });
 
+export type StyleType = "VAR_COLOR"| "VAR_SIZE" | "VAR_STRING";
 
 export type StyleVariable = {
     styleName: string;
     styleValue: string;
+    styleType: StyleType;
 };
 
 /**

@@ -38,7 +38,7 @@ export const ManageEvent = () => {
     const regApis = registerApis()
 
     if (authenticated && !adminUser) {
-        return <Navigate to={`/event/${eventId}`} />
+        return <Navigate to={`/event/${eventId}`}/>
     }
 
     const onChangeCreatePassword = () => {
@@ -65,13 +65,13 @@ export const ManageEvent = () => {
 
     const onChangeEventDtoDate = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.value && !REGX_DATE_TIME.test(event.target.value)) return;
-            const eventDto = eventFormDto.event
-            const eventDate = new MdDate(event.target.value)
-            const eventFormDtoNew: EventFormDto = {
-                ...eventFormDto,
-                event: {...eventDto, [event.target.id]: eventDate}
-            };
-            setEventFormDto(eventFormDtoNew);
+        const eventDto = eventFormDto.event
+        const eventDate = new MdDate(event.target.value)
+        const eventFormDtoNew: EventFormDto = {
+            ...eventFormDto,
+            event: {...eventDto, [event.target.id]: eventDate}
+        };
+        setEventFormDto(eventFormDtoNew);
     }
 
     const onChangeUserProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -197,10 +197,10 @@ export const ManageEvent = () => {
         <div key={program.id}>
             <div>
                 {index + 1}. <input
-                    id={formIdCreate([`${program.id}`, 'programName'])}
-                    onChange={onEventProgramChange}
-                    className={errorClass(errors, formIdCreate([`${program.id}`, 'programName']), errorStyles.formInputError)}
-                    value={program.programName}/>
+                id={formIdCreate([`${program.id}`, 'programName'])}
+                onChange={onEventProgramChange}
+                className={errorClass(errors, formIdCreate([`${program.id}`, 'programName']), errorStyles.formInputError)}
+                value={program.programName}/>
                 <Error errors={errors} fieldName={formIdCreate([`${program.id}`, 'programName'])}/>
             </div>
             <div>
@@ -297,24 +297,24 @@ export const ManageEvent = () => {
 
     return (
         <form action="#" onSubmit={onSubmit}>
-        <div>
-            <h1>Event</h1>
-            {adminUser ? "I am admin." : "I am not admin."}
-            {authenticated ? "I am authenticated." : "I am not authenticated."}
-            <h2>Event Details</h2>
-            {createEventDtoForm(eventFormDto.event)}
-            <h2>Admin User</h2>
-            {createUserProfileForm(eventFormDto.userProfile)}
-            <h2>Event Programs</h2>
             <div>
-                <a href="#" onClick={() => addEventProgram(temporaryId--)}>Add Program</a>
+                <h1>Event</h1>
+                {adminUser ? "I am admin." : "I am not admin."}
+                {authenticated ? "I am authenticated." : "I am not authenticated."}
+                <h2>Event Details</h2>
+                {createEventDtoForm(eventFormDto.event)}
+                <h2>Admin User</h2>
+                {createUserProfileForm(eventFormDto.userProfile)}
+                <h2>Event Programs</h2>
+                <div>
+                    <a href="#" onClick={() => addEventProgram(temporaryId--)}>Add Program</a>
+                </div>
+                {eventFormDto.programs.map((p, index) => createEventProgramForm(p, index))}
+                <div>
+                    <input type="submit" value="Submit"/>
+                    <button onClick={() => navigate(cancelLink)}>Cancel</button>
+                </div>
             </div>
-            {eventFormDto.programs.map((p, index) => createEventProgramForm(p, index))}
-            <div>
-                <input type="submit" value="Submit"/>
-                <button onClick={() => navigate(cancelLink)}>Cancel</button>
-            </div>
-        </div>
         </form>
     );
 }

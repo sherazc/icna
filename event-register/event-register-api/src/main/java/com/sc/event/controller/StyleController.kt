@@ -16,7 +16,17 @@ class StyleController(private val styleService: StyleService) {
     fun getDefaultVariables(): ResponseEntity<List<StyleVariable>> =
         ResponseEntity.ok(styleService.getDefaultVariables())
 
+    /**
+     * Merges both default and customized variables
+     */
     @GetMapping("/variables/eventId/{eventId}")
     fun findStyleVariablesByEventId(@PathVariable eventId: Long): ResponseEntity<List<StyleVariable>> =
         ResponseEntity.ok(styleService.findVarByEventId(eventId))
+
+    /**
+     * Gets only customized variables
+     */
+    @GetMapping("/variables/custom/eventId/{eventId}")
+    fun findCustomStyleVariablesByEventId(@PathVariable eventId: Long): ResponseEntity<List<StyleVariable>> =
+        ResponseEntity.ok(styleService.findCustomVarByEventId(eventId))
 }

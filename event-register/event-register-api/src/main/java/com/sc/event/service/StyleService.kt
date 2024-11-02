@@ -23,4 +23,7 @@ class StyleService(private val eventStyleRepository: EventStyleRepository) {
             } ?: default
         }
     }
+
+    fun findCustomVarByEventId(eventId: Long): List<StyleVariable>  =  eventStyleRepository
+        .findVarByEventId(eventId).map { StyleVariable(it.styleName, it.styleValue, it.type) }
 }
