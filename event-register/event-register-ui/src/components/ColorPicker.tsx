@@ -56,49 +56,50 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ value, onColorChange }) => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
-            {/* Hidden color input */}
-            <input
-                type="color"
-                value={color.slice(0, 7) || '#FFFFFF'}
-                onChange={handleHexChange}
-                ref={colorInputRef}
-                style={{ display: 'none' }}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                {/* Hex input for color value on the left */}
+                <input
+                    type="text"
+                    value={color.length === 9 ? color.toUpperCase() : color.toUpperCase()}
+                    onChange={handleHexChange}
+                    maxLength={9} // Including '#'
+                    style={{ width: '100px', textAlign: 'center', marginRight: '10px' }}
+                />
 
-            {/* Clickable preview div to show color with transparency */}
-            <div
-                onClick={openColorPicker}
-                style={{
-                    width: '100px',
-                    height: '50px',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    position: 'relative',
-                    marginBottom: '10px',
-                    overflow: 'hidden',
-                    backgroundColor: color.slice(0, 7) || '#FFFFFF',
-                    opacity: alphaDecimal,
-                    border: '1px solid gray',
-                }}
-            ></div>
+                {/* Hidden color input */}
+                <input
+                    type="color"
+                    value={color.slice(0, 7) || '#FFFFFF'}
+                    onChange={handleHexChange}
+                    ref={colorInputRef}
+                    style={{ display: 'none' }}
+                />
 
-            {/* Hex input for color value */}
-            <input
-                type="text"
-                value={color.length === 9 ? color.toUpperCase() : color.toUpperCase()} // Display hex only
-                onChange={handleHexChange}
-                maxLength={9} // Including '#'
-                style={{ width: '100px', textAlign: 'center', marginBottom: '10px' }}
-            />
+                {/* Clickable preview div to show color with transparency */}
+                <div
+                    onClick={openColorPicker}
+                    style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        backgroundColor: color.slice(0, 7) || '#FFFFFF',
+                        opacity: alphaDecimal,
+                        border: '1px solid gray',
+                    }}
+                ></div>
+            </div>
 
-            {/* Alpha slider */}
+            {/* Alpha slider at the bottom */}
             <input
                 type="range"
                 min={0}
                 max={255}
                 value={parseInt(color.slice(7, 9) || 'FF', 16)}
                 onChange={handleAlphaChange}
-                style={{ width: '100px' }}
+                style={{ width: '160px' }}
             />
         </div>
     );
