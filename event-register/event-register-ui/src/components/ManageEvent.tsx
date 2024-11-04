@@ -8,7 +8,7 @@ import {
     defaultEventFormDto, defaultEventProgramDto,
     EventDto,
     EventFormDto, EventProgramDto,
-    FieldError, RegistrationDto, StyleVariable,
+    FieldError, StyleVariable,
     UserProfileDto
 } from "../service/service-types";
 import {FormPassword} from "../service/form-types";
@@ -18,7 +18,8 @@ import {MdDate, REGX_DATE_TIME} from "../service/DateService";
 import {castStringToNumber, formIdBreak, formIdCreate, isEqualStrings, trimToLength} from "../service/utilities";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./ManageEvent.module.scss";
-import {ColorPicker} from "./ColorPicker";
+import {ColorPicker2} from "./ColorPicker2";
+import ColorPicker from "./ColorPicker";
 
 let temporaryId = -1;
 
@@ -320,8 +321,7 @@ export const ManageEvent = () => {
                 {styleVariable.styleType === "VAR_COLOR" &&
                     <input className={styles.styleVariableInput} type="color"
                        id="body" name="body" value={styleVariable.styleValue}/>}
-
-                <ColorPicker />
+                <ColorPicker value="#0000ffff"/>
             </td>
 
         </tr>
