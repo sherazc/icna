@@ -83,7 +83,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ value, onColorChange }) => {
                     value={color.length === 9 ? color.toUpperCase() : color.toUpperCase()} // Display hex only
                     onChange={handleHexChange}
                     maxLength={9} // Including '#'
-                    style={{ width: '100px', textAlign: 'center', marginRight: '10px' }}
+                    style={{ width: '150px', textAlign: 'center', marginRight: '10px'}}
                 />
 
                 {/* Visible color input */}
@@ -91,7 +91,10 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ value, onColorChange }) => {
                     type="color"
                     value={color.slice(0, 7) || '#FFFFFF'}
                     onChange={(e) => handleHexChange(e as any)} // Cast as any to reuse handleHexChange
-                    style={{ width: '40px', height: '40px', cursor: 'pointer', border: 'none' }}
+                    style={{
+                        width: '55px', height: '55px', cursor: 'pointer',
+                        border: 'none', boxSizing: "content-box", margin: 0,
+                        padding: 0}}
                 />
             </div>
 

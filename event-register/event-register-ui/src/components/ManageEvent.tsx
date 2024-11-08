@@ -317,19 +317,25 @@ export const ManageEvent = () => {
             <td>{styleVariable.styleName}</td>
             <td>
                 {styleVariable.styleType === "VAR_COLOR" &&
-                    <input className={styles.styleVariableInput} type="color"
-                           id="body" name="body" value={styleVariable.styleValue}/>}
+                    <div style={{
+                        width: "55px", height: "55px",
+                        backgroundColor: styleVariable.styleValue.slice(0, 7) || '#FFFFFF',
+                        borderRadius: "8px",
+                        display: "inline-block",
+                        border: "1px solid gray",
+                        marginBottom: "10px",
+                    }}></div>}
                 {styleVariable.styleValue}
             </td>
             <td>
-                {styleVariable.styleType === "VAR_COLOR" && <ColorPicker />}
+                {styleVariable.styleType === "VAR_COLOR" && <ColorPicker/>}
             </td>
         </tr>
     );
 
     return (
         <form action="#" onSubmit={onSubmit}>
-            <div>
+        <div>
                 <h1>Event</h1>
                 {adminUser ? "I am admin." : "I am not admin."}
                 {authenticated ? "I am authenticated." : "I am not authenticated."}
