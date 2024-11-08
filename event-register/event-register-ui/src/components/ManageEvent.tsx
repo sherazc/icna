@@ -315,15 +315,15 @@ export const ManageEvent = () => {
     const createStyleVariableForm = (styleVariable: StyleVariable, index: number) => (
         <tr key={index}>
             <td>{styleVariable.styleName}</td>
-            <td>{styleVariable.styleValue}</td>
-            <td><input type="text"/></td>
             <td>
                 {styleVariable.styleType === "VAR_COLOR" &&
                     <input className={styles.styleVariableInput} type="color"
-                       id="body" name="body" value={styleVariable.styleValue}/>}
-                <ColorPicker value="#0000ffff"/>
+                           id="body" name="body" value={styleVariable.styleValue}/>}
+                {styleVariable.styleValue}
             </td>
-
+            <td>
+                {styleVariable.styleType === "VAR_COLOR" && <ColorPicker />}
+            </td>
         </tr>
     );
 
@@ -350,8 +350,6 @@ export const ManageEvent = () => {
                         <td>Name</td>
                         <td>Default value</td>
                         <td>Override value</td>
-                        <td></td>
-
                     </tr>
                     </thead>
                     <tbody>
