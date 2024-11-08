@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 interface ColorPickerProps {
+    name: string;
     value?: string; // Optional 8-character hex color value
-    onColorChange?: (color: string) => void; // Callback for color changes
+    onColorChange?: (name: string, color: string) => void; // Callback for color changes
 }
 
-const ColorPicker: React.FC<ColorPickerProps> = ({ value, onColorChange }) => {
+const ColorPicker: React.FC<ColorPickerProps> = ({ name, value, onColorChange }) => {
     const [color, setColor] = useState<string>(value || ''); // Initialize as blank if no value is provided
 
     // Update local state when value prop changes
@@ -24,13 +25,13 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ value, onColorChange }) => {
 
         // Handle different lengths for hex input
         if (newHex.length === 4 || newHex.length === 7) {
-            // 3-character or 6-character hex without alpha; treat as fully opaque (FF)
+            // 3-character or 6-character hex without an alpha; treat as fully opaque (FF)
             setColor(newHex);
-            if (onColorChange) onColorChange(newHex + 'FF');
+            if (onColorChange) onColorChange(name, newHex + 'FF');
         } else if (newHex.length === 9) {
             // 8-character hex with alpha
             setColor(newHex);
-            if (onColorChange) onColorChange(newHex);
+            if (onColorChange) onColorChange(name, newHex);
         } else {
             // Allow partial input for typing
             setColor(newHex);
@@ -42,10 +43,10 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ value, onColorChange }) => {
         const alphaHex = parseInt(e.target.value).toString(16).padStart(2, '0');
         const updatedColor = color.length >= 7 ? color.slice(0, 7) + alphaHex : '#FFFFFF' + alphaHex;
         setColor(updatedColor);
-        if (onColorChange) onColorChange(updatedColor);
+        if (onColorChange) onColorChange(name, updatedColor);
     };
 
-    // Get alpha as decimal for preview background
+    // Get alpha as decimal for a preview background
     const alphaDecimal = color.length === 9 ? parseInt(color.slice(7, 9), 16) / 255 : 1;
 
     return (

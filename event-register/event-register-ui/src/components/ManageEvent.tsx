@@ -316,19 +316,20 @@ export const ManageEvent = () => {
         <tr key={index}>
             <td>{styleVariable.styleName}</td>
             <td>
-                {styleVariable.styleType === "VAR_COLOR" &&
-                    <div style={{
-                        width: "55px", height: "55px",
-                        backgroundColor: styleVariable.styleValue.slice(0, 7) || '#FFFFFF',
-                        borderRadius: "8px",
-                        display: "inline-block",
-                        border: "1px solid gray",
-                        marginBottom: "10px",
-                    }}></div>}
-                {styleVariable.styleValue}
+                <div className={styles.defaultValueContainer}>
+                    {styleVariable.styleType === "VAR_COLOR" &&
+                        <div className={styles.previewBox} style={{
+                            backgroundColor: styleVariable.styleValue.slice(0, 7) || '#FFFFFF',
+                        }}></div>}
+                    {styleVariable.styleValue}
+                </div>
             </td>
             <td>
-                {styleVariable.styleType === "VAR_COLOR" && <ColorPicker/>}
+                {styleVariable.styleType === "VAR_COLOR" &&
+                    <ColorPicker name="MyColorPicker" onColorChange={(n, v) => {
+                        console.log("color picker", n, v);
+                    }}/>
+                }
             </td>
         </tr>
     );

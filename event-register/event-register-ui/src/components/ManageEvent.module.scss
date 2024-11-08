@@ -1,7 +1,15 @@
-.styleVariableInput {
-  margin: 0;
-  padding: 0;
-  box-sizing: content-box;
-  width: 80px;
-  height: 50px;
+@import "../styles/StyleVariables.module";
+
+.defaultValueContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.previewBox {
+  width: 55px;
+  height: 55px;
+  border-radius: $borderRadiusForm;
+  border: 1px solid $gray5;
+  margin: 10px;
 }
