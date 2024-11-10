@@ -38,8 +38,9 @@ export const ManageEvent = () => {
     const [createPassword, setCreatePassword] = useState<boolean>(false)
     const [errors, setErrors] = useState<FieldError[]>([]);
     const [eventFormDto, setEventFormDto] = useState<EventFormDto>(defaultEventFormDto());
-    const [defaultStyleVariable, setDefaultStyleVariable] = useState<StyleVariable[]>([]);
-    const regApis = registerApis()
+    const [defaultStyleVariables, setDefaultStyleVariables] = useState<StyleVariable[]>([]);
+    const [customStyleVariables, setCustomStyleVariables] = useState<StyleVariable[]>([]);
+    const regApis = registerApis();
 
     useEffect(() => {
         loadData();
@@ -54,7 +55,10 @@ export const ManageEvent = () => {
         const loadingEvent = createLoadingActionShow("Loading default data");
         dispatch(loadingEvent);
 
-        setDefaultStyleVariable(await regApis.getDefaultVariables());
+        setDefaultStyleVariables(await regApis.getDefaultVariables());
+        if (eventId) {
+            setCustomStyleVariables(await regApis.findStyleVariablesCustomByEventId(eventId));
+        }
 
         dispatch(createLoadingActionHide(loadingEvent.payload.id));
     }
@@ -265,6 +269,30 @@ export const ManageEvent = () => {
         return fieldErrors;
     }
 
+    const createStyleVariableForm = (styleVariable: StyleVariable, index: number) => {
+        const customStyleVariable = customStyleVariables.find(
+            v => v.styleName === styleVariable.styleName);
+
+        return (<tr key={index}>
+            <td>{styleVariable.styleName}</td>
+            <td>
+                <div className={styles.defaultValueContainer}>
+                    {styleVariable.styleType === "VAR_COLOR" &&
+                        <div className={styles.previewBox} style={{
+                            backgroundColor: styleVariable.styleValue.slice(0, 7) || '#FFFFFF',
+                        }}></div>}
+                    {styleVariable.styleValue}
+                </div>
+            </td>
+            <td>
+                {styleVariable.styleType === "VAR_COLOR" &&
+                    <ColorPicker name="MyColorPicker" onColorChange={(n, v) => {
+                        console.log("color picker", n, v);
+                    }}/>
+                }
+            </td>
+        </tr>);
+    }
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -312,31 +340,9 @@ export const ManageEvent = () => {
         dispatch(createLoadingActionHide(loadingSaving.payload.id));
     };
 
-    const createStyleVariableForm = (styleVariable: StyleVariable, index: number) => (
-        <tr key={index}>
-            <td>{styleVariable.styleName}</td>
-            <td>
-                <div className={styles.defaultValueContainer}>
-                    {styleVariable.styleType === "VAR_COLOR" &&
-                        <div className={styles.previewBox} style={{
-                            backgroundColor: styleVariable.styleValue.slice(0, 7) || '#FFFFFF',
-                        }}></div>}
-                    {styleVariable.styleValue}
-                </div>
-            </td>
-            <td>
-                {styleVariable.styleType === "VAR_COLOR" &&
-                    <ColorPicker name="MyColorPicker" onColorChange={(n, v) => {
-                        console.log("color picker", n, v);
-                    }}/>
-                }
-            </td>
-        </tr>
-    );
-
     return (
         <form action="#" onSubmit={onSubmit}>
-        <div>
+            <div>
                 <h1>Event</h1>
                 {adminUser ? "I am admin." : "I am not admin."}
                 {authenticated ? "I am authenticated." : "I am not authenticated."}
@@ -360,7 +366,7 @@ export const ManageEvent = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {defaultStyleVariable.map((s, i) => createStyleVariableForm(s, i))}
+                    {defaultStyleVariables.map((s, i) => createStyleVariableForm(s, i))}
                     </tbody>
                 </table>
                 <div>

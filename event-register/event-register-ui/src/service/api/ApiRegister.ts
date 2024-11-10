@@ -28,7 +28,8 @@ export const registerEndpoints = () => {
         epFindRegistrationByUserProfileId: (userProfileId: string) => `${baseUrl}/api/registrations/user-profile/${userProfileId}`,
         epSaveRegistration: (eventId: string) => `${baseUrl}/api/registrations/eventId/${eventId}`,
         epGetDefaultVariables: () => `${baseUrl}/api/styles/variables/default`,
-        epFindStyleVariablesByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/eventId/${eventId}`,
+        epFindStyleVariablesAllByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/eventId/${eventId}`,
+        epFindStyleVariablesCustomByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/custom/eventId/${eventId}`,
         epLoginToken: () => `${baseUrl}/api/login/token`,
         epGetUserProfile: (userProfileId: string) => `${baseUrl}/api/user-profile/${userProfileId}`,
         epFindUserProfile: (eventId: string, email: string) => `${baseUrl}/api/user-profile/find?eventId=${eventId}&userEmail=${email}`,
@@ -114,7 +115,13 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             return callApiIntercept(request, interceptorCbs);
         },
         findStyleVariablesByEventId: (eventId: string): Promise<StyleVariable[]> => {
-            const endpoint = endpoints.epFindStyleVariablesByEventId(eventId);
+            const endpoint = endpoints.epFindStyleVariablesAllByEventId(eventId);
+            const request: ApiRequest = {endpoint};
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
+        },
+        findStyleVariablesCustomByEventId: (eventId: string): Promise<StyleVariable[]> => {
+            const endpoint = endpoints.epFindStyleVariablesCustomByEventId(eventId);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
