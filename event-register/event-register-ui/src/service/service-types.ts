@@ -136,14 +136,14 @@ export type FlagDto = {
 }
 
 export type EventFormDto = {
-    userProfile: UserProfileDto;
+    adminUserProfile: UserProfileDto;
     event: EventDto,
     programs: EventProgramDto[],
     styleVariable: StyleVariable[],
 }
 
 export const defaultEventFormDto = ():EventFormDto => ({
-    userProfile: defaultUserProfileDto(),
+    adminUserProfile: defaultUserProfileDto(),
     event: defaultEventDto(),
     programs: [],
     styleVariable: []

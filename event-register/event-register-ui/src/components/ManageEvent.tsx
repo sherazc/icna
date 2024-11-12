@@ -39,7 +39,6 @@ export const ManageEvent = () => {
     const [errors, setErrors] = useState<FieldError[]>([]);
     const [eventFormDto, setEventFormDto] = useState<EventFormDto>(defaultEventFormDto());
     const [defaultStyleVariables, setDefaultStyleVariables] = useState<StyleVariable[]>([]);
-    const [customStyleVariables, setCustomStyleVariables] = useState<StyleVariable[]>([]);
     const regApis = registerApis();
 
     useEffect(() => {
@@ -57,7 +56,12 @@ export const ManageEvent = () => {
 
         setDefaultStyleVariables(await regApis.getDefaultVariables());
         if (eventId) {
-            setCustomStyleVariables(await regApis.findStyleVariablesCustomByEventId(eventId));
+            setEventFormDto({...eventFormDto,
+                event: await regApis.findEventById(eventId),
+                styleVariable: await regApis.findStyleVariablesCustomByEventId(eventId),
+                programs: await regApis.findProgramsByEventId(eventId),
+
+            });
         }
 
         dispatch(createLoadingActionHide(loadingEvent.payload.id));
@@ -96,11 +100,11 @@ export const ManageEvent = () => {
         setEventFormDto(eventFormDtoNew);
     }
 
-    const onChangeUserProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const existingUserProfile = eventFormDto.userProfile
+    const onChangeAdminUserProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const existingUserProfile = eventFormDto.adminUserProfile
         const eventFormDtoNew: EventFormDto = {
             ...eventFormDto,
-            userProfile: {...existingUserProfile, [event.target.id]: event.target.value}
+            adminUserProfile: {...existingUserProfile, [event.target.id]: event.target.value}
         };
         setEventFormDto(eventFormDtoNew);
     }
@@ -169,16 +173,16 @@ export const ManageEvent = () => {
     );
 
 
-    const createUserProfileForm = (userProfile: UserProfileDto) => (
+    const createAdminUserProfileForm = (adminUserProfile: UserProfileDto) => (
         <div>
             <div>
                 <label htmlFor="email">Email </label>
                 <input
                     id="email"
-                    onChange={onChangeUserProfile}
-                    className={errorClass(errors, "userProfile.email", errorStyles.formInputError)}
-                    value={userProfile.email}/>
-                <Error errors={errors} fieldName="userProfile.email"/>
+                    onChange={onChangeAdminUserProfile}
+                    className={errorClass(errors, "adminUserProfile.email", errorStyles.formInputError)}
+                    value={adminUserProfile.email}/>
+                <Error errors={errors} fieldName="adminUserProfile.email"/>
             </div>
 
             <div>
@@ -270,8 +274,9 @@ export const ManageEvent = () => {
     }
 
     const createStyleVariableForm = (styleVariable: StyleVariable, index: number) => {
-        const customStyleVariable = customStyleVariables.find(
+        const customStyleVariable = eventFormDto.styleVariable.find(
             v => v.styleName === styleVariable.styleName);
+        const customStyleValue = customStyleVariable?.styleValue ? customStyleVariable.styleValue : "";
 
         return (<tr key={index}>
             <td>{styleVariable.styleName}</td>
@@ -286,9 +291,23 @@ export const ManageEvent = () => {
             </td>
             <td>
                 {styleVariable.styleType === "VAR_COLOR" &&
-                    <ColorPicker name="MyColorPicker" onColorChange={(n, v) => {
-                        console.log("color picker", n, v);
-                    }}/>
+                    <ColorPicker
+                        name="MyColorPicker"
+                        value={customStyleValue}
+                        onColorChange={(n, v) => {
+                            console.log("color picker", n, v);
+                        }}/>
+                }
+
+                {styleVariable.styleType !== "VAR_COLOR" &&
+                    <input
+                        type="text"
+                        name="MyColorPicker"
+                        value={customStyleValue}
+                        onChange={(e) => {
+                            console.log("Style field", e.target.name, e.target.value);
+                        }}
+                    />
                 }
             </td>
         </tr>);
@@ -349,7 +368,7 @@ export const ManageEvent = () => {
                 <h2>Event Details</h2>
                 {createEventDtoForm(eventFormDto.event)}
                 <h2>Admin User</h2>
-                {createUserProfileForm(eventFormDto.userProfile)}
+                {createAdminUserProfileForm(eventFormDto.adminUserProfile)}
                 <h2>Event Programs</h2>
                 <div>
                     <a href="#" onClick={() => addEventProgram(temporaryId--)}>Add Program</a>
