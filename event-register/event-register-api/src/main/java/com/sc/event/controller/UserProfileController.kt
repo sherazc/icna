@@ -45,9 +45,9 @@ class UserProfileController(private val userProfileService: UserProfileService) 
         return ResponseEntity.ok(FlagDto(emailAlreadyExists))
     }
 
-    @GetMapping("/admin/event/{eventId}")
-    fun findAdminUser(@PathVariable eventId: Long): ResponseEntity<UserProfileDto> {
-        val adminUser = userProfileService.findAdminUser(eventId)
+    @GetMapping("/event/{eventId}/admin")
+    fun findEventAdmin(@PathVariable eventId: Long): ResponseEntity<UserProfileDto> {
+        val adminUser = userProfileService.findEventAdmin(eventId)
         return if (adminUser == null) ResponseEntity.notFound().build()
         else ResponseEntity.ok(adminUser)
     }
