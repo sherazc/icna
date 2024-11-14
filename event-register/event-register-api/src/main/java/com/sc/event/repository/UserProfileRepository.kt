@@ -5,6 +5,7 @@ import com.sc.event.entity.auth.UserProfile
 import com.sc.event.entity.auth.UserRole
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
 import java.util.*
 
 interface UserProfileRepository : CrudRepository<UserProfile, Long> {
@@ -25,5 +26,15 @@ interface UserProfileRepository : CrudRepository<UserProfile, Long> {
     """)
     fun findRolesByEventAndEmail(event:Long, email: String): Set<UserRole>
 
-
+    @Query("""
+        select new com.sc.event.dto.UserProfileDto(
+            u.id, u.email, u.userPassword, u.event.id)
+        from UserProfile u 
+        join u.userRoles ur 
+        where lower(ur.roleName) = lower(:roleName)
+        and u.event.id = :eventId
+       """)
+    fun findByEventIdAndRoleName(
+        @Param("eventId") eventId: Long,
+        @Param("roleName") roleName: String): List<UserProfileDto>
 }

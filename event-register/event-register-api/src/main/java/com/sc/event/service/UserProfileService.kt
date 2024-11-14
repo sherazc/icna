@@ -10,6 +10,7 @@ import com.sc.event.mapper.AttendeeMapper
 import com.sc.event.mapper.UserProfileMapper
 import com.sc.event.repository.UserProfileRepository
 import com.sc.event.service.model.AuthRole
+import org.springframework.data.repository.query.Param
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -85,4 +86,9 @@ class UserProfileService(
 
     private fun encodePassword(password: String?): String? =
         if (password.isNullOrEmpty()) password else passwordEncoder.encode(password)
+
+    fun findAdminUser(eventId: Long): UserProfileDto? {
+        val userProfiles = userProfileRepository.findByEventIdAndRoleName(eventId, AuthRole.ADMIN.toString())
+        return if (userProfiles.isEmpty()) null else userProfiles[0]
+    }
 }

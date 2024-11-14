@@ -39,9 +39,16 @@ class UserProfileController(private val userProfileService: UserProfileService) 
         @RequestParam(required = true, name = "userEmail") userEmail: String): ResponseEntity<FlagDto> {
 
         val emailAlreadyExists: Boolean = userProfileService.findByEventIdAndUserEmailNoPassword(eventId, userEmail)
-            .map { up -> userEmail.equals(up.email, true)}
+            .map { up -> userEmail.equals(up.email, true) }
             .orElse(false)
 
         return ResponseEntity.ok(FlagDto(emailAlreadyExists))
+    }
+
+    @GetMapping("/admin/event/{eventId}")
+    fun findAdminUser(@PathVariable eventId: Long): ResponseEntity<UserProfileDto> {
+        val adminUser = userProfileService.findAdminUser(eventId)
+        return if (adminUser == null) ResponseEntity.notFound().build()
+        else ResponseEntity.ok(adminUser)
     }
 }
