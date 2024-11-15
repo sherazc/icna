@@ -60,7 +60,7 @@ export const ManageEvent = () => {
                 event: await regApis.findEventById(eventId),
                 styleVariable: await regApis.findStyleVariablesCustomByEventId(eventId),
                 programs: await regApis.findProgramsByEventId(eventId),
-
+                adminUserProfile: await regApis.findEventAdmin(eventId)
             });
         }
 

@@ -34,6 +34,7 @@ export const registerEndpoints = () => {
         epGetUserProfile: (userProfileId: string) => `${baseUrl}/api/user-profile/${userProfileId}`,
         epFindUserProfile: (eventId: string, email: string) => `${baseUrl}/api/user-profile/find?eventId=${eventId}&userEmail=${email}`,
         epIsEmailExist: (eventId: string, email: string) => `${baseUrl}/api/user-profile/email/exists?eventId=${eventId}&userEmail=${email}`,
+        epFindEventAdmin: (eventId: string) => `${baseUrl}/api/user-profile/event/${eventId}/admin`,
     }
 }
 
@@ -157,7 +158,14 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
+        },
+        findEventAdmin: (eventId: string): Promise<UserProfileDto> => {
+            const endpoint = endpoints.epFindEventAdmin(eventId);
+            const request: ApiRequest = {endpoint};
+            addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
         }
+
 
     }
     return api;
