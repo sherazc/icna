@@ -15,7 +15,14 @@ import {FormPassword} from "../service/form-types";
 import {registerApis} from "../service/api/ApiRegister";
 import checkRadio from "../styles/CheckRadio.module.scss";
 import {MdDate, REGX_DATE_TIME} from "../service/DateService";
-import {castStringToNumber, formIdBreak, formIdCreate, isEqualStrings, trimToLength} from "../service/utilities";
+import {
+    castStringToNumber,
+    formIdBreak,
+    formIdCreate, isBlankString,
+    isEqualStrings,
+    isNotBlankString,
+    trimToLength
+} from "../service/utilities";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./ManageEvent.module.scss";
 import {ColorPicker2} from "./ColorPicker2";
@@ -250,8 +257,6 @@ export const ManageEvent = () => {
         setEventFormDto({...eventFormDto, programs: newProgramsArray});
     }
 
-
-    // TODO move it in Register.tsx helper
     const validateCreatePassword = (conformPass: boolean, pass: FormPassword): FieldError[] => {
         if (!conformPass) return [];
         const passwordRegex: RegExp = /^.{5,}$/;
@@ -273,11 +278,27 @@ export const ManageEvent = () => {
         return fieldErrors;
     }
 
+
+    const onChangeStyleVariable = (name: string, value: string) => {
+        console.log("SV", name, value);
+
+        if (isBlankString(value)) {
+            // TODO remove custom variable
+        } else {
+            // TODO: if the value already exists replace its value
+            // TODO:    else add it
+        }
+
+        // setEventFormDto({...eventFormDto,
+        //
+        //     styleVariable: {...eventFormDto.styleVariable, }
+        // });
+    }
+
     const createStyleVariableForm = (styleVariable: StyleVariable, index: number) => {
         const customStyleVariable = eventFormDto.styleVariable.find(
             v => v.styleName === styleVariable.styleName);
         const customStyleValue = customStyleVariable?.styleValue ? customStyleVariable.styleValue : "";
-
         return (<tr key={index}>
             <td>{styleVariable.styleName}</td>
             <td>
@@ -292,21 +313,19 @@ export const ManageEvent = () => {
             <td>
                 {styleVariable.styleType === "VAR_COLOR" &&
                     <ColorPicker
-                        name="MyColorPicker"
+                        name={styleVariable.styleName}
                         value={customStyleValue}
-                        onColorChange={(n, v) => {
-                            console.log("color picker", n, v);
-                        }}/>
+                        onColorChange={onChangeStyleVariable}/>
                 }
 
                 {styleVariable.styleType !== "VAR_COLOR" &&
                     <input
                         type="text"
-                        name="MyColorPicker"
+                        name={styleVariable.styleName}
                         value={customStyleValue}
-                        onChange={(e) => {
-                            console.log("Style field", e.target.name, e.target.value);
-                        }}
+                        onChange={(e) =>
+                            onChangeStyleVariable(e.target.name, e.target.value)
+                        }
                     />
                 }
             </td>
@@ -322,6 +341,8 @@ export const ManageEvent = () => {
 
         submitErrors.push(...validateEventFormDto(newEventFormDto));
         submitErrors.push(...validateCreatePassword(createPassword, eventPassword));
+        console.log(newEventFormDto);
+
         //
         // registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
         //

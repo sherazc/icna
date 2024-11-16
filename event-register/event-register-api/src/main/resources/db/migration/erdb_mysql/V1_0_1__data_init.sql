@@ -101,5 +101,5 @@ insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
 values (5010, 10, 'VAR_COLOR', 'colorSecondary', '#47B874');
 
 insert into STYLE (ID, EVENT_ID, style_type, style_name, style_value)
-values (5020, 10, 'VAR_COLOR', 'borderRadiusForm', '20px');
+values (5020, 10, 'VAR_SIZE', 'borderRadiusForm', '20px');
 

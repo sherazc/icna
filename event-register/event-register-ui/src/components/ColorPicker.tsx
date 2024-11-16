@@ -35,6 +35,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ name, value, onColorChange })
         } else {
             // Allow partial input for typing
             setColor(newHex);
+            if (onColorChange) onColorChange(name, newHex);
         }
     };
 
