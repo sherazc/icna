@@ -63,9 +63,10 @@ export const ManageEvent = () => {
 
         setDefaultStyleVariables(await regApis.getDefaultVariables());
         if (eventId) {
-            setEventFormDto({...eventFormDto,
+            setEventFormDto({
+                ...eventFormDto,
                 event: await regApis.findEventById(eventId),
-                styleVariable: await regApis.findStyleVariablesCustomByEventId(eventId),
+                styleVariables: await regApis.findStyleVariablesCustomByEventId(eventId),
                 programs: await regApis.findProgramsByEventId(eventId),
                 adminUserProfile: await regApis.findEventAdmin(eventId)
             });
@@ -283,10 +284,38 @@ export const ManageEvent = () => {
         console.log("SV", name, value);
 
         if (isBlankString(value)) {
-            // TODO remove custom variable
+            // Remove variable
+            setEventFormDto({
+                ...eventFormDto, styleVariables:
+                    eventFormDto.styleVariables.filter((sv) => sv.styleName !== name)
+            });
         } else {
-            // TODO: if the value already exists replace its value
-            // TODO:    else add it
+
+            const newVars = [...eventFormDto.styleVariables];
+            let foundIndex = newVars.findIndex(v => v.styleName == name);
+            if (foundIndex > -1) {
+                // TODO: if the value already exists replace its value
+                newVars[foundIndex].styleValue = value;
+            } else {
+                // TODO: else add it
+                const defaultVar = defaultStyleVariables.find(v => v.styleName == name);
+                if (defaultVar) {
+                    newVars.push({...defaultVar, styleValue: value});
+                }
+            }
+            setEventFormDto({...eventFormDto, styleVariables: newVars});
+
+
+
+
+            // let existingVar = eventFormDto.styleVariables.filter((sv) => sv.styleName == name);
+            // if (existingVar && existingVar.length > 0) {
+            //     eventFormDto.styleVariables.((sv) => sv.styleName == name)
+            //     // TODO: if the value already exists replace its value
+            // } else {
+            //     // TODO:    else add it
+            // }
+
         }
 
         // setEventFormDto({...eventFormDto,
@@ -296,7 +325,7 @@ export const ManageEvent = () => {
     }
 
     const createStyleVariableForm = (styleVariable: StyleVariable, index: number) => {
-        const customStyleVariable = eventFormDto.styleVariable.find(
+        const customStyleVariable = eventFormDto.styleVariables?.find(
             v => v.styleName === styleVariable.styleName);
         const customStyleValue = customStyleVariable?.styleValue ? customStyleVariable.styleValue : "";
         return (<tr key={index}>
