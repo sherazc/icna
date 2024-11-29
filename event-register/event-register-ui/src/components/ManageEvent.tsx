@@ -18,7 +18,7 @@ import {MdDate, REGX_DATE_TIME} from "../service/DateService";
 import {
     castStringToNumber,
     formIdBreak,
-    formIdCreate, isBlankString,
+    formIdCreate, getDateInputString, isBlankString,
     isEqualStrings,
     isNotBlankString,
     trimToLength
@@ -98,13 +98,14 @@ export const ManageEvent = () => {
     }
 
     const onChangeEventDtoDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.value && !REGX_DATE_TIME.test(event.target.value)) return;
-        const eventDto = eventFormDto.event
-        const eventDate = new MdDate(event.target.value)
-        const eventFormDtoNew: EventFormDto = {
-            ...eventFormDto,
-            event: {...eventDto, [event.target.id]: eventDate}
-        };
+        const eventFormDtoNew: EventFormDto = {...eventFormDto};
+        const eventDto = eventFormDto.event;
+        if (!event.target.value) {
+            eventFormDtoNew.event =  {...eventDto, [event.target.id]: undefined};
+        } else if (REGX_DATE_TIME.test(event.target.value)) {
+            const eventDate = new MdDate(event.target.value)
+            eventFormDtoNew.event =  {...eventDto, [event.target.id]: eventDate};
+        }
         setEventFormDto(eventFormDtoNew);
     }
 
@@ -153,7 +154,7 @@ export const ManageEvent = () => {
                     onChange={onChangeEventDtoDate}
                     type="datetime-local"
                     className={errorClass(errors, "event.startDate", errorStyles.formInputError)}
-                    value={trimToLength(eventFormDto.event.startDate.isoDate, 16)}
+                    value={getDateInputString(eventFormDto.event.startDate)}
                 />
                 <Error errors={errors} fieldName="event.startDate"/>
             </div>
@@ -165,7 +166,7 @@ export const ManageEvent = () => {
                     onChange={onChangeEventDtoDate}
                     type="datetime-local"
                     className={errorClass(errors, "event.endDate", errorStyles.formInputError)}
-                    value={trimToLength(eventFormDto.event.endDate?.isoDate, 16)}
+                    value={getDateInputString(eventFormDto.event.endDate)}
                 />
                 <Error errors={errors} fieldName="event.endDate"/>
             </div>
@@ -290,7 +291,6 @@ export const ManageEvent = () => {
                     eventFormDto.styleVariables.filter((sv) => sv.styleName !== name)
             });
         } else {
-
             const newVars = [...eventFormDto.styleVariables];
             let foundIndex = newVars.findIndex(v => v.styleName == name);
             if (foundIndex > -1) {
@@ -304,24 +304,7 @@ export const ManageEvent = () => {
                 }
             }
             setEventFormDto({...eventFormDto, styleVariables: newVars});
-
-
-
-
-            // let existingVar = eventFormDto.styleVariables.filter((sv) => sv.styleName == name);
-            // if (existingVar && existingVar.length > 0) {
-            //     eventFormDto.styleVariables.((sv) => sv.styleName == name)
-            //     // TODO: if the value already exists replace its value
-            // } else {
-            //     // TODO:    else add it
-            // }
-
         }
-
-        // setEventFormDto({...eventFormDto,
-        //
-        //     styleVariable: {...eventFormDto.styleVariable, }
-        // });
     }
 
     const createStyleVariableForm = (styleVariable: StyleVariable, index: number) => {

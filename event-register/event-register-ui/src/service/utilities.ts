@@ -1,3 +1,5 @@
+import {MdDate} from "./DateService";
+
 export const formIdCreate = (keys: string[]) => keys.join('_');
 export const formIdBreak = (formId: string) => formId.split('_')
 export const castStringToNumber = (num?: string | undefined): number => {
@@ -5,8 +7,8 @@ export const castStringToNumber = (num?: string | undefined): number => {
     return isNaN(result) ? 0 : result;
 };
 
-export const touchString = (str?: string | undefined | null) : string => str ? str : "";
-export const touchNumber = (num?: number | undefined) : number => num ? num : 0;
+export const touchString = (str?: string | undefined | null): string => str ? str : "";
+export const touchNumber = (num?: number | undefined): number => num ? num : 0;
 
 export const isEqualStrings = (s1?: string, s2?: string): boolean => s1 !== undefined && s2 !== undefined && s1 === s2;
 export const isEqualStringsIgnoreCase = (s1?: string, s2?: string): boolean => s1 !== undefined && s2 !== undefined && s1.toLowerCase() === s2.toLowerCase();
@@ -34,4 +36,11 @@ export const trimToLength = (str: (string | undefined | null), length: number) =
     if (!str) return "";
     if (str.length < length) return str;
     return str.substring(0, length);
+}
+
+export const getDateInputString = (date?: MdDate): string => {
+    if (!date) {
+        return "";
+    }
+    return trimToLength(date.isoDate, 16);
 }
