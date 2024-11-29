@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {AppContext} from "../store/context";
-import {errorClass, validateEventFormDto, validateRegistrationForm} from "../service/errors-helpers";
+import {errorClass, validateEventFormDto} from "../service/errors-helpers";
 import errorStyles from "./Error.module.scss";
 import {Error} from "./Error";
 import {
@@ -19,13 +19,10 @@ import {
     castStringToNumber,
     formIdBreak,
     formIdCreate, getDateInputString, isBlankString,
-    isEqualStrings,
-    isNotBlankString,
-    trimToLength
+    isEqualStrings
 } from "../service/utilities";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./ManageEvent.module.scss";
-import {ColorPicker2} from "./ColorPicker2";
 import ColorPicker from "./ColorPicker";
 
 let temporaryId = -1;
@@ -101,10 +98,10 @@ export const ManageEvent = () => {
         const eventFormDtoNew: EventFormDto = {...eventFormDto};
         const eventDto = eventFormDto.event;
         if (!event.target.value) {
-            eventFormDtoNew.event =  {...eventDto, [event.target.id]: undefined};
+            eventFormDtoNew.event = {...eventDto, [event.target.id]: undefined};
         } else if (REGX_DATE_TIME.test(event.target.value)) {
             const eventDate = new MdDate(event.target.value)
-            eventFormDtoNew.event =  {...eventDto, [event.target.id]: eventDate};
+            eventFormDtoNew.event = {...eventDto, [event.target.id]: eventDate};
         }
         setEventFormDto(eventFormDtoNew);
     }

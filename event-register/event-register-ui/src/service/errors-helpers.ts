@@ -52,7 +52,7 @@ export const validateEventFormDto = (eventFormDto: EventFormDto): FieldError[] =
 
     if (isBlankString(eventFormDto.adminUserProfile.email) || !EMAIL_REGEX.test(eventFormDto.adminUserProfile.email)) {
         addFieldError(errors, {
-            fieldName: "userProfile.email",
+            fieldName: "adminUserProfile.email",
             message: "Invalid email address",
         });
     }
