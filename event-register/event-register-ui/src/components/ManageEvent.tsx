@@ -350,40 +350,44 @@ export const ManageEvent = () => {
 
         submitErrors.push(...validateEventFormDto(newEventFormDto));
         submitErrors.push(...validateCreatePassword(createPassword, eventPassword));
+        // TODO validate style variables regular expression
         console.log(newEventFormDto);
 
         //
         // registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
         //
-        // if (submitErrors.length < 1) {
-        //     if (registrationForm.id) {
-        //         const existingRegistration = await regApis.findRegistrationByRegistrationId("" + registrationForm.id);
-        //         const sameEmail = isEqualStrings(existingRegistration.userProfile.email, registrationForm.userProfile.email);
-        //         if (!sameEmail) {
-        //             submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
-        //         }
-        //     } else {
-        //         submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
-        //     }
-        // }
-        //
-        // if (submitErrors.length < 1) {
-        //     if (createPassword) {
-        //         registrationForm.userProfile.userPassword = registrationPassword.passwordField;
-        //     }
-        //     const responseRegistrationDto = await regApis.saveRegistration(eventId as string, registrationForm);
-        //
-        //     if (responseRegistrationDto.id !== undefined && responseRegistrationDto.id > 0) {
-        //         let confirmationUrl = `/event/${eventId}/register-confirmation/${responseRegistrationDto.id}`
-        //         confirmationUrl = `${confirmationUrl}?isNew=${registrationForm.id ? 'false' : 'true'}`
-        //         navigate(confirmationUrl)
-        //     } else {
-        //         submitErrors.push({
-        //             fieldName: "registrationDto",
-        //             message: "Failed to save registration.",
-        //         });
-        //     }
-        // }
+        if (submitErrors.length < 1) {
+
+            // TODO Validate Existing registration. Like email or name already exists.
+            // if (newEventFormDto.event.id) {
+            //         const existingRegistration = await regApis.findRegistrationByRegistrationId("" + registrationForm.id);
+            //         const sameEmail = isEqualStrings(existingRegistration.userProfile.email, registrationForm.userProfile.email);
+            //         if (!sameEmail) {
+            //             submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
+            //         }
+            //     } else {
+            //         submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
+            //     }
+            // }
+
+            // TODO: Create/Update Event
+            if (submitErrors.length < 1) {
+                if (createPassword) {
+                    newEventFormDto.adminUserProfile.userPassword = eventPassword.passwordField;
+                }
+                // const responseRegistrationDto = await regApis.saveRegistration(eventId as string, registrationForm);
+                //
+                //     if (responseRegistrationDto.id !== undefined && responseRegistrationDto.id > 0) {
+                //         let confirmationUrl = `/event/${eventId}/register-confirmation/${responseRegistrationDto.id}`
+                //         confirmationUrl = `${confirmationUrl}?isNew=${registrationForm.id ? 'false' : 'true'}`
+                //         navigate(confirmationUrl)
+                //     } else {
+                //         submitErrors.push({
+                //             fieldName: "registrationDto",
+                //             message: "Failed to save registration.",
+                //         });
+            }
+        }
 
         setErrors(submitErrors);
         dispatch(createLoadingActionHide(loadingSaving.payload.id));
