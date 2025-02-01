@@ -351,7 +351,7 @@ export const ManageEvent = () => {
         submitErrors.push(...validateEventFormDto(newEventFormDto));
         submitErrors.push(...validateCreatePassword(createPassword, eventPassword));
         // TODO validate style variables regular expression
-        console.log(newEventFormDto);
+
 
         if (submitErrors.length < 1) {
             const duplicateEventManager = await regApis.isDuplicateEventManager(eventId ? eventId : "-1", newEventFormDto.adminUserProfile.email);
@@ -363,13 +363,22 @@ export const ManageEvent = () => {
             }
         }
 
-
         if (submitErrors.length < 1) {
-            // TODO: Create/Update Event
+            if (createPassword) {
+                newEventFormDto.adminUserProfile.userPassword = eventPassword.passwordField;
+            }
+            // TODO:
+            //  Create/Update Event
+
+            let savedEventFormDto = await regApis.saveEvent(eventId ? eventId : "-1", newEventFormDto);
+
+            console.log(savedEventFormDto);
+
+
             if (submitErrors.length < 1) {
-                if (createPassword) {
-                    newEventFormDto.adminUserProfile.userPassword = eventPassword.passwordField;
-                }
+
+
+
                 // const responseRegistrationDto = await regApis.saveRegistration(eventId as string, registrationForm);
                 //
                 //     if (responseRegistrationDto.id !== undefined && responseRegistrationDto.id > 0) {
@@ -383,6 +392,8 @@ export const ManageEvent = () => {
                 //         });
             }
         }
+
+        console.log(newEventFormDto);
 
         setErrors(submitErrors);
         dispatch(createLoadingActionHide(loadingSaving.payload.id));

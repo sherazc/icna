@@ -7,7 +7,7 @@ import {
 } from "./ApiCore";
 import {
     AttendeeDto, AuthUserTokenDto,
-    EventDto, EventProgramDto, FlagDto, LoginRequest, RegistrationDto, StyleVariable, UserProfileDto
+    EventDto, EventFormDto, EventProgramDto, FlagDto, LoginRequest, RegistrationDto, StyleVariable, UserProfileDto
 } from "../service-types";
 import {parseObjectsIsoDateToMdDate} from "../DateService";
 
@@ -164,7 +164,18 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
+        },
+        saveEvent: (eventId: string, eventFormDto: EventFormDto): Promise<EventFormDto> => {
+            const endpoint = endpoints.epEvent(eventId);
+            const request: ApiRequest = {
+                endpoint,
+                method: "POST",
+                payload: eventFormDto};
+            addHeadersInRequest(request, commonHeaders);
+            const interceptors = addMdDateParserInterceptor(interceptorCbs);
+            return callApiIntercept(request, interceptors);
         }
+
     }
     return api;
 }
