@@ -92,4 +92,10 @@ class UserProfileService(
             }
         return if (userProfiles.isEmpty()) null else userProfiles[0]
     }
+
+    fun isDuplicateEventManager(eventId: Long, userEmail: String): Boolean {
+        val adminProfiles = userProfileRepository.findEventAdmins(userEmail)
+        return if (eventId > 0) adminProfiles.any { it.eventId != eventId }
+        else adminProfiles.isNotEmpty()
+    }
 }

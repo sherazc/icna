@@ -25,37 +25,8 @@ class UserProfileController(private val userProfileService: UserProfileService) 
     @GetMapping("/manager/email/exists")
     fun isDuplicateEventManager(
         @RequestParam(required = true, name = "eventId") eventId: Long,
-        @RequestParam(required = true, name = "userEmail") userEmail: String): ResponseEntity<Boolean> {
-
-        /*
-        Remove eventId check if (submitErrors.length < 1 && eventId) {
-        from ManageEvent.tsx
-
-        Make this method return Boolean like /email/exists returns. Instead of UserProfileDto
-
-        change endpoint in ApiRegister from /find to /admin/email/exists
-
-        if event id is sent then check if this returns a user profile
-        val userProfileOptional = userProfileService.findByEventIdAndUserEmailNoPassword(eventId, userEmail)
-
-        if event id is not sent
-            get all user profiles with this email
-
-            get the event id for that user profile
-
-            check if
-
-
-
-         */
-
-        val userProfileOptional = userProfileService.findByEventIdAndUserEmailNoPassword(eventId, userEmail)
-
-//        return if (userProfileOptional.isEmpty) ResponseEntity.notFound().build()
-//        else ResponseEntity.ok(userProfileOptional.get())
-
-        return ResponseEntity.ok(true)
-    }
+        @RequestParam(required = true, name = "userEmail") userEmail: String) =
+        ResponseEntity.ok(userProfileService.isDuplicateEventManager(eventId, userEmail))
 
     @GetMapping("/email/exists")
     fun isEmailExist(
