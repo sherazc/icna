@@ -32,7 +32,7 @@ export const registerEndpoints = () => {
         epFindStyleVariablesCustomByEventId: (eventId: string) => `${baseUrl}/api/styles/variables/custom/eventId/${eventId}`,
         epLoginToken: () => `${baseUrl}/api/login/token`,
         epGetUserProfile: (userProfileId: string) => `${baseUrl}/api/user-profile/${userProfileId}`,
-        epFindUserProfile: (eventId: string, email: string) => `${baseUrl}/api/user-profile/find?eventId=${eventId}&userEmail=${email}`,
+        epIsDuplicateEventManager: (eventId: string, email: string) => `${baseUrl}/api/user-profile/manager/email/exists?eventId=${eventId}&userEmail=${email}`,
         epIsEmailExist: (eventId: string, email: string) => `${baseUrl}/api/user-profile/email/exists?eventId=${eventId}&userEmail=${email}`,
         epFindEventAdmin: (eventId: string) => `${baseUrl}/api/user-profile/event/${eventId}/admin`,
     }
@@ -141,8 +141,8 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
 
             return callApiIntercept(request, interceptorCbs);
         },
-        findUserProfile: (eventId: string, email: string): Promise<UserProfileDto> => {
-            const endpoint = endpoints.epFindUserProfile(eventId, email);
+        isDuplicateEventManager: (eventId: string, email: string): Promise<boolean> => {
+            const endpoint = endpoints.epIsDuplicateEventManager(eventId, email);
             const request: ApiRequest = {endpoint};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
@@ -165,8 +165,6 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         }
-
-
     }
     return api;
 }

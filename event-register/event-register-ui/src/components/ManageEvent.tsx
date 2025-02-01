@@ -19,7 +19,7 @@ import {
     castStringToNumber,
     formIdBreak,
     formIdCreate, getDateInputString, isBlankString,
-    isEqualStrings
+    isEqualStrings, touchString
 } from "../service/utilities";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./ManageEvent.module.scss";
@@ -353,23 +353,18 @@ export const ManageEvent = () => {
         // TODO validate style variables regular expression
         console.log(newEventFormDto);
 
-        //
-        // registrationForm.id = (!registrationId || registrationId === 'new') ? undefined : +registrationId;
-        //
         if (submitErrors.length < 1) {
+            const duplicateEventManager = await regApis.isDuplicateEventManager(eventId ? eventId : "-1", newEventFormDto.adminUserProfile.email);
+            if (duplicateEventManager) {
+                submitErrors.push({
+                    fieldName: "adminUserProfile.email",
+                    message: "Email already exists"
+                });
+            }
+        }
 
-            // TODO Validate Existing registration. Like email or name already exists.
-            // if (newEventFormDto.event.id) {
-            //         const existingRegistration = await regApis.findRegistrationByRegistrationId("" + registrationForm.id);
-            //         const sameEmail = isEqualStrings(existingRegistration.userProfile.email, registrationForm.userProfile.email);
-            //         if (!sameEmail) {
-            //             submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
-            //         }
-            //     } else {
-            //         submitErrors.push(...await validateEmailAlreadyExists(eventId, registrationForm.userProfile.email));
-            //     }
-            // }
 
+        if (submitErrors.length < 1) {
             // TODO: Create/Update Event
             if (submitErrors.length < 1) {
                 if (createPassword) {

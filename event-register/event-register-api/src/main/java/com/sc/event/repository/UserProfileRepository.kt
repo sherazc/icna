@@ -3,6 +3,7 @@ package com.sc.event.repository
 import com.sc.event.dto.UserProfileDto
 import com.sc.event.entity.auth.UserProfile
 import com.sc.event.entity.auth.UserRole
+import com.sc.event.service.model.AuthRole
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
@@ -18,6 +19,15 @@ interface UserProfileRepository : CrudRepository<UserProfile, Long> {
     """)
     fun findByEventAndEmail(event:Long, email: String): Optional<UserProfileDto>
 
+    @Query("""
+        select new com.sc.event.dto.UserProfileDto(
+            u.id, u.email, u.userPassword, u.event.id)
+        from UserProfile u
+        join u.userRoles ur
+        where lower(u.email) = lower(:email)
+        and ur.roleName in ('ADMIN', 'BASIC_USER')
+    """)
+    fun findEventManagers(email: String): Optional<UserProfileDto>
 
     @Query("""
         select u.userRoles from UserProfile u
