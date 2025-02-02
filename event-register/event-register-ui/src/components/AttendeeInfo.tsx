@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
-import {registerApis} from "../service/api/ApiRegister";
 import {AttendeeDto, defaultAttendeeDto} from "../service/service-types";
 import tableGridStyles from "../styles/TableGridStyle.module.scss"
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
@@ -13,14 +12,13 @@ export const AttendeeInfo: React.FC<Props> = () => {
     const {attendeeId, eventId} = useParams();
     const [attendee, setAttendee] = useState<AttendeeDto>(defaultAttendeeDto());
     const [registrationAttendees, setRegistrationAttendees] = useState<AttendeeDto[]>([]);
-    const [{}, dispatch] = useContext(AppContext);
+    const [{regApis}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (!attendeeId || !eventId) {
             return;
         }
 
-        let regApis = registerApis();
         const loadingAttendee = createLoadingActionShow("Loading Attendee");
         dispatch(loadingAttendee);
         regApis
