@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import {EventDto, defaultEventDto, EventProgramDto} from "../service/service-types";
-import {registerApis} from "../service/api/ApiRegister";
 import {Link, useParams} from "react-router-dom";
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
@@ -16,19 +15,16 @@ export const Home: React.FC<Props> = () => {
     const {eventId} = useParams();
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [eventProgramDtoArray, setEventProgramDtoArray] = useState<EventProgramDto[]>([]);
-    const [{}, dispatch] = useContext(AppContext);
+    const [{regApis}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (!eventId) {
             return;
         }
 
-        const regApis = registerApis();
-
         const loadingEvent = createLoadingActionShow("Loading Events");
         dispatch(loadingEvent);
-        regApis
-            .findEventById(eventId)
+        regApis.findEventById(eventId)
             .then(event => {
                 setEvent(event);
                 dispatch(createLoadingActionHide(loadingEvent.payload.id))

@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {registerApis} from "../service/api/ApiRegister";
 import {
     AttendeeDto,
     defaultAttendeeDto,
@@ -31,7 +30,7 @@ export const Register: React.FC<Props> = () => {
     const {eventId, registrationId} = useParams();
     const [allEventPrograms, setAllEventPrograms] = useState<EventProgramDto[]>([]);
     const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
-    const [{}, dispatch] = useContext(AppContext);
+    const [{regApis}, dispatch] = useContext(AppContext);
     const [registrationPassword, setRegistrationPassword] = useState<FormPassword>({
         passwordField: "",
         passwordConfirm: ""
@@ -39,7 +38,6 @@ export const Register: React.FC<Props> = () => {
     const [createPassword, setCreatePassword] = useState<boolean>(false)
     const [errors, setErrors] = useState<FieldError[]>([]);
     const navigate = useNavigate();
-    const regApis = registerApis()
 
     useEffect(() => {
         if (!eventId || !registrationId) {

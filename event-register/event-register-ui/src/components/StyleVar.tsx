@@ -1,6 +1,5 @@
-import React, {CSSProperties, useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {registerApis} from "../service/api/ApiRegister";
 import {StyleVariable} from "../service/service-types";
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
@@ -12,8 +11,7 @@ interface Props {
 export const StyleVar: React.FC<Props> = ({children}) => {
     const {eventId} = useParams();
     const [styleVariables, setStyleVariables] = useState<StyleVariable[]>([]);
-    const [{}, dispatch] = useContext(AppContext);
-    const regApis = registerApis();
+    const [{regApis}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         loadStyleVariables()

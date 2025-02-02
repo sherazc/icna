@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Link, useParams, useSearchParams} from "react-router-dom";
 import {isNotBlankString, touchString} from "../service/utilities";
-import {registerApis} from "../service/api/ApiRegister";
 import {defaultRegistrationDto, RegistrationDto} from "../service/service-types";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import {AppContext} from "../store/context";
@@ -13,9 +12,8 @@ export const RegisterConfirmation: React.FC<Props> = () => {
     const {eventId, registrationId} = useParams();
     const [newRegSearchParam,] = useSearchParams({"isNew": "false"});
     const newReg = touchString(newRegSearchParam.get("isNew")) === "true";
-    const regApis = registerApis();
     const [registration, setRegistration] = useState<RegistrationDto>(defaultRegistrationDto());
-    const [{}, dispatch] = useContext(AppContext);
+    const [{regApis}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (isNotBlankString(registrationId)) {

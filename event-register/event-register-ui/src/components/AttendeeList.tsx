@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
-import {registerApis} from "../service/api/ApiRegister";
 import tableGridStyles from "../styles/TableGridStyle.module.scss"
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
@@ -13,7 +12,7 @@ export const AttendeeList: React.FC<Props> = () => {
     const {eventId} = useParams();
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
-    const [{}, dispatch] = useContext(AppContext);
+    const [{regApis}, dispatch] = useContext(AppContext);
 
     useEffect(() => {
         if (!eventId) {
@@ -22,8 +21,7 @@ export const AttendeeList: React.FC<Props> = () => {
 
         const loadingFindEventById = createLoadingActionShow("Loading Events");
         dispatch(loadingFindEventById);
-        registerApis()
-            .findEventById(eventId)
+        regApis.findEventById(eventId)
             .then((event: EventDto) => {
                 setEvent(event);
                 dispatch(createLoadingActionHide(loadingFindEventById.payload.id));
@@ -31,8 +29,7 @@ export const AttendeeList: React.FC<Props> = () => {
 
         const loadingFindAttendeeByEventId = createLoadingActionShow("Loading Attendees");
         dispatch(loadingFindEventById);
-        registerApis()
-            .findAttendeeByEventId(eventId)
+        regApis.findAttendeeByEventId(eventId)
             .then((attendeesRes) => {
                 setAttendees(attendeesRes);
                 dispatch(createLoadingActionHide(loadingFindAttendeeByEventId.payload.id));

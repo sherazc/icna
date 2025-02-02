@@ -12,7 +12,6 @@ import {
     UserProfileDto
 } from "../service/service-types";
 import {FormPassword} from "../service/form-types";
-import {registerApis} from "../service/api/ApiRegister";
 import checkRadio from "../styles/CheckRadio.module.scss";
 import {MdDate, REGX_DATE_TIME} from "../service/DateService";
 import {
@@ -30,7 +29,7 @@ let temporaryId = -1;
 export const ManageEvent = () => {
     const {eventId} = useParams();
     const navigate = useNavigate();
-    const [{authUserToken}, dispatch] = useContext(AppContext);
+    const [{authUserToken, regApis}, dispatch] = useContext(AppContext);
     const cancelLink = eventId ? `/event/${eventId}` : "/";
     const authenticated = authUserToken.userProfileId > 0;
     const adminUser = authUserToken.roles.includes("ADMIN");
@@ -43,7 +42,6 @@ export const ManageEvent = () => {
     const [errors, setErrors] = useState<FieldError[]>([]);
     const [eventFormDto, setEventFormDto] = useState<EventFormDto>(defaultEventFormDto());
     const [defaultStyleVariables, setDefaultStyleVariables] = useState<StyleVariable[]>([]);
-    const regApis = registerApis();
 
     useEffect(() => {
         loadData();
@@ -376,7 +374,6 @@ export const ManageEvent = () => {
 
 
             if (submitErrors.length < 1) {
-
 
 
                 // const responseRegistrationDto = await regApis.saveRegistration(eventId as string, registrationForm);

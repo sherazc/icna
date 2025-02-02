@@ -1,21 +1,13 @@
 import React, {useContext, useEffect, useState} from "react";
-import {registerApis} from "../service/api/ApiRegister";
 import {EventDto} from "../service/service-types";
 import {AppContext} from "../store/context";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import {Link, useNavigate} from "react-router-dom";
 import styles from "./MainHome.module.scss";
 
-/*
-Create Event
-Edit event
-
- */
-
 export const MainHome: React.FC = () => {
     const [events, setEvents] = useState<EventDto[]>([])
-    const regApis = registerApis();
-    const [{}, dispatch] = useContext(AppContext);
+    const [{regApis}, dispatch] = useContext(AppContext);
     const navigate = useNavigate();
 
     useEffect(() => {

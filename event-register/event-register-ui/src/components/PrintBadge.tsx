@@ -1,15 +1,12 @@
-import React, {CSSProperties, useEffect, useState} from "react";
+import React, {CSSProperties, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {AttendeeDto, defaultEventDto, EventDto} from "../service/service-types";
-import {registerApis} from "../service/api/ApiRegister";
 import styles from "./PrintBadge.module.scss";
 import checkRadio from "../styles/CheckRadio.module.scss";
-import {formIdBreak} from "../service/utilities";
+import {AppContext} from "../store/context";
 
 interface Props {
 }
-
-let regApis = registerApis();
 
 // CONSTANTS
 const PIXEL_PER_INCH = 96;
@@ -118,6 +115,7 @@ const defaultPrintPaper = (): PrintPaper => ({
 
 // COMPONENT
 export const PrintBadge: React.FC<Props> = () => {
+    const [{regApis}, dispatch] = useContext(AppContext);
     const {eventId, registrationId, attendeeId} = useParams();
     const [event, setEvent] = useState<EventDto>(defaultEventDto());
     const [attendees, setAttendees] = useState<AttendeeDto[]>([]);
@@ -245,7 +243,8 @@ export const PrintBadge: React.FC<Props> = () => {
     }
 
     const onChangePagePaddingTopBottom = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newPageStyle = {...printPaper.pageStyle,
+        const newPageStyle = {
+            ...printPaper.pageStyle,
             paddingTop: inchToPixel(+event.target.value, printPaper.pixelPerInch),
             paddingBottom: inchToPixel(+event.target.value, printPaper.pixelPerInch),
         };
@@ -258,7 +257,8 @@ export const PrintBadge: React.FC<Props> = () => {
     }
 
     const onChangePagePaddingLeftRight = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newPageStyle = {...printPaper.pageStyle,
+        const newPageStyle = {
+            ...printPaper.pageStyle,
             paddingLeft: inchToPixel(+event.target.value, printPaper.pixelPerInch),
             paddingRight: inchToPixel(+event.target.value, printPaper.pixelPerInch),
         };
@@ -271,7 +271,7 @@ export const PrintBadge: React.FC<Props> = () => {
     }
 
     const onChangeBadgePixel = (event: React.ChangeEvent<HTMLInputElement>, field: keyof BadgeStyle) => {
-        const newBadeStyle:BadgeStyle = {...printPaper.badgeStyle};
+        const newBadeStyle: BadgeStyle = {...printPaper.badgeStyle};
 
         newBadeStyle[field] = pixelNumberToUnit(+event.target.value);
         const newPrintPaper = {
@@ -283,8 +283,8 @@ export const PrintBadge: React.FC<Props> = () => {
 
     const onChangeCheckedShowHighlights = (event: React.ChangeEvent<HTMLInputElement>) => {
         const checked = event.target.checked;
-        const newPageStyle:CSSProperties = {...printPaper.pageStyle}
-        const newCardStyle:CSSProperties = {...printPaper.cardStyle}
+        const newPageStyle: CSSProperties = {...printPaper.pageStyle}
+        const newCardStyle: CSSProperties = {...printPaper.cardStyle}
         setShowHighlights(checked);
         if (checked) {
             newPageStyle.backgroundColor = "coral";
