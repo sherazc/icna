@@ -13,6 +13,8 @@ import {parseObjectsIsoDateToMdDate} from "../DateService";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
 
+const CONTENT_JSON_HEADER: ApiHeaders = [["Content-Type", "application/json"]]
+
 /**
  * This method creates all the available endpoints.
  */
@@ -104,8 +106,7 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
                 endpoint,
                 method: "POST",
                 payload: registrationDto,
-                headers:[["Content-Type", "application/json"]]
-            };
+                headers: CONTENT_JSON_HEADER};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
@@ -170,7 +171,8 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
             const request: ApiRequest = {
                 endpoint,
                 method: "POST",
-                payload: eventFormDto};
+                payload: eventFormDto,
+                headers: CONTENT_JSON_HEADER};
             addHeadersInRequest(request, commonHeaders);
             const interceptors = addMdDateParserInterceptor(interceptorCbs);
             return callApiIntercept(request, interceptors);
