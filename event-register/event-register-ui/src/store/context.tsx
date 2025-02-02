@@ -1,7 +1,9 @@
 import React, {createContext, useReducer} from "react";
 import {LoadingAction, loadingMessagesReducer} from "./loadingMessageReducer";
 import {AuthUserAction, authUserReducer} from "./authUserReducer";
-import {AuthUserTokenDto, defaultAuthUserTokenDto} from "../service/service-types";
+import {AuthUserTokenDto, defaultAuthUserTokenDto, RegisterApisType} from "../service/service-types";
+import {registerApis} from "../service/api/ApiRegister";
+import {RegisterApisAction, registerApisReducer} from "./registerApisReducer";
 
 export type Action = {
     type: string;
@@ -19,11 +21,13 @@ type RootStateType = {
      */
     loadingMessages: LoadingMessage[];
     authUserToken: AuthUserTokenDto;
+    regApis: RegisterApisType;
 }
 
 const initialAppState: RootStateType = {
     loadingMessages: [],
-    authUserToken: defaultAuthUserTokenDto()
+    authUserToken: defaultAuthUserTokenDto(),
+    regApis: registerApis()
 }
 
 const AppContext = createContext<[
@@ -34,12 +38,13 @@ const AppContext = createContext<[
     () => null
 ]);
 
-type RootAction = LoadingAction | AuthUserAction;
+type RootAction = LoadingAction | AuthUserAction | RegisterApisAction;
 
-
-const mainReducer = ({loadingMessages, authUserToken}: RootStateType, action: RootAction) => ({
+// Combines all the reducers
+const mainReducer = ({loadingMessages, authUserToken, regApis}: RootStateType, action: RootAction) => ({
     loadingMessages: loadingMessagesReducer(loadingMessages, action as LoadingAction),
-    authUserToken: authUserReducer(authUserToken, action as AuthUserAction)
+    authUserToken: authUserReducer(authUserToken, action as AuthUserAction),
+    regApis: registerApisReducer(regApis, action as RegisterApisAction)
 });
 
 interface Props {

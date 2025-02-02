@@ -1,5 +1,6 @@
 import {touchString} from "./utilities";
 import {MdDate} from "./DateService";
+import {registerApis} from "./api/ApiRegister";
 
 export type EventDto = {
     id: number;
@@ -148,3 +149,5 @@ export const defaultEventFormDto = ():EventFormDto => ({
     programs: [],
     styleVariables: []
 });
+
+export type RegisterApisType = ReturnType<typeof registerApis>;
