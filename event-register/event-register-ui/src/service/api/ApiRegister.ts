@@ -190,3 +190,8 @@ const addMdDateParserInterceptor = (interceptorCbs?: InterceptorCallBacks): Inte
     }
     return interceptor;
 }
+
+
+export const createAuthHeader = (authUserTokenDto: AuthUserTokenDto): ApiHeaders => ([[
+    "Authorization", `Bearer ${authUserTokenDto.token}`
+]]);

@@ -3,10 +3,12 @@ import styles from "./Login.module.scss";
 import {IconArrowRight} from "../../images/IconArrowRight";
 import {useParams} from "react-router-dom";
 import {IconArrowLeft} from "../../images/IconArrowLeft";
-import {defaultLoginRequest, LoginRequest} from "../../service/service-types";
+import {AuthUserTokenDto, defaultLoginRequest, LoginRequest} from "../../service/service-types";
 import {AppContext} from "../../store/context";
 import {ActionNameAuthUser} from "../../store/authUserReducer";
 import {isValidAuthUserToken} from "../../service/authentication-services";
+import {ActionNameRegisterApis} from "../../store/registerApisReducer";
+import {createAuthHeader, registerApis} from "../../service/api/ApiRegister";
 
 interface Props {
 }
@@ -37,6 +39,11 @@ export const Login: React.FC<Props> = () => {
                 type: ActionNameAuthUser.authUserLogin,
                 payload: aut
             });
+
+            dispatch({
+                type: ActionNameRegisterApis.updateRegisterApis,
+                payload: registerApis(createAuthHeader(aut))
+            })
             setLoginState(LoginState.LOGIN_SUCCESS);
         }).catch(error => {
             console.log(error);
