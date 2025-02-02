@@ -3,7 +3,6 @@ import styles from "./Login.module.scss";
 import {IconArrowRight} from "../../images/IconArrowRight";
 import {useParams} from "react-router-dom";
 import {IconArrowLeft} from "../../images/IconArrowLeft";
-import {registerApis} from "../../service/api/ApiRegister";
 import {defaultLoginRequest, LoginRequest} from "../../service/service-types";
 import {AppContext} from "../../store/context";
 import {ActionNameAuthUser} from "../../store/authUserReducer";
@@ -19,7 +18,7 @@ enum LoginState {
 
 export const Login: React.FC<Props> = () => {
 
-    const [ {authUserToken}, dispatch ] = useContext(AppContext);
+    const [{authUserToken, regApis}, dispatch] = useContext(AppContext);
 
     const {eventId} = useParams();
 
@@ -28,12 +27,12 @@ export const Login: React.FC<Props> = () => {
     const [loginState, setLoginState] = useState<LoginState>(LoginState.SHOW_EMAIL);
 
     const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = event.target;
-        setLoginRequest(prevData => ({ ...prevData, [id]: value }));
+        const {id, value} = event.target;
+        setLoginRequest(prevData => ({...prevData, [id]: value}));
     };
 
     const onSubmitLogin = () => {
-        registerApis().login(loginRequest).then(aut => {
+        regApis.login(loginRequest).then(aut => {
             dispatch({
                 type: ActionNameAuthUser.authUserLogin,
                 payload: aut
@@ -51,7 +50,7 @@ export const Login: React.FC<Props> = () => {
                 <div className={styles.loginBox}>
                     Login successfully!
                     <br/>
-                     👋 {authUserToken.subject}
+                    👋 {authUserToken.subject}
                 </div>
             </div>
         );
@@ -63,7 +62,7 @@ export const Login: React.FC<Props> = () => {
 
     return (
         <div className={styles.loginContainer}>
-        <div className={styles.loginBox}>
+            <div className={styles.loginBox}>
                 <div style={{marginBottom: "20px"}}>
                     <label htmlFor="">Login</label>
                 </div>
@@ -96,13 +95,13 @@ export const Login: React.FC<Props> = () => {
                         Login with password <IconArrowRight/>
                     </a>
                     <a onClick={() => setLoginState(LoginState.SHOW_OTU_CODE)}
-                        style={{justifyContent: "right", marginTop: "20px"}} href="#">
+                       style={{justifyContent: "right", marginTop: "20px"}} href="#">
                         Login email code <IconArrowRight/>
                     </a>
                 </>)}
 
                 {(loginState === LoginState.SHOW_PASSWORD
-                    ||  loginState === LoginState.SHOW_OTU_CODE
+                    || loginState === LoginState.SHOW_OTU_CODE
                     || loginState === LoginState.LOGIN_FAILURE) && (<>
                     <div style={{marginTop: "20px", display: "flex", alignItems: "center"}}>
                         <div style={{flexGrow: 1}}>
@@ -114,9 +113,9 @@ export const Login: React.FC<Props> = () => {
                             </a>
                         </div>
                         {loginState !== LoginState.LOGIN_FAILURE && (
-                        <div style={{flexGrow: 1, textAlign: "right"}}>
-                            <input type="button" value="Submit" onClick={onSubmitLogin}/>
-                        </div>
+                            <div style={{flexGrow: 1, textAlign: "right"}}>
+                                <input type="button" value="Submit" onClick={onSubmitLogin}/>
+                            </div>
                         )}
                         {loginState === LoginState.LOGIN_FAILURE && (
                             <div style={{flexGrow: 1, textAlign: "right"}}>
