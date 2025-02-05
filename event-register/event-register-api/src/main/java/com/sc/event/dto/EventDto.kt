@@ -9,6 +9,7 @@ data class EventDto(
     val eventName: String,
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     var startDate: LocalDateTime,
+    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     var endDate: LocalDateTime?,
     var active: Boolean
 )

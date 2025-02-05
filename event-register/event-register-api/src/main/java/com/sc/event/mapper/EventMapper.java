@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 public interface EventMapper {
     EventDto beanToDto(Event bean);
 
-    EventDto dtoToBean(EventDto dto);
+    Event dtoToBean(EventDto dto);
 }
