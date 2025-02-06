@@ -12,13 +12,16 @@ class EventProgramService(
     private val eventProgramMapper: EventProgramMapper) {
     fun findDtoEventDtoById(eventId: Long): List<EventProgramDto> = eventProgramRepository.findByEventId(eventId)
 
-    fun savePrograms(eventEntity: Event, programDtoList: List<EventProgramDto>) {
-        val eventPrograms = programDtoList.map { eventProgramMapper.dtoToBean(it) }
-            .map { it.apply {
-                if (id != null && id!! < 1) id = null
-                event = eventEntity
-            } }
+    fun save(eventEntity: Event, programDtoList: List<EventProgramDto>): List<EventProgramDto> {
+        // Compose EventPrograms
+        val eventPrograms = programDtoList
+            .map { eventProgramMapper.dtoToBean(it) }
+            .map { it.apply { if (id != null && id!! < 1) id = null } } // because negative id mean new entity
+            .map { it.apply { event = eventEntity } } // create relation with event
 
-            println(eventPrograms)
+        // Persists
+        return eventPrograms
+            .map { eventProgramRepository.save(it) }
+            .map { eventProgramMapper.beanToDto(it) }
     }
 }

@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service
 class EventSaveService(
     private val eventMapper: EventMapper,
     private val eventRepository: EventRepository,
-    private val eventProgramService: EventProgramService) {
+    private val eventProgramService: EventProgramService,
+    private val styleService: StyleService) {
 
 
     fun saveModify(eventId: Long, eventFormDto: EventFormDto): EventFormDto {
@@ -22,7 +23,8 @@ class EventSaveService(
     fun saveNew(eventFormDto: EventFormDto): EventFormDto {
         val event = eventMapper.dtoToBean(eventFormDto.event)
         val savedEvent = eventRepository.save(event)
-        eventProgramService.savePrograms(savedEvent, eventFormDto.programs)
+        val savedEventProgramDtoList = eventProgramService.save(savedEvent, eventFormDto.programs)
+        val savedEventProgramDtoList = styleService.save(savedEvent, eventFormDto.styleVariables)
 
 
         println(eventFormDto)
