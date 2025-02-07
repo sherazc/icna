@@ -1,12 +1,16 @@
 package com.sc.event.service
 
+import com.sc.event.entity.event.Event
+import com.sc.event.mapper.StyleMapper
 import com.sc.event.repository.EventStyleRepository
 import com.sc.event.service.model.StyleVariable
 import com.sc.event.service.model.getDefaultEntityStyleVariables
 import org.springframework.stereotype.Service
 
 @Service
-class StyleService(private val eventStyleRepository: EventStyleRepository) {
+class StyleService(
+    private val eventStyleRepository: EventStyleRepository,
+    private val styleMapper: StyleMapper) {
     fun getDefaultVariables(): List<StyleVariable> = getDefaultEntityStyleVariables()
 
     fun findVarByEventId(eventId: Long): List<StyleVariable> {
@@ -15,15 +19,23 @@ class StyleService(private val eventStyleRepository: EventStyleRepository) {
         val defaultStyleVariables = getDefaultEntityStyleVariables()
 
         val overrideStyleVariables = eventStyleRepository.findVarByEventId(eventId)
-            .map { StyleVariable(it.styleName, it.styleValue, it.type) }
 
+        // merges both lists
         return defaultStyleVariables.map { default ->
             overrideStyleVariables.find { override ->
-                default.styleName == override.styleName
+                default.styleName == override.styleName // if override has the same name return override else default
             } ?: default
         }
     }
 
-    fun findCustomVarByEventId(eventId: Long): List<StyleVariable>  =  eventStyleRepository
-        .findVarByEventId(eventId).map { StyleVariable(it.styleName, it.styleValue, it.type) }
+    fun findCustomVarByEventId(eventId: Long): List<StyleVariable>  =  eventStyleRepository.findVarByEventId(eventId)
+
+    fun save(savedEvent: Event, styleVariables: List<StyleVariable>) {
+
+        // val styles = styleVariables.map { styleMapper.dtoToBean(it) }
+
+        // println(styles)
+
+        // TODO implement it
+    }
 }

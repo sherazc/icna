@@ -10,7 +10,9 @@ import com.sc.event.entity.event.Event
 import com.sc.event.service.StyleVariableTypeJpaConverter
 import jakarta.persistence.Convert
 
-
+/**
+ * Custom event styles stored in DB
+ */
 @Entity
 data class Style(
     @Id

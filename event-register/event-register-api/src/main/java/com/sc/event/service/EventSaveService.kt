@@ -24,7 +24,7 @@ class EventSaveService(
         val event = eventMapper.dtoToBean(eventFormDto.event)
         val savedEvent = eventRepository.save(event)
         val savedEventProgramDtoList = eventProgramService.save(savedEvent, eventFormDto.programs)
-        val savedEventProgramDtoList = styleService.save(savedEvent, eventFormDto.styleVariables)
+        val savedStyleVariablesList = styleService.save(savedEvent, eventFormDto.styleVariables)
 
 
         println(eventFormDto)
