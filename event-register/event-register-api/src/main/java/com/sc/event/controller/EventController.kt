@@ -45,5 +45,5 @@ class EventController(private val eventService: EventService,
         eventSaveService.saveModify(eventId, eventFormDto)
 
     @PreAuthorize("permitAll()")
-    private fun saveNew(eventFormDto: EventFormDto): EventFormDto = eventSaveService.saveNew(eventFormDto)
+    private fun saveNew(eventFormDto: EventFormDto): EventFormDto = eventSaveService.save(eventFormDto)
 }

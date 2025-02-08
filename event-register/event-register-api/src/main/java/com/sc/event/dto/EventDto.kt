@@ -5,8 +5,8 @@ import com.sc.event.mapper.LocalDateTimeDeserializer
 import java.time.LocalDateTime
 
 data class EventDto(
-    val id: Long?,
-    val eventName: String,
+    var id: Long?,
+    var eventName: String,
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     var startDate: LocalDateTime,
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)

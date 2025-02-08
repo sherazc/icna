@@ -78,6 +78,7 @@ export const defaultRegistrationDto = (): RegistrationDto => ({
 export type StyleType = "VAR_COLOR"| "VAR_SIZE" | "VAR_STRING";
 
 export type StyleVariable = {
+    id?: number
     styleName: string;
     styleValue: string;
     styleType: StyleType;

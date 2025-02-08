@@ -28,14 +28,21 @@ class StyleService(
         }
     }
 
-    fun findCustomVarByEventId(eventId: Long): List<StyleVariable>  =  eventStyleRepository.findVarByEventId(eventId)
+    fun findCustomVarByEventId(eventId: Long): List<StyleVariable> = eventStyleRepository.findVarByEventId(eventId)
 
     fun save(savedEvent: Event, styleVariables: List<StyleVariable>) {
 
-        // val styles = styleVariables.map { styleMapper.dtoToBean(it) }
+        val styles = styleVariables.map { styleMapper.dtoToBean(it) }
+            .map { it.apply { event = savedEvent } }
+            .map { eventStyleRepository.save(it) }
+            .map { styleMapper.beanToDto(it) }
 
-        // println(styles)
+        println(styles)
 
-        // TODO implement it
+//        val savedStyleVariables = styles.map { eventStyleRepository.save(it) }
+//            .map { styleMapper.beanToDto(it) }
+//            .toList()
+//
+//        println(savedStyleVariables)
     }
 }

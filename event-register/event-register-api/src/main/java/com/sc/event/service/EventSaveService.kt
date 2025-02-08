@@ -14,13 +14,12 @@ class EventSaveService(
 
 
     fun saveModify(eventId: Long, eventFormDto: EventFormDto): EventFormDto {
-        println(eventFormDto)
-        // TODO persist Event with the eventID
-        return eventFormDto
+        eventFormDto.event.id = eventId
+        return save(eventFormDto)
     }
 
 
-    fun saveNew(eventFormDto: EventFormDto): EventFormDto {
+    fun save(eventFormDto: EventFormDto): EventFormDto {
         val event = eventMapper.dtoToBean(eventFormDto.event)
         val savedEvent = eventRepository.save(event)
         val savedEventProgramDtoList = eventProgramService.save(savedEvent, eventFormDto.programs)
