@@ -34,7 +34,23 @@ class UserProfileService(
     }
 
     fun save(event: Event, userProfileDto: UserProfileDto): UserProfile {
-        val userProfile = if (userProfileDto.id == null) {
+        val userProfile = createOrGetUserProfile(event, userProfileDto)
+
+        userRoleService.addRoles(userProfile, AuthRole.BASIC_USER)
+        return userProfileRepository.save(userProfile)
+    }
+
+
+
+    fun saveAdmin(event: Event, adminUserProfile: UserProfileDto) {
+        val userProfile = createOrGetUserProfile(event, adminUserProfile)
+        userRoleService.addRoles(userProfile, AuthRole.ADMIN)
+
+        println(userProfile)
+    }
+
+    private fun createOrGetUserProfile(event: Event, userProfileDto: UserProfileDto): UserProfile {
+        return if (userProfileDto.id == null) {
             UserProfile(null, event, userProfileDto.email, encodePassword(userProfileDto.userPassword))
         } else {
             val u = userProfileRepository.findById(userProfileDto.id!!)
@@ -42,10 +58,6 @@ class UserProfileService(
             setNewUserProfileValues(userProfileDto, u)
             u
         }
-
-        userRoleService.addRoles(userProfile, AuthRole.BASIC_USER)
-
-        return userProfileRepository.save(userProfile)
     }
 
     private fun setNewUserProfileValues(userProfileDto: UserProfileDto, userProfile: UserProfile) {
@@ -98,4 +110,6 @@ class UserProfileService(
         return if (eventId > 0) adminProfiles.any { it.eventId != eventId }
         else adminProfiles.isNotEmpty()
     }
+
+
 }
