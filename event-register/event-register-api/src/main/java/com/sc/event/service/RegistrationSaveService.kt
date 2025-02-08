@@ -57,7 +57,7 @@ class RegistrationSaveService(
             Registration(null, event, userProfile)
         } else {
             val r = registrationRepository.findById(registrationDto.id!!).orElseThrow {
-                ErExceptionNotFound("Can not save User Profile. ${registrationDto.id} not found")
+                ErExceptionNotFound("Can not save registration. registrationId=${registrationDto.id} not found")
             }
             r.userProfile = userProfile;
             r

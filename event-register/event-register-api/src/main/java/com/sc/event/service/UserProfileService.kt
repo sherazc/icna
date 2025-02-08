@@ -33,6 +33,9 @@ class UserProfileService(
             }
     }
 
+
+    // TODO Merge this method with saveAdmin()
+    // TODO research to make this method return UserProfileDto
     fun save(event: Event, userProfileDto: UserProfileDto): UserProfile {
         val userProfile = createOrGetUserProfile(event, userProfileDto)
 
@@ -40,13 +43,11 @@ class UserProfileService(
         return userProfileRepository.save(userProfile)
     }
 
-
-
-    fun saveAdmin(event: Event, adminUserProfile: UserProfileDto) {
+    fun saveAdmin(event: Event, adminUserProfile: UserProfileDto): UserProfileDto {
         val userProfile = createOrGetUserProfile(event, adminUserProfile)
-        userRoleService.addRoles(userProfile, AuthRole.ADMIN)
+        userRoleService.addRoles(userProfile, AuthRole.ADMIN, AuthRole.ASSISTANT, AuthRole.BASIC_USER)
 
-        println(userProfile)
+        return userProfileMapper.beanToDto(userProfileRepository.save(userProfile))
     }
 
     private fun createOrGetUserProfile(event: Event, userProfileDto: UserProfileDto): UserProfile {
@@ -54,7 +55,7 @@ class UserProfileService(
             UserProfile(null, event, userProfileDto.email, encodePassword(userProfileDto.userPassword))
         } else {
             val u = userProfileRepository.findById(userProfileDto.id!!)
-                .orElseThrow { ErExceptionNotFound("Can not save User Profile. ${userProfileDto.id} not found") }
+                .orElseThrow { ErExceptionNotFound("Can not save User Profile. userProfile.id=${userProfileDto.id} not found") }
             setNewUserProfileValues(userProfileDto, u)
             u
         }

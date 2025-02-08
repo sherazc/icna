@@ -3,20 +3,20 @@ import {MdDate} from "./DateService";
 import {registerApis} from "./api/ApiRegister";
 
 export type EventDto = {
-    id: number;
+    id?: number;
     eventName: string;
     startDate: MdDate,
     endDate?: MdDate,
     active: boolean
 }
-export const defaultEventDto = (): EventDto => ({id: 0, eventName: "", startDate: MdDate.currentSystemMdDate(), endDate: undefined, active: true});
+export const defaultEventDto = (): EventDto => ({id: undefined, eventName: "", startDate: MdDate.currentSystemMdDate(), endDate: undefined, active: true});
 
 /**
  * Person who is attending the event.
  * Person whose badge will be printed
  */
 export type AttendeeDto = {
-    id: number;
+    id: number; // Not optional because need to add and remove by id in UI. Uses negative number logic.
     registrationId?: number;
     eventId: number;
     firstName: string;
@@ -34,7 +34,7 @@ export const defaultAttendeeDto = (): AttendeeDto => ({
 });
 
 export type EventProgramDto = {
-    id: number;
+    id: number; // Not optional because need to add and remove by id in UI. Uses negative number logic.
     eventId: number;
     programName: string;
 };
@@ -58,7 +58,7 @@ export type UserProfileDto = {
 }
 
 export const defaultUserProfileDto = (): UserProfileDto => ({
-    id: 0,
+    id: undefined,
     eventId: 0,
     email: ""
 })
@@ -70,7 +70,7 @@ export type RegistrationDto = {
 }
 
 export const defaultRegistrationDto = (): RegistrationDto => ({
-    id: 0,
+    id: undefined,
     attendees: [],
     userProfile: defaultUserProfileDto()
 });
