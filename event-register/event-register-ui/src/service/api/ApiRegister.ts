@@ -13,7 +13,8 @@ import {parseObjectsIsoDateToMdDate} from "../DateService";
 
 export const baseUrl = process.env.REACT_APP_API_BASE_PATH;
 
-const CONTENT_JSON_HEADER: ApiHeaders = [["Content-Type", "application/json"]]
+// const CONTENT_JSON_HEADER: ApiHeaders = [["Content-Type", "application/json"]]
+const CONTENT_JSON_HEADER = (): ApiHeaders => [["Content-Type", "application/json"]]
 
 /**
  * This method creates all the available endpoints.
@@ -106,7 +107,7 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
                 endpoint,
                 method: "POST",
                 payload: registrationDto,
-                headers: CONTENT_JSON_HEADER};
+                headers: CONTENT_JSON_HEADER()};
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
@@ -172,7 +173,7 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
                 endpoint,
                 method: "POST",
                 payload: eventFormDto,
-                headers: CONTENT_JSON_HEADER};
+                headers: CONTENT_JSON_HEADER()};
             addHeadersInRequest(request, commonHeaders);
             const interceptors = addMdDateParserInterceptor(interceptorCbs);
             return callApiIntercept(request, interceptors);
@@ -197,3 +198,4 @@ const addMdDateParserInterceptor = (interceptorCbs?: InterceptorCallBacks): Inte
 export const createAuthHeader = (authUserTokenDto: AuthUserTokenDto): ApiHeaders => ([[
     "Authorization", `Bearer ${authUserTokenDto.token}`
 ]]);
+
