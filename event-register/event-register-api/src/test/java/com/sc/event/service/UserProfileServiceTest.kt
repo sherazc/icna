@@ -66,7 +66,7 @@ class UserProfileServiceTest {
     }
 
     @Test
-    fun save() {
+    fun saveRegistrationUser() {
     }
 
     @Test

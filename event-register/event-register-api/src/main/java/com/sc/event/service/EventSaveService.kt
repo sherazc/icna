@@ -13,24 +13,25 @@ class EventSaveService(
     private val eventProgramService: EventProgramService,
     private val styleService: StyleService) {
 
-
     fun saveModify(eventId: Long, eventFormDto: EventFormDto): EventFormDto {
         eventFormDto.event.id = eventId
         return save(eventFormDto)
     }
 
-
     fun save(eventFormDto: EventFormDto): EventFormDto {
-        val event = eventMapper.dtoToBean(eventFormDto.event)
-        val savedEvent = eventRepository.save(event)
-        val userProfileDto = userProfileService.saveAdmin(savedEvent, eventFormDto.adminUserProfile)
+
+        val savedEvent = eventRepository.save(eventMapper.dtoToBean(eventFormDto.event))
+
+        val savedEventDto = eventMapper.beanToDto(savedEvent)
+        val savedAdminUserProfileDto = userProfileService.saveEventAdminUser(savedEvent, eventFormDto.adminUserProfile)
         val savedEventProgramDtoList = eventProgramService.save(savedEvent, eventFormDto.programs)
         val savedStyleVariablesList = styleService.save(savedEvent, eventFormDto.styleVariables)
 
-
-        println(eventFormDto)
-        // TODO persist Event with the eventID
-        return eventFormDto
+        return eventFormDto.apply {
+            event = savedEventDto
+            adminUserProfile = savedAdminUserProfileDto
+            programs = savedEventProgramDtoList
+            styleVariables = savedStyleVariablesList
+        }
     }
-
 }

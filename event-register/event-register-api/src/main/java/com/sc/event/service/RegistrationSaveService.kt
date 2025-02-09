@@ -31,7 +31,7 @@ class RegistrationSaveService(
         val event: Event = eventService.getEventById(eventId)
 
         // Save UserProfile
-        val userProfileSaved = userProfileService.save(event, registrationDto.userProfile)
+        val userProfileSaved = userProfileService.saveRegistrationUser(event, registrationDto.userProfile)
 
         // Save registration
         val registration: Registration = saveRegistration(event, registrationDto, userProfileSaved)

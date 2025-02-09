@@ -33,20 +33,20 @@ class UserProfileService(
             }
     }
 
-
-    // TODO Merge this method with saveAdmin()
-    // TODO research to make this method return UserProfileDto
-    fun save(event: Event, userProfileDto: UserProfileDto): UserProfile {
+    /**
+     * Not creating a common method for Registration user and Event admin user because,
+     * Registration flow needs UserProfile entity "return" to link it to Registration Entity and
+     * EventAdmin flow needs UserProfileDto "return" to send back from controller response.
+     */
+    fun saveRegistrationUser(event: Event, userProfileDto: UserProfileDto): UserProfile {
         val userProfile = createOrGetUserProfile(event, userProfileDto)
-
         userRoleService.addRoles(userProfile, AuthRole.BASIC_USER)
         return userProfileRepository.save(userProfile)
     }
 
-    fun saveAdmin(event: Event, adminUserProfile: UserProfileDto): UserProfileDto {
+    fun saveEventAdminUser(event: Event, adminUserProfile: UserProfileDto): UserProfileDto {
         val userProfile = createOrGetUserProfile(event, adminUserProfile)
         userRoleService.addRoles(userProfile, AuthRole.ADMIN, AuthRole.ASSISTANT, AuthRole.BASIC_USER)
-
         return userProfileMapper.beanToDto(userProfileRepository.save(userProfile))
     }
 
