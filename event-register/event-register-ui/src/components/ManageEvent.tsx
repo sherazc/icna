@@ -365,32 +365,18 @@ export const ManageEvent = () => {
             if (createPassword) {
                 newEventFormDto.adminUserProfile.userPassword = eventPassword.passwordField;
             }
-            // TODO:
-            //  Create/Update Event
 
             let savedEventFormDto = await regApis.saveEvent(eventId ? eventId : "-1", newEventFormDto);
-
             console.log(savedEventFormDto);
-
-
-            if (submitErrors.length < 1) {
-
-
-                // const responseRegistrationDto = await regApis.saveRegistration(eventId as string, registrationForm);
-                //
-                //     if (responseRegistrationDto.id !== undefined && responseRegistrationDto.id > 0) {
-                //         let confirmationUrl = `/event/${eventId}/register-confirmation/${responseRegistrationDto.id}`
-                //         confirmationUrl = `${confirmationUrl}?isNew=${registrationForm.id ? 'false' : 'true'}`
-                //         navigate(confirmationUrl)
-                //     } else {
-                //         submitErrors.push({
-                //             fieldName: "registrationDto",
-                //             message: "Failed to save registration.",
-                //         });
+            if(savedEventFormDto.event.id && savedEventFormDto.event.id > 0) {
+                navigate(`/event/${eventId}/event-saved`)
+            } else {
+                submitErrors.push({
+                    fieldName: "eventFormDto",
+                    message: "Failed to save Event.",
+                });
             }
         }
-
-        console.log(newEventFormDto);
 
         setErrors(submitErrors);
         dispatch(createLoadingActionHide(loadingSaving.payload.id));
