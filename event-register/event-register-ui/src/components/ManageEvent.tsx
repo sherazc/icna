@@ -369,7 +369,7 @@ export const ManageEvent = () => {
             let savedEventFormDto = await regApis.saveEvent(eventId ? eventId : "-1", newEventFormDto);
             console.log(savedEventFormDto);
             if(savedEventFormDto.event.id && savedEventFormDto.event.id > 0) {
-                navigate(`/event/${eventId}/event-saved`)
+                navigate(`/event/${savedEventFormDto.event.id}/manage-event-confirm`)
             } else {
                 submitErrors.push({
                     fieldName: "eventFormDto",

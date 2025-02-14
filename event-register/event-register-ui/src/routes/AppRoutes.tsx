@@ -13,6 +13,7 @@ import {UserProfile} from "../components/UserProfile";
 import {MainHome} from "../components/MainHome";
 import AppLayout from "../layouts/AppLayout";
 import {ManageEvent} from "../components/ManageEvent";
+import {ManageEventConfirm} from "../components/ManageEventConfirm";
 
 export default function AppRoutes() {
     return (
@@ -30,6 +31,7 @@ export default function AppRoutes() {
                 <Route path="attendees" element={<AttendeeList/>}/>
                 <Route path="attendees/:attendeeId" element={<AttendeeInfo/>}/>
                 <Route path="user-profile" element={<UserProfile/>}/>
+                <Route path="manage-event-confirm" element={<ManageEventConfirm/>}/>
             </Route>
             <Route path="/design/:eventId" element={<StyleVar><Design/></StyleVar>}/>
             <Route path="/event/:eventId/print/register/:registrationId" element={<StyleVar><PrintBadge/></StyleVar>}></Route>

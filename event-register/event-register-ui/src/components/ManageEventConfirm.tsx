@@ -1,18 +1,20 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {NavLink, useParams} from "react-router-dom";
 import {AppContext} from "../store/context";
+import {defaultEventDto} from "../service/service-types";
 
 export const ManageEventConfirm = () => {
 
     const {eventId} = useParams();
-    const [{regApis}] = useContext(AppContext);
+    const [{regApis, authUserToken}] = useContext(AppContext);
+    const [eventDto, setEventDto] = useState(defaultEventDto());
+    const authenticated = authUserToken.userProfileId > 0;
 
     const loadData = async () => {
         if (!eventId) {
             return;
         }
-
-
+        setEventDto(await regApis.findEventById(eventId))
     }
 
     useEffect(() => {
@@ -22,7 +24,8 @@ export const ManageEventConfirm = () => {
     return (
         <div>
             <h1>Event Saved</h1>
-            <div><NavLink to={"/login"}>Login to edit</NavLink></div>
+            <h3>{eventDto.eventName}</h3>
+            {!authenticated && <div><NavLink to={`/event/${eventId}`}>Login to edit</NavLink></div>}
         </div>
     );
 }
