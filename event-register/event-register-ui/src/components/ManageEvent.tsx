@@ -23,6 +23,7 @@ import {
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./ManageEvent.module.scss";
 import ColorPicker from "./ColorPicker";
+import {Collapsible} from "./common/Collapsible";
 
 let temporaryId = -1;
 
@@ -33,6 +34,7 @@ export const ManageEvent = () => {
     const cancelLink = eventId ? `/event/${eventId}` : "/";
     const authenticated = authUserToken.userProfileId > 0;
     const adminUser = authUserToken.roles.includes("ADMIN");
+    const [isOpen, setIsOpen] = useState(false);
 
     const [eventPassword, setEventPassword] = useState<FormPassword>({
         passwordField: "",
@@ -398,7 +400,7 @@ export const ManageEvent = () => {
                 </div>
                 {eventFormDto.programs.map((p, index) => createEventProgramForm(p, index))}
 
-                <h2>Style Variable</h2>
+                <h2>Custom Styles</h2>
                 <table border={1}>
                     <thead>
                     <tr key="1000">
@@ -416,6 +418,8 @@ export const ManageEvent = () => {
                     <button onClick={() => navigate(cancelLink)}>Cancel</button>
                 </div>
             </div>
+
+            <Collapsible>test</Collapsible>
         </form>
     );
 }
