@@ -34,13 +34,13 @@ export const ManageEvent = () => {
     const cancelLink = eventId ? `/event/${eventId}` : "/";
     const authenticated = authUserToken.userProfileId > 0;
     const adminUser = authUserToken.roles.includes("ADMIN");
-    const [isOpen, setIsOpen] = useState(false);
+    const [openCustomStyles, setOpenCustomStyles] = useState(false);
 
     const [eventPassword, setEventPassword] = useState<FormPassword>({
         passwordField: "",
         passwordConfirm: ""
     })
-    const [createPassword, setCreatePassword] = useState<boolean>(false)
+    const [createPassword, setCreatePassword] = useState<boolean>(true)
     const [errors, setErrors] = useState<FieldError[]>([]);
     const [eventFormDto, setEventFormDto] = useState<EventFormDto>(defaultEventFormDto());
     const [defaultStyleVariables, setDefaultStyleVariables] = useState<StyleVariable[]>([]);
@@ -388,8 +388,6 @@ export const ManageEvent = () => {
         <form action="#" onSubmit={onSubmit}>
             <div>
                 <h1>Event</h1>
-                {adminUser ? "I am admin." : "I am not admin."}
-                {authenticated ? "I am authenticated." : "I am not authenticated."}
                 <h2>Event Details</h2>
                 {createEventDtoForm(eventFormDto.event)}
                 <h2>Admin User</h2>
@@ -400,7 +398,9 @@ export const ManageEvent = () => {
                 </div>
                 {eventFormDto.programs.map((p, index) => createEventProgramForm(p, index))}
 
-                <h2>Custom Styles</h2>
+                <h2>Custom Styles <button type="button" onClick={() => setOpenCustomStyles(!openCustomStyles)}>{openCustomStyles ? "-": "+"}</button></h2>
+
+                <Collapsible open={openCustomStyles}>
                 <table border={1}>
                     <thead>
                     <tr key="1000">
@@ -413,13 +413,15 @@ export const ManageEvent = () => {
                     {defaultStyleVariables.map((s, i) => createStyleVariableForm(s, i))}
                     </tbody>
                 </table>
+                </Collapsible>
+
                 <div>
                     <input type="submit" value="Submit"/>
                     <button onClick={() => navigate(cancelLink)}>Cancel</button>
                 </div>
             </div>
 
-            <Collapsible>test</Collapsible>
+
         </form>
     );
 }

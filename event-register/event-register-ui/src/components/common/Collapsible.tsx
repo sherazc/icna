@@ -1,30 +1,21 @@
-import React, {useRef, useState} from "react";
+import React, {useRef} from "react";
 import styles from "./Collapsible.module.scss";
 
 interface Props {
     children: React.ReactNode;
+    open: boolean;
 }
 
-export const Collapsible: React.FC<Props> = ({children}) => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+export const Collapsible: React.FC<Props> = ({children, open}) => {
     const contentRef = useRef<HTMLDivElement | null>(null);
-
     return (
         <div className={styles.container}>
-            <button onClick={() => setIsOpen(!isOpen)} className={styles.collapsibleBtn}>
-                {isOpen ? "Collapse" : "Expand"}
-            </button>
-
-            <div
-                ref={contentRef}
-                className={styles.collapsibleContent}
+            <div ref={contentRef} className={styles.collapsibleContent}
                 style={{
-                    maxHeight: isOpen && contentRef.current ? `${contentRef.current.scrollHeight}px` : "0",
-                    opacity: isOpen ? 1 : 0}}>
-                <div className={styles.contentBox}>
-                    <p>This is the collapsible content.</p>
-                    <p>You can add more information here.</p>
-                </div>
+                    maxHeight: open && contentRef.current ? `${contentRef.current.scrollHeight}px` : "0",
+                    opacity: open ? 1 : 0
+                }}>
+                <div className={styles.contentBox}>{children}</div>
             </div>
         </div>
     );
