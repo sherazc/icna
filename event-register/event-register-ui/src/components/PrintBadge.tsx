@@ -51,7 +51,7 @@ const pixelUnitToNumber = (pixelUnit: string): number => {
 
 const pixelToInch = (pixelUnit: string, pixelPerInch: number) => {
     const pixels = pixelUnitToNumber(pixelUnit);
-    if (pixelPerInch == 0) {
+    if (pixelPerInch === 0) {
         return 0;
     }
     return roundTo2Decimal(pixels / pixelPerInch);

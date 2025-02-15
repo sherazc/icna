@@ -18,7 +18,7 @@ import {
     castStringToNumber,
     formIdBreak,
     formIdCreate, getDateInputString, isBlankString,
-    isEqualStrings, touchString
+    isEqualStrings,
 } from "../service/utilities";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import styles from "./ManageEvent.module.scss";
@@ -289,13 +289,13 @@ export const ManageEvent = () => {
             });
         } else {
             const newVars = [...eventFormDto.styleVariables];
-            let foundIndex = newVars.findIndex(v => v.styleName == name);
+            let foundIndex = newVars.findIndex(v => v.styleName === name);
             if (foundIndex > -1) {
                 // TODO: if the value already exists replace its value
                 newVars[foundIndex].styleValue = value;
             } else {
                 // TODO: else add it
-                const defaultVar = defaultStyleVariables.find(v => v.styleName == name);
+                const defaultVar = defaultStyleVariables.find(v => v.styleName === name);
                 if (defaultVar) {
                     newVars.push({...defaultVar, styleValue: value});
                 }
