@@ -138,7 +138,8 @@ export const registerApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Interc
 
             const authenticationHeaders: ApiHeaders = [["Authorization", `Basic ${encodedUserPassword}`]];
 
-            addHeadersInRequest(request, commonHeaders);
+            // Removed because it adds Bearer Authorization header
+            // addHeadersInRequest(request, commonHeaders);
             addHeadersInRequest(request, authenticationHeaders);
 
             return callApiIntercept(request, interceptorCbs);

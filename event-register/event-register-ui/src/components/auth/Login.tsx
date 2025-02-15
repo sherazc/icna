@@ -43,7 +43,7 @@ export const Login: React.FC<Props> = () => {
             dispatch({
                 type: ActionNameRegisterApis.updateRegisterApis,
                 payload: registerApis(createAuthHeader(aut))
-            })
+            });
             setLoginState(LoginState.LOGIN_SUCCESS);
         }).catch(error => {
             console.log(error);

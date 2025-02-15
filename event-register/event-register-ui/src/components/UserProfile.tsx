@@ -6,6 +6,8 @@ import {UnAuthRedirect} from "./auth/UnAuthRedirect";
 import {createLoadingActionHide, createLoadingActionShow} from "./Loading";
 import {ActionNameAuthUser} from "../store/authUserReducer";
 import {IconArrowRight} from "../images/IconArrowRight";
+import {ActionNameRegisterApis} from "../store/registerApisReducer";
+import {createAuthHeader, registerApis} from "../service/api/ApiRegister";
 
 interface Props {
 }
@@ -32,7 +34,8 @@ export const UserProfile: React.FC<Props> = () => {
     }
 
     const onLogout = () => {
-        dispatch({type: ActionNameAuthUser.authUserLogout})
+        dispatch({type: ActionNameAuthUser.authUserLogout});
+        dispatch({type: ActionNameRegisterApis.updateRegisterApis, payload: registerApis()});
     }
 
     return (
