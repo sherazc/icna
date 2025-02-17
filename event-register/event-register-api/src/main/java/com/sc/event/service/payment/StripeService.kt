@@ -4,13 +4,16 @@ import com.stripe.Stripe
 import com.stripe.model.checkout.Session
 import com.stripe.param.checkout.SessionCreateParams
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
 
-class StripService(
+@Service
+class StripeService(
     @Value("com.sc.event.payment.stripe.secret")
     private val secretKey: String) {
 
     fun createSessionUrl(): String {
-        Stripe.apiKey = secretKey
+//        Stripe.apiKey = secretKey
+        Stripe.apiKey = "sk_test_51QsvaCQE93joYKro3S7OeUpIcDtKWULFOdpYNcwiJqRmCDHapPQs9PHnrh35x1oYJLWW0WZ0uMduysiTodz72sQD000ZLbv89H"
 
         val parameters = buildParameters()
         val session = Session.create(parameters)
