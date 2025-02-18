@@ -13,5 +13,5 @@ class PaymentController(private val paymentService: StripeService) {
 
     @PreAuthorize("permitAll()")
     @GetMapping("stripe")
-    fun stripeSessionUrl(): ResponseEntity<String> = ResponseEntity.ok(paymentService.createSessionUrl())
+    fun stripeSessionUrl(): ResponseEntity<String> = ResponseEntity.ok(paymentService.createCheckoutLink())
 }

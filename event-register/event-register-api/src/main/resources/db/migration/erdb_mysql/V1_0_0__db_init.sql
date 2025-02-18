@@ -42,7 +42,7 @@ create table m2m_user_profile_user_role
 create table registration
 (
     id              bigint not null auto_increment,
-    event_id        bigint,
+    event_id        bigint not null,
     user_profile_id bigint,
     primary key (id)
 );
@@ -72,6 +72,40 @@ create table user_role
     role_name varchar(255) not null,
     primary key (id)
 );
+
+
+
+-- Payments
+create table payment_setting
+(
+    id               bigint       not null auto_increment,
+    event_id         bigint not null,
+    payment_provider_key varchar(1000) not null,
+    active boolean,
+    primary key (id)
+);
+
+
+create table product
+(
+    id        bigint       not null auto_increment,
+    product_name varchar(255) not null,
+    price_cents bigint       not null,
+    primary key (id)
+);
+
+
+create table event_order
+(
+    id        bigint       not null auto_increment,
+    user_profile_id bigint not null,
+    price_cents bigint       not null,
+    primary key (id)
+);
+
+
+
+
 
 alter table registration
     add constraint UKpadvmihswakdrju5mryhgjc25 unique (user_profile_id);
@@ -125,3 +159,6 @@ alter table user_profile
     add constraint FKmnvck6gsvmfv3nmguyu0g9oip
         foreign key (event_id)
             references event (id)
+
+
+

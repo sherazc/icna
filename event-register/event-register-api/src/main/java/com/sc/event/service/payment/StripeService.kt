@@ -11,12 +11,14 @@ class StripeService(
     @Value("com.sc.event.payment.stripe.secret")
     private val secretKey: String) {
 
-    fun createSessionUrl(): String {
-//        Stripe.apiKey = secretKey
+    fun createCheckoutLink(): String {
+        // Stripe.apiKey = secretKey
         Stripe.apiKey = "sk_test_51QsvaCQE93joYKro3S7OeUpIcDtKWULFOdpYNcwiJqRmCDHapPQs9PHnrh35x1oYJLWW0WZ0uMduysiTodz72sQD000ZLbv89H"
 
         val parameters = buildParameters()
         val session = Session.create(parameters)
+
+        println(session.id) // use this id to match success/fail transaction in webhook
 
         return session.url
     }
@@ -27,8 +29,8 @@ class StripeService(
         val sessionParameters = SessionCreateParams.builder()
             .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
             .setMode(SessionCreateParams.Mode.PAYMENT)
-            .setSuccessUrl("https://mail.google.com/")
-            .setCancelUrl("https://www.cnn.com/")
+            .setSuccessUrl("https://www.bitsegment.com/my-system-transaction-id/success")
+            .setCancelUrl("https://www.bitsegment.com/my-system-transaction-id/failure")
             .addLineItem(lineItem) // Could be called multiple times
             .build()
         return sessionParameters
