@@ -7,15 +7,17 @@ create table attendee
     primary key (id)
 );
 
+
 create table event
 (
     id         bigint       not null auto_increment,
     event_name varchar(255) not null,
     start_date datetime,
-    end_date datetime,
-    active boolean,
+    end_date   datetime,
+    active     boolean,
     primary key (id)
 );
+
 
 create table event_program
 (
@@ -25,12 +27,14 @@ create table event_program
     primary key (id)
 );
 
+
 create table m2m_event_program_attendee
 (
     attendee_id      bigint not null,
     event_program_id bigint not null,
     primary key (attendee_id, event_program_id)
 );
+
 
 create table m2m_user_profile_user_role
 (
@@ -39,6 +43,7 @@ create table m2m_user_profile_user_role
     primary key (user_profile_id, user_role_id)
 );
 
+
 create table registration
 (
     id              bigint not null auto_increment,
@@ -46,6 +51,7 @@ create table registration
     user_profile_id bigint,
     primary key (id)
 );
+
 
 create table style
 (
@@ -57,6 +63,7 @@ create table style
     primary key (id)
 );
 
+
 create table user_profile
 (
     id            bigint       not null auto_increment,
@@ -66,6 +73,7 @@ create table user_profile
     primary key (id)
 );
 
+
 create table user_role
 (
     id        bigint       not null auto_increment,
@@ -74,38 +82,45 @@ create table user_role
 );
 
 
-
 -- Payments
 create table payment_setting
 (
-    id               bigint       not null auto_increment,
-    event_id         bigint not null,
+    id                   bigint        not null auto_increment,
+    event_id             bigint        not null,
     payment_provider_key varchar(1000) not null,
-    active boolean,
+    active               boolean,
     primary key (id)
 );
 
 
 create table product
 (
-    id        bigint       not null auto_increment,
+    id           bigint       not null auto_increment,
+    event_id     bigint       not null,
     product_name varchar(255) not null,
-    price_cents bigint       not null,
+    price_cents  bigint       not null,
     primary key (id)
 );
 
 
 create table event_order
 (
-    id        bigint       not null auto_increment,
-    user_profile_id bigint not null,
-    price_cents bigint       not null,
+    id              bigint       not null auto_increment,
+    user_profile_id bigint       not null,
+    price_cents     bigint       not null,
+    payment_status  varchar(255) not null,
     primary key (id)
 );
 
 
-
-
+create table order_line_item
+(
+    id                   bigint not null auto_increment,
+    event_order_id       bigint not null,
+    price_cents_at_order bigint not null,
+    product_id           bigint not null,
+    primary key (id)
+);
 
 alter table registration
     add constraint UKpadvmihswakdrju5mryhgjc25 unique (user_profile_id);
@@ -158,7 +173,34 @@ alter table style
 alter table user_profile
     add constraint FKmnvck6gsvmfv3nmguyu0g9oip
         foreign key (event_id)
-            references event (id)
+            references event (id);
 
 
+alter table payment_setting
+    add constraint fk_payment_setting_event_id
+        foreign key (event_id)
+            references event (id);
 
+
+alter table product
+    add constraint fk_product_event_id
+        foreign key (event_id)
+            references event (id);
+
+
+alter table event_order
+    add constraint fk_event_order_user_profile_id
+        foreign key (user_profile_id)
+            references user_profile (id);
+
+
+alter table order_line_item
+    add constraint fk_order_line_item_event_order_id
+        foreign key (event_order_id)
+            references event_order (id);
+
+
+alter table order_line_item
+    add constraint fk_order_line_item_product_id
+        foreign key (product_id)
+            references product (id);
