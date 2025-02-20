@@ -105,10 +105,12 @@ create table product
 
 create table event_order
 (
-    id              bigint       not null auto_increment,
-    user_profile_id bigint       not null,
-    price_cents     bigint       not null,
-    payment_status  varchar(255) not null,
+    id                 bigint       not null auto_increment,
+    registration_id    bigint       not null,
+    price_cents        bigint       not null,
+    payment_status     varchar(255) not null,
+    create_date        datetime,
+    last_modified_date datetime,
     primary key (id)
 );
 
@@ -189,8 +191,8 @@ alter table product
 
 
 alter table event_order
-    add constraint fk_event_order_user_profile_id
-        foreign key (user_profile_id)
+    add constraint fk_event_order_registration_id
+        foreign key (registration_id)
             references user_profile (id);
 
 
