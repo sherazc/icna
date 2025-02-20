@@ -123,55 +123,55 @@ create table order_line_item
 );
 
 alter table registration
-    add constraint UKpadvmihswakdrju5mryhgjc25 unique (user_profile_id);
+    add constraint UK_registration_user_profile_id unique (user_profile_id);
 
 alter table attendee
-    add constraint FKdn74gf1hhojumjwhf3eja66gs
+    add constraint FK_attendee_registration_id
         foreign key (registration_id)
             references registration (id);
 
 alter table event_program
-    add constraint FKmcrub2ppya8msr0057t78x6m4
+    add constraint FK_event_program_event_id
         foreign key (event_id)
             references event (id);
 
 alter table m2m_event_program_attendee
-    add constraint FK23p0dkrg84wn44ljqywv7ykg4
+    add constraint FK_m2m_event_program_attendee_event_program_id
         foreign key (event_program_id)
             references event_program (id);
 
 alter table m2m_event_program_attendee
-    add constraint FKnmbm9b89nc9oqcqps398hrpg4
+    add constraint FK_m2m_event_program_attendee_attendee_id
         foreign key (attendee_id)
             references attendee (id);
 
 alter table m2m_user_profile_user_role
-    add constraint FKmdl4jamxrxx9vj55w1rrnlif4
+    add constraint FK_m2m_user_profile_user_role_user_role_id
         foreign key (user_role_id)
             references user_role (id);
 
 alter table m2m_user_profile_user_role
-    add constraint FKti23b99jbg468jb6l7d424352
+    add constraint FK_m2m_user_profile_user_role_user_profile_id
         foreign key (user_profile_id)
             references user_profile (id);
 
 alter table registration
-    add constraint FKs4x1uat6i8fx26qpdrfwfg3ya
+    add constraint FK_registration_event_id
         foreign key (event_id)
             references event (id);
 
 alter table registration
-    add constraint FKqe01jwvdp30av1lgw39xw88bd
+    add constraint FK_registration_user_profile_id
         foreign key (user_profile_id)
             references user_profile (id);
 
 alter table style
-    add constraint FK6iasijmdr0scw2dqejii67fe6
+    add constraint FK_style_event_id
         foreign key (event_id)
             references event (id);
 
 alter table user_profile
-    add constraint FKmnvck6gsvmfv3nmguyu0g9oip
+    add constraint FK_user_profile_event_id
         foreign key (event_id)
             references event (id);
 
