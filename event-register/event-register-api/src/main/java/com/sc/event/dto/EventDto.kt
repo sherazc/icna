@@ -8,8 +8,9 @@ data class EventDto(
     var id: Long?,
     var eventName: String,
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
-    var startDate: LocalDateTime,
+    var startDate: LocalDateTime?,
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     var endDate: LocalDateTime?,
-    var active: Boolean
+    var active: Boolean,
+    // var monetizationEnabled: Boolean
 )

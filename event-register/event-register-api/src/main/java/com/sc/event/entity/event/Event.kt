@@ -14,7 +14,10 @@ data class Event(
     var id: Long?,
     @Column(nullable = false)
     var eventName: String,
-    var startDate: LocalDateTime,
+    var startDate: LocalDateTime?,
     var endDate: LocalDateTime?,
-    var active: Boolean
+    var active: Boolean,
+    // var enableMonetization: Boolean,
+    // var enableGroupRegistration: Boolean,
+    // var enableStartEndDate: Boolean,
 )
