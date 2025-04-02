@@ -17,7 +17,7 @@ data class Event(
     var startDate: LocalDateTime?,
     var endDate: LocalDateTime?,
     var active: Boolean,
-    // var enableMonetization: Boolean,
+    var enableMonetization: Boolean,
     // var enableGroupRegistration: Boolean,
     // var enableStartEndDate: Boolean,
 )

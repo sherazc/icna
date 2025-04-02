@@ -1,3 +1,5 @@
+
+
 create table attendee
 (
     id              bigint       not null auto_increment,
@@ -15,6 +17,9 @@ create table event
     start_date datetime,
     end_date   datetime,
     active     boolean,
+    enable_monetization     boolean,
+    enable_group_registration     boolean,
+    enable_start_end_date     boolean,
     primary key (id)
 );
 

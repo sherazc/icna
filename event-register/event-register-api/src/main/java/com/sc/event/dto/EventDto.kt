@@ -12,5 +12,5 @@ data class EventDto(
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     var endDate: LocalDateTime?,
     var active: Boolean,
-    // var monetizationEnabled: Boolean
+    var enableMonetization: Boolean
 )
