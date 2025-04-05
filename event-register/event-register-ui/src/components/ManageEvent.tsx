@@ -77,7 +77,11 @@ export const ManageEvent = () => {
         setEventPassword({passwordConfirm: "", passwordField: ""});
     }
 
-    const onChangeEventActive = () => {
+    const onChangeEventBoolean = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEventFormDto({...eventFormDto, event: {...eventFormDto.event, [event.target.id]: event.target.checked}});
+    }
+
+    const onChangeEventActive = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEventFormDto({...eventFormDto, event: {...eventFormDto.event, active: !eventFormDto.event.active}});
     }
 
@@ -144,6 +148,14 @@ export const ManageEvent = () => {
                 <Error errors={errors} fieldName="event.eventName"/>
             </div>
 
+            <div>
+                <label className={checkRadio.checkContainer}>
+                    Enable Start & End Dates
+                    <input id="enableStartEndDate" type="checkbox" checked={eventDto.enableStartEndDate}
+                           onChange={onChangeEventBoolean}/>
+                    <span className={checkRadio.checkbox}></span>
+                </label>
+            </div>
             <div>
                 <label htmlFor="startDate">Event Date </label>
                 <input
