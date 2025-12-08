@@ -1,0 +1,117 @@
+/* FaithfulPlanner Theme: Dark Slate Theme */
+/* Dark mode with elegant purple accents */
+/* Premium, sophisticated, and professional - ideal for specialized medical centers */
+
+:root {
+    /* Primary Color Palette - Purple (adapted for dark mode) */
+    --primary: #a78bfa;
+    --primary-dark: #8b5cf6;
+    --primary-light: #c4b5fd;
+    --primary-ultra-light: #4c1d95;
+
+    /* Semantic Colors - Dark adapted */
+    --success: #34d399;
+    --success-light: #064e3b;
+    --warning: #fcd34d;
+    --warning-light: #713f12;
+    --error: #fb7185;
+    --error-light: #831843;
+    --info: #a78bfa;
+    --info-light: #4c1d95;
+
+    /* Neutral Colors - Slate palette */
+    --gray-50: #0f172a;
+    --gray-100: #1a202c;
+    --gray-200: #2d3748;
+    --gray-300: #4a5568;
+    --gray-400: #718096;
+    --gray-500: #a0aec0;
+    --gray-600: #cbd5e0;
+    --gray-700: #e2e8f0;
+    --gray-800: #edf2f7;
+    --gray-900: #f7fafc;
+
+    /* Background Colors - Dark mode with slate tone */
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --bg-tertiary: #374151;
+    --bg-hover: #4c1d95;
+
+    /* Text Colors - Light text on dark */
+    --text-primary: #f3e8ff;
+    --text-secondary: #e9d5ff;
+    --text-tertiary: #d8b4fe;
+    --text-light: #c084fc;
+    --text-on-primary: #111827;
+
+    /* Border Colors & Styles */
+    --border-color: #2d3748;
+    --border-light: #1a202c;
+    --border-dark: #4a5568;
+    --border-width: 1px;
+    --border-radius-xs: 4px;
+    --border-radius-sm: 6px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 10px;
+    --border-radius-xl: 12px;
+    --border-radius-full: 50%;
+
+    /* Shadows - Dark mode optimized with purple tint */
+    --shadow-xs: 0 1px 2px rgba(168, 85, 247, 0.15);
+    --shadow-sm: 0 1px 2px rgba(168, 85, 247, 0.2);
+    --shadow-md: 0 2px 10px rgba(168, 85, 247, 0.25);
+    --shadow-lg: 0 10px 25px rgba(168, 85, 247, 0.3);
+    --shadow-xl: 0 10px 40px rgba(168, 85, 247, 0.35);
+
+    /* Typography */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-xs: 11px;
+    --font-size-sm: 12px;
+    --font-size-base: 14px;
+    --font-size-md: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 28px;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.4;
+    --line-height-normal: 1.6;
+    --line-height-relaxed: 1.8;
+
+    /* Spacing Scale */
+    --spacing-2: 2px;
+    --spacing-4: 4px;
+    --spacing-5: 5px;
+    --spacing-8: 8px;
+    --spacing-10: 10px;
+    --spacing-12: 12px;
+    --spacing-15: 15px;
+    --spacing-20: 20px;
+    --spacing-30: 30px;
+    --spacing-40: 40px;
+
+    /* Layout */
+    --sidebar-width: 250px;
+    --modal-max-width: 500px;
+    --header-height: 60px;
+    --button-height: 40px;
+    --input-height: 40px;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Z-index Scale */
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-modal-backdrop: 400;
+    --z-modal: 500;
+    --z-notification: 600;
+}
