@@ -3,7 +3,7 @@ import AppNav from "../navigation/AppNav";
 
 export default function Layout01() {
   return (
-    <div>
+    <div className="appContainer">
     Layout 01
     <AppNav/>
     <Outlet/>
