@@ -6,7 +6,7 @@ export default function Layout01() {
     <div className="appContainer">
     Layout 01
     <AppNav/>
-    <Outlet/>
+    <div className="mainContent"><Outlet/></div>
     </div>
   );
 }

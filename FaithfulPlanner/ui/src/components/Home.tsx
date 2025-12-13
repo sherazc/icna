@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="mainContent">
+    <>
       {/* <!-- Login Screen --> */}
       <div id="login" className="screen active">
         <div className="loginContainer">
@@ -1043,30 +1043,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* <!-- Design Screen --> */}
-      <div id="design" className="screen">
-        <div className="header">
-          <h2>Design</h2>
-          <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
-        </div>
-
-        <div className="card fullWidth">
-          <h3>Modal Types</h3>
-          <p className="text-secondary mb-2fullWidth">Click any button below to see the configurable modal in action:</p>
-
-          <div className="flex gap-10 mt-2fullWidth">
-            <button className="btn btnPrimary" onclick="showConfirmModal()">Confirm Modal</button>
-            <button className="btn btnSecondary" style="background-color: var(--warning); color: white;" onclick="showWarningModal()">Warning Modal</button>
-            <button className="btn" style="background-color: var(--error); color: white;" onclick="showErrorModal()">Error Modal</button>
-          </div>
-
-          <div className="mt-3fullWidth">
-            <h4>Custom Modal Example</h4>
-            <button className="btn btnPrimary mt-2fullWidth" onclick="showCustomModal()">Show Custom Modal</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
