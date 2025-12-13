@@ -6,7 +6,7 @@ npm install npm -g
 
 # Build UI
 cd $app_ui_dir
-rm -rf build
+rm -rf dist
 npm install
 npm run build
 
@@ -15,8 +15,8 @@ rm -rf $app_api_dir/src/main/resources/static
 mkdir -p $app_api_dir/src/main/resources/static
 
 # Copy static files
-cp -r $app_ui_dir/build/* $app_api_dir/src/main/resources/static
+cp -r $app_ui_dir/dist/* $app_api_dir/src/main/resources/static
 
-# Building API + UI jar
+## Building API + UI jar
 cd $app_api_dir
-./mvnw clean install
+./gradlew clean build
