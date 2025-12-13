@@ -1,10 +1,10 @@
-package com.sc.clinic.api;
+package com.sc.clinic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {
