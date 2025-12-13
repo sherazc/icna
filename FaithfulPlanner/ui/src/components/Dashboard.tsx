@@ -1,6 +1,6 @@
 export default function Dashboard() {
   return (
-    <div id="dashboard" className="screen active">
+    <div id="dashboard">
       <div className="header">
         <h2>Dashboard <span className="orgBadge" id="currentOrgBadge">Mercy Free Clinic</span></h2>
         <div className="headerActions">

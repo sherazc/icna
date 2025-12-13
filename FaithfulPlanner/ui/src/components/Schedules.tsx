@@ -1,6 +1,6 @@
 export default function Schedules() {
   return (
-      <div id="schedules" className="screen">
+      <div id="schedules">
         <div className="header">
           <h2>Schedule Management</h2>
           <div className="headerActions">

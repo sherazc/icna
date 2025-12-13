@@ -1,6 +1,6 @@
 export default function Volunteers() {
   return (
-    <div id="volunteers" className="screen">
+    <div id="volunteers">
       <div className="header">
         <h2>Volunteer Management <span className="orgBadge" id="volunteerOrgBadge">Mercy Free Clinic</span></h2>
         <div className="headerActions">

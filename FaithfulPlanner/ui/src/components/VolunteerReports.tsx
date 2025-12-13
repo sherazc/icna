@@ -1,6 +1,6 @@
 export default function VolunteerReports() {
   return (
-    <div id="volunteer-reports" className="screen">
+    <div id="volunteer-reports">
         <div className="header">
           <h2>Volunteer Reports</h2>
           <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>

@@ -2,17 +2,37 @@ import { Route, Routes } from "react-router-dom";
 import Layout01 from "../layouts/Layout01";
 import Login from "../components/Login";
 import Dashboard from "../components/Dashboard";
-
+import OrgRegistration from "../components/OrgRegistration";
+import OrgSelection from "../components/OrgSelection";
+import OrgManagement from "../components/OrgManagement";
+import Volunteers from "../components/Volunteers";
+import Schedules from "../components/Schedules";
+import ShiftDetails from "../components/ShiftDetails";
+import Notifications from "../components/Notifications";
+import Settings from "../components/Settings";
+import OrgSettings from "../components/OrgSettings";
+import VolunteerReports from "../components/VolunteerReports";
+import Providers from "../components/Providers";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/clinic/:clinicId" element={<Layout01/>}>
-        <Route index element={<Dashboard/>}/>
+      <Route path="/" element={<Layout01/>}>
+        <Route index element={<Login/>}/>
         <Route path="login" element={<Login/>}/>
-
+        <Route path="dashboard" element={<Dashboard/>}/>
+        <Route path="org-registration" element={<OrgRegistration/>}/>
+        <Route path="org-selection" element={<OrgSelection/>}/>
+        <Route path="org-management" element={<OrgManagement/>}/>
+        <Route path="volunteers" element={<Volunteers/>}/>
+        <Route path="schedules" element={<Schedules/>}/>
+        <Route path="shift-details" element={<ShiftDetails/>}/>
+        <Route path="notifications" element={<Notifications/>}/>
+        <Route path="settings" element={<Settings/>}/>
+        <Route path="org-settings" element={<OrgSettings/>}/>
+        <Route path="volunteer-reports" element={<VolunteerReports/>}/>
+        <Route path="providers" element={<Providers/>}/>
       </Route>
-
     </Routes>
   );
 }

@@ -1,6 +1,6 @@
 export default function OrgSelection() {
   return (
-    <div id="org-selection" className="screen">
+    <div id="org-selection">
       <div className="header">
         <h2>Select Organization</h2>
         <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>

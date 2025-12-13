@@ -1,6 +1,6 @@
 export default function ShiftDetails() {
   return (
-    <div id="shift-details" className="screen">
+    <div id="shift-details">
       <div className="header">
         <h2>Shift Details</h2>
         <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>

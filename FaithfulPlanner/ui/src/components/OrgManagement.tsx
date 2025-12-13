@@ -1,6 +1,6 @@
 export default function OrgManagement() {
   return (
-    <div id="org-management" className="screen">
+    <div id="org-management">
       <div className="header">
         <h2>Organization Management <span className="orgBadge">Super Admin</span></h2>
         <div className="headerActions">

@@ -1,6 +1,6 @@
 export default function OrgRegistration () {
   return (
-          <div id="org-registration" className="screen">
+          <div id="org-registration">
         <div className="loginContainer">
           <h1>Register Organization</h1>
           <form onsubmit="handleOrgRegistration(event)">

@@ -1,6 +1,6 @@
 export default function Settings() {
   return (
-    <div id="settings" className="screen">
+    <div id="settings">
       <div className="header">
         <h2>Settings</h2>
         <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>

@@ -1,10 +1,26 @@
+import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+
 export default function AppNav() {
+  const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
+  const isActive = (path: string) => {
+    return location.pathname === path ? "active" : "";
+  };
+
   return (
     <>
-      {/* <!-- Hamburger Menu Button --> */}
-      <button className="hamburgerBtn"
-      // onclick="toggleMobileMenu()"
-      >
+      {/* Hamburger Menu Button */}
+      <button className="hamburgerBtn" onClick={toggleMobileMenu}>
         <div className="hamburgerIcon">
           <span></span>
           <span></span>
@@ -12,21 +28,20 @@ export default function AppNav() {
         </div>
       </button>
 
-      {/* <!-- Sidebar Overlay --> */}
-      <div className="sidebarOverlay"
-      // onclick="closeMobileMenu()"
+      {/* Sidebar Overlay */}
+      <div
+        className={`sidebarOverlay ${mobileMenuOpen ? "active" : ""}`}
+        onClick={closeMobileMenu}
       ></div>
 
-      {/* <!-- Sidebar --> */}
-      <div className="sidebar" id="sidebar">
+      {/* Sidebar */}
+      <div className={`sidebar ${mobileMenuOpen ? "active" : ""}`} id="sidebar">
         <div className="sidebarHeader">
           <h1>FaithfulPlanner</h1>
         </div>
         <div className="orgSelector">
           <label>Current Organization</label>
-          <select id="orgSelector"
-          // onchange="switchOrganization()"
-          >
+          <select id="orgSelector">
             <option value="">Select Organization</option>
             <option value="mercy-clinic">Mercy Free Clinic</option>
             <option value="hope-center">Hope Community Center</option>
@@ -35,46 +50,69 @@ export default function AppNav() {
         </div>
         <ul className="navMenu">
           <li className="navItem">
-            <a className="navLink active" onclick="switchScreen('login')">Login</a>
+            <Link to="/login" className={`navLink ${isActive("/login")}`} onClick={closeMobileMenu}>
+              Login
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('org-registration')">Register Organization</a>
+            <Link to="/org-registration" className={`navLink ${isActive("/org-registration")}`} onClick={closeMobileMenu}>
+              Register Organization
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('org-selection')">Select Organization</a>
+            <Link to="/org-selection" className={`navLink ${isActive("/org-selection")}`} onClick={closeMobileMenu}>
+              Select Organization
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('dashboard')">Dashboard</a>
+            <Link to="/dashboard" className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
+              Dashboard
+            </Link>
           </li>
           <li className="navItem superAdminOnly">
-            <a className="navLink" onclick="switchScreen('org-management')">Organization Management</a>
+            <Link to="/org-management" className={`navLink ${isActive("/org-management")}`} onClick={closeMobileMenu}>
+              Organization Management
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('providers')">Providers</a>
+            <Link to="/providers" className={`navLink ${isActive("/providers")}`} onClick={closeMobileMenu}>
+              Providers
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('volunteers')">Volunteers</a>
+            <Link to="/volunteers" className={`navLink ${isActive("/volunteers")}`} onClick={closeMobileMenu}>
+              Volunteers
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('schedules')">Schedules</a>
+            <Link to="/schedules" className={`navLink ${isActive("/schedules")}`} onClick={closeMobileMenu}>
+              Schedules
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('shift-details')">Shift Details</a>
+            <Link to="/shift-details" className={`navLink ${isActive("/shift-details")}`} onClick={closeMobileMenu}>
+              Shift Details
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('notifications')">Notifications</a>
+            <Link to="/notifications" className={`navLink ${isActive("/notifications")}`} onClick={closeMobileMenu}>
+              Notifications
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('settings')">Settings</a>
+            <Link to="/settings" className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
+              Settings
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('org-settings')">Organization Settings</a>
+            <Link to="/org-settings" className={`navLink ${isActive("/org-settings")}`} onClick={closeMobileMenu}>
+              Organization Settings
+            </Link>
           </li>
           <li className="navItem">
-            <a className="navLink" onclick="switchScreen('volunteer-reports')">Volunteer Reports</a>
-          </li>
-          <li className="navItem">
-            <a className="navLink" onclick="switchScreen('design')">Design</a>
+            <Link to="/volunteer-reports" className={`navLink ${isActive("/volunteer-reports")}`} onClick={closeMobileMenu}>
+              Volunteer Reports
+            </Link>
           </li>
         </ul>
       </div>

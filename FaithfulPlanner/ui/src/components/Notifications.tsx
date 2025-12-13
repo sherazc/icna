@@ -1,6 +1,6 @@
 export default function Notifications() {
   return (
-      <div id="notifications" className="screen">
+      <div id="notifications">
         <div className="header">
           <h2>Notifications</h2>
           <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>

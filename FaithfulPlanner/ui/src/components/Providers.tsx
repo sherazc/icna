@@ -1,6 +1,6 @@
 export default function Providers() {
   return (
-    <div id="providers" className="screen">
+    <div id="providers">
       <div className="header">
         <h2>Provider Management <span className="orgBadge" id="providerOrgBadge">Mercy Free Clinic</span></h2>
         <div className="headerActions">

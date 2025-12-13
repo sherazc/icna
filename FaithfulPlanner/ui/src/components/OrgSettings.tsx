@@ -1,6 +1,6 @@
 export default function OrgSettings() {
   return (
-    <div id="org-settings" className="screen">
+    <div id="org-settings">
       <div className="header">
         <h2>Organization Settings <span className="orgBadge" id="orgSettingsBadge">Mercy Free Clinic</span></h2>
         <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>

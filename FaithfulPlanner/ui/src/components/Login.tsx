@@ -1,6 +1,6 @@
 export default function Login() {
   return (
-      <div id="login" className="screen active">
+      <div id="login">
         <div className="loginContainer">
           <h1>FaithfulPlanner</h1>
           <form onsubmit="handleLogin(event)">
