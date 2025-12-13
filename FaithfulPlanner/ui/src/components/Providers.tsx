@@ -4,9 +4,9 @@ export default function Providers() {
       <div className="header">
         <h2>Provider Management <span className="orgBadge" id="providerOrgBadge">Mercy Free Clinic</span></h2>
         <div className="headerActions">
-          <button className="btn btnSecondary" onclick="switchScreen('org-selection')">Switch Organization</button>
-          <button className="btn btnPrimary" onclick="openModal('addProviderModal')">+ Add Provider</button>
-          <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+          <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
+          <button className="btn btnPrimary" data-onclick="openModal('addProviderModal')">+ Add Provider</button>
+          <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
         </div>
       </div>
 

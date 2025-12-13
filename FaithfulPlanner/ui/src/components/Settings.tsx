@@ -3,7 +3,7 @@ export default function Settings() {
     <div id="settings">
       <div className="header">
         <h2>Settings</h2>
-        <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+        <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
       </div>
 
       <div className="dashboardGrid">

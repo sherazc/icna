@@ -4,9 +4,9 @@ export default function Volunteers() {
       <div className="header">
         <h2>Volunteer Management <span className="orgBadge" id="volunteerOrgBadge">Mercy Free Clinic</span></h2>
         <div className="headerActions">
-          <button className="btn btnSecondary" onclick="switchScreen('org-selection')">Switch Organization</button>
-          <button className="btn btnPrimary" onclick="openModal('addVolunteerModal')">+ Add Volunteer</button>
-          <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+          <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
+          <button className="btn btnPrimary" data-onclick="openModal('addVolunteerModal')">+ Add Volunteer</button>
+          <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
         </div>
       </div>
 

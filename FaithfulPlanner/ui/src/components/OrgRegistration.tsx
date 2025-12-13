@@ -3,7 +3,7 @@ export default function OrgRegistration () {
           <div id="org-registration">
         <div className="loginContainer">
           <h1>Register Organization</h1>
-          <form onsubmit="handleOrgRegistration(event)">
+          <form data-onsubmit="handleOrgRegistration(event)">
             <div className="formGroup">
               <label htmlFor="orgName">Organization Name</label>
               <input type="text" id="orgName" placeholder="Enter organization name" required />
@@ -33,7 +33,7 @@ export default function OrgRegistration () {
             <div className="formGroup">
               <label htmlFor="orgColor">Brand Color</label>
               <div className="flexRow15">
-                <input type="color" id="orgColor" value="#667eea" onchange="updateColorPreview('orgColor', 'orgColorPreview')" />
+                <input type="color" id="orgColor" value="#667eea" data-onchange="updateColorPreview('orgColor', 'orgColorPreview')" />
                 <div className="flexColumn">
                   <div id="orgColorPreview" className="colorPreview"></div>
                   <span id="orgColorValue" className="colorValue">#667eea</span>
@@ -42,7 +42,7 @@ export default function OrgRegistration () {
             </div>
             <div className="formActions">
               <button type="submit" className="btn btnPrimary">Register Organization</button>
-              <button type="button" className="btn btnSecondary" onclick="switchScreen('login')">Back to Login</button>
+              <button type="button" className="btn btnSecondary" data-onclick="switchScreen('login')">Back to Login</button>
             </div>
           </form>
         </div>

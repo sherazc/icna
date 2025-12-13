@@ -3,7 +3,7 @@ export default function Login() {
       <div id="login">
         <div className="loginContainer">
           <h1>FaithfulPlanner</h1>
-          <form onsubmit="handleLogin(event)">
+          <form data-onsubmit="handleLogin(event)">
             <div className="formGroup">
               <label htmlFor="email">Email Address</label>
               <input type="email" id="email" placeholder="Enter your email" required />
@@ -33,7 +33,7 @@ export default function Login() {
             </div>
             <div className="formActions">
               <button type="submit" className="btn btnPrimary">Login</button>
-              <button type="button" className="btn btnSecondary" onclick="switchScreen('org-registration')">Register Organization</button>
+              <button type="button" className="btn btnSecondary" data-onclick="switchScreen('org-registration')">Register Organization</button>
             </div>
           </form>
         </div>

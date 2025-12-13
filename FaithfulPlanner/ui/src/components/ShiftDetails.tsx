@@ -3,7 +3,7 @@ export default function ShiftDetails() {
     <div id="shift-details">
       <div className="header">
         <h2>Shift Details</h2>
-        <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+        <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
       </div>
 
       <div className="dashboardGrid">

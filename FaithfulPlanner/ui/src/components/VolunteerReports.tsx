@@ -3,7 +3,7 @@ export default function VolunteerReports() {
     <div id="volunteer-reports">
         <div className="header">
           <h2>Volunteer Reports</h2>
-          <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+          <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
         </div>
 
         <div className="card mb-3fullWidth">
@@ -17,7 +17,7 @@ export default function VolunteerReports() {
                 <input type="text" id="report-volunteer-search" placeholder="Search volunteer..." className="searchInput" />
                 <div id="report-volunteer-dropdown" className="searchDropdown"></div>
               </div>
-              <button type="button" className="dropdownToggleBtn" onclick="toggleReportVolunteers()" title="Show all volunteers">▼</button>
+              <button type="button" className="dropdownToggleBtn" data-onclick="toggleReportVolunteers()" title="Show all volunteers">▼</button>
             </div>
             <div className="mt-1fullWidth">
               <span id="selected-volunteer-name" className="font-semibold text-primary">No volunteer selected</span>
@@ -35,7 +35,7 @@ export default function VolunteerReports() {
               <input type="date" id="report-end-date" className="searchInput" />
             </div>
             <div className="flex items-end">
-              <button className="btn btnPrimary m-fullWidth" onclick="generateVolunteerReport()">Generate Report</button>
+              <button className="btn btnPrimary m-fullWidth" data-onclick="generateVolunteerReport()">Generate Report</button>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function VolunteerReports() {
               </thead>
               <tbody id="volunteer-report-results">
                 <tr>
-                  <td colspan="5" className="text-center p-3fullWidth text-secondary">Select a volunteer and date range to view report</td>
+                  <td colSpan={5} className="text-center p-3fullWidth text-secondary">Select a volunteer and date range to view report</td>
                 </tr>
               </tbody>
             </table>

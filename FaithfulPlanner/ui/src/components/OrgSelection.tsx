@@ -3,11 +3,11 @@ export default function OrgSelection() {
     <div id="org-selection">
       <div className="header">
         <h2>Select Organization</h2>
-        <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+        <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
       </div>
 
       <div className="dashboardGrid">
-        <div className="card" onclick="selectOrganization('mercy-clinic')">
+        <div className="card" data-onclick="selectOrganization('mercy-clinic')">
           <h3>Mercy Free Clinic</h3>
           <div className="cardStat">
             <span className="cardStatLabel">Role</span>
@@ -23,7 +23,7 @@ export default function OrgSelection() {
           </div>
         </div>
 
-        <div className="card" onclick="selectOrganization('hope-center')">
+        <div className="card" data-onclick="selectOrganization('hope-center')">
           <h3>Hope Community Center</h3>
           <div className="cardStat">
             <span className="cardStatLabel">Role</span>
@@ -39,7 +39,7 @@ export default function OrgSelection() {
           </div>
         </div>
 
-        <div className="card" onclick="selectOrganization('faith-health')">
+        <div className="card" data-onclick="selectOrganization('faith-health')">
           <h3>Faith & Health Alliance</h3>
           <div className="cardStat">
             <span className="cardStatLabel">Role</span>

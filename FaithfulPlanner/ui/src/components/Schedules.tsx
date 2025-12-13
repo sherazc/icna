@@ -4,8 +4,8 @@ export default function Schedules() {
         <div className="header">
           <h2>Schedule Management</h2>
           <div className="headerActions">
-            <button className="btn btnPrimary" onclick="openModal('addScheduleModal')">+ Create Schedule</button>
-            <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+            <button className="btn btnPrimary" data-onclick="openModal('addScheduleModal')">+ Create Schedule</button>
+            <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
           </div>
         </div>
 

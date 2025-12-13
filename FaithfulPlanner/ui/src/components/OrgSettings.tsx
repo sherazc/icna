@@ -3,7 +3,7 @@ export default function OrgSettings() {
     <div id="org-settings">
       <div className="header">
         <h2>Organization Settings <span className="orgBadge" id="orgSettingsBadge">Mercy Free Clinic</span></h2>
-        <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+        <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
       </div>
 
       <div className="dashboardGrid">
@@ -24,7 +24,7 @@ export default function OrgSettings() {
           <div className="formGroup">
             <label>Brand Color</label>
             <div className="flexRow15">
-              <input type="color" id="orgColorSettings" value="#667eea" onchange="updateColorPreview('orgColorSettings', 'orgColorSettingsPreview')" />
+              <input type="color" id="orgColorSettings" value="#667eea" data-onchange="updateColorPreview('orgColorSettings', 'orgColorSettingsPreview')" />
               <div className="flexColumn">
                 <div id="orgColorSettingsPreview" className="colorPreview"></div>
                 <span id="orgColorSettingsValue" className="colorValue">#667eea</span>

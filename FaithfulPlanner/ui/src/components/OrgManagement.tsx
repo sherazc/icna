@@ -4,8 +4,8 @@ export default function OrgManagement() {
       <div className="header">
         <h2>Organization Management <span className="orgBadge">Super Admin</span></h2>
         <div className="headerActions">
-          <button className="btn btnPrimary" onclick="openModal('addOrgModal')">+ Add Organization</button>
-          <button className="btn btnLogout" onclick="switchScreen('login')">Logout</button>
+          <button className="btn btnPrimary" data-onclick="openModal('addOrgModal')">+ Add Organization</button>
+          <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
         </div>
       </div>
 
