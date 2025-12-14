@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-java -jar api/build/libs/api-0.0.1-SNAPSHOT.jar
+java -jar api/build/libs/api-1.0.jar
