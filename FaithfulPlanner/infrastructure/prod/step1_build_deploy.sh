@@ -5,7 +5,7 @@ source env_pi
 
 cd ..
 # ./clean.sh
-./build.sh
+# ./build.sh
 
 cd $app_infra_source_path
 
