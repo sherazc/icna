@@ -1,12 +1,13 @@
 plugins {
 	java
+	kotlin("jvm") version "2.3.0"  // Add Kotlin JVM plugin
 	id("org.springframework.boot") version "4.0.0"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "com.sc.clinic"
 version = "1.0"
-description = "Clinic Managment"
+description = "Clinic Management"
 
 java {
 //	sourceCompatibility = JavaVersion.VERSION_25
@@ -29,6 +30,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")  // Add Kotlin standard library
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
