@@ -17,13 +17,13 @@ sleep 3
 docker run \
   --detach \
   --name=$db_name \
-  -p 3306:3306 \
-  --env="MYSQL_ROOT_PASSWORD=$db_password" \
-  --env="MYSQL_DATABASE=$db_name" \
-  --env="MYSQL_USER=$db_user" \
-  --env="MYSQL_PASSWORD=$db_password" \
-  -v $dataDir:/var/lib/mysql \
-  mysql:latest
+  -p 5432:5432 \
+  --env="POSTGRES_PASSWORD=$db_password" \
+  --env="POSTGRES_DB=$db_name" \
+  --env="POSTGRES_USER=$db_user" \
+  -v $dataDir:/var/lib/postgresql \
+  postgres:latest
 
 sleep 5
 echo "Created DB container."
+
