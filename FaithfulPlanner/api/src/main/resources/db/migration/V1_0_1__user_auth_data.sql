@@ -10,47 +10,47 @@ INSERT INTO user_role (role_name)
 VALUES
     ('ADMIN'),
     ('ASSISTANT'),
-    ('REGULAR_USER');
+    ('BASIC_USER');
 
 -- Insert users for Al-Shifa Health Clinic (company_id = 1)
 INSERT INTO user_profile (email, user_password, company_id)
 VALUES
     ('sheraz@alshifa.com', 'password123', 1),      -- ADMIN
     ('tariq@alshifa.com', 'password123', 1),       -- ASSISTANT
-    ('chaudhry@alshifa.com', 'password123', 1);    -- REGULAR_USER
+    ('chaudhry@alshifa.com', 'password123', 1);    -- BASIC_USER
 
 -- Insert users for Rahma Medical Center (company_id = 2)
 INSERT INTO user_profile (email, user_password, company_id)
 VALUES
     ('abrar@rahma.com', 'password123', 2),         -- ADMIN
     ('faraz@rahma.com', 'password123', 2),         -- ASSISTANT
-    ('sheraz@rahma.com', 'password123', 2);        -- REGULAR_USER
+    ('sheraz@rahma.com', 'password123', 2);        -- BASIC_USER
 
 -- Insert users for Barakah Community Clinic (company_id = 3)
 INSERT INTO user_profile (email, user_password, company_id)
 VALUES
     ('tariq@barakah.com', 'password123', 3),       -- ADMIN
     ('chaudhry@barakah.com', 'password123', 3),    -- ASSISTANT
-    ('abrar@barakah.com', 'password123', 3);       -- REGULAR_USER
+    ('abrar@barakah.com', 'password123', 3);       -- BASIC_USER
 
 -- Assign roles to Al-Shifa Health Clinic users
 INSERT INTO m2m_user_profile_user_role (user_profile_id, user_role_id)
 VALUES
     (1, 1),  -- Sheraz - ADMIN
     (2, 2),  -- Tariq - ASSISTANT
-    (3, 3);  -- Chaudhry - REGULAR_USER
+    (3, 3);  -- Chaudhry - BASIC_USER
 
 -- Assign roles to Rahma Medical Center users
 INSERT INTO m2m_user_profile_user_role (user_profile_id, user_role_id)
 VALUES
     (4, 1),  -- Abrar - ADMIN
     (5, 2),  -- Faraz - ASSISTANT
-    (6, 3);  -- Sheraz - REGULAR_USER
+    (6, 3);  -- Sheraz - BASIC_USER
 
 -- Assign roles to Barakah Community Clinic users
 INSERT INTO m2m_user_profile_user_role (user_profile_id, user_role_id)
 VALUES
     (7, 1),  -- Tariq - ADMIN
     (8, 2),  -- Chaudhry - ASSISTANT
-    (9, 3);  -- Abrar - REGULAR_USER
+    (9, 3);  -- Abrar - BASIC_USER
 
