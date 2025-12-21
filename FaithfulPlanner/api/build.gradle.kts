@@ -24,12 +24,18 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set("flywayVersion", "10.21.0")
+}
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-h2console")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("org.flywaydb:flyway-core:10.21.0")
+	implementation("org.flywaydb:flyway-database-postgresql:10.21.0")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")  // Add Kotlin standard library
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
