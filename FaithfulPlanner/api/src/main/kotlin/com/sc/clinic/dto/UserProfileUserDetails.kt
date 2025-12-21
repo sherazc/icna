@@ -1,19 +1,23 @@
 package com.sc.clinic.dto
 
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class UserProfileUserDetails: UserDetails {
+class UserProfileUserDetails(
+    private val user: UserProfileDto,
+    private val roles: Collection<String>
+) : UserDetails {
 
-    override fun getAuthorities(): Collection<GrantedAuthority?>? {
-        TODO("Not yet implemented")
-    }
+    fun getCompanyId() = user.companyId
 
-    override fun getPassword(): String? {
-        TODO("Not yet implemented")
-    }
+    fun getUserProfileId() = user.id
 
-    override fun getUsername(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getAuthorities(): Collection<GrantedAuthority> = roles
+        .filter { it.isNotBlank() }
+        .map { SimpleGrantedAuthority(it) }
+
+    override fun getPassword(): String = user.usersPassword
+
+    override fun getUsername(): String = user.email
 }
