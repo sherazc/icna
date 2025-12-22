@@ -11,7 +11,7 @@ class UserProfileUserDetails(
 
     fun getCompanyId() = user.companyId
 
-    fun getUserProfileId() = user.id
+    fun getUserProfileId() = user.id!!
 
     override fun getAuthorities(): Collection<GrantedAuthority> = roles
         .filter { it.isNotBlank() }
