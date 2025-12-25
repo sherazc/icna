@@ -26,5 +26,6 @@ class ScSecurityUserDetailService(val userProfileRepository: UserProfileReposito
         TODO()
     }
 
-    private fun findRoles(companyId: Long, email: String): List<String> = TODO()
+    private fun findRoles(companyId: Long, email: String): List<String> =
+        userProfileRepository.findRolesByCompanyAndEmail(companyId, email).map { it.roleName }
 }
