@@ -20,12 +20,14 @@ class ScSecurityUserDetailService(val userProfileRepository: UserProfileReposito
         val companyId = userNameParts[0].trim().toLong()
         val email = userNameParts[1].trim()
 
-
         val userProfile: UserProfileDto? = userProfileRepository.findByCompanyIdAndEmail(companyId, email)
-        // val userProfileDetails: UserProfileUserDetails = if (userProfile != null) UserProfileUserDetails(userProfile)
-        TODO()
+        val userProfileDetails: UserProfileUserDetails = if (userProfile != null)
+            UserProfileUserDetails(userProfile, getRoles(companyId, email))
+        else throw UsernameNotFoundException("")
+
+        return userProfileDetails
     }
 
-    private fun findRoles(companyId: Long, email: String): List<String> =
+    private fun getRoles(companyId: Long, email: String): List<String> =
         userProfileRepository.findRolesByCompanyAndEmail(companyId, email).map { it.roleName }
 }
