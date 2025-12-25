@@ -21,9 +21,8 @@ class ScTokenGeneratorService(private val encoder: JwtEncoder) {
         val now = Instant.now()
         val user = authentication.principal as UserProfileUserDetails
 
-        val roles = authentication.authorities.stream()
-            .map { simpleGrantedAuthority ->  simpleGrantedAuthority.authority }
-            .toList()
+        val roles: List<String> = authentication.authorities
+            .mapNotNull { it.authority }
 
         val expiresAt = now.plus(1, ChronoUnit.HOURS)
 
@@ -37,7 +36,8 @@ class ScTokenGeneratorService(private val encoder: JwtEncoder) {
             .build()
 
         val encoderParameters = JwtEncoderParameters.from(
-            JwsHeader.with(MacAlgorithm.HS512).build(), jwt)
+            JwsHeader.with(MacAlgorithm.HS512).build(), jwt
+        )
 
         val tokenValue = this.encoder.encode(encoderParameters).tokenValue
         val companyId: Long = 100 // userProfileService.getCompanyIdByUserProfileId(user.getUserProfileId())

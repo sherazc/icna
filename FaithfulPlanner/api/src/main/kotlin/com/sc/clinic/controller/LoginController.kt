@@ -14,5 +14,6 @@ class LoginController (private val scTokenGeneratorService: ScTokenGeneratorServ
 
     @GetMapping("/token")
     // @PreAuthorize("hasAnyAuthority()")
-    fun token(authentication: Authentication): AuthUserTokenDto = scTokenGeneratorService.generateToken(authentication)
+    fun token(authentication: Authentication): AuthUserTokenDto
+        = scTokenGeneratorService.generateToken(authentication)
 }
