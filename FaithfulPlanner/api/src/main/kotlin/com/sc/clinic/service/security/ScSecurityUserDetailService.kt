@@ -14,7 +14,7 @@ class ScSecurityUserDetailService(val userProfileRepository: UserProfileReposito
 
     override fun loadUserByUsername(username: String): UserDetails {
 
-        if (!username.matches(userNameRegex)) throw UsernameNotFoundException("Invalid user name: $username")
+        if (!username.matches(userNameRegex)) throw UsernameNotFoundException("Invalid user name format: $username")
 
         val userNameParts = username.split("/")
         val companyId = userNameParts[0].trim().toLong()
@@ -23,7 +23,7 @@ class ScSecurityUserDetailService(val userProfileRepository: UserProfileReposito
         val userProfile: UserProfileDto? = userProfileRepository.findByCompanyIdAndEmail(companyId, email)
         val userProfileDetails: UserProfileUserDetails = if (userProfile != null)
             UserProfileUserDetails(userProfile, getRoles(companyId, email))
-        else throw UsernameNotFoundException("")
+        else throw UsernameNotFoundException("Can not find user. companyId $companyId, email $email")
 
         return userProfileDetails
     }
