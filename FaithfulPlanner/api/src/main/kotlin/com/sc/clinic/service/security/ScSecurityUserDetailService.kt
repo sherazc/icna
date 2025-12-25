@@ -1,6 +1,5 @@
 package com.sc.clinic.service.security
 
-import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.repository.UserProfileRepository
 import org.springframework.security.core.userdetails.UserDetails
@@ -20,12 +19,10 @@ class ScSecurityUserDetailService(val userProfileRepository: UserProfileReposito
         val companyId = userNameParts[0].trim().toLong()
         val email = userNameParts[1].trim()
 
-        val userProfile: UserProfileDto? = userProfileRepository.findByCompanyIdAndEmail(companyId, email)
-        val userProfileDetails: UserProfileUserDetails = if (userProfile != null)
-            UserProfileUserDetails(userProfile, getRoles(companyId, email))
-        else throw UsernameNotFoundException("Can not find user. companyId $companyId, email $email")
-
-        return userProfileDetails
+        return userProfileRepository.findByCompanyIdAndEmail(companyId, email)
+            // ?.takeIf { it.isActive }
+            ?.let { userProfile -> UserProfileUserDetails(userProfile, getRoles(companyId, email)) }
+            ?: throw UsernameNotFoundException("Can not find user. companyId $companyId, email $email")
     }
 
     private fun getRoles(companyId: Long, email: String): List<String> =
