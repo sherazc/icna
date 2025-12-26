@@ -2,7 +2,7 @@ create table company
 (
     id                        bigserial    not null,
     company_name              varchar(255) not null,
-    active                    boolean
+    active                    boolean,
     primary key (id)
 );
 

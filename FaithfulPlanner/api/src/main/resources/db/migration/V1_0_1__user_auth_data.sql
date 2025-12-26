@@ -1,5 +1,5 @@
 -- Insert 3 companies (Muslim clinics) with explicit IDs
-INSERT INTO company (id, company_name, active, enable_monetization, enable_group_registration, enable_start_end_date)
+INSERT INTO company (id, company_name, active)
 VALUES
     (1, 'Al-Shifa Health Clinic', true),
     (2, 'Rahma Medical Center', true),
