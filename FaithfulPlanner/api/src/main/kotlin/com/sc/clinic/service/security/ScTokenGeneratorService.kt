@@ -23,6 +23,7 @@ class ScTokenGeneratorService(private val encoder: JwtEncoder) {
 
         val roles: List<String> = authentication.authorities
             .mapNotNull { it.authority }
+            .filter { it != "FACTOR_PASSWORD" } // Removing MFA role. Introduced in spring security 7
 
         val expiresAt = now.plus(1, ChronoUnit.HOURS)
 
