@@ -13,15 +13,6 @@ data class Company(
     val companyName: String,
 
     @Column(name = "active")
-    val active: Boolean? = null,
-
-    @Column(name = "enable_monetization")
-    val enableMonetization: Boolean? = null,
-
-    @Column(name = "enable_group_registration")
-    val enableGroupRegistration: Boolean? = null,
-
-    @Column(name = "enable_start_end_date")
-    val enableStartEndDate: Boolean? = null
+    val active: Boolean? = null
 )
 

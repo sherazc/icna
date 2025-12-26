@@ -2,10 +2,7 @@ create table company
 (
     id                        bigserial    not null,
     company_name              varchar(255) not null,
-    active                    boolean,
-    enable_monetization       boolean,
-    enable_group_registration boolean,
-    enable_start_end_date     boolean,
+    active                    boolean
     primary key (id)
 );
 
