@@ -15,23 +15,23 @@ VALUES
 -- Insert users for Al-Shifa Health Clinic (company_id = 1)
 INSERT INTO user_profile (email, user_password, company_id)
 VALUES
-    ('sheraz@alshifa.com', 'password123', 1),      -- ADMIN
-    ('tariq@alshifa.com', 'password123', 1),       -- ASSISTANT
-    ('chaudhry@alshifa.com', 'password123', 1);    -- BASIC_USER
+    ('sheraz@alshifa.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 1),      -- ADMIN
+    ('tariq@alshifa.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 1),       -- ASSISTANT
+    ('chaudhry@alshifa.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 1);    -- BASIC_USER
 
 -- Insert users for Rahma Medical Center (company_id = 2)
 INSERT INTO user_profile (email, user_password, company_id)
 VALUES
-    ('abrar@rahma.com', 'password123', 2),         -- ADMIN
-    ('faraz@rahma.com', 'password123', 2),         -- ASSISTANT
-    ('sheraz@rahma.com', 'password123', 2);        -- BASIC_USER
+    ('abrar@rahma.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 2),         -- ADMIN
+    ('faraz@rahma.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 2),         -- ASSISTANT
+    ('sheraz@rahma.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 2);        -- BASIC_USER
 
 -- Insert users for Barakah Community Clinic (company_id = 3)
 INSERT INTO user_profile (email, user_password, company_id)
 VALUES
-    ('tariq@barakah.com', 'password123', 3),       -- ADMIN
-    ('chaudhry@barakah.com', 'password123', 3),    -- ASSISTANT
-    ('abrar@barakah.com', 'password123', 3);       -- BASIC_USER
+    ('tariq@barakah.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 3),       -- ADMIN
+    ('chaudhry@barakah.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 3),    -- ASSISTANT
+    ('abrar@barakah.com', '$2a$10$AanlohWdKdZkyMMriaUvtupGR8WWUilrzT.SBesfo25jPYp2jOMUa', 3);       -- BASIC_USER
 
 -- Assign roles to Al-Shifa Health Clinic users
 INSERT INTO m2m_user_profile_user_role (user_profile_id, user_role_id)
