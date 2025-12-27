@@ -4,6 +4,7 @@ import com.sc.clinic.CompanyService
 import com.sc.clinic.dto.CompanyDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -16,6 +17,6 @@ class CompanyController(private val companyService: CompanyService) {
 
 
     @PutMapping
-    fun saveCompany(company: CompanyDto) = companyService.saveCompany(company)
+    fun saveCompany(@RequestBody company: CompanyDto) = companyService.saveCompany(company)
 
 }

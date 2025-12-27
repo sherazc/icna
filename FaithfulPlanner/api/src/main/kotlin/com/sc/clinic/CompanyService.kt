@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service
 
 @Service
 class CompanyService(private val companyRepository: CompanyRepository) {
+
     fun getAllActive(): List<CompanyDto> = companyRepository.findActive()
+
     fun saveCompany(company: CompanyDto): CompanyDto {
         val companyEntity = company.id
             ?.let { companyRepository.findById(it).orElse(null) }
             ?: Company(null, company.companyName, true)
 
-        TODO("Not yet implemented")
+        return CompanyDto(companyRepository.save(companyEntity))
     }
 }

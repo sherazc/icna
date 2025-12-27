@@ -1,7 +1,13 @@
 package com.sc.clinic.dto
 
-data class CompanyDto(
-    val id: Long? = null,
-    val companyName: String,
-    val active: Boolean? = null,
-)
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.sc.clinic.entity.Company
+
+data class CompanyDto (
+    @JsonProperty("id") val id: Long? = null,
+    @JsonProperty("companyName") val companyName: String,
+    @JsonProperty("active") val active: Boolean? = null,
+) {
+    constructor(company: Company): this(
+        company.id, company.companyName, company.active)
+}
