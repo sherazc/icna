@@ -10,9 +10,9 @@ data class Company(
     val id: Long? = null,
 
     @Column(name = "company_name", nullable = false)
-    val companyName: String,
+    var companyName: String,
 
     @Column(name = "active")
-    val active: Boolean? = null
+    var active: Boolean? = null
 )
 

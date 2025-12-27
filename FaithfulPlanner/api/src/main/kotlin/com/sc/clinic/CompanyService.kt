@@ -10,11 +10,25 @@ class CompanyService(private val companyRepository: CompanyRepository) {
 
     fun getAllActive(): List<CompanyDto> = companyRepository.findActive()
 
-    fun saveCompany(company: CompanyDto): CompanyDto {
-        val companyEntity = company.id
-            ?.let { companyRepository.findById(it).orElse(null) }
-            ?: Company(null, company.companyName, true)
+    fun saveCompany(companyDto: CompanyDto): CompanyDto {
+        val companyEntity = updateEntityWithDto(companyDto)
+            ?: Company(null, companyDto.companyName, companyDto.active ?: true)
 
         return CompanyDto(companyRepository.save(companyEntity))
+    }
+
+    private fun updateEntityWithDto(companyDto: CompanyDto): Company? {
+
+        return companyDto.id?.let { id ->
+            companyRepository
+                .findById(id)
+                .map { existing ->
+                    {
+                        existing.companyName = companyDto.companyName
+                        existing.active = companyDto.active
+                    }
+                }
+                .orElse(null)
+        }
     }
 }
