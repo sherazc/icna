@@ -2,6 +2,7 @@ package com.sc.clinic.controller
 
 import com.sc.clinic.CompanyService
 import com.sc.clinic.dto.CompanyDto
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,6 +18,10 @@ class CompanyController(private val companyService: CompanyService) {
 
 
     @PutMapping
+    @PreAuthorize("""
+        hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN) 
+        or 
+        hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ASSISTANT) """)
     fun saveCompany(@RequestBody company: CompanyDto) = companyService.saveCompany(company)
 
 }
