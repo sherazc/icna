@@ -18,15 +18,13 @@ class CompanyService(private val companyRepository: CompanyRepository) {
     }
 
     private fun updateEntityWithDto(companyDto: CompanyDto): Company? {
-
         return companyDto.id?.let { id ->
             companyRepository
                 .findById(id)
-                .map { existing ->
-                    {
-                        existing.companyName = companyDto.companyName
-                        existing.active = companyDto.active
-                    }
+                .map { it.copy(
+                        companyName = companyDto.companyName,
+                        active = companyDto.active
+                    )
                 }
                 .orElse(null)
         }
