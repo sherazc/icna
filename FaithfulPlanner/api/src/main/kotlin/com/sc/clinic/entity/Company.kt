@@ -7,12 +7,12 @@ import jakarta.persistence.*
 data class Company(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long?,
 
     @Column(name = "company_name", nullable = false)
     var companyName: String,
 
     @Column(name = "active")
-    var active: Boolean? = null
+    var active: Boolean?
 )
 
