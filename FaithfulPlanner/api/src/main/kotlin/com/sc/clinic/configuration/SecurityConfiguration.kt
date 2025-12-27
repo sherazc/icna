@@ -60,8 +60,8 @@ class SecurityConfiguration(
     @Bean
     fun jwtDecoder(): JwtDecoder {
         val key: ByteArray = jwtKey.toByteArray()
-        val originalKey = SecretKeySpec(key, "RSA")
-        return NimbusJwtDecoder.withSecretKey(originalKey).macAlgorithm(MacAlgorithm.HS256).build()
+        val originalKey = SecretKeySpec(key, "HmacSHA512")
+        return NimbusJwtDecoder.withSecretKey(originalKey).macAlgorithm(MacAlgorithm.HS512).build()
     }
 
     @Bean
