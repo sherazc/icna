@@ -10,14 +10,14 @@ data class UserProfile(
     val id: Long? = null,
 
     @Column(name = "email", nullable = false)
-    val email: String,
+    var email: String,
 
     @Column(name = "user_password", length = 1024)
     val userPassword: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
-    val company: Company? = null,
+    val company: Company,
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
