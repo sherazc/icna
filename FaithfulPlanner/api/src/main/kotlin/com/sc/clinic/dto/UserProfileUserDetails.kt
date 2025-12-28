@@ -17,7 +17,7 @@ class UserProfileUserDetails(
         .filter { it.isNotBlank() }
         .map { SimpleGrantedAuthority(it) }
 
-    override fun getPassword(): String = user.usersPassword
+    override fun getPassword(): String? = user.usersPassword
 
     override fun getUsername(): String = user.email
 }

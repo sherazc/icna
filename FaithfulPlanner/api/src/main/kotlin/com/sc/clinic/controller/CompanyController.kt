@@ -23,5 +23,4 @@ class CompanyController(private val companyService: CompanyService) {
         or 
         hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ASSISTANT) """)
     fun saveCompany(@RequestBody company: CompanyDto) = companyService.saveCompany(company)
-
 }
