@@ -12,13 +12,22 @@ import java.util.stream.Collectors
 @ControllerAdvice
 class ScGlobalExceptionHandler {
 
-    @ExceptionHandler(MyException::class)
-    fun handleMyException(e: MyException): ResponseEntity<MyErrorResponse?> {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body<T?>(e.getMyErrorResponse())
+    @ExceptionHandler(ScException::class)
+    fun handleScException(exception: ScException): ResponseEntity<ScErrorResponse> {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body<ScErrorResponse>(ScErrorResponse(
+            exception.message, exception.field, "500"
+        ))
+    }
+
+    @ExceptionHandler(ScBadRequestException::class)
+    fun handleScBadRequestException(exception: ScBadRequestException): ResponseEntity<ScErrorResponse> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body<ScErrorResponse>(ScErrorResponse(
+            exception.message, exception.field, "400"
+        ))
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleException(exception: MethodArgumentNotValidException): ResponseEntity<ScErrorResponse> {
+    fun handleMethodArgumentException(exception: MethodArgumentNotValidException): ResponseEntity<ScErrorResponse> {
         val bindingResult = exception.bindingResult
 
         val errorMessage = bindingResult.fieldErrors.stream()
@@ -37,5 +46,12 @@ class ScGlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body<ScErrorResponse>(errorResponse)
+    }
+
+    @ExceptionHandler(Exception::class)
+    fun handleScException(exception: Exception): ResponseEntity<ScErrorResponse> {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body<ScErrorResponse>(ScErrorResponse(
+            exception.message, null, "500"
+        ))
     }
 }
