@@ -2,6 +2,7 @@ package com.sc.clinic
 
 import com.sc.clinic.dto.CompanyDto
 import com.sc.clinic.entity.Company
+import com.sc.clinic.exception.CompanyNotFoundException
 import com.sc.clinic.repository.CompanyRepository
 import org.springframework.stereotype.Service
 

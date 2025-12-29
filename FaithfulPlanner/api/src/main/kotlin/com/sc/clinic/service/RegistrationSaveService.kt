@@ -8,6 +8,12 @@ class RegistrationSaveService {
     fun save(registrationDto: RegistrationDto): RegistrationDto {
 
 
+
         TODO()
+    }
+
+    private fun validate(registrationDto: RegistrationDto) {
+
+        userProfileService.validateEmail(eventId, registrationDto.userProfile)
     }
 }
