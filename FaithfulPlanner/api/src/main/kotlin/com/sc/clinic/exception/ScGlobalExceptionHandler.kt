@@ -10,6 +10,7 @@ import java.util.stream.Collectors
 
 @ControllerAdvice
 class ScGlobalExceptionHandler {
+
     @ExceptionHandler(MyException::class)
     fun handleMyException(e: MyException): ResponseEntity<MyErrorResponse?> {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body<T?>(e.getMyErrorResponse())
