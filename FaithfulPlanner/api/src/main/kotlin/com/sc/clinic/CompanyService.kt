@@ -17,6 +17,12 @@ class CompanyService(private val companyRepository: CompanyRepository) {
         return CompanyDto(companyRepository.save(companyEntity))
     }
 
+    fun getCompany(companyId: Long?): Company {
+        return companyId
+            .takeIf { it != null }
+            .let { companyRepository.findById(it).orElseThrow { throw CompanyNotFoundException(it) } }
+    }
+
     private fun updateEntityWithDto(companyDto: CompanyDto): Company? {
         return companyDto.id?.let { id ->
             companyRepository.findById(id)
