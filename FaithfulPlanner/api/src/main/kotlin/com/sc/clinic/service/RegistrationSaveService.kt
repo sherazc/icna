@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class RegistrationSaveService(val companyService: CompanyService) {
-    fun save(registrationDto: RegistrationDto): RegistrationDto {
+    fun saveNewRegistration(registrationDto: RegistrationDto): RegistrationDto {
         validate(registrationDto)
-
+        val companyEntity = companyService.saveCompany(registrationDto.company)
 
         TODO()
     }

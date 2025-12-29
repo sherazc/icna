@@ -19,5 +19,5 @@ class RegistrationController (
     fun saveRegistration(
         @PathVariable eventId: Long,
         @RequestBody registration: RegistrationDto): ResponseEntity<RegistrationDto> =
-        ResponseEntity.ok(registrationSaveService.save(registration))
+        ResponseEntity.ok(registrationSaveService.saveNewRegistration(registration))
 }
