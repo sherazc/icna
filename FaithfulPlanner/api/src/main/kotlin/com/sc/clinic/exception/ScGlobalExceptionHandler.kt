@@ -1,5 +1,6 @@
 package com.sc.clinic.exception
 
+import com.sc.clinic.dto.ScErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.FieldError
@@ -17,24 +18,24 @@ class ScGlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleException(exception: MethodArgumentNotValidException): ResponseEntity<MyErrorResponse?> {
-        val bindingResult = exception.getBindingResult()
+    fun handleException(exception: MethodArgumentNotValidException): ResponseEntity<ScErrorResponse> {
+        val bindingResult = exception.bindingResult
 
-        val errorMessage = bindingResult.getFieldErrors().stream()
-            .map<String?> { f: FieldError? -> f!!.getField() + ":" + f.getDefaultMessage() }
+        val errorMessage = bindingResult.fieldErrors.stream()
+            .map<String?> { f: FieldError? -> f!!.field + ":" + f.defaultMessage }
             .collect(Collectors.joining(","))
 
-        val fields = bindingResult.getFieldErrors().stream()
-            .map<String?> { obj: FieldError? -> obj!!.getField() }
+        val fields = bindingResult.fieldErrors.stream()
+            .map<String?> { obj: FieldError? -> obj!!.field }
             .collect(Collectors.joining("."))
 
-        val errorResponse: MyErrorResponse = MyErrorResponse(
+        val errorResponse: ScErrorResponse = ScErrorResponse(
             String.format("Invalid Request: %s", errorMessage),
             fields,
             "400"
         )
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body<MyErrorResponse?>(errorResponse)
+            .body<ScErrorResponse>(errorResponse)
     }
 }
