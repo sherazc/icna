@@ -1,6 +1,5 @@
 package com.sc.event.controller
 
-import com.sc.event.dto.FlagDto
 import com.sc.event.dto.RegistrationDto
 import com.sc.event.service.RegistrationSaveService
 import com.sc.event.service.RegistrationService
