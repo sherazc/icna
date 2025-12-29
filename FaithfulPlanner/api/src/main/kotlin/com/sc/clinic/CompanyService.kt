@@ -2,7 +2,7 @@ package com.sc.clinic
 
 import com.sc.clinic.dto.CompanyDto
 import com.sc.clinic.entity.Company
-import com.sc.clinic.exception.CompanyNotFoundException
+import com.sc.clinic.exception.ScException
 import com.sc.clinic.repository.CompanyRepository
 import org.springframework.stereotype.Service
 
@@ -21,7 +21,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
     fun getCompany(companyId: Long?): Company {
         return companyId
             .takeIf { it != null }
-            .let { companyRepository.findById(it).orElseThrow { throw CompanyNotFoundException(it) } }
+            .let { companyRepository.findById(it).orElseThrow { throw ScException("Company do not exists $it") } }
     }
 
     private fun updateEntityWithDto(companyDto: CompanyDto): Company? {
@@ -34,5 +34,9 @@ class CompanyService(private val companyRepository: CompanyRepository) {
                 }
                 .orElse(null)
         }
+    }
+
+    fun isCompanyNameExists(companyName: String): Boolean {
+        TODO("Not yet implemented")
     }
 }
