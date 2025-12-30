@@ -60,3 +60,9 @@ VALUES
     (8, 3),  -- Chaudhry - BASIC_USER
     (9, 3);  -- Abrar - BASIC_USER
 
+-- Reset IDENTITY sequences to start from the next available ID
+SELECT setval(pg_get_serial_sequence('company', 'id'), (SELECT COALESCE(MAX(id), 0) FROM company) + 1);
+SELECT setval(pg_get_serial_sequence('user_role', 'id'), (SELECT COALESCE(MAX(id), 0) FROM user_role) + 1);
+SELECT setval(pg_get_serial_sequence('user_profile', 'id'), (SELECT COALESCE(MAX(id), 0) FROM user_profile) + 1);
+SELECT setval(pg_get_serial_sequence('m2m_user_profile_user_role', 'id'), (SELECT COALESCE(MAX(id), 0) FROM m2m_user_profile_user_role) + 1);
+
