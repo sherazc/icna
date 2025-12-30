@@ -3,7 +3,6 @@ package com.sc.clinic.service
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.UserProfile
-import com.sc.clinic.entity.UserRole
 import com.sc.clinic.repository.UserProfileRepository
 import com.sc.clinic.service.model.AuthRole
 import org.springframework.stereotype.Service
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service
 @Service
 class UserProfileService(
     private val userProfileRepository: UserProfileRepository,
-    private val companyService: CompanyService,
     private val userRoleService: UserRoleService
 ) {
 
@@ -24,27 +22,22 @@ class UserProfileService(
 
 
     fun saveRegistrationAdmin(company: Company, userProfileDto: UserProfileDto): UserProfile {
-        val userProfileEntity = updateEntityWithDto(userProfileDto) ?: UserProfile(
-            userProfileDto.id, userProfileDto.email,
-            userProfileDto.usersPassword, company, mutableSetOf())
-
+        val userProfileEntity = getOrCreateUserProfileEntity(company, userProfileDto)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
         return userProfileRepository.save(userProfileEntity)
     }
 
 
-
-    fun getOrCreateUserProfileEntity(company: Company, userProfileDto: UserProfileDto) : UserProfile
-        = updateEntityWithDto(userProfileDto)
-        ?: UserProfile(
-            null,
-            userProfileDto.email,
-            userProfileDto.usersPassword,
-            company,
-            mutableListOf<UserRole>()
-        )
-
+    fun getOrCreateUserProfileEntity(company: Company, userProfileDto: UserProfileDto): UserProfile =
+        updateEntityWithDto(userProfileDto)
+            ?: UserProfile(
+                null,
+                userProfileDto.email,
+                userProfileDto.usersPassword,
+                company,
+                mutableSetOf()
+            )
 
 
     private fun updateEntityWithDto(userProfileDto: UserProfileDto): UserProfile? {
