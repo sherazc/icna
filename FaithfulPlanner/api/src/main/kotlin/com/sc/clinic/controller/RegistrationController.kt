@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RequestMapping("/api/registration")
 @RestController
-class RegistrationController (
-    val registrationSaveService: RegistrationSaveService
-){
+class RegistrationController (val registrationSaveService: RegistrationSaveService){
 
     @PostMapping
     fun saveRegistration(

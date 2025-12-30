@@ -48,6 +48,7 @@ class ScTokenGeneratorService(private val encoder: JwtEncoder) {
             companyId,
             authentication.name,
             LocalDateTime.ofInstant(now, ZoneId.of("UTC")),
+            LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")),
             roles,
             tokenValue
         );
