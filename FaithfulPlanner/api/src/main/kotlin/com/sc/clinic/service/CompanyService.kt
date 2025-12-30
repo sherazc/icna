@@ -22,7 +22,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
     fun getCompany(companyId: Long?): Company {
         return companyId
             .takeIf { it != null }
-            .let { companyRepository.findById(it).orElseThrow { throw ScException("Company do not exists $it") } }
+            .let { companyRepository.findById(it!!).orElseThrow { throw ScException("Company do not exists $it") } }
     }
 
     private fun updateEntityWithDto(companyDto: CompanyDto): Company? {
@@ -37,7 +37,8 @@ class CompanyService(private val companyRepository: CompanyRepository) {
         }
     }
 
-    fun isCompanyNameExists(companyName: String): Boolean {
-        TODO("Not yet implemented")
-    }
+    fun findCompanyByName(companyName: String): Company? = companyRepository
+        .findByCompanyNameIgnoreCase(companyName).orElse(null)
+
+    fun isCompanyNameExists(companyName: String): Boolean = findCompanyByName(companyName) != null
 }
