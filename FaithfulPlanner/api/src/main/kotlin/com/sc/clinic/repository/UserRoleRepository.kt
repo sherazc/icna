@@ -7,9 +7,6 @@ import java.util.*
 
 @Repository
 interface UserRoleRepository : JpaRepository<UserRole, Long> {
-
-    fun findByRoleName(roleName: String): Optional<UserRole>
-
-    fun existsByRoleName(roleName: String): Boolean
+    fun findByRoleName(name: String): UserRole?
 }
 

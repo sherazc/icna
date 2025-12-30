@@ -1,4 +1,4 @@
-package com.sc.clinic
+package com.sc.clinic.service
 
 import com.sc.clinic.dto.CompanyDto
 import com.sc.clinic.entity.Company
@@ -16,7 +16,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
         return companyRepository.save(companyEntity)
     }
 
-    fun getOrCreateCompanyEntity(companyDto: CompanyDto): Company  = updateEntityWithDto(companyDto)
+    fun getOrCreateCompanyEntity(companyDto: CompanyDto): Company = updateEntityWithDto(companyDto)
         ?: Company(companyDto.id, companyDto.companyName, companyDto.active)
 
     fun getCompany(companyId: Long?): Company {

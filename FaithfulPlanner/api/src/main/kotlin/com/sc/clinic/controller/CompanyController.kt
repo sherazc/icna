@@ -1,6 +1,6 @@
 package com.sc.clinic.controller
 
-import com.sc.clinic.CompanyService
+import com.sc.clinic.service.CompanyService
 import com.sc.clinic.dto.CompanyDto
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping

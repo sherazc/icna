@@ -25,6 +25,6 @@ data class UserProfile(
         joinColumns = [JoinColumn(name = "user_profile_id")],
         inverseJoinColumns = [JoinColumn(name = "user_role_id")]
     )
-    val roles: Set<UserRole> = emptySet()
+    val roles: MutableSet<UserRole>? = mutableSetOf()
 )
 

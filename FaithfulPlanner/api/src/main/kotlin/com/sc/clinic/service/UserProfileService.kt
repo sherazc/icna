@@ -1,10 +1,10 @@
-package com.sc.clinic
+package com.sc.clinic.service
 
 import com.sc.clinic.dto.CompanyDto
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.UserProfile
-import com.sc.clinic.repository.CompanyRepository
+import com.sc.clinic.entity.UserRole
 import com.sc.clinic.repository.UserProfileRepository
 import org.springframework.stereotype.Service
 
@@ -20,6 +20,16 @@ class UserProfileService(
             it.usersPassword = null
             it
         }
+
+
+    fun getOrCreateUserProfileEntity(company: Company, userProfileDto: UserProfileDto) : UserProfile = updateEntityWithDto(userProfileDto)
+        ?: UserProfile(
+            null,
+            userProfileDto.email,
+            userProfileDto.usersPassword,
+            company,
+            mutableListOf<UserRole>()
+        )
 
     fun saveUser(userProfileDto: UserProfileDto): UserProfileDto {
         val userProfileEntity = updateEntityWithDto(userProfileDto)
