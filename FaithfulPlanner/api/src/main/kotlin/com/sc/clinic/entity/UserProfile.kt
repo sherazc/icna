@@ -7,17 +7,17 @@ import jakarta.persistence.*
 data class UserProfile(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
 
     @Column(name = "email", nullable = false)
     var email: String,
 
     @Column(name = "user_password", length = 1024)
-    val userPassword: String? = null,
+    var userPassword: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
-    val company: Company,
+    var company: Company,
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -25,6 +25,6 @@ data class UserProfile(
         joinColumns = [JoinColumn(name = "user_profile_id")],
         inverseJoinColumns = [JoinColumn(name = "user_role_id")]
     )
-    val roles: MutableSet<UserRole>? = mutableSetOf()
+    var userRoles: MutableSet<UserRole>? = mutableSetOf()
 )
 

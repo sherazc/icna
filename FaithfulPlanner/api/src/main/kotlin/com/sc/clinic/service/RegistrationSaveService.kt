@@ -1,16 +1,20 @@
 package com.sc.clinic.service
 
-import com.sc.clinic.service.CompanyService
 import com.sc.clinic.dto.RegistrationDto
 import com.sc.clinic.exception.ScBadRequestException
 import org.springframework.stereotype.Service
 
 @Service
-class RegistrationSaveService(val companyService: CompanyService) {
+class RegistrationSaveService(
+    val companyService: CompanyService,
+    val userProfileService: UserProfileService) {
     fun saveNewRegistration(registrationDto: RegistrationDto): RegistrationDto {
         validate(registrationDto)
-        val companyEntity = companyService.saveCompany(registrationDto.company)
 
+        // Save Company
+        val companyEntity = companyService.saveCompany(registrationDto.company)
+        // Save User
+        val userProfileEntity = userProfileService.saveRegistrationUser(companyEntity, registrationDto.adminUser)
 
 
         TODO()

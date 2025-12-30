@@ -19,8 +19,9 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
 
     @Query(
         """
-        select up.roles from UserProfile up
-        where up.company.id = :companyId and lower(up.email) = lower(:email)""")
+        select up.userRoles from UserProfile up
+        where up.company.id = :companyId and lower(up.email) = lower(:email)"""
+    )
     fun findRolesByCompanyAndEmail(companyId: Long, email: String): List<UserRole>
 
 

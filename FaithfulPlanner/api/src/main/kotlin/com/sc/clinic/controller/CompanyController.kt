@@ -20,8 +20,9 @@ class CompanyController(private val companyService: CompanyService) {
     @PutMapping
     @PreAuthorize(
         """
-        hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN) 
+        hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).MASTER) 
         or 
-        hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ASSISTANT) """)
+        hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN) """
+    )
     fun saveCompany(@RequestBody company: CompanyDto) = CompanyDto(companyService.saveCompany(company))
 }
