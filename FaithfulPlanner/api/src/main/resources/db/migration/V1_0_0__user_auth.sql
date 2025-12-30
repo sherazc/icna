@@ -3,7 +3,8 @@ create table company
     id                        bigserial    not null,
     company_name              varchar(255) not null,
     active                    boolean,
-    primary key (id)
+    primary key (id),
+    constraint uk_company_name unique (company_name)
 );
 
 create table user_role
@@ -19,7 +20,8 @@ create table user_profile
     email         varchar(255) not null,
     user_password varchar(1024),
     company_id      bigint,
-    primary key (id)
+    primary key (id),
+    constraint uk_user_profile_email_company unique (email, company_id)
 );
 
 
