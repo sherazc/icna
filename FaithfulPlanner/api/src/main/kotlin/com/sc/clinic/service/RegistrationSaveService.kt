@@ -4,12 +4,15 @@ import com.sc.clinic.dto.CompanyDto
 import com.sc.clinic.dto.RegistrationDto
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.exception.ScBadRequestException
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
 class RegistrationSaveService(
     val companyService: CompanyService,
     val userProfileService: UserProfileService) {
+
+    @Transactional
     fun saveNewRegistration(registrationDto: RegistrationDto): RegistrationDto {
         validate(registrationDto)
 
@@ -24,6 +27,6 @@ class RegistrationSaveService(
 
     private fun validate(registrationDto: RegistrationDto) {
         if (companyService.isCompanyNameExists(registrationDto.company.companyName)) throw ScBadRequestException(
-            "company.companyName", "Company name already exists. $registrationDto.company.companyName")
+            "company.companyName", "Company name already exists. ${registrationDto.company.companyName}")
     }
 }

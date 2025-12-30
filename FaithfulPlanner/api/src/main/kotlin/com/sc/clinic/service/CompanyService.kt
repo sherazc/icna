@@ -38,7 +38,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
     }
 
     fun findCompanyByName(companyName: String): Company? = companyRepository
-        .findByCompanyNameIgnoreCase(companyName).orElse(null)
+        .findByCompanyNameIgnoreCase(companyName).firstOrNull()
 
     fun isCompanyNameExists(companyName: String): Boolean = findCompanyByName(companyName) != null
 }

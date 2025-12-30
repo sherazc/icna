@@ -15,7 +15,7 @@ interface CompanyRepository : JpaRepository<Company, Long> {
         where c.active = true """)
     fun findActive(): List<CompanyDto>
 
-    fun findByCompanyNameIgnoreCase(companyName: String): Optional<Company>
+    fun findByCompanyNameIgnoreCase(companyName: String): List<Company>
 
 
 
