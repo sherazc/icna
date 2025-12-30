@@ -2,6 +2,7 @@ package com.sc.clinic.service
 
 import com.sc.clinic.dto.CompanyDto
 import com.sc.clinic.entity.Company
+import com.sc.clinic.exception.ScBadRequestException
 import com.sc.clinic.exception.ScException
 import com.sc.clinic.repository.CompanyRepository
 import org.springframework.stereotype.Service
@@ -13,6 +14,12 @@ class CompanyService(private val companyRepository: CompanyRepository) {
 
     fun saveCompany(companyDto: CompanyDto): Company {
         val companyEntity = getOrCreateCompanyEntity(companyDto)
+
+        if (companyEntity.id == null && isCompanyNameExists(companyEntity.companyName)) {
+            throw ScBadRequestException(
+                "companyName", "Company name already exists. ${companyEntity.companyName}")
+        }
+
         return companyRepository.save(companyEntity)
     }
 

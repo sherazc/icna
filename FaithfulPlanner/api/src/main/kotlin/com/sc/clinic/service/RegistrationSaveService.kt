@@ -26,7 +26,5 @@ class RegistrationSaveService(
     }
 
     private fun validate(registrationDto: RegistrationDto) {
-        if (companyService.isCompanyNameExists(registrationDto.company.companyName)) throw ScBadRequestException(
-            "company.companyName", "Company name already exists. ${registrationDto.company.companyName}")
     }
 }
