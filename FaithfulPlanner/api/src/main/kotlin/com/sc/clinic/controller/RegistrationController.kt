@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/api/registrations")
+@RequestMapping("/api/registration")
 @RestController
 class RegistrationController (
     val registrationSaveService: RegistrationSaveService
 ){
 
-    @PostMapping("/eventId/{eventId}")
+    @PostMapping
     fun saveRegistration(
-        @PathVariable eventId: Long,
         @RequestBody registration: RegistrationDto): ResponseEntity<RegistrationDto> =
         ResponseEntity.ok(registrationSaveService.saveNewRegistration(registration))
 }
