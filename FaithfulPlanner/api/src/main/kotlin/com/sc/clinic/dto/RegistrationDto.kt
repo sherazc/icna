@@ -1,3 +1,9 @@
 package com.sc.clinic.dto
 
-data class RegistrationDto(val company: CompanyDto, val adminUser: UserProfileDto)
+import jakarta.validation.Valid
+
+data class RegistrationDto(
+    @field:Valid
+    val company: CompanyDto,
+    @field:Valid
+    val adminUser: UserProfileDto)

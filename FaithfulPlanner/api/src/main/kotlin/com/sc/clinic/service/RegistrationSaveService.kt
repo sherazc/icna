@@ -5,6 +5,7 @@ import com.sc.clinic.dto.RegistrationDto
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.exception.ScBadRequestException
 import jakarta.transaction.Transactional
+import jakarta.validation.Valid
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,7 +14,7 @@ class RegistrationSaveService(
     val userProfileService: UserProfileService) {
 
     @Transactional
-    fun saveNewRegistration(registrationDto: RegistrationDto): RegistrationDto {
+    fun saveNewRegistration(@Valid registrationDto: RegistrationDto): RegistrationDto {
         validate(registrationDto)
 
         // Save Company

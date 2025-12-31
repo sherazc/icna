@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size
 data class CompanyDto(
     @JsonProperty("id")
     val id: Long?,
-    @Size(min = 3, max = 250, message = "Company name should be between 3 and 250 characters long")
+    @field:Size(min = 3, max = 250, message = "Company name should be between 3 and 250 characters long")
     @JsonProperty("companyName")
     val companyName: String,
     @JsonProperty("active")

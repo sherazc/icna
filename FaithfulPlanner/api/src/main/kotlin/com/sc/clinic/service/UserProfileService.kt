@@ -3,14 +3,17 @@ package com.sc.clinic.service
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.UserProfile
+import com.sc.clinic.exception.ScException
 import com.sc.clinic.repository.UserProfileRepository
 import com.sc.clinic.service.model.AuthRole
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class UserProfileService(
     private val userProfileRepository: UserProfileRepository,
-    private val userRoleService: UserRoleService
+    private val userRoleService: UserRoleService,
+    val passwordEncoder: PasswordEncoder
 ) {
 
     fun getAllActive(companyId: Long): List<UserProfileDto> = userProfileRepository
@@ -23,9 +26,16 @@ class UserProfileService(
 
     fun saveRegistrationAdmin(company: Company, userProfileDto: UserProfileDto): UserProfile {
         val userProfileEntity = getOrCreateUserProfileEntity(company, userProfileDto)
+        validate(company, userProfileDto)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
         return userProfileRepository.save(userProfileEntity)
+    }
+
+    private fun validate(company: Company, userProfileDto: UserProfileDto) {
+//        if (company.id == null) throw ScException()
+//        userProfileRepository.findByCompanyIdAndEmail(company.id, userProfileDto.email)
+
     }
 
 
@@ -34,7 +44,7 @@ class UserProfileService(
             ?: UserProfile(
                 null,
                 userProfileDto.email,
-                userProfileDto.usersPassword,
+                userProfileDto.usersPassword?.let { passwordEncoder.encode(userProfileDto.usersPassword) },
                 company,
                 mutableSetOf()
             )
@@ -50,4 +60,6 @@ class UserProfileService(
                 .orElse(null)
         }
     }
+
+    //fun findUserProfileByEmail(companyId: Long, )
 }

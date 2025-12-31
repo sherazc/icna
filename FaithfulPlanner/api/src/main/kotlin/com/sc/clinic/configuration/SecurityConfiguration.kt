@@ -29,7 +29,7 @@ import javax.crypto.spec.SecretKeySpec
     mode = AdviceMode.PROXY
 )
 class SecurityConfiguration(
-    @Value("\${jwt.key}")
+    @param:Value("\${jwt.key}")
     private var jwtKey: String
 ) {
 
