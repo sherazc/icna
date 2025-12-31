@@ -6,15 +6,15 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 
 class UserProfileDto(
-    @JsonProperty("id")
+    @param:JsonProperty("id")
     var id: Long?,
-    @JsonProperty("email")
+    @param:JsonProperty("email")
     @field:Email
     @field:NotBlank
     var email: String,
-    @JsonProperty("userPassword")
+    @param:JsonProperty("userPassword")
     var usersPassword: String?,
-    @JsonProperty("comanyId")
+    @param:JsonProperty("comanyId")
     var companyId: Long?
 ) {
     constructor(userProfile: UserProfile): this(

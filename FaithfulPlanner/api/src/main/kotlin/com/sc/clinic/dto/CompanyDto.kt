@@ -5,12 +5,12 @@ import com.sc.clinic.entity.Company
 import jakarta.validation.constraints.Size
 
 data class CompanyDto(
-    @JsonProperty("id")
+    @param:JsonProperty("id")
     val id: Long?,
     @field:Size(min = 3, max = 250, message = "Company name should be between 3 and 250 characters long")
-    @JsonProperty("companyName")
+    @param:JsonProperty("companyName")
     val companyName: String,
-    @JsonProperty("active")
+    @param:JsonProperty("active")
     val active: Boolean?,
 ) {
     constructor(company: Company) : this(
