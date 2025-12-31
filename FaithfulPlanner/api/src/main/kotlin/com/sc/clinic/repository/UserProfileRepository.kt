@@ -14,7 +14,7 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         """
         select u from UserProfile u
         where lower(u.email) = lower(:email) and u.company.id = :companyId""")
-    fun findByCompanyIdAndEmail(companyId: Long, email: String): UserProfileDto?
+    fun findByCompanyIdAndEmail(companyId: Long, email: String): List<UserProfile>
 
     @Query(
         """

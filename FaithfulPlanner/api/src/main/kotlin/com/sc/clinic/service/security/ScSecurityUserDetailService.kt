@@ -1,14 +1,15 @@
 package com.sc.clinic.service.security
 
+import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
-import com.sc.clinic.repository.UserProfileRepository
+import com.sc.clinic.service.UserProfileService
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 @Service
-class ScSecurityUserDetailService(val userProfileRepository: UserProfileRepository) : UserDetailsService {
+class ScSecurityUserDetailService(val userProfileService: UserProfileService) : UserDetailsService {
     val userNameRegex: Regex = "[0-9]*\\/.{2,}@.{2,}\\..{2,}".toRegex();
 
     override fun loadUserByUsername(username: String): UserDetails {
@@ -19,12 +20,12 @@ class ScSecurityUserDetailService(val userProfileRepository: UserProfileReposito
         val companyId = userNameParts[0].trim().toLong()
         val email = userNameParts[1].trim()
 
-        return userProfileRepository.findByCompanyIdAndEmail(companyId, email)
+        return userProfileService.findByCompanyIdAndEmail(companyId, email)
             // ?.takeIf { it.isActive }
-            ?.let { userProfile -> UserProfileUserDetails(userProfile, getRoles(companyId, email)) }
+            ?.let { userProfile -> UserProfileUserDetails(UserProfileDto(userProfile), getRoles(companyId, email)) }
             ?: throw UsernameNotFoundException("Can not find user. companyId $companyId, email $email")
     }
 
     private fun getRoles(companyId: Long, email: String): List<String> =
-        userProfileRepository.findRolesByCompanyAndEmail(companyId, email).map { it.roleName }
+        userProfileService.findRolesByCompanyAndEmail(companyId, email).map { it.roleName }
 }

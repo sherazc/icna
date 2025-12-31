@@ -34,10 +34,18 @@ class UserProfileService(
     }
 
     private fun validate(userProfileDto: UserProfileDto) {
-        if (userProfileDto.id == null) throw ScException("Can not save User Profile. Company ID is not set.")
-        userProfileRepository.findByCompanyIdAndEmail(userProfileDto.id!!, userProfileDto.email)
-
+        if (userProfileDto.companyId == null) throw ScException("Can not save User Profile. Company ID is not set.")
+        if (userProfileDto.id == null && isUserExists(userProfileDto.companyId!!, userProfileDto.email))
+            throw ScBadRequestException(
+                "Can not save User Profile. ${userProfileDto.email} already exists in CompanyId ${userProfileDto.companyId}"
+            )
     }
+
+    fun isUserExists(companyId: Long, email: String): Boolean =
+        findByCompanyIdAndEmail(companyId, email) != null
+
+    fun findByCompanyIdAndEmail(companyId: Long, email: String): UserProfile? =
+        userProfileRepository.findByCompanyIdAndEmail(companyId, email).firstOrNull()
 
 
     fun getOrCreateUserProfileEntity(company: Company, userProfileDto: UserProfileDto): UserProfile =
@@ -62,5 +70,6 @@ class UserProfileService(
         }
     }
 
-    //fun findUserProfileByEmail(companyId: Long, )
+    fun findRolesByCompanyAndEmail(companyId: Long, email: String) =
+        userProfileRepository.findRolesByCompanyAndEmail(companyId, email)
 }
