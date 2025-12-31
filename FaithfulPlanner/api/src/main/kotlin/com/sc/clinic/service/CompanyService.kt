@@ -13,14 +13,15 @@ class CompanyService(private val companyRepository: CompanyRepository) {
     fun getAllActive(): List<CompanyDto> = companyRepository.findActive()
 
     fun saveCompany(companyDto: CompanyDto): Company {
+        validate(companyDto)
         val companyEntity = getOrCreateCompanyEntity(companyDto)
-
-        if (companyEntity.id == null && isCompanyNameExists(companyEntity.companyName)) {
-            throw ScBadRequestException(
-                "companyName", "Company name already exists. ${companyEntity.companyName}")
-        }
-
         return companyRepository.save(companyEntity)
+    }
+
+    fun validate(company: CompanyDto) {
+        if (company.id == null && isCompanyNameExists(company.companyName)) {
+            throw ScBadRequestException("companyName", "Company name already exists. ${company.companyName}")
+        }
     }
 
     fun getOrCreateCompanyEntity(companyDto: CompanyDto): Company = updateEntityWithDto(companyDto)

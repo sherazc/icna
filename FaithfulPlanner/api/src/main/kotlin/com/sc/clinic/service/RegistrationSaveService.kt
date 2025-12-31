@@ -19,6 +19,7 @@ class RegistrationSaveService(
         // Save Company
         val companyEntity = companyService.saveCompany(registrationDto.company)
         // Save User
+        registrationDto.adminUser.companyId = companyEntity.id
         val userProfileEntity = userProfileService.saveRegistrationAdmin(companyEntity, registrationDto.adminUser)
 
         // Build response

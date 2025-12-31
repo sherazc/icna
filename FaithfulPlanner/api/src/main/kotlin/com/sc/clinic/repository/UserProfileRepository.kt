@@ -12,8 +12,7 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
 
     @Query(
         """
-        select new com.sc.clinic.dto.UserProfileDto(u.id, u.email, u.userPassword, u.company.id) 
-        from UserProfile u
+        select u from UserProfile u
         where lower(u.email) = lower(:email) and u.company.id = :companyId""")
     fun findByCompanyIdAndEmail(companyId: Long, email: String): UserProfileDto?
 

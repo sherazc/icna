@@ -3,6 +3,7 @@ package com.sc.clinic.service
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.UserProfile
+import com.sc.clinic.exception.ScBadRequestException
 import com.sc.clinic.exception.ScException
 import com.sc.clinic.repository.UserProfileRepository
 import com.sc.clinic.service.model.AuthRole
@@ -25,16 +26,16 @@ class UserProfileService(
 
 
     fun saveRegistrationAdmin(company: Company, userProfileDto: UserProfileDto): UserProfile {
+        validate(userProfileDto)
         val userProfileEntity = getOrCreateUserProfileEntity(company, userProfileDto)
-        validate(company, userProfileDto)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
         return userProfileRepository.save(userProfileEntity)
     }
 
-    private fun validate(company: Company, userProfileDto: UserProfileDto) {
-//        if (company.id == null) throw ScException()
-//        userProfileRepository.findByCompanyIdAndEmail(company.id, userProfileDto.email)
+    private fun validate(userProfileDto: UserProfileDto) {
+        if (userProfileDto.id == null) throw ScException("Can not save User Profile. Company ID is not set.")
+        userProfileRepository.findByCompanyIdAndEmail(userProfileDto.id!!, userProfileDto.email)
 
     }
 
