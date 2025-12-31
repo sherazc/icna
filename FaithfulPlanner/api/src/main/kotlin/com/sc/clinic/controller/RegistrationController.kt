@@ -2,9 +2,8 @@ package com.sc.clinic.controller
 
 import com.sc.clinic.dto.RegistrationDto
 import com.sc.clinic.service.RegistrationSaveService
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,7 +15,7 @@ class RegistrationController(val registrationSaveService: RegistrationSaveServic
 
     @PutMapping
     fun saveRegistration(
-        @RequestBody registration: RegistrationDto
+        @Valid @RequestBody registration: RegistrationDto
     ): ResponseEntity<RegistrationDto> =
         ResponseEntity.ok(registrationSaveService.saveNewRegistration(registration))
 }
