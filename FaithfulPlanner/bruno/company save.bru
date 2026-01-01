@@ -1,0 +1,43 @@
+meta {
+  name: /company save
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:8080/api/company
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  {
+      "active": true,
+      "companyName": "{{testCompanyName}}"
+  }
+}
+
+script:pre-request {
+  bru.setVar("testCompanyName", "Test Company Name " + (new Date().getTime()));
+  
+}
+
+script:post-response {
+  const response = res.getBody();
+  
+  test("Response should have a status code of 200", function () { expect(res.getStatus()).to.equal(200); });
+  
+  test("Response should have a content type of application/json", function () {
+    expect(res.getHeader("content-type")).to.eql("application/json"); 
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

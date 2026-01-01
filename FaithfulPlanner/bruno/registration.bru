@@ -1,0 +1,43 @@
+meta {
+  name: /registration
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8080/api/registration
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "company": {
+          "active": true,
+          "companyName": "{{testCompanyName}}"
+      },
+      "adminUser": {
+          "email": "{{testEmail}}",
+          "userPassword": "password123"
+      }
+  }
+}
+
+script:pre-request {
+  bru.setVar("scUserName", "sheraz");
+  // // pm.collectionVariables.set("scUserName", "tariq");
+  // // pm.collectionVariables.set("scUserName", "chaudhry");
+  
+  bru.setVar("scUserPassword", "password");
+  
+  
+}
+
+script:post-response {
+  bru.setVar("testCompanyName", "Test Company Name " + (new Date().getTime()));
+  bru.setVar("testEmail", "myemail_" + (new Date().getTime()) + "@test.com");
+}
+
+settings {
+  encodeUrl: true
+}

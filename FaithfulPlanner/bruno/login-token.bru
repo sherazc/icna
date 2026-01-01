@@ -1,0 +1,57 @@
+meta {
+  name: /login/token
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/api/login/token
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: 1/sheraz@alshifa.com
+  password: wwwww
+}
+
+script:pre-request {
+  bru.setVar("scUserName", "sheraz");
+  // // pm.collectionVariables.set("scUserName", "tariq");
+  // // pm.collectionVariables.set("scUserName", "chaudhry");
+  
+  bru.setVar("scUserPassword", "password");
+  
+}
+
+script:post-response {
+  const jwt = res.getBody();
+  console.log(`jwt = ${jwt}`);
+  bru.setVar("jwt", jwt.token);
+  
+  
+  test("Status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Token is present", function () {
+      expect(jwt.token).to.not.be.null;
+  });
+  
+  test("Token is a string", function () {
+      expect(jwt.token).to.be.a('string');
+  });
+  
+  test("Check Roles", function () {
+      expect(jwt.roles.includes("BASIC_USER")).to.be.true;
+      expect(jwt.roles.includes("MASTER")).to.be.true;    
+  });
+  
+  
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
