@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# ln -s ./infrastructure/prod/clinic/.env .env
+# ln -s ./infrastructure/clinic/.env .env
 # ln -s ./infrastructure/clinic/postgres-container.sh postgres-container.sh
 
 source .env

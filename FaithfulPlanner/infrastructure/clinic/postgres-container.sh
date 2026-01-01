@@ -23,6 +23,6 @@ docker run \
   -v $dataDir:/var/lib/postgresql \
   postgres:latest
 
-sleep 5
+sleep 20
 echo "DB container finished!"
 
