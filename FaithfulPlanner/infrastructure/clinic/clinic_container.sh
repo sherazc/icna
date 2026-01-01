@@ -14,5 +14,5 @@ docker run -it \
   -p 8080:8080 \
   -d $app_name
 
-sleep 20
+sleep 60
 docker logs $app_name
