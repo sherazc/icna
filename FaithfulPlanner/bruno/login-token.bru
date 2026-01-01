@@ -15,15 +15,6 @@ auth:basic {
   password: wwwww
 }
 
-script:pre-request {
-  bru.setVar("scUserName", "sheraz");
-  // // pm.collectionVariables.set("scUserName", "tariq");
-  // // pm.collectionVariables.set("scUserName", "chaudhry");
-  
-  bru.setVar("scUserPassword", "password");
-  
-}
-
 script:post-response {
   const jwt = res.getBody();
   console.log(`jwt = ${jwt}`);

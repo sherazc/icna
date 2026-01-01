@@ -15,15 +15,6 @@ auth:basic {
   password: password123
 }
 
-script:pre-request {
-  bru.setVar("scUserName", "sheraz");
-  // // pm.collectionVariables.set("scUserName", "tariq");
-  // // pm.collectionVariables.set("scUserName", "chaudhry");
-  
-  bru.setVar("scUserPassword", "password");
-  
-}
-
 script:post-response {
   const jwt = res.getBody();
   console.log(`jwt = ${jwt}`);
@@ -44,7 +35,7 @@ script:post-response {
   
   test("Check Roles", function () {
       expect(jwt.roles.includes("BASIC_USER")).to.be.true;
-      expect(jwt.roles.includes("MASTER")).to.be.true;    
+      expect(jwt.roles.includes("ADMIN")).to.be.true;    
   });
   
   

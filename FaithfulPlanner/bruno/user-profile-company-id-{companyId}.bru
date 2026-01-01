@@ -10,21 +10,22 @@ get {
   auth: none
 }
 
-body:json {
-  {
-      "active": true,
-      "companyName": "Al-Shifa Health Clini",
-      "id": 9
-  }
-}
-
-script:pre-request {
-  bru.setVar("scUserName", "sheraz");
-  // // pm.collectionVariables.set("scUserName", "tariq");
-  // // pm.collectionVariables.set("scUserName", "chaudhry");
+script:post-response {
+  const response = res.getBody();
   
-  bru.setVar("scUserPassword", "password");
+  test("Status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
   
+  test("Contains Users", function () {
+      expect(response.length).to.be.greaterThan(0);
+  });
+  
+  test("No password returned", function () {
+    response.forEach(user => {
+      expect(user.userPassword).to.be.null;
+    });  
+  });
   
 }
 

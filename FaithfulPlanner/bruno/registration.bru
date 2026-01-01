@@ -18,24 +18,37 @@ body:json {
       },
       "adminUser": {
           "email": "{{testEmail}}",
-          "userPassword": "password123"
+          "userPassword": "{{testPassword}}"
       }
   }
 }
 
 script:pre-request {
-  bru.setVar("scUserName", "sheraz");
-  // // pm.collectionVariables.set("scUserName", "tariq");
-  // // pm.collectionVariables.set("scUserName", "chaudhry");
+  bru.setVar("testCompanyName", "Test Company Name " + (new Date().getTime()));
+  bru.setVar("testEmail", "myemail_" + (new Date().getTime()) + "@test.com");
   
-  bru.setVar("scUserPassword", "password");
   
   
 }
 
 script:post-response {
-  bru.setVar("testCompanyName", "Test Company Name " + (new Date().getTime()));
-  bru.setVar("testEmail", "myemail_" + (new Date().getTime()) + "@test.com");
+  const response = res.getBody();
+  
+  test("Status code is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Company Created", function () {
+    expect(response.company.id).to.be.greaterThan(0);
+    expect(response.company.active).to.be.true;
+  });
+  
+  test("User Created", function () {
+    expect(response.adminUser.id).to.be.greaterThan(0);
+    expect(response.adminUser.companyId).to.equal(response.company.id);
+    expect(response.adminUser.userPassword).to.be.null;
+  });
+  
 }
 
 settings {

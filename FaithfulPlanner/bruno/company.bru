@@ -10,16 +10,6 @@ get {
   auth: none
 }
 
-script:pre-request {
-  bru.setVar("scUserName", "sheraz");
-  // // pm.collectionVariables.set("scUserName", "tariq");
-  // // pm.collectionVariables.set("scUserName", "chaudhry");
-  
-  bru.setVar("scUserPassword", "password");
-  
-  
-}
-
 script:post-response {
   const response = res.getBody();
   test("Response should have a status code of 200", function () { expect(res.getStatus()).to.equal(200); });
