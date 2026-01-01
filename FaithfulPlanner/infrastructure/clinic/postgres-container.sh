@@ -7,8 +7,8 @@ dataDir=$container_disks/$db_name
 echo Clean up DB
 docker stop $db_name
 docker rm -f $db_name
-rm -rf $dataDir
-mkdir $dataDir
+sudo rm -rf $dataDir
+mkdir -p $dataDir
 
 sleep 3
 

@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
-echo Building clinic image
-docker stop clinic || true
-docker rm clinic || true
-docker rmi clinic -f || true
-docker build . -t clinic
+source .env
 
-echo Run clinic container
+echo Building $app_name image
+docker stop $app_name || true
+docker rm $app_name || true
+sudo docker rmi $app_name -f || true
+sudo docker build . -t $app_name
+
+echo Run app container
 docker run -it \
-  --name clinic \
+  --name $app_name \
   -p 8080:8080 \
-  -d clinic
+  -d $app_name
 
-sleep 10
-docker logs clinic
+sleep 20
+docker logs $app_name
