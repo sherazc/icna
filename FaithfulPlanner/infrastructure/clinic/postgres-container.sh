@@ -1,11 +1,10 @@
 #!/bin/bash
-echo "Creating DB container, please wait..."
+echo "Creating DB container..."
 
 source .env
-
 dataDir=$container_disks/$db_name
 
-# Clean up
+echo Clean up DB
 docker stop $db_name
 docker rm -f $db_name
 rm -rf $dataDir
@@ -13,7 +12,7 @@ mkdir $dataDir
 
 sleep 3
 
-# Create container
+echo Run DB container
 docker run \
   --detach \
   --name=$db_name \
@@ -25,5 +24,5 @@ docker run \
   postgres:latest
 
 sleep 5
-echo "Created DB container."
+echo "DB container finished!"
 
