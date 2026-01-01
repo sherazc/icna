@@ -11,3 +11,6 @@ docker run -it \
   --name clinic \
   -p 8080:8080 \
   -d clinic
+
+sleep 10
+docker logs clinic

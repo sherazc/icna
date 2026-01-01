@@ -1,5 +1,4 @@
 app_name=clinic
-app_infra_source_path=$(pwd)
 app_server_ip=10.0.0.20
 app_server_user=sheraz
 app_server_path=/home/sheraz/dev/
