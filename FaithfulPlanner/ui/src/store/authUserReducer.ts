@@ -1,4 +1,4 @@
-import {AuthUserTokenDto, defaultAuthUserTokenDto} from "../service/service-types";
+import {type AuthUserTokenDto, defaultAuthUserTokenDto} from "../service/service-types";
 
 export enum ActionNameAuthUser {
     authUserLogin = "AUTH_USER_LOGIN",

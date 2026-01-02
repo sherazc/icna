@@ -1,9 +1,9 @@
 import React, {createContext, useReducer} from "react";
-import {LoadingAction, loadingMessagesReducer} from "./loadingMessageReducer";
-import {AuthUserAction, authUserReducer} from "./authUserReducer";
-import {AuthUserTokenDto, defaultAuthUserTokenDto, RegisterApisType} from "../service/service-types";
-import {registerApis} from "../service/api/ApiRegister";
-import {RegisterApisAction, registerApisReducer} from "./registerApisReducer";
+import {type LoadingAction, loadingMessagesReducer} from "./loadingMessageReducer";
+import {type AuthUserAction, authUserReducer} from "./authUserReducer";
+import {type AuthUserTokenDto, type ClinicApisType, defaultAuthUserTokenDto} from "../service/service-types";
+import { clinicApis } from "../service/api/ApiClinic";
+import { clinicApisReducer, type ClinicApisAction } from "./clinicApisReducer";
 
 export type Action = {
     type: string;
@@ -21,13 +21,14 @@ type RootStateType = {
      */
     loadingMessages: LoadingMessage[];
     authUserToken: AuthUserTokenDto;
-    regApis: RegisterApisType;
+    clinicApis: ClinicApisType;
 }
+
 
 const initialAppState: RootStateType = {
     loadingMessages: [],
     authUserToken: defaultAuthUserTokenDto(),
-    regApis: registerApis()
+    clinicApis: clinicApis()
 }
 
 const AppContext = createContext<[
@@ -38,13 +39,13 @@ const AppContext = createContext<[
     () => null
 ]);
 
-type RootAction = LoadingAction | AuthUserAction | RegisterApisAction;
+type RootAction = LoadingAction | AuthUserAction | ClinicApisAction;
 
 // Combines all the reducers
-const mainReducer = ({loadingMessages, authUserToken, regApis}: RootStateType, action: RootAction) => ({
+const mainReducer = ({loadingMessages, authUserToken, clinicApis}: RootStateType, action: RootAction) => ({
     loadingMessages: loadingMessagesReducer(loadingMessages, action as LoadingAction),
     authUserToken: authUserReducer(authUserToken, action as AuthUserAction),
-    regApis: registerApisReducer(regApis, action as RegisterApisAction)
+    regApis: clinicApisReducer(clinicApis, action as ClinicApisAction)
 });
 
 interface Props {
