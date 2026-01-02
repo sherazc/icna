@@ -1,4 +1,13 @@
+import { clinicApis as createClinicApis } from "../service/api/ApiClinic";
+
 export default function Login() {
+
+  const handleGetCompanies = async () => {
+    const clinicApis = createClinicApis();
+    const companies = await clinicApis.getAllCompanies();
+    console.log("Fetched companies:", companies);
+  }
+
   return (
       <div id="login">
         <div className="loginContainer">
@@ -32,6 +41,7 @@ export default function Login() {
               </select>
             </div>
             <div className="formActions">
+              <button type="submit" className="btn btnPrimary" onClick={handleGetCompanies}>Get Companies</button>
               <button type="submit" className="btn btnPrimary">Login</button>
               <button type="button" className="btn btnSecondary" data-onclick="switchScreen('org-registration')">Register Organization</button>
             </div>

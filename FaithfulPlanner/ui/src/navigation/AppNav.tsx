@@ -39,15 +39,7 @@ export default function AppNav() {
         <div className="sidebarHeader">
           <h1>FaithfulPlanner</h1>
         </div>
-        <div className="orgSelector">
-          <label>Current Organization</label>
-          <select id="orgSelector">
-            <option value="">Select Organization</option>
-            <option value="mercy-clinic">Mercy Free Clinic</option>
-            <option value="hope-center">Hope Community Center</option>
-            <option value="faith-health">Faith & Health Alliance</option>
-          </select>
-        </div>
+        
         <ul className="navMenu">
           <li className="navItem">
             <Link to="/login" className={`navLink ${isActive("/login")}`} onClick={closeMobileMenu}>
@@ -59,6 +51,7 @@ export default function AppNav() {
               Register Organization
             </Link>
           </li>
+{/*
           <li className="navItem">
             <Link to="/org-selection" className={`navLink ${isActive("/org-selection")}`} onClick={closeMobileMenu}>
               Select Organization
@@ -114,6 +107,7 @@ export default function AppNav() {
               Volunteer Reports
             </Link>
           </li>
+*/}
         </ul>
       </div>
     </>
