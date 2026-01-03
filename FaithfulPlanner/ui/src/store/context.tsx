@@ -45,7 +45,7 @@ type RootAction = LoadingAction | AuthUserAction | ClinicApisAction;
 const mainReducer = ({loadingMessages, authUserToken, clinicApis}: RootStateType, action: RootAction) => ({
     loadingMessages: loadingMessagesReducer(loadingMessages, action as LoadingAction),
     authUserToken: authUserReducer(authUserToken, action as AuthUserAction),
-    regApis: clinicApisReducer(clinicApis, action as ClinicApisAction)
+    clinicApis: clinicApisReducer(clinicApis, action as ClinicApisAction)
 });
 
 interface Props {

@@ -1,4 +1,4 @@
-import {LoadingMessage} from "./context";
+import type { LoadingMessage } from "./context";
 
 export const enum ActionNameLoading {
     loadingShow = 'LOADING_MESSAGE_SHOW',
