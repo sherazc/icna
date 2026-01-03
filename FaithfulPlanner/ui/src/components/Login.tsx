@@ -3,51 +3,45 @@ import { defaultLoginRequest, type LoginRequest } from "../service/service-types
 import { AppContext } from "../store/context";
 
 export default function Login() {
-  const [{}, dispatch] = useContext(AppContext);
+  const [{ companies }] = useContext(AppContext);
 
   const [loginRequest, setLoginRequest] = useState<LoginRequest>(defaultLoginRequest());
 
-  useEffect(() => {
-  }, []);
+  const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = event.target;
+    setLoginRequest(prevData => ({ ...prevData, [id]: value }));
+  };
 
   return (
-      <div id="login">
-        <div className="loginContainer">
-          <h1>FaithfulPlanner</h1>
-          <form data-onsubmit="handleLogin(event)">
-            <div className="formGroup">
-              <label htmlFor="email">Email Address</label>
-              <input type="email" id="email" placeholder="Enter your email" required />
-            </div>
-            <div className="formGroup">
-              <label htmlFor="password">Password</label>
-              <input type="password" id="password" placeholder="Enter your password" required />
-            </div>
-            <div className="formGroup">
-              <label htmlFor="organization">Organization</label>
-              <select id="organization" required>
-                <option value="">Select your organization</option>
-                <option value="mercy-clinic">Mercy Free Clinic</option>
-                <option value="hope-center">Hope Community Center</option>
-                <option value="faith-health">Faith & Health Alliance</option>
-              </select>
-            </div>
-            <div className="formGroup">
-              <label htmlFor="role">Role</label>
-              <select id="role" required>
-                <option value="">Select your role</option>
-                <option value="super-admin">Super Admin</option>
-                <option value="org-admin">Organization Admin</option>
-                <option value="provider">Provider/Doctor</option>
-                <option value="volunteer">Volunteer</option>
-              </select>
-            </div>
-            <div className="formActions">
-              <button type="submit" className="btn btnPrimary">Login</button>
-              <button type="button" className="btn btnSecondary" data-onclick="switchScreen('org-registration')">Register Organization</button>
-            </div>
-          </form>
-        </div>
+    <div id="login">
+      <div className="loginContainer">
+        <h1>FaithfulPlanner</h1>
+        <form data-onsubmit="handleLogin(event)">
+          <div className="formGroup">
+            <label htmlFor="email">Email Address</label>
+            <input type="email" id="email" placeholder="Enter your email" required 
+            onChange={onChangeText} />
+          </div>
+          <div className="formGroup">
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required 
+            onChange={onChangeText} />
+          </div>
+          <div className="formGroup">
+            <label htmlFor="organization">Organization</label>
+            <select id="organization" required>
+              <option value="">Select your organization</option>
+              {companies.map((company) => (
+                <option key={company.id} value={company.id}>{company.companyName}</option>
+              ))}
+            </select>
+          </div>
+          <div className="formActions">
+            <button type="submit" className="btn btnPrimary">Login</button>
+            <button type="button" className="btn btnSecondary" data-onclick="switchScreen('org-registration')">Register Organization</button>
+          </div>
+        </form>
       </div>
+    </div>
   );
 }
