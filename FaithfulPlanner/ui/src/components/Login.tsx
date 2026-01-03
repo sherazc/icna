@@ -3,18 +3,12 @@ import { defaultLoginRequest, type LoginRequest } from "../service/service-types
 import { AppContext } from "../store/context";
 
 export default function Login() {
-  const [{authUserToken, clinicApis}, dispatch] = useContext(AppContext);
+  const [{}, dispatch] = useContext(AppContext);
 
   const [loginRequest, setLoginRequest] = useState<LoginRequest>(defaultLoginRequest());
 
   useEffect(() => {
-    loadCompanies();
   }, []);
-
-  const loadCompanies = async () => {
-    const companies = await clinicApis.getAllCompanies();
-    console.log("Fetched companies:", companies);
-  }
 
   return (
       <div id="login">
