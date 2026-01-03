@@ -12,19 +12,24 @@ export default function Login() {
     setLoginRequest(prevData => ({ ...prevData, [id]: value }));
   };
 
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log("Login Request:", loginRequest);  
+  }
+
   return (
     <div id="login">
       <div className="loginContainer">
         <h1>FaithfulPlanner</h1>
-        <form data-onsubmit="handleLogin(event)">
+        <form onSubmit={handleSubmit}>
           <div className="formGroup">
             <label htmlFor="email">Email Address</label>
             <input type="email" id="email" placeholder="Enter your email" required 
             onChange={onChangeText} />
           </div>
           <div className="formGroup">
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" placeholder="Enter your password" required 
+            <label htmlFor="userPassword">Password</label>
+            <input type="password" id="userPassword" placeholder="Enter your password" required 
             onChange={onChangeText} />
           </div>
           <div className="formGroup">
