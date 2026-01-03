@@ -326,6 +326,11 @@ body {
   font-family: var(--font-family);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   height: var(--input-height);
+  line-height: normal;
+}
+
+.formGroup select {
+  padding: 8px 12px;
 }
 
 .formGroup input:focus,
