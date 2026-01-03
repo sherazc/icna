@@ -1,23 +1,21 @@
-import {type FC, useContext} from 'react';
-import {Navigate, useParams} from "react-router-dom";
-import {AppContext} from "../../store/context";
-import {isBlankString} from "../../service/utilities";
+import { type FC, useContext } from 'react';
+import { Navigate } from "react-router-dom";
+import { AppContext } from "../../store/context";
+import type { AuthRole } from '../../service/service-types';
+import { isAuthenticate } from '../../service/authentication-services';
 
-export const UnAuthRedirect: FC = () => {
-    const {eventId} = useParams();
-    const [{authUserToken}] = useContext(AppContext);
-    let redirect = isBlankString(eventId);
-    let redirectUrl = "/";
-    const authenticated:boolean = authUserToken.userProfileId > 0;
+interface Props {
+    authenticated?: boolean;
+    shouldHaveRoles?: AuthRole[];
+    shouldHaveAnyRoles?: AuthRole[];
+}
 
-    if (!redirect && !authenticated) {
-        redirect = true;
-        redirectUrl = `/event/${eventId}`
-    }
-
+export const UnAuthRedirect: FC<Props> = ({authenticated, shouldHaveRoles, shouldHaveAnyRoles }) => {
+    const [{ authUserToken }] = useContext(AppContext);
+    const showContent = isAuthenticate(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles);
     return (
         <>
-            {redirect && <Navigate to={redirectUrl} /> }
+            {!showContent && <Navigate to="/" />}
         </>
     );
 };
