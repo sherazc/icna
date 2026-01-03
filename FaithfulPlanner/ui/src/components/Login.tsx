@@ -73,7 +73,7 @@ export default function Login() {
           </div>
           
           <div className="formActions">
-            <button type="submit" className="btn btnPrimary">Login</button>
+            <button type="submit" className="btn btnPrimary" disabled={loginState === LoginState.IN_PROGRESS}>Login</button>
             <button type="button" className="btn btnSecondary" data-onclick="switchScreen('org-registration')">Register Organization</button>
           </div>
         </form>

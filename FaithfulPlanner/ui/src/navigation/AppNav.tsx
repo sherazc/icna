@@ -57,11 +57,13 @@ export default function AppNav() {
               Select Organization
             </Link>
           </li>
+*/}
           <li className="navItem">
             <Link to="/dashboard" className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
               Dashboard
             </Link>
           </li>
+{/*
           <li className="navItem superAdminOnly">
             <Link to="/org-management" className={`navLink ${isActive("/org-management")}`} onClick={closeMobileMenu}>
               Organization Management
