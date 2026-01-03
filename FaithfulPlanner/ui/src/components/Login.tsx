@@ -12,6 +12,11 @@ export default function Login() {
     setLoginRequest(prevData => ({ ...prevData, [id]: value }));
   };
 
+  const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { id, value } = event.target;
+    setLoginRequest(prevData => ({ ...prevData, [id]: value }));
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log("Login Request:", loginRequest);  
@@ -33,8 +38,8 @@ export default function Login() {
             onChange={onChangeText} />
           </div>
           <div className="formGroup">
-            <label htmlFor="organization">Organization</label>
-            <select id="organization" required>
+            <label htmlFor="companyId">Organization</label>
+            <select id="companyId" onChange={onChangeSelect} required>
               <option value="">Select your organization</option>
               {companies.map((company) => (
                 <option key={company.id} value={company.id}>{company.companyName}</option>
