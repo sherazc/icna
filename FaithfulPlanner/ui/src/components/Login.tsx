@@ -1,11 +1,18 @@
 import { useContext, useState } from "react";
 import { defaultLoginRequest, type LoginRequest } from "../service/service-types";
 import { AppContext } from "../store/context";
+import { ActionNameAuthUser } from "../store/authUserReducer";
+
+enum LoginState {
+  FRESH, IN_PROGRESS, LOGGED_IN, LOGIN_FAILED
+}
 
 export default function Login() {
-  const [{ companies, clinicApis }] = useContext(AppContext);
+  const [{ companies, clinicApis }, dispatch] = useContext(AppContext);
 
   const [loginRequest, setLoginRequest] = useState<LoginRequest>(defaultLoginRequest());
+  const [loginState, setLoginState] = useState<LoginState>(LoginState.FRESH);
+
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -13,8 +20,18 @@ export default function Login() {
   };
 
   const login = async () => {
-    const authUserTokenDto = await clinicApis.login(loginRequest);
-    console.log("Logged in user token:", authUserTokenDto);
+    setLoginState(LoginState.IN_PROGRESS);
+    try {
+      const authUserTokenDto = await clinicApis.login(loginRequest);
+      dispatch({
+        type: ActionNameAuthUser.authUserLogin,
+        payload: authUserTokenDto
+      });
+      setLoginState(LoginState.LOGGED_IN);
+    } catch (error) {
+      console.error("Login failed:", error);
+      setLoginState(LoginState.LOGIN_FAILED);
+    }
   }
 
   const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -31,6 +48,9 @@ export default function Login() {
     <div id="login">
       <div className="loginContainer">
         <h1>FaithfulPlanner</h1>
+        {loginState === LoginState.LOGIN_FAILED && (
+          <div className="errorMessage">Login failed. Please check your credentials and try again</div>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="formGroup">
             <label htmlFor="companyId">Organization</label>

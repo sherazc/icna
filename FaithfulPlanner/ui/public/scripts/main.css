@@ -1976,3 +1976,15 @@ tbody tr.selected:hover {
     display: none !important;
   }
 }
+
+.errorMessage {
+  background: var(--error-light);
+  color: var(--error);
+  padding: var(--spacing-12) var(--spacing-15);
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--error);
+  margin-bottom: var(--spacing-15);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  text-align: left;
+}
