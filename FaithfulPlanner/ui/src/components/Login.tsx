@@ -1,9 +1,17 @@
-import { clinicApis as createClinicApis } from "../service/api/ApiClinic";
+import { useContext, useEffect, useState } from "react";
+import { defaultLoginRequest, type LoginRequest } from "../service/service-types";
+import { AppContext } from "../store/context";
 
 export default function Login() {
+  const [{authUserToken, clinicApis}, dispatch] = useContext(AppContext);
 
-  const handleGetCompanies = async () => {
-    const clinicApis = createClinicApis();
+  const [loginRequest, setLoginRequest] = useState<LoginRequest>(defaultLoginRequest());
+
+  useEffect(() => {
+    loadCompanies();
+  }, []);
+
+  const loadCompanies = async () => {
     const companies = await clinicApis.getAllCompanies();
     console.log("Fetched companies:", companies);
   }
@@ -41,7 +49,6 @@ export default function Login() {
               </select>
             </div>
             <div className="formActions">
-              <button type="submit" className="btn btnPrimary" onClick={handleGetCompanies}>Get Companies</button>
               <button type="submit" className="btn btnPrimary">Login</button>
               <button type="button" className="btn btnSecondary" data-onclick="switchScreen('org-registration')">Register Organization</button>
             </div>

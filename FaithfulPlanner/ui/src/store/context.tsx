@@ -1,9 +1,10 @@
 import React, {createContext, useReducer} from "react";
 import {type LoadingAction, loadingMessagesReducer} from "./loadingMessageReducer";
 import {type AuthUserAction, authUserReducer} from "./authUserReducer";
-import {type AuthUserTokenDto, type ClinicApisType, defaultAuthUserTokenDto} from "../service/service-types";
+import {type AuthUserTokenDto, type ClinicApisType, type Company, defaultAuthUserTokenDto} from "../service/service-types";
 import { clinicApis } from "../service/api/ApiClinic";
 import { clinicApisReducer, type ClinicApisAction } from "./clinicApisReducer";
+import { companyReducer, type CompanyAction } from "./companyReducer";
 
 export type Action = {
     type: string;
@@ -22,13 +23,15 @@ type RootStateType = {
     loadingMessages: LoadingMessage[];
     authUserToken: AuthUserTokenDto;
     clinicApis: ClinicApisType;
+    companies: Company[];
 }
 
 
 const initialAppState: RootStateType = {
     loadingMessages: [],
     authUserToken: defaultAuthUserTokenDto(),
-    clinicApis: clinicApis()
+    clinicApis: clinicApis(),
+    companies: []
 }
 
 const AppContext = createContext<[
@@ -39,13 +42,14 @@ const AppContext = createContext<[
     () => null
 ]);
 
-type RootAction = LoadingAction | AuthUserAction | ClinicApisAction;
+type RootAction = LoadingAction | AuthUserAction | ClinicApisAction | CompanyAction;
 
 // Combines all the reducers
-const mainReducer = ({loadingMessages, authUserToken, clinicApis}: RootStateType, action: RootAction) => ({
+const mainReducer = ({loadingMessages, authUserToken, clinicApis, companies}: RootStateType, action: RootAction) => ({
     loadingMessages: loadingMessagesReducer(loadingMessages, action as LoadingAction),
     authUserToken: authUserReducer(authUserToken, action as AuthUserAction),
-    clinicApis: clinicApisReducer(clinicApis, action as ClinicApisAction)
+    clinicApis: clinicApisReducer(clinicApis, action as ClinicApisAction),
+    companies: companyReducer(companies, action as CompanyAction)
 });
 
 interface Props {

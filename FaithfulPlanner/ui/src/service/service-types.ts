@@ -1,4 +1,5 @@
 import type { clinicApis } from "./api/ApiClinic";
+import { touchString } from "./utilities";
 
 export type Company = {
     id?: number,
@@ -6,12 +7,17 @@ export type Company = {
     active: boolean
 };
 
-
 export type LoginRequest = {
     companyId: string,
     email: string,
     userPassword?: string
 };
+
+export const defaultLoginRequest = (companyId?: string | undefined):LoginRequest => ({
+    email: "",
+    companyId: touchString(companyId),
+    userPassword: ""
+});
 
 export type AuthUserTokenDto = {
     userProfileId: number;
