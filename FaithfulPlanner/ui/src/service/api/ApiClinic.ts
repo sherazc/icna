@@ -1,4 +1,4 @@
-import type { Company } from "../service-types";
+import type { AuthUserTokenDto, Company, LoginRequest } from "../service-types";
 import {
     addHeadersInRequest,
     callApiIntercept,
@@ -14,6 +14,7 @@ const CONTENT_JSON_HEADER = (): ApiHeaders => [["Content-Type", "application/jso
 export const clinicEndpoints = () => {
     return {
         epCompany: () => `${baseUrl}/api/company`,
+        epLoginToken: () => `${baseUrl}/api/login/token`,
     }
 }
 
@@ -26,6 +27,23 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
             addHeadersInRequest(request, commonHeaders);
             return callApiIntercept(request, interceptorCbs);
         },
+        login: (loginRequest: LoginRequest): Promise<AuthUserTokenDto> => {
+            const endpoint = endpoints.epLoginToken();
+            const request: ApiRequest = {endpoint};
+
+            const encodedUserPassword =
+                btoa(`${loginRequest.companyId}/${loginRequest.email}:${loginRequest.userPassword}`);
+
+            const authenticationHeaders: ApiHeaders = [["Authorization", `Basic ${encodedUserPassword}`]];
+
+            // Removed because it adds Bearer Authorization header
+            // addHeadersInRequest(request, commonHeaders);
+            addHeadersInRequest(request, authenticationHeaders);
+
+            return callApiIntercept(request, interceptorCbs);
+        },
+
+
     }
     return api;
 }
