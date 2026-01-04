@@ -9,7 +9,7 @@ import {
 
 export const baseUrl = import.meta.env.VITE_API_BASE_PATH;
 
-const CONTENT_JSON_HEADER = (): ApiHeaders => [["Content-Type", "application/json"]]
+// const CONTENT_JSON_HEADER = (): ApiHeaders => [["Content-Type", "application/json"]]
 
 export const clinicEndpoints = () => {
     return {
