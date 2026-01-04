@@ -16,7 +16,7 @@ body:json {
           "active": true,
           "companyName": "{{testCompanyName}}"
       },
-      "adminUser": {
+      "userProfile": {
           "email": "{{testEmail}}",
           "userPassword": "{{testPassword}}"
       }
@@ -34,7 +34,7 @@ script:pre-request {
 script:post-response {
   const response = res.getBody();
   
-  bru.setVar("newRegistrationUser", response.company.id + "/" + response.adminUser.email);
+  bru.setVar("newRegistrationUser", response.company.id + "/" + response.userProfile.email);
   
   test("Status code is 200", function () {
     expect(res.getStatus()).to.equal(200);
@@ -46,9 +46,9 @@ script:post-response {
   });
   
   test("User Created", function () {
-    expect(response.adminUser.id).to.be.greaterThan(0);
-    expect(response.adminUser.companyId).to.equal(response.company.id);
-    expect(response.adminUser.userPassword).to.be.null;
+    expect(response.userProfile.id).to.be.greaterThan(0);
+    expect(response.userProfile.companyId).to.equal(response.company.id);
+    expect(response.userProfile.userPassword).to.be.null;
   });
   
 }

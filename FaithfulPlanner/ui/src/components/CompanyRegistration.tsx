@@ -2,10 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { defaultRegistrationDto, type FieldError, type FormPassword, type RegistrationDto } from "../service/service-types";
 import { useState } from "react";
 import { isEqualStrings } from "../service/utilities";
+import { Error } from "./Error";
+import { validateRegistrationForm } from "../service/errors-helpers";
 
 export default function CompanyRegistration() {
   const navigate = useNavigate();
   const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
+  const [errors, setErrors] = useState<FieldError[]>([]);
 
   const [registrationPassword, setRegistrationPassword] = useState<FormPassword>({
     passwordField: "",
@@ -14,7 +17,13 @@ export default function CompanyRegistration() {
 
 
   const register = async () => {
+    console.log(registrationDto);
+    console.log(registrationPassword);
+    const submitErrors: FieldError[] = [];
+    const registrationForm: RegistrationDto = {...registrationDto};
 
+    submitErrors.push(...validateRegistrationForm(registrationForm));
+    submitErrors.push(...validateCreatePassword(registrationPassword));
   }
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -31,7 +40,7 @@ export default function CompanyRegistration() {
   const onChangeUserProfileText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setRegistrationDto(prevData => ({...prevData,
-      adminUser: { ...prevData.adminUser, [id]: value }}));
+      userProfile: { ...prevData.userProfile, [id]: value }}));
   };
 
   const onChangeCompanyText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,9 +77,10 @@ export default function CompanyRegistration() {
         <h1>Register Organization</h1>
         <form onSubmit={handleSubmit}>
           <div className="formGroup">
-            <label htmlFor="company">Organization Name</label>
-            <input type="text" id="orgName" placeholder="Enter organization name" required 
+            <label htmlFor="companyName">Organization Name</label>
+            <input type="text" id="companyName" placeholder="Enter organization name" 
             onChange={onChangeCompanyText}/>
+            <Error errors={errors} fieldName="userProfile.email"/>
           </div>
           <div className="formGroup">
             <label htmlFor="email">Admin Email</label>

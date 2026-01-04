@@ -6,4 +6,4 @@ data class RegistrationDto(
     @field:Valid
     val company: CompanyDto,
     @field:Valid
-    val adminUser: UserProfileDto)
+    val userProfile: UserProfileDto)

@@ -1988,3 +1988,7 @@ tbody tr.selected:hover {
   font-size: var(--font-size-base);
   text-align: left;
 }
+
+.errorField {
+  
+}

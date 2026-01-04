@@ -48,12 +48,12 @@ export type ClinicApisType = ReturnType<typeof clinicApis>;
 
 export type RegistrationDto = {
     company: CompanyDto,
-    adminUser: UserProfileDto
+    userProfile: UserProfileDto
 };
 
 export const defaultRegistrationDto = (): RegistrationDto => ({
     company: defaultCompanyDto(),
-    adminUser: defaultUserProfileDto()
+    userProfile: defaultUserProfileDto()
 });
 
 export type CompanyDto = {

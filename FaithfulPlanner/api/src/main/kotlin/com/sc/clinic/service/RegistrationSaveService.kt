@@ -18,13 +18,13 @@ class RegistrationSaveService(
         // Save Company
         val companyEntity = companyService.saveCompany(registrationDto.company)
         // Save User
-        registrationDto.adminUser.companyId = companyEntity.id
-        val userProfileEntity = userProfileService.saveRegistrationAdmin(companyEntity, registrationDto.adminUser)
+        registrationDto.userProfile.companyId = companyEntity.id
+        val userProfileEntity = userProfileService.saveRegistrationAdmin(companyEntity, registrationDto.userProfile)
 
         // Build response
-        val adminUser = UserProfileDto(userProfileEntity)
-        adminUser.usersPassword = null
-        return RegistrationDto(CompanyDto(companyEntity), adminUser)
+        val userProfile = UserProfileDto(userProfileEntity)
+        userProfile.usersPassword = null
+        return RegistrationDto(CompanyDto(companyEntity), userProfile)
     }
 
     private fun validate(registrationDto: RegistrationDto) {
