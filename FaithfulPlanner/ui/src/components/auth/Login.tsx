@@ -1,18 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { defaultLoginRequest, type LoginRequest } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import { ActionNameAuthUser } from "../../store/authUserReducer";
+import { useNavigate } from "react-router-dom";
 
 enum LoginState {
   FRESH, IN_PROGRESS, LOGGED_IN, LOGIN_FAILED
 }
 
 export default function Login() {
+  const navigate = useNavigate();
   const [{ companies, clinicApis }, dispatch] = useContext(AppContext);
 
   const [loginRequest, setLoginRequest] = useState<LoginRequest>(defaultLoginRequest());
   const [loginState, setLoginState] = useState<LoginState>(LoginState.FRESH);
-
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -44,6 +45,10 @@ export default function Login() {
     login();
   }
 
+  useEffect(() => {
+    if (loginState === LoginState.LOGGED_IN) navigate("/dashboard");
+  }, [loginState, navigate]);
+
   return (
     <div id="login">
       <div className="loginContainer">
@@ -74,7 +79,7 @@ export default function Login() {
           
           <div className="formActions">
             <button type="submit" className="btn btnPrimary" disabled={loginState === LoginState.IN_PROGRESS}>Login</button>
-            <button type="button" className="btn btnSecondary" data-onclick="switchScreen('org-registration')">Register Organization</button>
+            <button type="button" className="btn btnSecondary" onClick={() => navigate("/company-registration")}>Register Organization</button>
           </div>
         </form>
       </div>

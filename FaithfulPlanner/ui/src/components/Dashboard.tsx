@@ -1,6 +1,9 @@
+import { UnAuthRedirect } from "./auth/UnAuthRedirect"
+
 export default function Dashboard() {
   return (
     <div id="dashboard">
+      <UnAuthRedirect/>
       <div className="header">
         <h2>Dashboard <span className="orgBadge" id="currentOrgBadge">Mercy Free Clinic</span></h2>
         <div className="headerActions">

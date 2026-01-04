@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { Authenticated } from "../components/auth/Authentecated";
 
 export default function AppNav() {
   const location = useLocation();
@@ -40,17 +41,23 @@ export default function AppNav() {
           <h1>FaithfulPlanner</h1>
         </div>
         
+
         <ul className="navMenu">
-          <li className="navItem">
-            <Link to="/login" className={`navLink ${isActive("/login")}`} onClick={closeMobileMenu}>
-              Login
-            </Link>
-          </li>
-          <li className="navItem">
-            <Link to="/org-registration" className={`navLink ${isActive("/org-registration")}`} onClick={closeMobileMenu}>
-              Register Organization
-            </Link>
-          </li>
+          <Authenticated authenticated={false}>
+            <li className="navItem">
+              <Link to="/login" className={`navLink ${isActive("/login")} ${isActive("/")}`} onClick={closeMobileMenu}>
+                Login
+              </Link>
+            </li>
+          </Authenticated>
+          <Authenticated authenticated={false}>
+            <li className="navItem">
+              <Link to="/company-registration" className={`navLink ${isActive("/company-registration")}`} onClick={closeMobileMenu}>
+                Register Organization
+              </Link>
+            </li>
+          </Authenticated>
+
 {/*
           <li className="navItem">
             <Link to="/org-selection" className={`navLink ${isActive("/org-selection")}`} onClick={closeMobileMenu}>
@@ -58,11 +65,13 @@ export default function AppNav() {
             </Link>
           </li>
 */}
-          <li className="navItem">
-            <Link to="/dashboard" className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
-              Dashboard
-            </Link>
-          </li>
+          <Authenticated>
+            <li className="navItem">
+              <Link to="/dashboard" className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
+                Dashboard
+              </Link>
+            </li>
+          </Authenticated>
 {/*
           <li className="navItem superAdminOnly">
             <Link to="/org-management" className={`navLink ${isActive("/org-management")}`} onClick={closeMobileMenu}>

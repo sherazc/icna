@@ -21,7 +21,7 @@ export default function AppRoutes() {
         <Route index element={<Login/>}/>
         <Route path="login" element={<Login/>}/>
         <Route path="dashboard" element={<Dashboard/>}/>
-        <Route path="org-registration" element={<OrgRegistration/>}/>
+        <Route path="company-registration" element={<OrgRegistration/>}/>
         <Route path="org-selection" element={<OrgSelection/>}/>
         <Route path="org-management" element={<OrgManagement/>}/>
         <Route path="volunteers" element={<Volunteers/>}/>
