@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Layout01 from "../layouts/Layout01";
 import Login from "../components/auth/Login";
 import Dashboard from "../components/Dashboard";
-import OrgRegistration from "../components/OrgRegistration";
+import CompanyRegistration from "../components/CompanyRegistration";
 import OrgSelection from "../components/OrgSelection";
 import OrgManagement from "../components/OrgManagement";
 import Volunteers from "../components/Volunteers";
@@ -21,7 +21,7 @@ export default function AppRoutes() {
         <Route index element={<Login/>}/>
         <Route path="login" element={<Login/>}/>
         <Route path="dashboard" element={<Dashboard/>}/>
-        <Route path="company-registration" element={<OrgRegistration/>}/>
+        <Route path="company-registration" element={<CompanyRegistration/>}/>
         <Route path="org-selection" element={<OrgSelection/>}/>
         <Route path="org-management" element={<OrgManagement/>}/>
         <Route path="volunteers" element={<Volunteers/>}/>

@@ -13,7 +13,7 @@ export type LoginRequest = {
     userPassword?: string
 };
 
-export const defaultLoginRequest = (companyId?: string | undefined):LoginRequest => ({
+export const defaultLoginRequest = (companyId?: string | undefined): LoginRequest => ({
     email: "",
     companyId: touchString(companyId),
     userPassword: ""
@@ -29,10 +29,10 @@ export type AuthUserTokenDto = {
     token: string;
 };
 
-export type AuthRole  = 'BASIC_USER' // Users who register for the event
+export type AuthRole = 'BASIC_USER' // Users who register for the event
     | 'ADMIN' // Users who work on the registration desk
     | 'MASTER' // Users who Manage Event
-;
+    ;
 
 export const defaultAuthUserTokenDto = (): AuthUserTokenDto => ({
     userProfileId: 0,
@@ -45,3 +45,44 @@ export const defaultAuthUserTokenDto = (): AuthUserTokenDto => ({
 });
 
 export type ClinicApisType = ReturnType<typeof clinicApis>;
+
+export type RegistrationDto = {
+    company: CompanyDto,
+    adminUser: UserProfileDto
+};
+
+export const defaultRegistrationDto = (): RegistrationDto => ({
+    company: defaultCompanyDto(),
+    adminUser: defaultUserProfileDto()
+});
+
+export type CompanyDto = {
+    id?: number,
+    companyName: string,
+    active?: boolean,
+};
+
+export const defaultCompanyDto = (): CompanyDto => ({
+    companyName: "",
+});
+
+export type UserProfileDto = {
+    id?: number,
+    email: string,
+    usersPassword?: string,
+    companyId?: number
+};
+
+export const defaultUserProfileDto = (): UserProfileDto => ({
+    email: "",
+});
+
+export type FieldError = {
+    fieldName: string;
+    message: string;
+}
+
+export type FormPassword = {
+    passwordField: string;
+    passwordConfirm: string;
+}

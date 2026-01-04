@@ -260,7 +260,7 @@ function updateOrganizationDisplay() {
   });
 }
 
-function handleOrgRegistration(event) {
+function handleCompanyRegistration(event) {
   event.preventDefault();
   const orgName = document.getElementById('orgName').value;
   alert(`Organization "${orgName}" registered successfully!`);

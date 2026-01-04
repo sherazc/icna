@@ -1891,7 +1891,7 @@
             <div id="company-registration" class="screen">
                 <div class="loginContainer">
                     <h1>Register Organization</h1>
-                    <form onsubmit="handleOrgRegistration(event)">
+                    <form onsubmit="handleCompanyRegistration(event)">
                         <div class="formGroup">
                             <label for="orgName">Organization Name</label>
                             <input type="text" id="orgName" placeholder="Enter organization name" required>
@@ -3419,7 +3419,7 @@
             });
         }
 
-        function handleOrgRegistration(event) {
+        function handleCompanyRegistration(event) {
             event.preventDefault();
             const orgName = document.getElementById('orgName').value;
             alert(`Organization "${orgName}" registered successfully!`);
