@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { defaultLoginRequest, type LoginRequest } from "../service/service-types";
-import { AppContext } from "../store/context";
-import { ActionNameAuthUser } from "../store/authUserReducer";
+import { defaultLoginRequest, type LoginRequest } from "../../service/service-types";
+import { AppContext } from "../../store/context";
+import { ActionNameAuthUser } from "../../store/authUserReducer";
 
 enum LoginState {
   FRESH, IN_PROGRESS, LOGGED_IN, LOGIN_FAILED
