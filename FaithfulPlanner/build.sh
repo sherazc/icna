@@ -11,6 +11,7 @@ npm install npm -g
 # Build UI
 cd $app_ui_dir
 rm -rf dist
+# npm install 2>&1 | grep -v "npm warn EBADENGINE" # Ignore engine warnings
 npm install
 npm run build
 
