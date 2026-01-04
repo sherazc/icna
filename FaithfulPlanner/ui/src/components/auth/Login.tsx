@@ -56,6 +56,9 @@ export default function Login() {
         {loginState === LoginState.LOGIN_FAILED && (
           <div className="errorMessage">Login failed. Please check your credentials and try again</div>
         )}
+        {loginState === LoginState.IN_PROGRESS && (
+          <div className="text-left">Logging in, please wait...</div>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="formGroup">
             <label htmlFor="companyId">Organization</label>
