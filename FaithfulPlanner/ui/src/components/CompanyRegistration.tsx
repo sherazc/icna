@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { defaultRegistrationDto, type FieldError, type FormPassword, type RegistrationDto } from "../service/service-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { isEqualStrings } from "../service/utilities";
 import { Error } from "./Error";
 import { validateRegistrationForm } from "../service/errors-helpers";
+import { AppContext } from "../store/context";
 
 export default function CompanyRegistration() {
   const navigate = useNavigate();
+  const [{clinicApis}, dispatch] = useContext(AppContext);
   const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
   const [errors, setErrors] = useState<FieldError[]>([]);
 
@@ -26,7 +28,7 @@ export default function CompanyRegistration() {
     submitErrors.push(...validateCreatePassword(registrationPassword));
 
     if (submitErrors.length < 1) {
-      // register
+      clinicApis.saveRegistration(registrationDto);
     }
 
     setErrors(submitErrors);
@@ -76,7 +78,7 @@ export default function CompanyRegistration() {
     return fieldErrors;
   }
 
-  
+
 
   return (
     <div id="company-registration">

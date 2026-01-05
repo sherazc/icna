@@ -1,4 +1,4 @@
-import type { AuthUserTokenDto, Company, LoginRequest } from "../service-types";
+import type { AuthUserTokenDto, Company, LoginRequest, RegistrationDto } from "../service-types";
 import {
     addHeadersInRequest,
     callApiIntercept,
@@ -9,12 +9,13 @@ import {
 
 export const baseUrl = import.meta.env.VITE_API_BASE_PATH;
 
-// const CONTENT_JSON_HEADER = (): ApiHeaders => [["Content-Type", "application/json"]]
+const CONTENT_JSON_HEADER = (): ApiHeaders => [["Content-Type", "application/json"]]
 
 export const clinicEndpoints = () => {
     return {
         epCompany: () => `${baseUrl}/api/company`,
         epLoginToken: () => `${baseUrl}/api/login/token`,
+        epSaveRegistration: () => `${baseUrl}/api/registration`,
     }
 }
 
@@ -42,8 +43,16 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
 
             return callApiIntercept(request, interceptorCbs);
         },
-
-
+        saveRegistration: (registrationDto:RegistrationDto): Promise<RegistrationDto> => {
+            const endpoint = endpoints.epSaveRegistration();
+            const request: ApiRequest = {
+                endpoint,
+                method: "PUT",
+                payload: registrationDto,
+                headers: CONTENT_JSON_HEADER()};
+            // addHeadersInRequest(request, commonHeaders);
+            return callApiIntercept(request, interceptorCbs);
+        },
     }
     return api;
 }
