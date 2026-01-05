@@ -16,6 +16,13 @@ const addFieldError = (errors: FieldError[], error: FieldError) => {
 export const validateRegistrationForm = (registrationDto: RegistrationDto): FieldError[] => {
     const errors: FieldError[] = [];
 
+    if (isBlankString(registrationDto.company.companyName)) {
+        addFieldError(errors, {
+            fieldName: "company.companyName",
+            message: "Invalid organization name.",
+        });
+    }
+
     if (isBlankString(registrationDto.userProfile.email) || !EMAIL_REGEX.test(registrationDto.userProfile.email)) {
         addFieldError(errors, {
             fieldName: "userProfile.email",

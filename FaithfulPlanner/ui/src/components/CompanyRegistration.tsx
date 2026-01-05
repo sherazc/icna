@@ -25,7 +25,9 @@ export default function CompanyRegistration() {
     submitErrors.push(...validateRegistrationForm(registrationForm));
     submitErrors.push(...validateCreatePassword(registrationPassword));
 
-    console.log(submitErrors)
+    if (submitErrors.length < 1) {
+      // register
+    }
 
     setErrors(submitErrors);
   }
@@ -74,6 +76,8 @@ export default function CompanyRegistration() {
     return fieldErrors;
   }
 
+  
+
   return (
     <div id="company-registration">
       <div className="loginContainer">
@@ -83,23 +87,25 @@ export default function CompanyRegistration() {
             <label htmlFor="companyName">Organization Name</label>
             <input type="text" id="companyName" placeholder="Enter organization name" 
             onChange={onChangeCompanyText}/>
-            <Error errors={errors} fieldName="userProfile.email"/>
+            <Error errors={errors} fieldName="company.companyName"/>
           </div>
           <div className="formGroup">
             <label htmlFor="email">Admin Email</label>
             <input type="email" id="email" placeholder="Primary admin email"
             onChange={onChangeUserProfileText}/>
+            <Error errors={errors} fieldName="userProfile.email"/>
           </div>
           <div className="formGroup">
             <label htmlFor="passwordField">Password</label>
             <input type="password" id="passwordField" placeholder="Enter your password"
               onChange={onChangeText} />
-            
+            <Error errors={errors} fieldName="passwordField"/>
           </div>
           <div className="formGroup">
             <label htmlFor="passwordConfirm">Confirm Password</label>
             <input type="password" id="passwordConfirm" placeholder="Confirm password"
               onChange={onChangeText} />
+            <Error errors={errors} fieldName="passwordConfirm"/>
           </div>
           <div className="formActions">
             <button type="submit" className="btn btnPrimary">Register Organization</button>
