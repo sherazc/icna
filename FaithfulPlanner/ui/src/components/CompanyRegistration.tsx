@@ -24,6 +24,10 @@ export default function CompanyRegistration() {
 
     submitErrors.push(...validateRegistrationForm(registrationForm));
     submitErrors.push(...validateCreatePassword(registrationPassword));
+
+    console.log(submitErrors)
+
+    setErrors(submitErrors);
   }
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -50,8 +54,7 @@ export default function CompanyRegistration() {
   };
 
   // TODO move it in Register.tsx helper
-  const validateCreatePassword = (conformPass: boolean, registerPass: FormPassword): FieldError[] => {
-    if (!conformPass) return [];
+  const validateCreatePassword = (registerPass: FormPassword): FieldError[] => {
     const passwordRegex: RegExp = /^.{5,}$/;
     const fieldErrors: FieldError[] = [];
 
@@ -84,17 +87,18 @@ export default function CompanyRegistration() {
           </div>
           <div className="formGroup">
             <label htmlFor="email">Admin Email</label>
-            <input type="email" id="email" placeholder="Primary admin email" required 
+            <input type="email" id="email" placeholder="Primary admin email"
             onChange={onChangeUserProfileText}/>
           </div>
           <div className="formGroup">
             <label htmlFor="passwordField">Password</label>
-            <input type="password" id="passwordField" placeholder="Enter your password" required
+            <input type="password" id="passwordField" placeholder="Enter your password"
               onChange={onChangeText} />
+            
           </div>
           <div className="formGroup">
             <label htmlFor="passwordConfirm">Confirm Password</label>
-            <input type="password" id="passwordConfirm" placeholder="Confirm password" required
+            <input type="password" id="passwordConfirm" placeholder="Confirm password"
               onChange={onChangeText} />
           </div>
           <div className="formActions">

@@ -1990,5 +1990,6 @@ tbody tr.selected:hover {
 }
 
 .errorField {
-  
+  font-size: var(--font-size-sm);
+  color: var(--error);
 }
