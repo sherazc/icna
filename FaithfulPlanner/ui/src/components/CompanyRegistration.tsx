@@ -8,7 +8,7 @@ import { AppContext } from "../store/context";
 
 export default function CompanyRegistration() {
   const navigate = useNavigate();
-  const [{clinicApis}, dispatch] = useContext(AppContext);
+  const [{clinicApis}] = useContext(AppContext);
   const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
   const [errors, setErrors] = useState<FieldError[]>([]);
 
@@ -28,7 +28,9 @@ export default function CompanyRegistration() {
     submitErrors.push(...validateCreatePassword(registrationPassword));
 
     if (submitErrors.length < 1) {
-      clinicApis.saveRegistration(registrationDto);
+      registrationForm.userProfile.usersPassword = registrationPassword.passwordField;
+      registrationForm.company.active = true;
+      clinicApis.saveRegistration(registrationForm);
     }
 
     setErrors(submitErrors);
