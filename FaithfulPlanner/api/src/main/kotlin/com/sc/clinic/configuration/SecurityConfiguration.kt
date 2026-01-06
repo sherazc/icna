@@ -18,6 +18,10 @@ import org.springframework.security.oauth2.jose.jws.MacAlgorithm
 import org.springframework.security.oauth2.jwt.*
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import java.util.Collections
 import javax.crypto.spec.SecretKeySpec
 
 @Configuration
@@ -37,6 +41,7 @@ class SecurityConfiguration(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
+            .cors {  }
             .csrf { it.disable() }
             .authorizeHttpRequests { it.anyRequest().permitAll() }
             .headers { it.frameOptions { it.disable() } }
@@ -52,6 +57,22 @@ class SecurityConfiguration(
             it.getClaim<List<String>>("roles").map { SimpleGrantedAuthority(it) }
         }
         return converter
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val corsConfiguration = CorsConfiguration()
+        // corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
+        corsConfiguration.allowedOriginPatterns = Collections.singletonList("*")
+        corsConfiguration.allowedMethods = Collections.singletonList("*")
+        corsConfiguration.allowedHeaders = Collections.singletonList("*")
+        corsConfiguration.allowCredentials = true
+        corsConfiguration.applyPermitDefaultValues()
+        corsConfiguration.addExposedHeader("Content-Disposition")
+
+        val urlBasedCorsConfigurationSource = UrlBasedCorsConfigurationSource()
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration)
+        return urlBasedCorsConfigurationSource
     }
 
     @Bean
