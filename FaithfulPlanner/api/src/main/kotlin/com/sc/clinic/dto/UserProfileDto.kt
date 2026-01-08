@@ -12,7 +12,7 @@ class UserProfileDto(
     @field:Email
     @field:NotBlank
     var email: String,
-    @param:JsonProperty("userPassword")
+    @param:JsonProperty("usersPassword")
     var usersPassword: String?,
     @param:JsonProperty("companyId")
     var companyId: Long?
