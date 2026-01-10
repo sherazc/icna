@@ -77,12 +77,17 @@ export const defaultUserProfileDto = (): UserProfileDto => ({
     email: "",
 });
 
-export type FieldError = {
-    fieldName: string;
-    message: string;
-}
+export type ScErrorResponse = {
+    field?: string;
+    message?: string;
+    errorCode?: string
+};
 
 export type FormPassword = {
     passwordField: string;
     passwordConfirm: string;
-}
+};
+
+export enum FormState {
+  FRESH, IN_PROGRESS, SUCCESSFUL, FAILED
+};

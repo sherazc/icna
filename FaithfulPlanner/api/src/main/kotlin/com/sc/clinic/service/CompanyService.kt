@@ -20,7 +20,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
 
     fun validate(company: CompanyDto) {
         if (company.id == null && isCompanyNameExists(company.companyName)) {
-            throw ScBadRequestException("companyName", "Company name already exists. ${company.companyName}")
+            throw ScBadRequestException("company.companyName", "Company name already exists. ${company.companyName}")
         }
     }
 

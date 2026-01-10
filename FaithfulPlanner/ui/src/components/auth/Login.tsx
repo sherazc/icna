@@ -1,19 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { defaultLoginRequest, type LoginRequest } from "../../service/service-types";
+import { defaultLoginRequest, FormState, type LoginRequest } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import { ActionNameAuthUser } from "../../store/authUserReducer";
 import { useNavigate } from "react-router-dom";
-
-enum LoginState {
-  FRESH, IN_PROGRESS, LOGGED_IN, LOGIN_FAILED
-}
 
 export default function Login() {
   const navigate = useNavigate();
   const [{ companies, clinicApis }, dispatch] = useContext(AppContext);
 
   const [loginRequest, setLoginRequest] = useState<LoginRequest>(defaultLoginRequest());
-  const [loginState, setLoginState] = useState<LoginState>(LoginState.FRESH);
+  const [formState, setFormState] = useState<FormState>(FormState.FRESH);
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -21,17 +17,17 @@ export default function Login() {
   };
 
   const login = async () => {
-    setLoginState(LoginState.IN_PROGRESS);
+    setFormState(FormState.IN_PROGRESS);
     try {
       const authUserTokenDto = await clinicApis.login(loginRequest);
       dispatch({
         type: ActionNameAuthUser.authUserLogin,
         payload: authUserTokenDto
       });
-      setLoginState(LoginState.LOGGED_IN);
+      setFormState(FormState.SUCCESSFUL);
     } catch (error) {
       console.error("Login failed:", error);
-      setLoginState(LoginState.LOGIN_FAILED);
+      setFormState(FormState.FAILED);
     }
   }
 
@@ -46,17 +42,17 @@ export default function Login() {
   }
 
   useEffect(() => {
-    if (loginState === LoginState.LOGGED_IN) navigate("/dashboard");
-  }, [loginState, navigate]);
+    if (formState === FormState.SUCCESSFUL) navigate("/dashboard");
+  }, [formState, navigate]);
 
   return (
     <div id="login">
-      <div className="loginContainer">
+      <div className="slimContainer">
         <h1>FaithfulPlanner</h1>
-        {loginState === LoginState.LOGIN_FAILED && (
+        {formState === FormState.FAILED && (
           <div className="errorMessage">Login failed. Please check your credentials and try again</div>
         )}
-        {loginState === LoginState.IN_PROGRESS && (
+        {formState === FormState.IN_PROGRESS && (
           <div className="text-left">Logging in, please wait...</div>
         )}
         <form onSubmit={handleSubmit}>
@@ -81,7 +77,7 @@ export default function Login() {
           </div>
           
           <div className="formActions">
-            <button type="submit" className="btn btnPrimary" disabled={loginState === LoginState.IN_PROGRESS}>Login</button>
+            <button type="submit" className="btn btnPrimary" disabled={formState === FormState.IN_PROGRESS}>Login</button>
             <button type="button" className="btn btnSecondary" onClick={() => navigate("/company-registration")}>Register Organization</button>
           </div>
         </form>

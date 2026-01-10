@@ -1,9 +1,9 @@
 import React from "react";
-import type { FieldError } from "../service/service-types";
+import type { ScErrorResponse } from "../service/service-types";
 import { findError } from "../service/errors-helpers";
 
 interface Props {
-    errors: FieldError[];
+    errors: ScErrorResponse[];
     fieldName: string;
 }
 

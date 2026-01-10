@@ -1,31 +1,31 @@
-import type { FieldError, RegistrationDto } from "./service-types";
+import type { ScErrorResponse, RegistrationDto } from "./service-types";
 import {isBlankString} from "./utilities";
 
 const EMAIL_REGEX:RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-export const findError = (errors: FieldError[], fieldName: string) => errors.find(e => e.fieldName === fieldName);
+export const findError = (errors: ScErrorResponse[], fieldName: string) => errors.find(e => e.field === fieldName);
 
-export const errorClass = (errors: FieldError[], fieldName: string, className: string): string =>
+export const errorClass = (errors: ScErrorResponse[], fieldName: string, className: string): string =>
     findError(errors, fieldName) === undefined ? "" : className;
 
 
-const addFieldError = (errors: FieldError[], error: FieldError) => {
-    !errors.find(e => e.fieldName === error.fieldName) && errors.push(error);
+const addFieldError = (errors: ScErrorResponse[], error: ScErrorResponse) => {
+    !errors.find(e => e.field === error.field) && errors.push(error);
 }
 
-export const validateRegistrationForm = (registrationDto: RegistrationDto): FieldError[] => {
-    const errors: FieldError[] = [];
+export const validateRegistrationForm = (registrationDto: RegistrationDto): ScErrorResponse[] => {
+    const errors: ScErrorResponse[] = [];
 
     if (isBlankString(registrationDto.company.companyName)) {
         addFieldError(errors, {
-            fieldName: "company.companyName",
+            field: "company.companyName",
             message: "Invalid organization name.",
         });
     }
 
     if (isBlankString(registrationDto.userProfile.email) || !EMAIL_REGEX.test(registrationDto.userProfile.email)) {
         addFieldError(errors, {
-            fieldName: "userProfile.email",
+            field: "userProfile.email",
             message: "Invalid email address",
         });
     }
