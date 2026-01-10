@@ -33,7 +33,6 @@ export default function CompanyRegistration() {
         const savedRegistration = await clinicApis.saveRegistration(registrationForm);
         console.log(savedRegistration)
       } catch (error) {
-        console.log("test")
         console.log(error);
       }
 

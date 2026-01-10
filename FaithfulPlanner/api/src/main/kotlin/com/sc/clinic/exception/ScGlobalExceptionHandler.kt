@@ -13,45 +13,38 @@ import java.util.stream.Collectors
 class ScGlobalExceptionHandler {
 
     @ExceptionHandler(ScException::class)
-    fun handleScException(exception: ScException): ResponseEntity<ScErrorResponse> {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body<ScErrorResponse>(ScErrorResponse(
-            exception.message, exception.field, "500"
-        ))
+    fun handleScException(exception: ScException): ResponseEntity<List<ScErrorResponse>> {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            listOf(ScErrorResponse(exception.message, exception.field))
+        )
     }
 
     @ExceptionHandler(ScBadRequestException::class)
-    fun handleScBadRequestException(exception: ScBadRequestException): ResponseEntity<ScErrorResponse> {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body<ScErrorResponse>(ScErrorResponse(
-            exception.message, exception.field, "400"
-        ))
+    fun handleScBadRequestException(exception: ScBadRequestException): ResponseEntity<List<ScErrorResponse>> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            listOf(ScErrorResponse(exception.message, exception.field))
+        )
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleMethodArgumentException(exception: MethodArgumentNotValidException): ResponseEntity<ScErrorResponse> {
+    fun handleMethodArgumentException(exception: MethodArgumentNotValidException): ResponseEntity<List<ScErrorResponse>> {
         val bindingResult = exception.bindingResult
 
-        val errorMessage = bindingResult.fieldErrors.stream()
-            .map<String?> { f: FieldError? -> f!!.field + ":" + f.defaultMessage }
-            .collect(Collectors.joining(","))
+        val errors = mutableListOf<ScErrorResponse>()
 
-        val fields = bindingResult.fieldErrors.stream()
-            .map<String?> { obj: FieldError? -> obj!!.field }
-            .collect(Collectors.joining("."))
+        if (bindingResult.globalError != null && bindingResult.globalError?.defaultMessage != null)
+            errors.add(ScErrorResponse(bindingResult.globalError?.defaultMessage))
 
-        val errorResponse: ScErrorResponse = ScErrorResponse(
-            String.format("Invalid Request: %s", errorMessage),
-            fields,
-            "400"
-        )
+        if (bindingResult.fieldErrors.isNotEmpty()) {
+            bindingResult.fieldErrors
+                .forEach { fieldError -> errors.add(ScErrorResponse(fieldError.defaultMessage, fieldError.field)) }
+        }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body<ScErrorResponse>(errorResponse)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors)
     }
 
     @ExceptionHandler(Exception::class)
-    fun handleScException(exception: Exception): ResponseEntity<ScErrorResponse> {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body<ScErrorResponse>(ScErrorResponse(
-            exception.message, null, "500"
-        ))
-    }
+    fun handleScException(exception: Exception) = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            ScErrorResponse(exception.message, null))
+
 }
