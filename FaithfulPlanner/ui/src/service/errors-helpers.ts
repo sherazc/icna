@@ -33,7 +33,7 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): ScEr
 };
 
 export const toScErrorResponses = (error: unknown, fallbackError: string): ScErrorResponse[] => {
-  if (!error) return [];
+  if (!error) return [{ message: fallbackError }];
 
   let errorObject = error;
   if (typeof error === 'string') {
