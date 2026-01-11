@@ -54,8 +54,15 @@ export const toScErrorResponses = (error: unknown, fallbackError: string): ScErr
     typeof item === 'object' &&
     item !== null &&
     (typeof (item as any).field === 'string' || (item as any).field === undefined) &&
-    (typeof (item as any).message === 'string' || (item as any).message === undefined)
+    (typeof (item as any).message === 'string' || (item as any).message === undefined) &&
+    (typeof (item as any).message === 'string' || typeof (item as any).field === 'string')
   );
 
-  return canTypeCast ? errorObject as ScErrorResponse[] : [{ message: fallbackError }]
+  if (canTypeCast) {
+    return errorObject as ScErrorResponse[];
+  } else {
+    // printing the error in console. Not showing it to user.
+    console.error(errorObject)
+    return [{ message: fallbackError }]
+  }
 };
