@@ -35,7 +35,7 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): ScEr
 export const toScErrorResponses = (error: unknown, fallbackError: string): ScErrorResponse[] => {
   if (!error) return [];
 
-  let errorObject = undefined;
+  let errorObject = error;
   if (typeof error === 'string') {
     try {
       errorObject = JSON.parse(error);
@@ -46,9 +46,11 @@ export const toScErrorResponses = (error: unknown, fallbackError: string): ScErr
     errorObject = error;
   }
 
-  if (!Array.isArray(errorObject)) return [];
+  if (!Array.isArray(errorObject)) {
+    errorObject = [errorObject];
+  }
 
-  const canTypeCast = errorObject.every(item =>
+  const canTypeCast = (errorObject as any[]).every(item =>
     typeof item === 'object' &&
     item !== null &&
     (typeof (item as any).field === 'string' || (item as any).field === undefined) &&
