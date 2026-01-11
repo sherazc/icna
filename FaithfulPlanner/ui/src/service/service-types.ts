@@ -80,7 +80,6 @@ export const defaultUserProfileDto = (): UserProfileDto => ({
 export type ScErrorResponse = {
     field?: string;
     message?: string;
-    errorCode?: string
 };
 
 export type FormPassword = {
