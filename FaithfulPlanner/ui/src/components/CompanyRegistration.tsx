@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { defaultRegistrationDto, FormState, type ScErrorResponse, type FormPassword, type RegistrationDto } from "../service/service-types";
 import { useContext, useState } from "react";
 import { isEqualStrings } from "../service/utilities";
-import { Error } from "./Error";
+import { Error } from "./common/Error";
 import { validateRegistrationForm } from "../service/errors-helpers";
 import { AppContext } from "../store/context";
 
