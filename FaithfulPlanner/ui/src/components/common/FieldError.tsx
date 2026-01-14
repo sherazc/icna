@@ -7,7 +7,7 @@ interface Props {
     fieldName: string;
 }
 
-export const Error: React.FC<Props> = ({errors, fieldName}) => {
+export const FieldError: React.FC<Props> = ({errors, fieldName}) => {
     const error = findError(errors, fieldName);
     const hasError = error !== undefined && error !== null;
 
