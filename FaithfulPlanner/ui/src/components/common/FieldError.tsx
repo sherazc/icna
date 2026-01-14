@@ -1,6 +1,6 @@
 import React from "react";
 import type { ErrorDto } from "../../service/service-types";
-import { findError } from "../../service/errors-helpers";
+import { findFieldError } from "../../service/errors-helpers";
 
 interface Props {
     errors: ErrorDto[];
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const FieldError: React.FC<Props> = ({errors, fieldName}) => {
-    const error = findError(errors, fieldName);
+    const error = findFieldError(errors, fieldName);
     const hasError = error !== undefined && error !== null;
 
     return hasError ? (
