@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { defaultRegistrationDto, FormState, type ScErrorResponse, type FormPassword, type RegistrationDto } from "../service/service-types";
+import { defaultRegistrationDto, FormState, type ErrorDto, type FormPassword, type RegistrationDto } from "../service/service-types";
 import { useContext, useState } from "react";
 import { isEqualStrings } from "../service/utilities";
 import { Error } from "./common/Error";
@@ -10,7 +10,7 @@ export default function CompanyRegistration() {
   const navigate = useNavigate();
   const [{ clinicApis }] = useContext(AppContext);
   const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
-  const [errors, setErrors] = useState<ScErrorResponse[]>([]);
+  const [errors, setErrors] = useState<ErrorDto[]>([]);
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
 
   const [registrationPassword, setRegistrationPassword] = useState<FormPassword>({
@@ -20,7 +20,7 @@ export default function CompanyRegistration() {
 
 
   const register = async () => {
-    const submitErrors: ScErrorResponse[] = [];
+    const submitErrors: ErrorDto[] = [];
     const registrationForm: RegistrationDto = { ...registrationDto };
 
     submitErrors.push(...validateRegistrationForm(registrationForm));
@@ -71,9 +71,9 @@ export default function CompanyRegistration() {
   };
 
   // TODO move it in Register.tsx helper
-  const validateCreatePassword = (registerPass: FormPassword): ScErrorResponse[] => {
+  const validateCreatePassword = (registerPass: FormPassword): ErrorDto[] => {
     const passwordRegex: RegExp = /^.{5,}$/;
-    const fieldErrors: ScErrorResponse[] = [];
+    const fieldErrors: ErrorDto[] = [];
 
     if (passwordRegex.test(registerPass.passwordField)) {
       if (!isEqualStrings(registerPass.passwordField, registerPass.passwordConfirm)) {

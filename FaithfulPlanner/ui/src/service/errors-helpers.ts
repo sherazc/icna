@@ -1,20 +1,20 @@
-import type { ScErrorResponse, RegistrationDto } from "./service-types";
+import type { ErrorDto, RegistrationDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-export const findError = (errors: ScErrorResponse[], fieldName: string) => errors.find(e => e.field === fieldName);
+export const findError = (errors: ErrorDto[], fieldName: string) => errors.find(e => e.field === fieldName);
 
-export const errorClass = (errors: ScErrorResponse[], fieldName: string, className: string): string =>
+export const errorClass = (errors: ErrorDto[], fieldName: string, className: string): string =>
   findError(errors, fieldName) === undefined ? "" : className;
 
 
-const addFieldError = (errors: ScErrorResponse[], error: ScErrorResponse) => {
+const addFieldError = (errors: ErrorDto[], error: ErrorDto) => {
   !errors.find(e => e.field === error.field) && errors.push(error);
 }
 
-export const validateRegistrationForm = (registrationDto: RegistrationDto): ScErrorResponse[] => {
-  const errors: ScErrorResponse[] = [];
+export const validateRegistrationForm = (registrationDto: RegistrationDto): ErrorDto[] => {
+  const errors: ErrorDto[] = [];
 
   if (isBlankString(registrationDto.company.companyName)) {
     addFieldError(errors, {
@@ -32,7 +32,7 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): ScEr
   return errors;
 };
 
-export const toScErrorResponses = (error: unknown, fallbackError: string): ScErrorResponse[] => {
+export const toScErrorResponses = (error: unknown, fallbackError: string): ErrorDto[] => {
   if (!error) return [{ message: fallbackError }];
 
   let errorObject = error;
@@ -59,7 +59,7 @@ export const toScErrorResponses = (error: unknown, fallbackError: string): ScErr
   );
 
   if (canTypeCast) {
-    return errorObject as ScErrorResponse[];
+    return errorObject as ErrorDto[];
   } else {
     // printing the error in console. Not showing it to user.
     console.error(errorObject)

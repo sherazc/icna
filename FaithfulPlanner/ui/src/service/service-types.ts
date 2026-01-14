@@ -77,7 +77,7 @@ export const defaultUserProfileDto = (): UserProfileDto => ({
     email: "",
 });
 
-export type ScErrorResponse = {
+export type ErrorDto = {
     field?: string;
     message?: string;
 };
