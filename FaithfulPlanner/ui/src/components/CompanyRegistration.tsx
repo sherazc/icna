@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { defaultRegistrationDto, FormState, type ErrorDto, type FormPassword, type RegistrationDto } from "../service/service-types";
 import { useContext, useState } from "react";
 import { isEqualStrings } from "../service/utilities";
-import { FieldError } from "./common/FieldError";
+import { ErrorField } from "./common/ErrorField";
 import { validateRegistrationForm } from "../service/errors-helpers";
 import { AppContext } from "../store/context";
 
@@ -100,25 +100,25 @@ export default function CompanyRegistration() {
           <label htmlFor="companyName">Organization Name</label>
           <input type="text" id="companyName" placeholder="Enter organization name"
             onChange={onChangeCompanyText} />
-          <FieldError errors={errors} fieldName="company.companyName" />
+          <ErrorField errors={errors} fieldName="company.companyName" />
         </div>
         <div className="formGroup">
           <label htmlFor="email">Admin Email</label>
           <input type="email" id="email" placeholder="Primary admin email"
             onChange={onChangeUserProfileText} />
-          <FieldError errors={errors} fieldName="userProfile.email" />
+          <ErrorField errors={errors} fieldName="userProfile.email" />
         </div>
         <div className="formGroup">
           <label htmlFor="passwordField">Password</label>
           <input type="password" id="passwordField" placeholder="Enter your password"
             onChange={onChangeText} />
-          <FieldError errors={errors} fieldName="passwordField" />
+          <ErrorField errors={errors} fieldName="passwordField" />
         </div>
         <div className="formGroup">
           <label htmlFor="passwordConfirm">Confirm Password</label>
           <input type="password" id="passwordConfirm" placeholder="Confirm password"
             onChange={onChangeText} />
-          <FieldError errors={errors} fieldName="passwordConfirm" />
+          <ErrorField errors={errors} fieldName="passwordConfirm" />
         </div>
         <div className="formActions">
           <button type="submit" className="btn btnPrimary">Register Organization</button>

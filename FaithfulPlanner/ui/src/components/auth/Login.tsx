@@ -3,6 +3,7 @@ import { defaultLoginRequest, FormState, type LoginRequest } from "../../service
 import { AppContext } from "../../store/context";
 import { ActionNameAuthUser } from "../../store/authUserReducer";
 import { useNavigate } from "react-router-dom";
+import { ErrorForm } from "../common/ErrorForm";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -49,11 +50,9 @@ export default function Login() {
     <div id="login">
       <div className="slimContainer">
         <h1>FaithfulPlanner</h1>
-        {formState === FormState.FAILED && (
-          <div className="errorMessage">Login failed. Please check your credentials and try again</div>
-        )}
+        <ErrorForm formState={formState} defaultError="Login failed. Please check your credentials and try again"/>
         {formState === FormState.IN_PROGRESS && (
-          <div className="text-left">Logging in, please wait...</div>
+          <div className="text-left">loading...</div>
         )}
         <form onSubmit={handleSubmit}>
           <div className="formGroup">

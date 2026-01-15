@@ -3,16 +3,16 @@ import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-export const findFieldError = (errors: ErrorDto[], fieldName: string) => errors.find(e => e.field === fieldName);
+export const findErrorField = (errors: ErrorDto[], fieldName: string) => errors.find(e => e.field === fieldName);
 
-export const findFormErrors = (errors?: ErrorDto[]): ErrorDto[] => {
+export const findErrorsForm = (errors?: ErrorDto[]): ErrorDto[] => {
     if (errors === undefined || errors === null) return [];
     return errors.filter(e => e.field)
 }   
 
 
 export const errorClass = (errors: ErrorDto[], fieldName: string, className: string): string =>
-  findFieldError(errors, fieldName) === undefined ? "" : className;
+  findErrorField(errors, fieldName) === undefined ? "" : className;
 
 
 const addFieldError = (errors: ErrorDto[], error: ErrorDto) => {
