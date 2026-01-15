@@ -4,6 +4,7 @@ import { AppContext } from "../../store/context";
 import { ActionNameAuthUser } from "../../store/authUserReducer";
 import { useNavigate } from "react-router-dom";
 import { ErrorForm } from "../common/ErrorForm";
+import { Loading } from "../common/Loading";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -51,9 +52,7 @@ export default function Login() {
       <div className="slimContainer">
         <h1>FaithfulPlanner</h1>
         <ErrorForm formState={formState} defaultError="Login failed. Please check your credentials and try again"/>
-        {formState === FormState.IN_PROGRESS && (
-          <div className="text-left">loading...</div>
-        )}
+        <Loading formState={formState}/>
         <form onSubmit={handleSubmit}>
           <div className="formGroup">
             <label htmlFor="companyId">Organization</label>
