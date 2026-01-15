@@ -5,6 +5,8 @@ import { isEqualStrings } from "../service/utilities";
 import { ErrorField } from "./common/ErrorField";
 import { validateRegistrationForm } from "../service/errors-helpers";
 import { AppContext } from "../store/context";
+import { ErrorForm } from "./common/ErrorForm";
+import { Loading } from "./common/Loading";
 
 export default function CompanyRegistration() {
   const navigate = useNavigate();
@@ -35,7 +37,6 @@ export default function CompanyRegistration() {
       } catch (error) {
         console.log(typeof error);
       }
-
     }
 
     setErrors(submitErrors);
@@ -43,8 +44,7 @@ export default function CompanyRegistration() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const status = FormState.IN_PROGRESS;
-    setFormState(status);
+    setFormState(FormState.IN_PROGRESS);
     register();
   }
 
@@ -95,6 +95,8 @@ export default function CompanyRegistration() {
   const createRegistrationForm = () => (
     <div className="slimContainer">
       <h1>Register Organization</h1>
+      <ErrorForm formState={formState} errors={errors} />
+      <Loading formState={formState} />
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label htmlFor="companyName">Organization Name</label>
@@ -128,7 +130,6 @@ export default function CompanyRegistration() {
     </div>
   );
 
-
   const createRegistrationConfirmation = () => (
     <div className="slimContainer">
       <h1>Register Confirmation</h1>
@@ -138,7 +139,6 @@ export default function CompanyRegistration() {
       <button type="button" className="btn btnPrimary" onClick={() => navigate("/login")}>Back to Login</button>
     </div>
   );
-
 
   return (
     <div id="company-registration">
