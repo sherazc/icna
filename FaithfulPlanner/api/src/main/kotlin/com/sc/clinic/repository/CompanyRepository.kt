@@ -12,13 +12,10 @@ interface CompanyRepository : JpaRepository<Company, Long> {
     @Query("""
         select new com.sc.clinic.dto.CompanyDto(c.id, c.companyName, c.active) 
         from Company c
-        where c.active = true """)
+        where c.active = true 
+        order by c.companyName """)
     fun findActive(): List<CompanyDto>
 
     fun findByCompanyNameIgnoreCase(companyName: String): List<Company>
-
-
-
-    fun existsByCompanyName(companyName: String): Boolean
 }
 
