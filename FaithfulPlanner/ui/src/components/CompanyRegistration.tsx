@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { defaultRegistrationDto, FormState, type CompanyDto, type ErrorDto, type FormPassword, type RegistrationDto } from "../service/service-types";
+import { defaultRegistrationDto, FormState, type ErrorDto, type FormPassword, type RegistrationDto } from "../service/service-types";
 import { useContext, useEffect, useState } from "react";
 import { isEqualStrings } from "../service/utilities";
 import { ErrorField } from "./common/ErrorField";
