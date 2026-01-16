@@ -1,16 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { defaultRegistrationDto, FormState, type ErrorDto, type FormPassword, type RegistrationDto } from "../service/service-types";
-import { useContext, useState } from "react";
+import { defaultRegistrationDto, FormState, type CompanyDto, type ErrorDto, type FormPassword, type RegistrationDto } from "../service/service-types";
+import { useContext, useEffect, useState } from "react";
 import { isEqualStrings } from "../service/utilities";
 import { ErrorField } from "./common/ErrorField";
-import { validateRegistrationForm } from "../service/errors-helpers";
+import { toScErrorResponses, validateRegistrationForm } from "../service/errors-helpers";
 import { AppContext } from "../store/context";
 import { ErrorForm } from "./common/ErrorForm";
 import { Loading } from "./common/Loading";
+import { ActionNameCompany } from "../store/companyReducer";
 
 export default function CompanyRegistration() {
   const navigate = useNavigate();
-  const [{ clinicApis }] = useContext(AppContext);
+  const [{ clinicApis }, dispatch] = useContext(AppContext);
   const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
   const [errors, setErrors] = useState<ErrorDto[]>([]);
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
@@ -18,10 +19,10 @@ export default function CompanyRegistration() {
   const [registrationPassword, setRegistrationPassword] = useState<FormPassword>({
     passwordField: "",
     passwordConfirm: ""
-  })
-
+  });
 
   const register = async () => {
+    setFormState(FormState.IN_PROGRESS);
     const submitErrors: ErrorDto[] = [];
     const registrationForm: RegistrationDto = { ...registrationDto };
 
@@ -33,20 +34,22 @@ export default function CompanyRegistration() {
       registrationForm.company.active = true;
       try {
         const savedRegistration = await clinicApis.saveRegistration(registrationForm);
-        console.log(savedRegistration)
+        console.log(savedRegistration);
+        setFormState(FormState.SUCCESSFUL);
       } catch (error) {
-        console.log(typeof error);
+        const apiErrors: ErrorDto[] = toScErrorResponses(error);
+        submitErrors.push(...apiErrors);
+        submitErrors.push({ message: "Failed to register" });
+        setFormState(FormState.FAILED);
       }
     }
-
     setErrors(submitErrors);
   }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    setFormState(FormState.IN_PROGRESS);
     register();
-  }
+  };
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -89,8 +92,24 @@ export default function CompanyRegistration() {
       });
     }
     return fieldErrors;
+  };
+
+  const refreshCompanies = async () => {
+    try {
+      dispatch({
+        type: ActionNameCompany.setCompanies,
+        payload: await clinicApis.getAllCompanies()
+      })
+    } catch (error) {
+      console.error(error);
+    }
   }
 
+  useEffect(() => {
+    if (formState === FormState.SUCCESSFUL) {
+      refreshCompanies();
+    }
+  }, [formState]);
 
   const createRegistrationForm = () => (
     <div className="slimContainer">

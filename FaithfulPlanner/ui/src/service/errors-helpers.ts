@@ -7,7 +7,7 @@ export const findErrorField = (errors: ErrorDto[], fieldName: string) => errors.
 
 export const findErrorsForm = (errors?: ErrorDto[]): ErrorDto[] => {
     if (errors === undefined || errors === null) return [];
-    return errors.filter(e => e.field)
+    return errors.filter(e => !e.field);
 }   
 
 
@@ -38,8 +38,9 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Erro
   return errors;
 };
 
-export const toScErrorResponses = (error: unknown, fallbackError: string): ErrorDto[] => {
-  if (!error) return [{ message: fallbackError }];
+export const toScErrorResponses = (error: unknown, fallbackError?: string): ErrorDto[] => {
+  if (!error && fallbackError) return [{ message: fallbackError }];
+  if (!error && !fallbackError) return [];
 
   let errorObject = error;
   if (typeof error === 'string') {
