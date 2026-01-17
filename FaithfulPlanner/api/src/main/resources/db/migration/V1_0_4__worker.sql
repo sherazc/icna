@@ -6,13 +6,13 @@ create table worker_type
 
 create table worker
 (
-    id        bigserial    not null primary key,
-    first_name varchar(255) not null,
-    last_name varchar(255) not null,
-    company_id      bigint,
+    id             bigserial    not null primary key,
+    first_name     varchar(255) not null,
+    last_name      varchar(255) not null,
+    company_id     bigint,
     worker_type_id bigint,
-    constraint fk_worker_worker_type foreign key (worker_type_id) references worker_type(id),
-    constraint fk_worker_company foreign key (company_id) references company(id)
+    constraint fk_worker_worker_type foreign key (worker_type_id) references worker_type (id),
+    constraint fk_worker_company foreign key (company_id) references company (id)
 );
 
 INSERT INTO worker_type (id, type_name)
