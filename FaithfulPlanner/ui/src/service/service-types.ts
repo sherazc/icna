@@ -22,6 +22,7 @@ export const defaultLoginRequest = (companyId?: string | undefined): LoginReques
 export type AuthUserTokenDto = {
     userProfileId: number;
     companyId: number;
+    companyName: string,
     subject: string;
     issuedAtUtc: string;
     expiresAtUtc: string;

@@ -2,6 +2,8 @@ package com.sc.clinic.service.security
 
 import com.sc.clinic.dto.AuthUserTokenDto
 import com.sc.clinic.dto.UserProfileUserDetails
+import com.sc.clinic.exception.ScException
+import com.sc.clinic.service.CompanyService
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm
 import org.springframework.security.oauth2.jwt.JwsHeader
@@ -15,11 +17,15 @@ import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 @Service
-class ScTokenGeneratorService(private val encoder: JwtEncoder) {
+class ScTokenGeneratorService(
+    private val encoder: JwtEncoder,
+    private val companyService: CompanyService) {
 
     fun generateToken(authentication: Authentication): AuthUserTokenDto {
         val now = Instant.now()
         val user = authentication.principal as UserProfileUserDetails
+        val companyId: Long = user.getCompanyId() ?: throw ScException("Failed to generate token. Company ID is null.")
+        val company = companyService.getCompany(user.getCompanyId())
 
         val roles: List<String> = authentication.authorities
             .mapNotNull { it.authority }
@@ -41,11 +47,11 @@ class ScTokenGeneratorService(private val encoder: JwtEncoder) {
         )
 
         val tokenValue = this.encoder.encode(encoderParameters).tokenValue
-        val companyId: Long = 100 // userProfileService.getCompanyIdByUserProfileId(user.getUserProfileId())
 
         return AuthUserTokenDto(
             user.getUserProfileId(),
             companyId,
+            company.companyName,
             authentication.name,
             LocalDateTime.ofInstant(now, ZoneId.of("UTC")),
             LocalDateTime.ofInstant(expiresAt, ZoneId.of("UTC")),

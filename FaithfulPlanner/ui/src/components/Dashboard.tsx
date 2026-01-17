@@ -1,17 +1,14 @@
 import { UnAuthRedirect } from "./auth/UnAuthRedirect"
+import { ScreenHeader } from "./common/ScreenHeader"
 
 export default function Dashboard() {
   return (
     <div id="dashboard">
       <UnAuthRedirect/>
-      <div className="header">
-        <h2>Dashboard <span className="orgBadge" id="currentOrgBadge">Mercy Free Clinic</span></h2>
-        <div className="headerActions">
-          <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
-          <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')">+ New Clinic Date</button>
-          <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
-        </div>
-      </div>
+      <ScreenHeader screenName="Dashboard"> 
+        <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
+        <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')">+ New Clinic Date</button>
+      </ScreenHeader>
 
       <div className="tableContainer">
         <div className="tableScroll">
