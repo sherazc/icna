@@ -14,13 +14,20 @@ clinic_operation_date
 └── notes
 ```
 
-### 2. Availability Patterns (Reference)
+### 2. Availability Patterns (Enum)
+**Kotlin Enum Class - No Database Table**
 ```
-ref_availability_pattern
-├── id (PK)
-├── pattern_code (WEEKENDS, SATURDAY, SUNDAY, ANY_DAY, SPECIFIC_DATE)
-├── pattern_name
-└── description
+AvailabilityPattern (ENUM)
+├── WEEKENDS
+├── SATURDAY
+├── SUNDAY
+├── ANY_DAY
+└── SPECIFIC_DATE
+
+Each enum value contains:
+- patternCode: String
+- patternName: String
+- description: String
 ```
 
 ### 3. Provider Availability
@@ -28,7 +35,7 @@ ref_availability_pattern
 provider_availability_pattern          provider_date_availability
 ├── id (PK)                           ├── id (PK)
 ├── provider_id (FK → provider)       ├── provider_id (FK → provider)
-├── availability_pattern_id (FK)      ├── availability_date
+├── availability_pattern (ENUM)       ├── availability_date
 ├── is_active                         ├── is_available (true/false)
 ├── start_date                        ├── start_time
 ├── end_date                          ├── end_time
@@ -40,7 +47,7 @@ provider_availability_pattern          provider_date_availability
 worker_availability_pattern            worker_date_availability
 ├── id (PK)                           ├── id (PK)
 ├── worker_id (FK → worker)           ├── worker_id (FK → worker)
-├── availability_pattern_id (FK)      ├── availability_date
+├── availability_pattern (ENUM)       ├── availability_date
 ├── is_active                         ├── is_available (true/false)
 ├── start_date                        ├── start_time
 ├── end_date                          ├── end_time
@@ -71,9 +78,10 @@ clinic_schedule_provider               clinic_schedule_worker
 
 provider/worker
     ↓
-    ├─→ availability_pattern (general: "weekends", "any day", etc.)
-    │       ↓
-    │       └─→ ref_availability_pattern (pattern definitions)
+    ├─→ availability_pattern (ENUM: "WEEKENDS", "SATURDAY", etc.)
+    │       - No database table needed
+    │       - Type-safe Kotlin enum
+    │       - Contains patternCode, patternName, description
     │
     └─→ date_availability (specific: "Jan 24", "Feb 1", exceptions)
 
@@ -94,7 +102,7 @@ clinic_operation_date (when clinic is open)
 ```
 Step 1: DECLARE AVAILABILITY
     Provider says: "I'm available weekends"
-    → INSERT into provider_availability_pattern (pattern_id = WEEKENDS)
+    → INSERT into provider_availability_pattern (availability_pattern = 'WEEKENDS')
 
 Step 2: CREATE CLINIC DATE
     Admin creates: "Jan 24, 2026 (Saturday)"
@@ -102,7 +110,7 @@ Step 2: CREATE CLINIC DATE
 
 Step 3: FIND AVAILABLE STAFF
     System queries:
-    → Check provider_availability_pattern (matches WEEKENDS? YES)
+    → Check provider_availability_pattern (availability_pattern = 'WEEKENDS'? YES)
     → Check provider_date_availability (any exceptions? NO)
     → Result: Provider is available
 
@@ -181,12 +189,11 @@ clinic_schedule_worker:
 SELECT DISTINCT p.*
 FROM provider p
 WHERE p.id IN (
-    -- Match by pattern
+    -- Match by pattern (no JOIN needed with enum!)
     SELECT pap.provider_id
     FROM provider_availability_pattern pap
-    JOIN ref_availability_pattern rap ON pap.availability_pattern_id = rap.id
     WHERE pap.is_active = true
-      AND rap.pattern_code IN ('WEEKENDS', 'SATURDAY', 'ANY_DAY')
+      AND pap.availability_pattern IN ('WEEKENDS', 'SATURDAY', 'ANY_DAY')
       AND (pap.start_date IS NULL OR pap.start_date <= '2026-01-24')
       AND (pap.end_date IS NULL OR pap.end_date >= '2026-01-24')
     
@@ -206,6 +213,11 @@ AND p.id NOT IN (
       AND is_available = false
 );
 ```
+
+**Benefits of Enum Approach:**
+- ✅ No JOIN needed - simpler and faster query
+- ✅ Type-safe enum values prevent typos
+- ✅ Pattern metadata (name, description) available in code without database lookup
 
 This design provides maximum flexibility while maintaining data integrity and clear relationships between all entities.
 
