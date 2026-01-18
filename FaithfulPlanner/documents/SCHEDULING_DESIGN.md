@@ -209,26 +209,29 @@ Jan 24 schedule:
 
 ```sql
 -- Providers with WEEKENDS or SATURDAY pattern (and date is in effective range)
-SELECT p.* FROM provider p
-JOIN provider_availability_pattern pap ON p.id = pap.provider_id
-JOIN ref_availability_pattern rap ON pap.availability_pattern_id = rap.id
-WHERE pap.is_active = true
-  AND (pap.start_date IS NULL OR pap.start_date <= '2026-01-24')
-  AND (pap.end_date IS NULL OR pap.end_date >= '2026-01-24')
-  AND rap.pattern_code IN ('WEEKENDS', 'SATURDAY', 'ANY_DAY')
-  AND p.id NOT IN (
-    -- Exclude those with unavailability exception for this date
-    SELECT provider_id FROM provider_availability_date
-    WHERE availability_date = '2026-01-24' AND is_available = false
-  )
-
-UNION
-
--- Providers with specific date availability for this date
-SELECT p.* FROM provider p
-JOIN provider_availability_date pda ON p.id = pda.provider_id
-WHERE pda.availability_date = '2026-01-24'
-  AND pda.is_available = true;
+SELECT DISTINCT p.* FROM provider p
+WHERE p.id IN (
+    -- Match by pattern (no JOIN needed with enum!)
+    SELECT pap.provider_id
+    FROM provider_availability_pattern pap
+    WHERE pap.is_active = true
+      AND (pap.start_date IS NULL OR pap.start_date <= '2026-01-24')
+      AND (pap.end_date IS NULL OR pap.end_date >= '2026-01-24')
+      AND pap.availability_pattern IN ('WEEKENDS', 'SATURDAY', 'ANY_DAY')
+      AND pap.provider_id NOT IN (
+        -- Exclude those with unavailability exception for this date
+        SELECT provider_id FROM provider_availability_date
+        WHERE availability_date = '2026-01-24' AND is_available = false
+      )
+    
+    UNION
+    
+    -- Providers with specific date availability for this date
+    SELECT pda.provider_id
+    FROM provider_availability_date pda
+    WHERE pda.availability_date = '2026-01-24'
+      AND pda.is_available = true
+);
 ```
 
 ### Find all scheduled providers for a clinic operation date:

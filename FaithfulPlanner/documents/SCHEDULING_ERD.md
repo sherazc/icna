@@ -83,7 +83,9 @@ provider/worker
     │       - Type-safe Kotlin enum
     │       - Contains patternCode, patternName, description
     │
-    └─→ date_availability (specific: "Jan 24", "Feb 1", exceptions)
+    └─→ availability_date tables (specific dates/exceptions)
+            provider_availability_date
+            worker_availability_date
 
 
 ┌──────────────────────────────────────────────────────────────────┐
