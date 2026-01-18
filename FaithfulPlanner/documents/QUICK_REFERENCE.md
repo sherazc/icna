@@ -7,8 +7,8 @@
 | `clinic_operation_date` | When clinic is open |
 | `provider_availability_pattern` | Provider general availability (uses enum) |
 | `worker_availability_pattern` | Worker general availability (uses enum) |
-| `provider_date_availability` | Provider specific dates/exceptions |
-| `worker_date_availability` | Worker specific dates/exceptions |
+| `provider_availability_date` | Provider specific dates/exceptions |
+| `worker_availability_date` | Worker specific dates/exceptions |
 | `clinic_schedule_provider` | Provider assignments |
 | `clinic_schedule_worker` | Worker assignments |
 
@@ -29,13 +29,13 @@ INSERT INTO worker_availability_pattern (worker_id, availability_pattern, is_act
 VALUES (3, 'SPECIFIC_DATE', true);
 
 -- Add specific dates
-INSERT INTO worker_date_availability (worker_id, availability_date, is_available)
+INSERT INTO worker_availability_date (worker_id, availability_date, is_available)
 VALUES (3, '2026-01-24', true), (3, '2026-01-31', true);
 ```
 
 ### 3. Provider marks exception "Not available Jan 31"
 ```sql
-INSERT INTO provider_date_availability (provider_id, availability_date, is_available)
+INSERT INTO provider_availability_date (provider_id, availability_date, is_available)
 VALUES (2, '2026-01-31', false);  -- false = unavailable
 ```
 
@@ -76,12 +76,12 @@ WHERE p.id IN (
     UNION
     
     -- Match by specific date
-    SELECT provider_id FROM provider_date_availability
+    SELECT provider_id FROM provider_availability_date
     WHERE availability_date = '2026-01-24' AND is_available = true
 )
 AND p.id NOT IN (
     -- Exclude exceptions
-    SELECT provider_id FROM provider_date_availability
+    SELECT provider_id FROM provider_availability_date
     WHERE availability_date = '2026-01-24' AND is_available = false
 );
 ```

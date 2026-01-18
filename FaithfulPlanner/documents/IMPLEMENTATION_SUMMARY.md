@@ -10,8 +10,8 @@ Created comprehensive scheduling system with the following components:
 1. **clinic_operation_date** - Stores when clinic is scheduled to be open
 2. **provider_availability_pattern** - Provider general availability preferences (uses enum)
 3. **worker_availability_pattern** - Worker general availability preferences (uses enum)
-4. **provider_date_availability** - Provider specific date availability/exceptions
-5. **worker_date_availability** - Worker specific date availability/exceptions
+4. **provider_availability_date** - Provider specific date availability/exceptions
+5. **worker_availability_date** - Worker specific date availability/exceptions
 6. **clinic_schedule_provider** - Provider assignments to clinic dates
 7. **clinic_schedule_worker** - Worker assignments to clinic dates
 

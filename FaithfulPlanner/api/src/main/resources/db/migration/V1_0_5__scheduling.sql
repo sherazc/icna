@@ -47,7 +47,7 @@ create table worker_availability_pattern
 
 -- Provider specific date availability
 -- Stores specific date availability/unavailability for providers
-create table provider_date_availability
+create table provider_availability_date
 (
     id                  bigserial    not null primary key,
     provider_id         bigint       not null,
@@ -57,13 +57,13 @@ create table provider_date_availability
     end_time            time,
     notes               text,
     created_at          timestamp    not null default current_timestamp,
-    constraint fk_provider_date_avail_provider foreign key (provider_id) references provider(id),
-    constraint uk_provider_date_availability unique (provider_id, availability_date)
+    constraint fk_provider_avail_date_provider foreign key (provider_id) references provider(id),
+    constraint uk_provider_availability_date unique (provider_id, availability_date)
 );
 
 -- Worker specific date availability
 -- Stores specific date availability/unavailability for workers
-create table worker_date_availability
+create table worker_availability_date
 (
     id                  bigserial    not null primary key,
     worker_id           bigint       not null,
@@ -73,8 +73,8 @@ create table worker_date_availability
     end_time            time,
     notes               text,
     created_at          timestamp    not null default current_timestamp,
-    constraint fk_worker_date_avail_worker foreign key (worker_id) references worker(id),
-    constraint uk_worker_date_availability unique (worker_id, availability_date)
+    constraint fk_worker_avail_date_worker foreign key (worker_id) references worker(id),
+    constraint uk_worker_availability_date unique (worker_id, availability_date)
 );
 
 -- Clinic schedule - Provider assignments
@@ -158,19 +158,19 @@ VALUES (3, 3, 'SPECIFIC_DATE', true, 'Available on specific dates only');
 
 SELECT setval(pg_get_serial_sequence('worker_availability_pattern', 'id'), (SELECT MAX(id) FROM worker_availability_pattern));
 
--- Sample specific date availability for Worker 3
-INSERT INTO provider_date_availability (id, provider_id, availability_date, is_available, start_time, end_time, notes)
+-- Sample specific date availability for Provider 3
+INSERT INTO provider_availability_date (id, provider_id, availability_date, is_available, start_time, end_time, notes)
 VALUES
     (1, 3, '2026-01-24', true, '09:00:00', '13:00:00', 'Available morning only');
 
-SELECT setval(pg_get_serial_sequence('provider_date_availability', 'id'), (SELECT MAX(id) FROM provider_date_availability));
+SELECT setval(pg_get_serial_sequence('provider_availability_date', 'id'), (SELECT MAX(id) FROM provider_availability_date));
 
-INSERT INTO worker_date_availability (id, worker_id, availability_date, is_available, start_time, end_time, notes)
+INSERT INTO worker_availability_date (id, worker_id, availability_date, is_available, start_time, end_time, notes)
 VALUES
     (1, 3, '2026-01-24', true, '09:00:00', '17:00:00', 'Available full day'),
     (2, 3, '2026-01-31', true, '09:00:00', '17:00:00', 'Available full day');
 
-SELECT setval(pg_get_serial_sequence('worker_date_availability', 'id'), (SELECT MAX(id) FROM worker_date_availability));
+SELECT setval(pg_get_serial_sequence('worker_availability_date', 'id'), (SELECT MAX(id) FROM worker_availability_date));
 
 -- Sample schedule assignments
 -- Assign Provider 1 to first Saturday
@@ -201,11 +201,11 @@ CREATE INDEX idx_clinic_operation_date_status ON clinic_operation_date(status);
 CREATE INDEX idx_provider_avail_pattern_provider ON provider_availability_pattern(provider_id);
 CREATE INDEX idx_worker_avail_pattern_worker ON worker_availability_pattern(worker_id);
 
-CREATE INDEX idx_provider_date_avail_provider ON provider_date_availability(provider_id);
-CREATE INDEX idx_provider_date_avail_date ON provider_date_availability(availability_date);
+CREATE INDEX idx_provider_avail_date_provider ON provider_availability_date(provider_id);
+CREATE INDEX idx_provider_avail_date_date ON provider_availability_date(availability_date);
 
-CREATE INDEX idx_worker_date_avail_worker ON worker_date_availability(worker_id);
-CREATE INDEX idx_worker_date_avail_date ON worker_date_availability(availability_date);
+CREATE INDEX idx_worker_avail_date_worker ON worker_availability_date(worker_id);
+CREATE INDEX idx_worker_avail_date_date ON worker_availability_date(availability_date);
 
 CREATE INDEX idx_schedule_provider_operation ON clinic_schedule_provider(clinic_operation_date_id);
 CREATE INDEX idx_schedule_provider_provider ON clinic_schedule_provider(provider_id);

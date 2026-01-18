@@ -32,7 +32,7 @@ Each enum value contains:
 
 ### 3. Provider Availability
 ```
-provider_availability_pattern          provider_date_availability
+provider_availability_pattern          provider_availability_date
 ├── id (PK)                           ├── id (PK)
 ├── provider_id (FK → provider)       ├── provider_id (FK → provider)
 ├── availability_pattern (ENUM)       ├── availability_date
@@ -44,7 +44,7 @@ provider_availability_pattern          provider_date_availability
 
 ### 4. Worker Availability
 ```
-worker_availability_pattern            worker_date_availability
+worker_availability_pattern            worker_availability_date
 ├── id (PK)                           ├── id (PK)
 ├── worker_id (FK → worker)           ├── worker_id (FK → worker)
 ├── availability_pattern (ENUM)       ├── availability_date
@@ -111,7 +111,7 @@ Step 2: CREATE CLINIC DATE
 Step 3: FIND AVAILABLE STAFF
     System queries:
     → Check provider_availability_pattern (availability_pattern = 'WEEKENDS'? YES)
-    → Check provider_date_availability (any exceptions? NO)
+    → Check provider_availability_date (any exceptions? NO)
     → Result: Provider is available
 
 Step 4: ASSIGN TO SCHEDULE
@@ -201,14 +201,14 @@ WHERE p.id IN (
     
     -- Match by specific date
     SELECT pda.provider_id
-    FROM provider_date_availability pda
+    FROM provider_availability_date pda
     WHERE pda.availability_date = '2026-01-24'
       AND pda.is_available = true
 )
 AND p.id NOT IN (
     -- Exclude exceptions (marked unavailable)
     SELECT provider_id
-    FROM provider_date_availability
+    FROM provider_availability_date
     WHERE availability_date = '2026-01-24'
       AND is_available = false
 );

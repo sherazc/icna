@@ -31,7 +31,7 @@ The following repository files were empty and have been fixed:
 3. ClinicScheduleWorkerRepository.kt ✅
 4. CompanyRepository.kt ✅
 5. ProviderAvailabilityPatternRepository.kt ✅
-6. ProviderDateAvailabilityRepository.kt ✅
+6. ProviderAvailabilityDateRepository.kt ✅
 7. ProviderRepository.kt ✅
 8. ProviderTypeRepository.kt ✅
 9. RefProviderTypeRepository.kt ✅
@@ -39,7 +39,7 @@ The following repository files were empty and have been fixed:
 11. UserProfileRepository.kt ✅
 12. UserRoleRepository.kt ✅
 13. WorkerAvailabilityPatternRepository.kt ✅
-14. WorkerDateAvailabilityRepository.kt ✅
+14. WorkerAvailabilityDateRepository.kt ✅
 15. WorkerRepository.kt ✅
 16. WorkerTypeRepository.kt ✅
 
@@ -51,7 +51,7 @@ The following repository files were empty and have been fixed:
 5. Company.kt ✅
 6. Provider.kt ✅
 7. ProviderAvailabilityPattern.kt ✅
-8. ProviderDateAvailability.kt ✅
+8. ProviderAvailabilityDate.kt ✅
 9. ProviderType.kt ✅
 10. RefProviderType.kt ✅
 11. RefWorkerType.kt ✅
@@ -59,7 +59,7 @@ The following repository files were empty and have been fixed:
 13. UserRole.kt ✅
 14. Worker.kt ✅
 15. WorkerAvailabilityPattern.kt ✅
-16. WorkerDateAvailability.kt ✅
+16. WorkerAvailabilityDate.kt ✅
 17. WorkerType.kt ✅
 
 ---
@@ -75,7 +75,7 @@ All repositories have corresponding entities:
 | ClinicScheduleWorkerRepository | ClinicScheduleWorker | ✅ |
 | CompanyRepository | Company | ✅ |
 | ProviderAvailabilityPatternRepository | ProviderAvailabilityPattern | ✅ |
-| ProviderDateAvailabilityRepository | ProviderDateAvailability | ✅ |
+| ProviderAvailabilityDateRepository | ProviderAvailabilityDate | ✅ |
 | ProviderRepository | Provider | ✅ |
 | ProviderTypeRepository | ProviderType | ✅ |
 | RefProviderTypeRepository | RefProviderType | ✅ |
@@ -83,7 +83,7 @@ All repositories have corresponding entities:
 | UserProfileRepository | UserProfile | ✅ |
 | UserRoleRepository | UserRole | ✅ |
 | WorkerAvailabilityPatternRepository | WorkerAvailabilityPattern | ✅ |
-| WorkerDateAvailabilityRepository | WorkerDateAvailability | ✅ |
+| WorkerAvailabilityDateRepository | WorkerAvailabilityDate | ✅ |
 | WorkerRepository | Worker | ✅ |
 | WorkerTypeRepository | WorkerType | ✅ |
 

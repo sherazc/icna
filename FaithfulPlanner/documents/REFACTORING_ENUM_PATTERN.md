@@ -110,8 +110,8 @@ Updated the following documentation files:
 2. **ref_availability_pattern** ← REMOVED
 3. provider_availability_pattern (with FK to ref_availability_pattern)
 4. worker_availability_pattern (with FK to ref_availability_pattern)
-5. provider_date_availability
-6. worker_date_availability
+5. provider_availability_date
+6. worker_availability_date
 7. clinic_schedule_provider
 8. clinic_schedule_worker
 
@@ -119,8 +119,8 @@ Updated the following documentation files:
 1. clinic_operation_date
 2. provider_availability_pattern (with enum value)
 3. worker_availability_pattern (with enum value)
-4. provider_date_availability
-5. worker_date_availability
+4. provider_availability_date
+5. worker_availability_date
 6. clinic_schedule_provider
 7. clinic_schedule_worker
 

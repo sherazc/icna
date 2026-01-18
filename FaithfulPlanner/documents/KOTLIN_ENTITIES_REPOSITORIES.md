@@ -15,8 +15,8 @@
 6. **AvailabilityPattern.kt** - **Enum** for availability patterns (WEEKENDS, SATURDAY, etc.)
 7. **ProviderAvailabilityPattern.kt** - Provider general availability patterns (uses enum)
 8. **WorkerAvailabilityPattern.kt** - Worker general availability patterns (uses enum)
-9. **ProviderDateAvailability.kt** - Provider specific date availability/exceptions
-10. **WorkerDateAvailability.kt** - Worker specific date availability/exceptions
+9. **ProviderAvailabilityDate.kt** - Provider specific date availability/exceptions
+10. **WorkerAvailabilityDate.kt** - Worker specific date availability/exceptions
 11. **ClinicScheduleProvider.kt** - Provider schedule assignments
 12. **ClinicScheduleWorker.kt** - Worker schedule assignments
 
@@ -33,8 +33,8 @@ All repositories extend `JpaRepository<Entity, Long>` with no custom methods (as
 5. **ClinicOperationDateRepository.kt**
 6. **ProviderAvailabilityPatternRepository.kt**
 7. **WorkerAvailabilityPatternRepository.kt**
-8. **ProviderDateAvailabilityRepository.kt**
-9. **WorkerDateAvailabilityRepository.kt**
+8. **ProviderAvailabilityDateRepository.kt**
+9. **WorkerAvailabilityDateRepository.kt**
 10. **ClinicScheduleProviderRepository.kt**
 11. **ClinicScheduleWorkerRepository.kt**
 
@@ -51,11 +51,11 @@ api/src/main/kotlin/com/sc/clinic/
 │   ├── ClinicScheduleWorker.kt
 │   ├── Provider.kt
 │   ├── ProviderAvailabilityPattern.kt
-│   ├── ProviderDateAvailability.kt
+│   ├── ProviderAvailabilityDate.kt
 │   ├── ProviderType.kt
 │   ├── Worker.kt
 │   ├── WorkerAvailabilityPattern.kt
-│   ├── WorkerDateAvailability.kt
+│   ├── WorkerAvailabilityDate.kt
 │   └── WorkerType.kt
 │
 └── repository/
@@ -63,11 +63,11 @@ api/src/main/kotlin/com/sc/clinic/
     ├── ClinicScheduleProviderRepository.kt
     ├── ClinicScheduleWorkerRepository.kt
     ├── ProviderAvailabilityPatternRepository.kt
-    ├── ProviderDateAvailabilityRepository.kt
+    ├── ProviderAvailabilityDateRepository.kt
     ├── ProviderRepository.kt
     ├── ProviderTypeRepository.kt
     ├── WorkerAvailabilityPatternRepository.kt
-    ├── WorkerDateAvailabilityRepository.kt
+    ├── WorkerAvailabilityDateRepository.kt
     ├── WorkerRepository.kt
     └── WorkerTypeRepository.kt
 ```

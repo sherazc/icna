@@ -6,8 +6,8 @@ import java.time.LocalTime
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "worker_date_availability")
-data class WorkerDateAvailability(
+@Table(name = "worker_availability_date")
+data class WorkerAvailabilityDate(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,

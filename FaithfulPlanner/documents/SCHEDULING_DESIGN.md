@@ -66,7 +66,7 @@ Stores general availability preferences for providers and workers.
 ---
 
 ### 4. Specific Date Availability
-(`provider_date_availability`, `worker_date_availability`)
+(`provider_availability_date`, `worker_availability_date`)
 
 Stores specific date availability or unavailability overrides.
 
@@ -124,14 +124,14 @@ Dr. Smith: "I'm available all weekends"
 ```
 Volunteer Wilson: "I'm only available on Jan 24 and Jan 31"
 → Creates worker_availability_pattern with SPECIFIC_DATE pattern
-→ Creates worker_date_availability entries for Jan 24 and Jan 31
+→ Creates worker_availability_date entries for Jan 24 and Jan 31
 ```
 
 **Option C - Pattern + Exceptions:**
 ```
 Dr. Johnson: "I'm available Saturdays, but not on Jan 31 (vacation)"
 → Creates provider_availability_pattern with SATURDAY pattern
-→ Creates provider_date_availability for Jan 31 with is_available=false
+→ Creates provider_availability_date for Jan 31 with is_available=false
 ```
 
 ### Step 2: Clinic Creates Operation Dates
@@ -218,7 +218,7 @@ WHERE pap.is_active = true
   AND rap.pattern_code IN ('WEEKENDS', 'SATURDAY', 'ANY_DAY')
   AND p.id NOT IN (
     -- Exclude those with unavailability exception for this date
-    SELECT provider_id FROM provider_date_availability
+    SELECT provider_id FROM provider_availability_date
     WHERE availability_date = '2026-01-24' AND is_available = false
   )
 
@@ -226,7 +226,7 @@ UNION
 
 -- Providers with specific date availability for this date
 SELECT p.* FROM provider p
-JOIN provider_date_availability pda ON p.id = pda.provider_id
+JOIN provider_availability_date pda ON p.id = pda.provider_id
 WHERE pda.availability_date = '2026-01-24'
   AND pda.is_available = true;
 ```

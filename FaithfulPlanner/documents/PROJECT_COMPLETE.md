@@ -10,8 +10,8 @@ A complete scheduling system with **8 new tables** and **240 lines of SQL** incl
 2. **ref_availability_pattern** - Pattern definitions (WEEKENDS, SATURDAY, SUNDAY, ANY_DAY, SPECIFIC_DATE)
 3. **provider_availability_pattern** - Provider general availability
 4. **worker_availability_pattern** - Worker general availability
-5. **provider_date_availability** - Provider specific dates & exceptions
-6. **worker_date_availability** - Worker specific dates & exceptions
+5. **provider_availability_date** - Provider specific dates & exceptions
+6. **worker_availability_date** - Worker specific dates & exceptions
 7. **clinic_schedule_provider** - Provider assignments
 8. **clinic_schedule_worker** - Worker assignments
 
