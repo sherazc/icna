@@ -15,30 +15,19 @@ create table clinic_operation_date
     constraint uk_clinic_operation_date unique (company_id, operation_date)
 );
 
--- Availability pattern types
--- Defines recurring availability patterns (e.g., "All Weekends", "Saturdays Only", "Any Day")
-create table ref_availability_pattern
-(
-    id           bigserial    not null primary key,
-    pattern_code varchar(50)  not null unique,  -- WEEKENDS, SATURDAY, SUNDAY, ANY_DAY, SPECIFIC_DATE
-    pattern_name varchar(255) not null,
-    description  text
-);
-
 -- Provider availability patterns
 -- Stores providers' general availability preferences
 create table provider_availability_pattern
 (
     id                      bigserial   not null primary key,
     provider_id             bigint      not null,
-    availability_pattern_id bigint      not null,
+    availability_pattern    varchar(50) not null,  -- WEEKENDS, SATURDAY, SUNDAY, ANY_DAY, SPECIFIC_DATE
     is_active               boolean     not null default true,
     start_date              date,       -- When this pattern becomes effective
     end_date                date,       -- When this pattern expires (null = indefinite)
     notes                   text,
     created_at              timestamp   not null default current_timestamp,
-    constraint fk_provider_avail_pattern_provider foreign key (provider_id) references provider(id),
-    constraint fk_provider_avail_pattern_ref foreign key (availability_pattern_id) references ref_availability_pattern(id)
+    constraint fk_provider_avail_pattern_provider foreign key (provider_id) references provider(id)
 );
 
 -- Worker availability patterns
@@ -47,14 +36,13 @@ create table worker_availability_pattern
 (
     id                      bigserial   not null primary key,
     worker_id               bigint      not null,
-    availability_pattern_id bigint      not null,
+    availability_pattern    varchar(50) not null,  -- WEEKENDS, SATURDAY, SUNDAY, ANY_DAY, SPECIFIC_DATE
     is_active               boolean     not null default true,
     start_date              date,       -- When this pattern becomes effective
     end_date                date,       -- When this pattern expires (null = indefinite)
     notes                   text,
     created_at              timestamp   not null default current_timestamp,
-    constraint fk_worker_avail_pattern_worker foreign key (worker_id) references worker(id),
-    constraint fk_worker_avail_pattern_ref foreign key (availability_pattern_id) references ref_availability_pattern(id)
+    constraint fk_worker_avail_pattern_worker foreign key (worker_id) references worker(id)
 );
 
 -- Provider specific date availability
@@ -129,17 +117,6 @@ create table clinic_schedule_worker
     constraint uk_schedule_worker unique (clinic_operation_date_id, worker_id)
 );
 
--- Insert reference availability patterns
-INSERT INTO ref_availability_pattern (id, pattern_code, pattern_name, description)
-VALUES
-    (1, 'WEEKENDS', 'All Weekends', 'Available on all Saturdays and Sundays'),
-    (2, 'SATURDAY', 'Saturdays Only', 'Available on Saturdays only'),
-    (3, 'SUNDAY', 'Sundays Only', 'Available on Sundays only'),
-    (4, 'ANY_DAY', 'Any Day', 'Available on any day of the week'),
-    (5, 'SPECIFIC_DATE', 'Specific Dates', 'Available on specific dates only (requires date_availability entries)');
-
-SELECT setval(pg_get_serial_sequence('ref_availability_pattern', 'id'), (SELECT MAX(id) FROM ref_availability_pattern));
-
 -- Sample clinic operation dates for company 1 (next few weekends)
 INSERT INTO clinic_operation_date (id, company_id, operation_date, start_time, end_time, status, notes)
 VALUES
@@ -153,31 +130,31 @@ SELECT setval(pg_get_serial_sequence('clinic_operation_date', 'id'), (SELECT MAX
 
 -- Sample provider availability patterns
 -- Provider 1 (John Smith) - Available all weekends
-INSERT INTO provider_availability_pattern (id, provider_id, availability_pattern_id, is_active, notes)
-VALUES (1, 1, 1, true, 'Available all weekends');
+INSERT INTO provider_availability_pattern (id, provider_id, availability_pattern, is_active, notes)
+VALUES (1, 1, 'WEEKENDS', true, 'Available all weekends');
 
 -- Provider 2 (Sarah Johnson) - Available Saturdays only
-INSERT INTO provider_availability_pattern (id, provider_id, availability_pattern_id, is_active, notes)
-VALUES (2, 2, 2, true, 'Available Saturdays only');
+INSERT INTO provider_availability_pattern (id, provider_id, availability_pattern, is_active, notes)
+VALUES (2, 2, 'SATURDAY', true, 'Available Saturdays only');
 
 -- Provider 3 (Michael Williams) - Available any day
-INSERT INTO provider_availability_pattern (id, provider_id, availability_pattern_id, is_active, notes)
-VALUES (3, 3, 4, true, 'Available any day');
+INSERT INTO provider_availability_pattern (id, provider_id, availability_pattern, is_active, notes)
+VALUES (3, 3, 'ANY_DAY', true, 'Available any day');
 
 SELECT setval(pg_get_serial_sequence('provider_availability_pattern', 'id'), (SELECT MAX(id) FROM provider_availability_pattern));
 
 -- Sample worker availability patterns
 -- Worker 1 (Jennifer Davis) - Available all weekends
-INSERT INTO worker_availability_pattern (id, worker_id, availability_pattern_id, is_active, notes)
-VALUES (1, 1, 1, true, 'Available all weekends');
+INSERT INTO worker_availability_pattern (id, worker_id, availability_pattern, is_active, notes)
+VALUES (1, 1, 'WEEKENDS', true, 'Available all weekends');
 
 -- Worker 2 (Robert Miller) - Available Sundays only
-INSERT INTO worker_availability_pattern (id, worker_id, availability_pattern_id, is_active, notes)
-VALUES (2, 2, 3, true, 'Available Sundays only');
+INSERT INTO worker_availability_pattern (id, worker_id, availability_pattern, is_active, notes)
+VALUES (2, 2, 'SUNDAY', true, 'Available Sundays only');
 
 -- Worker 3 (Jessica Wilson) - Available specific dates
-INSERT INTO worker_availability_pattern (id, worker_id, availability_pattern_id, is_active, notes)
-VALUES (3, 3, 5, true, 'Available on specific dates only');
+INSERT INTO worker_availability_pattern (id, worker_id, availability_pattern, is_active, notes)
+VALUES (3, 3, 'SPECIFIC_DATE', true, 'Available on specific dates only');
 
 SELECT setval(pg_get_serial_sequence('worker_availability_pattern', 'id'), (SELECT MAX(id) FROM worker_availability_pattern));
 

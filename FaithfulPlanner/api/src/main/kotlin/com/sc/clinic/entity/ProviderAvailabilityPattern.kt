@@ -14,8 +14,9 @@ data class ProviderAvailabilityPattern(
     @Column(name = "provider_id", nullable = false)
     var providerId: Long,
 
-    @Column(name = "availability_pattern_id", nullable = false)
-    var availabilityPatternId: Long,
+    @Enumerated(EnumType.STRING)
+    @Column(name = "availability_pattern", nullable = false)
+    var availabilityPattern: AvailabilityPattern,
 
     @Column(name = "is_active", nullable = false)
     var isActive: Boolean = true,

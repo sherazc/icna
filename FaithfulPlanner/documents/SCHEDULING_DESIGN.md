@@ -26,17 +26,23 @@ Stores when the clinic is scheduled to be open.
 
 ---
 
-### 2. Availability Patterns (`ref_availability_pattern`)
-Reference table for recurring availability patterns.
+### 2. Availability Patterns (Enum)
+Kotlin enum class that defines recurring availability patterns.
 
-**Predefined Patterns:**
+**Pattern Values:**
 - `WEEKENDS`: Available on all Saturdays and Sundays
 - `SATURDAY`: Available on Saturdays only
 - `SUNDAY`: Available on Sundays only
 - `ANY_DAY`: Available on any day of the week
 - `SPECIFIC_DATE`: Available on specific dates only
 
-**Purpose:** Standardizes common availability patterns for easy selection.
+**Purpose:** Standardizes common availability patterns for easy selection. The enum contains patternCode, patternName, and description directly in the code, eliminating the need for a database reference table.
+
+**Benefits of Enum Approach:**
+- Type-safe: Compile-time checking prevents invalid patterns
+- No database lookup needed: Pattern information is in the code
+- Easier to maintain: Changes are made in one place
+- Better performance: No join to reference table needed
 
 ---
 
@@ -47,15 +53,15 @@ Stores general availability preferences for providers and workers.
 
 **Key Fields:**
 - `provider_id` / `worker_id`: Links to the person
-- `availability_pattern_id`: Links to the pattern (e.g., WEEKENDS)
+- `availability_pattern`: Enum value (e.g., WEEKENDS, SATURDAY, ANY_DAY)
 - `is_active`: Whether this pattern is currently active
 - `start_date` / `end_date`: When this pattern is effective (null end_date = indefinite)
 
 **Purpose:** Allows providers/workers to declare their general availability (e.g., "I'm available all weekends").
 
 **Examples:**
-- Dr. Smith says: "I'm available all weekends" → Uses WEEKENDS pattern
-- Nurse Johnson says: "I'm available Saturdays only" → Uses SATURDAY pattern
+- Dr. Smith says: "I'm available all weekends" → Uses WEEKENDS enum value
+- Nurse Johnson says: "I'm available Saturdays only" → Uses SATURDAY enum value
 
 ---
 

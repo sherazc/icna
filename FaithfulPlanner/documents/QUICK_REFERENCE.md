@@ -5,27 +5,28 @@
 | Table | Purpose |
 |-------|---------|
 | `clinic_operation_date` | When clinic is open |
-| `ref_availability_pattern` | Pattern types (WEEKENDS, SATURDAY, etc.) |
-| `provider_availability_pattern` | Provider general availability |
-| `worker_availability_pattern` | Worker general availability |
+| `provider_availability_pattern` | Provider general availability (uses enum) |
+| `worker_availability_pattern` | Worker general availability (uses enum) |
 | `provider_date_availability` | Provider specific dates/exceptions |
 | `worker_date_availability` | Worker specific dates/exceptions |
 | `clinic_schedule_provider` | Provider assignments |
 | `clinic_schedule_worker` | Worker assignments |
 
+**Note:** Availability patterns are now defined as a Kotlin enum (`AvailabilityPattern`) instead of a database reference table.
+
 ## 🎯 Common Operations
 
 ### 1. Provider declares "I'm available all weekends"
 ```sql
-INSERT INTO provider_availability_pattern (provider_id, availability_pattern_id, is_active)
-VALUES (1, 1, true);  -- 1 = WEEKENDS pattern
+INSERT INTO provider_availability_pattern (provider_id, availability_pattern, is_active)
+VALUES (1, 'WEEKENDS', true);
 ```
 
 ### 2. Worker declares "I'm available Jan 24 and Jan 31"
 ```sql
 -- Set pattern to SPECIFIC_DATE
-INSERT INTO worker_availability_pattern (worker_id, availability_pattern_id, is_active)
-VALUES (3, 5, true);  -- 5 = SPECIFIC_DATE
+INSERT INTO worker_availability_pattern (worker_id, availability_pattern, is_active)
+VALUES (3, 'SPECIFIC_DATE', true);
 
 -- Add specific dates
 INSERT INTO worker_date_availability (worker_id, availability_date, is_available)
@@ -69,9 +70,8 @@ WHERE p.id IN (
     -- Match by pattern
     SELECT pap.provider_id
     FROM provider_availability_pattern pap
-    JOIN ref_availability_pattern rap ON pap.availability_pattern_id = rap.id
     WHERE pap.is_active = true
-      AND rap.pattern_code IN ('WEEKENDS', 'SATURDAY', 'ANY_DAY')
+      AND pap.availability_pattern IN ('WEEKENDS', 'SATURDAY', 'ANY_DAY')
     
     UNION
     

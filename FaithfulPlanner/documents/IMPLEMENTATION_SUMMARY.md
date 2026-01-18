@@ -8,13 +8,14 @@ Created comprehensive scheduling system with the following components:
 #### Tables Created (V1_0_5__scheduling.sql):
 
 1. **clinic_operation_date** - Stores when clinic is scheduled to be open
-2. **ref_availability_pattern** - Reference table for availability patterns (WEEKENDS, SATURDAY, SUNDAY, ANY_DAY, SPECIFIC_DATE)
-3. **provider_availability_pattern** - Provider general availability preferences
-4. **worker_availability_pattern** - Worker general availability preferences
-5. **provider_date_availability** - Provider specific date availability/exceptions
-6. **worker_date_availability** - Worker specific date availability/exceptions
-7. **clinic_schedule_provider** - Provider assignments to clinic dates
-8. **clinic_schedule_worker** - Worker assignments to clinic dates
+2. **provider_availability_pattern** - Provider general availability preferences (uses enum)
+3. **worker_availability_pattern** - Worker general availability preferences (uses enum)
+4. **provider_date_availability** - Provider specific date availability/exceptions
+5. **worker_date_availability** - Worker specific date availability/exceptions
+6. **clinic_schedule_provider** - Provider assignments to clinic dates
+7. **clinic_schedule_worker** - Worker assignments to clinic dates
+
+**Note:** The availability patterns (WEEKENDS, SATURDAY, SUNDAY, ANY_DAY, SPECIFIC_DATE) are now defined as a Kotlin enum rather than a database reference table, providing better type safety and performance.
 
 ### Key Features Implemented:
 
