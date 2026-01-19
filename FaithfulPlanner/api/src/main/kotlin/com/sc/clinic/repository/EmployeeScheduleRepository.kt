@@ -1,9 +1,11 @@
 package com.sc.clinic.repository
 
-import com.sc.clinic.entity.ClinicOperationDate
+import com.sc.clinic.entity.EmployeeSchedule
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ClinicOperationDateRepository : JpaRepository<ClinicOperationDate, Long>
+interface EmployeeScheduleRepository : JpaRepository<EmployeeSchedule, Long>
+
+
 

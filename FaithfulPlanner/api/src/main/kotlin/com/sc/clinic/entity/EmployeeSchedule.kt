@@ -5,14 +5,14 @@ import java.time.LocalTime
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "clinic_schedule_employee")
-data class ClinicScheduleEmployee(
+@Table(name = "employee_schedule")
+data class EmployeeSchedule(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
 
-    @Column(name = "clinic_operation_date_id", nullable = false)
-    var clinicOperationDateId: Long,
+    @Column(name = "company_operation_date_id", nullable = false)
+    var companyOperationDateId: Long,
 
     @Column(name = "employee_id", nullable = false)
     var employeeId: Long,
@@ -38,4 +38,5 @@ data class ClinicScheduleEmployee(
     @Column(name = "confirmed_at")
     var confirmedAt: LocalDateTime?
 )
+
 
