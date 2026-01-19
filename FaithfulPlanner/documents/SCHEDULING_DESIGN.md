@@ -123,8 +123,8 @@ Dr. Smith: "I'm available all weekends"
 **Option B - Specify Dates:**
 ```
 Volunteer Wilson: "I'm only available on Jan 24 and Jan 31"
-→ Creates worker_availability_pattern with SPECIFIC_DATE pattern
-→ Creates worker_availability_date entries for Jan 24 and Jan 31
+→ Creates employee_availability_pattern with SPECIFIC_DATE pattern
+→ Creates employee_availability_date entries for Jan 24 and Jan 31
 ```
 
 **Option C - Pattern + Exceptions:**
@@ -289,10 +289,10 @@ The migration includes sample data:
 ## Future Enhancements (Ideas)
 
 1. **Shift Templates**: Predefined shift types (morning/afternoon/full-day)
-2. **Required Roles**: Specify minimum providers/workers needed per date
+2. **Required Roles**: Specify minimum providers/employees needed per date
 3. **Notification System**: Auto-notify available people when new dates are created
 4. **Recurring Operation Dates**: Bulk create multiple weekends at once
-5. **Availability Requests**: Workers request to be scheduled vs. admin assignment
+5. **Availability Requests**: Employees request to be scheduled vs. admin assignment
 6. **Time-off Requests**: Formal unavailability request/approval workflow
 7. **Skills/Certifications**: Match provider skills to clinic needs
 8. **Conflict Detection**: Prevent double-booking across multiple clinics

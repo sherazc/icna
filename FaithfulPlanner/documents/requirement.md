@@ -26,8 +26,8 @@ Sometimes one day of weekend sometimes both days
 Sometimes it even open in any day of the week.
 The point is that there is no regular schedule.
 
-provider and volunteers can suggest when will they be available. like weekends, any day, a day, or a date or multiple dates
+provider and employees (volunteers) can suggest when will they be available. like weekends, any day, a day, or a date or multiple dates
 
 system should be able to create new clinic open date
 
-check which provider and volunteer are available and assign them to open clinic date.
+check which provider and employee (volunteer) are available and assign them to open clinic date.

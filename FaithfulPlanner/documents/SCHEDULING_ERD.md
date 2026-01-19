@@ -42,11 +42,11 @@ provider_availability_pattern          provider_availability_date
 └── notes                             └── notes
 ```
 
-### 4. Worker Availability
+### 4. Employee Availability
 ```
-worker_availability_pattern            worker_availability_date
+employee_availability_pattern            employee_availability_date
 ├── id (PK)                           ├── id (PK)
-├── worker_id (FK → worker)           ├── worker_id (FK → worker)
+├── employee_id (FK → employee)       ├── employee_id (FK → employee)
 ├── availability_pattern (ENUM)       ├── availability_date
 ├── is_active                         ├── is_available (true/false)
 ├── start_date                        ├── start_time
@@ -56,7 +56,7 @@ worker_availability_pattern            worker_availability_date
 
 ### 5. Schedule Assignments
 ```
-clinic_schedule_provider               clinic_schedule_worker
+clinic_schedule_provider               clinic_schedule_employee
 ├── id (PK)                           ├── id (PK)
 ├── clinic_operation_date_id (FK)     ├── clinic_operation_date_id (FK)
 ├── provider_id (FK → provider)       ├── worker_id (FK → worker)
@@ -160,7 +160,7 @@ clinic_schedule_provider:
   - Dr. Smith (9am-5pm) - CONFIRMED
   - Dr. Johnson (9am-5pm) - CONFIRMED
   
-clinic_schedule_worker:
+clinic_schedule_employee:
   - Nurse Davis (9am-5pm) - CONFIRMED
   - Med Assistant Wilson (9am-5pm) - ASSIGNED (pending)
 ```
