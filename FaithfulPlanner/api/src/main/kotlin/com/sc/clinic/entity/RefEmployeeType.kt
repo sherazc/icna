@@ -3,8 +3,8 @@ package com.sc.clinic.entity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "ref_worker_type")
-data class RefWorkerType(
+@Table(name = "ref_employee_type")
+data class RefEmployeeType(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
@@ -12,4 +12,5 @@ data class RefWorkerType(
     @Column(name = "type_name", nullable = false)
     var typeName: String
 )
+
 

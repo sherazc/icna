@@ -3,8 +3,8 @@ package com.sc.clinic.entity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "worker")
-data class Worker(
+@Table(name = "employee")
+data class Employee(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
@@ -26,10 +26,10 @@ data class Worker(
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "m2m_worker_worker_type",
-        joinColumns = [JoinColumn(name = "worker_id")],
-        inverseJoinColumns = [JoinColumn(name = "worker_type_id")]
+        name = "m2m_employee_employee_type",
+        joinColumns = [JoinColumn(name = "employee_id")],
+        inverseJoinColumns = [JoinColumn(name = "employee_type_id")]
     )
-    var workerTypes: MutableSet<WorkerType> = mutableSetOf()
+    var employeeTypes: MutableSet<EmployeeType> = mutableSetOf()
 )
 

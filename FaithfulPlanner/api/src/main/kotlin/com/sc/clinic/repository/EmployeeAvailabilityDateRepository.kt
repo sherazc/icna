@@ -1,9 +1,9 @@
 package com.sc.clinic.repository
 
-import com.sc.clinic.entity.RefWorkerType
+import com.sc.clinic.entity.EmployeeAvailabilityDate
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RefWorkerTypeRepository : JpaRepository<RefWorkerType, Long>
+interface EmployeeAvailabilityDateRepository : JpaRepository<EmployeeAvailabilityDate, Long>
 

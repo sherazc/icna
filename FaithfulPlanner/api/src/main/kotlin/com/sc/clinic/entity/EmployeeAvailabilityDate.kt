@@ -6,14 +6,14 @@ import java.time.LocalTime
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "worker_availability_date")
-data class WorkerAvailabilityDate(
+@Table(name = "employee_availability_date")
+data class EmployeeAvailabilityDate(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
 
-    @Column(name = "worker_id", nullable = false)
-    var workerId: Long,
+    @Column(name = "employee_id", nullable = false)
+    var employeeId: Long,
 
     @Column(name = "availability_date", nullable = false)
     var availabilityDate: LocalDate,

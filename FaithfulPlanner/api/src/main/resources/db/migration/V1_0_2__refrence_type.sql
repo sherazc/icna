@@ -4,7 +4,7 @@ create table ref_provider_type
     type_name varchar(255) not null
 );
 
-create table ref_worker_type
+create table ref_employee_type
 (
     id        bigserial    not null primary key,
     type_name varchar(255) not null
@@ -20,7 +20,7 @@ VALUES (1, 'General Practitioner'),
        (7, 'Dentist'),
        (8, 'Ophthalmologist');
 
-INSERT INTO ref_worker_type (id, type_name)
+INSERT INTO ref_employee_type (id, type_name)
 VALUES (1, 'Nurse'),
        (2, 'Receptionist'),
        (3, 'Medical Assistant'),
@@ -32,4 +32,4 @@ VALUES (1, 'Nurse'),
 
 -- Reset sequences to continue from the last inserted ID
 SELECT setval(pg_get_serial_sequence('ref_provider_type', 'id'), (SELECT MAX(id) FROM ref_provider_type));
-SELECT setval(pg_get_serial_sequence('ref_worker_type', 'id'), (SELECT MAX(id) FROM ref_worker_type));
+SELECT setval(pg_get_serial_sequence('ref_employee_type', 'id'), (SELECT MAX(id) FROM ref_employee_type));

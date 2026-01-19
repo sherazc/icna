@@ -15,7 +15,7 @@ create table provider
     constraint fk_provider_company foreign key (company_id) references company(id)
 );
 
-create table provider_provider_type
+create table m2m_provider_provider_type
 (
     provider_id bigint not null,
     provider_type_id bigint not null,

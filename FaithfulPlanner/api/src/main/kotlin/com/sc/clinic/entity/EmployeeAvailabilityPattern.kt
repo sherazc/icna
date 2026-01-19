@@ -5,14 +5,14 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "worker_availability_pattern")
-data class WorkerAvailabilityPattern(
+@Table(name = "employee_availability_pattern")
+data class EmployeeAvailabilityPattern(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
 
-    @Column(name = "worker_id", nullable = false)
-    var workerId: Long,
+    @Column(name = "employee_id", nullable = false)
+    var employeeId: Long,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "availability_pattern", nullable = false)
