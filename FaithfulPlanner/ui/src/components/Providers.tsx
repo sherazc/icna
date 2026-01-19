@@ -1,14 +1,14 @@
+import { UnAuthRedirect } from "./auth/UnAuthRedirect";
+import { ScreenHeader } from "./common/ScreenHeader";
+
 export default function Providers() {
   return (
     <div id="providers">
-      <div className="header">
-        <h2>Provider Management <span className="orgBadge" id="providerOrgBadge">Mercy Free Clinic</span></h2>
-        <div className="headerActions">
-          <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
-          <button className="btn btnPrimary" data-onclick="openModal('addProviderModal')">+ Add Provider</button>
-          <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
-        </div>
-      </div>
+      <UnAuthRedirect/>
+      <ScreenHeader screenName="Provider Management"> 
+        <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
+        <button className="btn btnPrimary" data-onclick="openModal('addProviderModal')">+ Add Provider</button>
+      </ScreenHeader>
 
       <div className="tableContainer">
         <table>
