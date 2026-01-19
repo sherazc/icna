@@ -24,7 +24,12 @@ data class Worker(
     @Column(name = "company_id")
     var companyId: Long?,
 
-    @Column(name = "worker_type_id")
-    var workerTypeId: Long?
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "m2m_worker_worker_type",
+        joinColumns = [JoinColumn(name = "worker_id")],
+        inverseJoinColumns = [JoinColumn(name = "worker_type_id")]
+    )
+    var workerTypes: MutableSet<WorkerType> = mutableSetOf()
 )
 

@@ -24,7 +24,12 @@ data class Provider(
     @Column(name = "company_id")
     var companyId: Long?,
 
-    @Column(name = "provider_type_id")
-    var providerTypeId: Long?
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "m2m_provider_provider_type",
+        joinColumns = [JoinColumn(name = "provider_id")],
+        inverseJoinColumns = [JoinColumn(name = "provider_type_id")]
+    )
+    var providerTypes: MutableSet<ProviderType> = mutableSetOf()
 )
 
