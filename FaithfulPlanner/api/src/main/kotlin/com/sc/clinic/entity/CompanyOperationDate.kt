@@ -24,8 +24,9 @@ data class CompanyOperationDate(
     @Column(name = "end_time")
     var endTime: LocalTime?,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    var status: String = "SCHEDULED",
+    var status: CompanyOperationDateStatus = CompanyOperationDateStatus.SCHEDULED,
 
     @Column(name = "notes")
     var notes: String?,
