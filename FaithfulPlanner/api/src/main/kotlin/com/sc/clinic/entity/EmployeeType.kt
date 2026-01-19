@@ -10,6 +10,10 @@ data class EmployeeType(
     var id: Long?,
 
     @Column(name = "type_name", nullable = false)
-    var typeName: String
+    var typeName: String,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "employee_type_group", nullable = false)
+    var employeeTypeGroup: EmployeeTypeGroup
 )
 

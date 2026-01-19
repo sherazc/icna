@@ -1,35 +1,33 @@
-create table ref_provider_type
-(
-    id        bigserial    not null primary key,
-    type_name varchar(255) not null
-);
-
 create table ref_employee_type
 (
     id        bigserial    not null primary key,
-    type_name varchar(255) not null
+    type_name varchar(255) not null,
+    employee_type_group varchar(50) not null
 );
 
-INSERT INTO ref_provider_type (id, type_name)
-VALUES (1, 'General Practitioner'),
-       (2, 'Pediatrician'),
-       (3, 'Cardiologist'),
-       (4, 'Dermatologist'),
-       (5, 'Orthopedic Surgeon'),
-       (6, 'Psychiatrist'),
-       (7, 'Dentist'),
-       (8, 'Ophthalmologist');
+-- Insert PROVIDER types (from old ref_provider_type)
+INSERT INTO ref_employee_type (id, type_name, employee_type_group)
+VALUES (1, 'General Practitioner', 'PROVIDER'),
+       (2, 'Pediatrician', 'PROVIDER'),
+       (3, 'Cardiologist', 'PROVIDER'),
+       (4, 'Dermatologist', 'PROVIDER'),
+       (5, 'Orthopedic Surgeon', 'PROVIDER'),
+       (6, 'Psychiatrist', 'PROVIDER'),
+       (7, 'Dentist', 'PROVIDER'),
+       (8, 'Ophthalmologist', 'PROVIDER');
 
-INSERT INTO ref_employee_type (id, type_name)
-VALUES (1, 'Nurse'),
-       (2, 'Receptionist'),
-       (3, 'Medical Assistant'),
-       (4, 'Lab Technician'),
-       (5, 'Pharmacist'),
-       (6, 'Physical Therapist'),
-       (7, 'Administrative Staff'),
-       (8, 'Billing Specialist');
+-- Insert VOLUNTEER types (from old ref_worker_type)
+INSERT INTO ref_employee_type (id, type_name, employee_type_group)
+VALUES (9, 'Nurse', 'VOLUNTEER'),
+       (10, 'Receptionist', 'VOLUNTEER'),
+       (11, 'Medical Assistant', 'VOLUNTEER'),
+       (12, 'Lab Technician', 'VOLUNTEER'),
+       (13, 'Pharmacist', 'VOLUNTEER'),
+       (14, 'Physical Therapist', 'VOLUNTEER'),
+       (15, 'Administrative Staff', 'VOLUNTEER'),
+       (16, 'Billing Specialist', 'VOLUNTEER');
 
 -- Reset sequences to continue from the last inserted ID
-SELECT setval(pg_get_serial_sequence('ref_provider_type', 'id'), (SELECT MAX(id) FROM ref_provider_type));
 SELECT setval(pg_get_serial_sequence('ref_employee_type', 'id'), (SELECT MAX(id) FROM ref_employee_type));
+
+
