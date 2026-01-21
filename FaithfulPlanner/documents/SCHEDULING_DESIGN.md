@@ -1,99 +1,43 @@
 # Clinic Scheduling System - Database Design
 
 ## Overview
-This document explains the database design for the clinic scheduling system that manages provider (doctor) and worker (volunteer) scheduling for clinics that operate on irregular schedules.
+This document explains the database design for the clinic scheduling system that manages employee (providers and volunteers) scheduling for companies/clinics that operate on flexible schedules.
 
 ## Key Concepts
 
 ### Terminology
-- **Company** = Clinic
-- **Provider** = Doctor
-- **Worker** = Volunteer
+- **Company** = Clinic/Organization
+- **Employee** = Can be either Provider (doctor) or Volunteer (staff)
+- **Provider** = Medical providers (doctors, physicians) - identified by EmployeeTypeGroup.PROVIDER
+- **Volunteer** = Support staff (nurses, receptionists, etc.) - identified by EmployeeTypeGroup.VOLUNTEER
 - **User Profile** = System User
 
 ## Database Tables
 
-### 1. Clinic Operation Dates (`clinic_operation_date`)
-Stores when the clinic is scheduled to be open.
+### 1. Company Operation Dates (`company_operation_date`)
+Stores when the company/clinic is scheduled to be open.
 
 **Key Fields:**
-- `operation_date`: The date the clinic is open
+- `operation_date`: The date the company is open
 - `start_time` / `end_time`: Operating hours for that day
-- `status`: SCHEDULED, CONFIRMED, CANCELLED, COMPLETED
-- `company_id`: Links to the clinic
+- `status`: SCHEDULED, CONFIRMED, CANCELLED, COMPLETED (CompanyOperationStatus enum)
+- `company_id`: Links to the company
 
-**Purpose:** Defines all dates when the clinic plans to operate, regardless of regular schedule.
-
----
-
-### 2. Availability Patterns (Enum)
-Kotlin enum class that defines recurring availability patterns.
-
-**Pattern Values:**
-- `WEEKENDS`: Available on all Saturdays and Sundays
-- `SATURDAY`: Available on Saturdays only
-- `SUNDAY`: Available on Sundays only
-- `ANY_DAY`: Available on any day of the week
-- `SPECIFIC_DATE`: Available on specific dates only
-
-**Purpose:** Standardizes common availability patterns for easy selection. The enum contains patternCode, patternName, and description directly in the code, eliminating the need for a database reference table.
-
-**Benefits of Enum Approach:**
-- Type-safe: Compile-time checking prevents invalid patterns
-- No database lookup needed: Pattern information is in the code
-- Easier to maintain: Changes are made in one place
-- Better performance: No join to reference table needed
+**Purpose:** Defines all dates when the company plans to operate, regardless of regular schedule.
 
 ---
 
-### 3. Provider/Worker Availability Patterns
-(`provider_availability_pattern`, `worker_availability_pattern`)
+### 2. Employee Schedule (`employee_schedule`)
 
-Stores general availability preferences for providers and workers.
+Assigns employees (both providers and volunteers) to specific company operation dates.
 
 **Key Fields:**
-- `provider_id` / `worker_id`: Links to the person
-- `availability_pattern`: Enum value (e.g., WEEKENDS, SATURDAY, ANY_DAY)
-- `is_active`: Whether this pattern is currently active
-- `start_date` / `end_date`: When this pattern is effective (null end_date = indefinite)
-
-**Purpose:** Allows providers/workers to declare their general availability (e.g., "I'm available all weekends").
-
-**Examples:**
-- Dr. Smith says: "I'm available all weekends" → Uses WEEKENDS enum value
-- Nurse Johnson says: "I'm available Saturdays only" → Uses SATURDAY enum value
-
----
-
-### 4. Specific Date Availability
-(`provider_availability_date`, `worker_availability_date`)
-
-Stores specific date availability or unavailability overrides.
-
-**Key Fields:**
-- `availability_date`: The specific date
-- `is_available`: true = available, false = unavailable (exception)
-- `start_time` / `end_time`: Available hours for that date
-- `notes`: Additional information
-
-**Purpose:** 
-- Allows declaring availability for specific dates not covered by patterns
-- Allows marking unavailability exceptions (e.g., "I'm usually available weekends, but not Jan 24")
-
-**Examples:**
-- Dr. Williams has pattern "ANY_DAY" but adds specific date: "Jan 24, 9am-1pm only"
-- Volunteer Davis has pattern "WEEKENDS" but adds exception: "Jan 24 - unavailable (vacation)"
-
----
-
-### 5. Clinic Schedule Assignments
-(`clinic_schedule_provider`, `clinic_schedule_worker`)
-
-Assigns providers/workers to specific clinic operation dates.
-
-**Key Fields:**
-- `clinic_operation_date_id`: The clinic date
-- `provider_id` / `worker_id`: The assigned person
+- `company_operation_date_id`: The operation date
+- `employee_id`: The assigned employee
+- `assignment_status`: ASSIGNED, CONFIRMED, DECLINED, CANCELLED
+- `start_time` / `end_time`: Shift hours
+- `assigned_by`: User who made the assignment
+- `assigned_at` / `confirmed_at`: Timestamps
 - `assignment_status`: ASSIGNED, CONFIRMED, DECLINED, CANCELLED
 - `start_time` / `end_time`: Shift hours
 - `assigned_by`: User who made the assignment
@@ -102,76 +46,38 @@ Assigns providers/workers to specific clinic operation dates.
 **Purpose:** Final schedule - who is actually scheduled to work on which dates.
 
 **Workflow:**
-1. Admin creates clinic operation date (Jan 24)
-2. System checks who is available on Jan 24 (based on patterns + specific dates)
-3. Admin assigns available people to the schedule
-4. Assigned people can confirm or decline
-5. Status tracks the assignment lifecycle
+1. Admin creates company operation date (Jan 24)
+2. Admin assigns employees to the schedule
+3. Assigned employees can confirm or decline
+4. Status tracks the assignment lifecycle
 
 ---
 
-## How It Works - Complete Flow
+## How It Works - Simplified Flow
 
-### Step 1: Providers/Workers Declare Availability
+### Step 1: Company Creates Operation Dates
 
-**Option A - Use a Pattern:**
-```
-Dr. Smith: "I'm available all weekends"
-→ Creates provider_availability_pattern with WEEKENDS pattern
-```
-
-**Option B - Specify Dates:**
-```
-Volunteer Wilson: "I'm only available on Jan 24 and Jan 31"
-→ Creates employee_availability_pattern with SPECIFIC_DATE pattern
-→ Creates employee_availability_date entries for Jan 24 and Jan 31
-```
-
-**Option C - Pattern + Exceptions:**
-```
-Dr. Johnson: "I'm available Saturdays, but not on Jan 31 (vacation)"
-→ Creates provider_availability_pattern with SATURDAY pattern
-→ Creates provider_availability_date for Jan 31 with is_available=false
-```
-
-### Step 2: Clinic Creates Operation Dates
-
-Admin creates clinic operation dates:
+Admin creates company operation dates:
 ```
 Jan 24 (Saturday) 9am-5pm - SCHEDULED
 Jan 25 (Sunday) 9am-5pm - SCHEDULED
 Jan 31 (Saturday) 9am-5pm - SCHEDULED
 ```
 
-### Step 3: System Determines Availability
+### Step 2: Admin Assigns Employees
 
-For each operation date, the system checks:
-1. Who has matching availability patterns?
-2. Who has specific date availability entries?
-3. Who has unavailability exceptions?
-
-**Example for Jan 24 (Saturday):**
-- ✅ Dr. Smith (pattern: WEEKENDS)
-- ✅ Dr. Johnson (pattern: SATURDAY)
-- ✅ Dr. Williams (specific date: Jan 24)
-- ✅ Volunteer Davis (pattern: WEEKENDS)
-- ❌ Volunteer Miller (pattern: SUNDAY only)
-- ✅ Volunteer Wilson (specific date: Jan 24)
-
-### Step 4: Admin Makes Assignments
-
-Based on available people, admin assigns:
+Admin directly assigns employees to operation dates:
 ```
 Jan 24 schedule:
-- Dr. Smith: 9am-5pm (ASSIGNED → CONFIRMED)
-- Dr. Johnson: 9am-5pm (ASSIGNED → CONFIRMED)
-- Volunteer Davis: 9am-5pm (ASSIGNED → CONFIRMED)
-- Volunteer Wilson: 9am-5pm (ASSIGNED → pending confirmation)
+- Employee 1 (Dr. Smith - Provider): 9am-5pm (ASSIGNED)
+- Employee 2 (Dr. Johnson - Provider): 9am-5pm (ASSIGNED)
+- Employee 6 (Jennifer Davis - Volunteer): 9am-5pm (ASSIGNED)
+- Employee 8 (Jessica Wilson - Volunteer): 9am-5pm (ASSIGNED)
 ```
 
-### Step 5: Tracking and Confirmation
+### Step 3: Tracking and Confirmation
 
-- Assigned people receive notifications
+- Assigned employees receive notifications
 - They can confirm or decline
 - Status updates from ASSIGNED → CONFIRMED or DECLINED
 - Admin can see who's confirmed and fill gaps
@@ -180,15 +86,15 @@ Jan 24 schedule:
 
 ## Key Features
 
-### Flexibility
-- No fixed schedule - clinic can operate any day
-- Providers/workers can express availability in multiple ways
-- Can handle one-time dates, recurring patterns, and exceptions
+### Simplicity
+- Direct assignment model - no complex availability tracking
+- Admin assigns employees based on their own knowledge
+- Flexible scheduling without predefined patterns
 
 ### Efficiency
-- Patterns reduce data entry (one "WEEKENDS" pattern vs. entering every Saturday and Sunday)
-- Specific dates allow overrides without changing patterns
-- Easy to find available people for any given date
+- Simple two-table structure (company_operation_date + employee_schedule)
+- Easy to understand and maintain
+- Quick assignments without availability checks
 
 ### Tracking
 - Assignment status tracks the full lifecycle
@@ -227,39 +133,51 @@ WHERE p.id IN (
     UNION
     
     -- Providers with specific date availability for this date
-    SELECT pda.provider_id
-    FROM provider_availability_date pda
-    WHERE pda.availability_date = '2026-01-24'
-      AND pda.is_available = true
-);
-```
 
-### Find all scheduled providers for a clinic operation date:
+### Find all scheduled employees for a company operation date:
 
 ```sql
-SELECT p.*, csp.assignment_status, csp.start_time, csp.end_time
-FROM clinic_schedule_provider csp
-JOIN provider p ON csp.provider_id = p.id
-JOIN clinic_operation_date cod ON csp.clinic_operation_date_id = cod.id
+SELECT e.*, et.type_name, et.employee_type_group, 
+       es.assignment_status, es.start_time, es.end_time
+FROM employee_schedule es
+JOIN employee e ON es.employee_id = e.id
+JOIN m2m_employee_employee_type meet ON e.id = meet.employee_id
+JOIN employee_type et ON meet.employee_type_id = et.id
+JOIN company_operation_date cod ON es.company_operation_date_id = cod.id
 WHERE cod.operation_date = '2026-01-24'
   AND cod.company_id = 1
-ORDER BY csp.assignment_status, p.last_name;
+ORDER BY et.employee_type_group, es.assignment_status, e.last_name;
 ```
 
-### Find upcoming clinic dates that need providers:
+### Find upcoming company operation dates with assignment counts:
 
 ```sql
 SELECT cod.*, 
-       COUNT(csp.id) as assigned_providers,
-       COUNT(CASE WHEN csp.assignment_status = 'CONFIRMED' THEN 1 END) as confirmed_providers
-FROM clinic_operation_date cod
-LEFT JOIN clinic_schedule_provider csp ON cod.id = csp.clinic_operation_date_id
+       COUNT(DISTINCT es.id) as assigned_employees,
+       COUNT(DISTINCT CASE WHEN es.assignment_status = 'CONFIRMED' THEN es.id END) as confirmed_employees,
+       COUNT(DISTINCT CASE WHEN et.employee_type_group = 'PROVIDER' THEN es.id END) as assigned_providers,
+       COUNT(DISTINCT CASE WHEN et.employee_type_group = 'VOLUNTEER' THEN es.id END) as assigned_volunteers
+FROM company_operation_date cod
+LEFT JOIN employee_schedule es ON cod.id = es.company_operation_date_id
+LEFT JOIN employee e ON es.employee_id = e.id
+LEFT JOIN m2m_employee_employee_type meet ON e.id = meet.employee_id
+LEFT JOIN employee_type et ON meet.employee_type_id = et.id
 WHERE cod.company_id = 1
   AND cod.operation_date >= CURRENT_DATE
   AND cod.status = 'SCHEDULED'
 GROUP BY cod.id
-HAVING COUNT(CASE WHEN csp.assignment_status = 'CONFIRMED' THEN 1 END) < 2  -- Need at least 2 confirmed
 ORDER BY cod.operation_date;
+```
+
+### Find all employees:
+
+```sql
+SELECT e.*, et.type_name, et.employee_type_group
+FROM employee e
+JOIN m2m_employee_employee_type meet ON e.id = meet.employee_id
+JOIN employee_type et ON meet.employee_type_id = et.id
+WHERE e.company_id = 1
+ORDER BY et.employee_type_group, e.last_name;
 ```
 
 ---
@@ -268,21 +186,24 @@ ORDER BY cod.operation_date;
 
 The migration includes sample data:
 
-**Clinic Operation Dates:**
-- 5 upcoming dates for company/clinic 1 (weekends in late Jan/early Feb 2026)
+**Company Operation Dates:**
+- 5 upcoming dates for company 1 (weekends in late Jan/early Feb 2026)
 
-**Provider Availability:**
-- Dr. John Smith: Available all weekends
-- Dr. Sarah Johnson: Available Saturdays only
-- Dr. Michael Williams: Available any day (with specific morning-only availability on Jan 24)
+**Employees (Providers):**
+- Employee 1: John Smith (General Practitioner)
+- Employee 2: Sarah Johnson (Pediatrician)
+- Employee 3: Michael Williams (Cardiologist)
+- Employee 4: Emily Brown (Dermatologist)
+- Employee 5: David Jones (Orthopedic Surgeon + General Practitioner)
 
-**Worker Availability:**
-- Jennifer Davis (Nurse): Available all weekends
-- Robert Miller (Receptionist): Available Sundays only
-- Jessica Wilson (Medical Assistant): Specific dates only (Jan 24, Jan 31)
+**Employees (Volunteers):**
+- Employee 6: Jennifer Davis (Nurse + Medical Assistant)
+- Employee 7: Robert Miller (Receptionist)
+- Employee 8: Jessica Wilson (Medical Assistant)
+- Employee 9-13: Other volunteer staff
 
 **Sample Assignments:**
-- Jan 24 has 2 providers and 2 workers assigned
+- Jan 24 has 2 providers and 2 volunteers assigned
 
 ---
 
@@ -290,32 +211,34 @@ The migration includes sample data:
 
 1. **Shift Templates**: Predefined shift types (morning/afternoon/full-day)
 2. **Required Roles**: Specify minimum providers/employees needed per date
-3. **Notification System**: Auto-notify available people when new dates are created
+3. **Notification System**: Auto-notify employees when assigned
 4. **Recurring Operation Dates**: Bulk create multiple weekends at once
-5. **Availability Requests**: Employees request to be scheduled vs. admin assignment
-6. **Time-off Requests**: Formal unavailability request/approval workflow
-7. **Skills/Certifications**: Match provider skills to clinic needs
-8. **Conflict Detection**: Prevent double-booking across multiple clinics
+5. **Employee Requests**: Employees request to be scheduled vs. admin assignment only
+6. **Time-off Management**: Track employee time-off to prevent scheduling conflicts
+7. **Skills/Certifications**: Match employee skills to operation needs
+8. **Conflict Detection**: Prevent double-booking across multiple companies
+9. **Employee Availability**: Optional feature to track when employees are available
+10. **Calendar Integration**: Sync with external calendars
 
 ---
 
 ## Database Design Principles
 
-1. **Separation of Concerns**: Availability (what's possible) vs. Schedule (what's actual)
-2. **Flexibility First**: Support multiple ways of expressing availability
+1. **Simplicity First**: Direct assignment model without complex availability tracking
+2. **Flexibility**: Support any operation date without predefined schedules
 3. **Audit Trail**: Track who, when, and why for assignments
 4. **Performance**: Indexes on common query patterns
 5. **Data Integrity**: Foreign keys and unique constraints
-6. **Extensibility**: Easy to add new patterns or statuses
+6. **Extensibility**: Easy to add new features as needed
 
 ---
 
 ## Notes
 
-- All times are stored without timezone (assumes single timezone per clinic)
+- All times are stored without timezone (assumes single timezone per company)
 - Dates are stored as DATE type (no time component)
 - Times stored as TIME type (for shift hours)
 - Timestamps use TIMESTAMP type for audit fields
 - Created dates default to current_timestamp
-- Sample data uses realistic scenarios with different availability patterns
-
+- Employee types support multiple types per employee (many-to-many)
+- Employees are unified - providers and volunteers use the same table

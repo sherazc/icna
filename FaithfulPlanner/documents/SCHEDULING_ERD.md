@@ -2,123 +2,89 @@
 
 ## Core Tables Overview
 
-### 1. Clinic Operations
+### 1. Company Operations
 ```
-clinic_operation_date
+company_operation_date
 ├── id (PK)
 ├── company_id (FK → company)
 ├── operation_date
 ├── start_time
 ├── end_time
 ├── status (SCHEDULED, CONFIRMED, CANCELLED, COMPLETED)
-└── notes
+├── notes
+├── created_at
+└── updated_at
 ```
 
-### 2. Availability Patterns (Enum)
-**Kotlin Enum Class - No Database Table**
+### 2. Employee Schedule
 ```
-AvailabilityPattern (ENUM)
-├── WEEKENDS
-├── SATURDAY
-├── SUNDAY
-├── ANY_DAY
-└── SPECIFIC_DATE
-
-Each enum value contains:
-- patternCode: String
-- patternName: String
-- description: String
-```
-
-### 3. Provider Availability
-```
-provider_availability_pattern          provider_availability_date
-├── id (PK)                           ├── id (PK)
-├── provider_id (FK → provider)       ├── provider_id (FK → provider)
-├── availability_pattern (ENUM)       ├── availability_date
-├── is_active                         ├── is_available (true/false)
-├── start_date                        ├── start_time
-├── end_date                          ├── end_time
-└── notes                             └── notes
+employee_schedule
+├── id (PK)
+├── company_operation_date_id (FK → company_operation_date)
+├── employee_id (FK → employee)
+├── assignment_status (ASSIGNED, CONFIRMED, DECLINED, CANCELLED)
+├── start_time
+├── end_time
+├── notes
+├── assigned_by (FK → user_profile)
+├── assigned_at
+└── confirmed_at
 ```
 
-### 4. Employee Availability
+### 3. Employee (Unified)
 ```
-employee_availability_pattern            employee_availability_date
-├── id (PK)                           ├── id (PK)
-├── employee_id (FK → employee)       ├── employee_id (FK → employee)
-├── availability_pattern (ENUM)       ├── availability_date
-├── is_active                         ├── is_available (true/false)
-├── start_date                        ├── start_time
-├── end_date                          ├── end_time
-└── notes                             └── notes
+employee
+├── id (PK)
+├── first_name
+├── last_name
+├── email
+├── phone_number
+├── company_id (FK → company)
+└── employeeTypes (ManyToMany → employee_type)
 ```
 
-### 5. Schedule Assignments
+### 4. Employee Type
 ```
-clinic_schedule_provider               clinic_schedule_employee
-├── id (PK)                           ├── id (PK)
-├── clinic_operation_date_id (FK)     ├── clinic_operation_date_id (FK)
-├── provider_id (FK → provider)       ├── worker_id (FK → worker)
-├── assignment_status                 ├── assignment_status
-├── start_time                        ├── start_time
-├── end_time                          ├── end_time
-├── notes                             ├── notes
-├── assigned_by (FK → user_profile)   ├── assigned_by (FK → user_profile)
-├── assigned_at                       ├── assigned_at
-└── confirmed_at                      └── confirmed_at
+employee_type
+├── id (PK)
+├── type_name
+└── employee_type_group (ENUM: PROVIDER | VOLUNTEER)
 ```
 
 ## Relationship Flow
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                        AVAILABILITY LAYER                         │
-└──────────────────────────────────────────────────────────────────┘
-
-provider/worker
-    ↓
-    ├─→ availability_pattern (ENUM: "WEEKENDS", "SATURDAY", etc.)
-    │       - No database table needed
-    │       - Type-safe Kotlin enum
-    │       - Contains patternCode, patternName, description
-    │
-    └─→ availability_date tables (specific dates/exceptions)
-            provider_availability_date
-            worker_availability_date
-
-
-┌──────────────────────────────────────────────────────────────────┐
 │                        SCHEDULING LAYER                           │
 └──────────────────────────────────────────────────────────────────┘
 
-clinic_operation_date (when clinic is open)
+company_operation_date (when company is open)
     ↓
-    └─→ clinic_schedule_provider/worker (who is assigned)
+    └─→ employee_schedule (who is assigned)
             ↓
-            └─→ provider/worker (the actual person)
+            └─→ employee (the actual person)
+                    ↓
+                    └─→ employee_type (provider or volunteer roles)
 ```
 
-## Data Flow: From Availability to Schedule
+## Data Flow: Simplified Assignment
 
 ```
-Step 1: DECLARE AVAILABILITY
-    Provider says: "I'm available weekends"
-    → INSERT into provider_availability_pattern (availability_pattern = 'WEEKENDS')
+Step 1: CREATE OPERATION DATE
+    Admin creates: "Jan 24, 2026 (Saturday), 9am-5pm"
+    → INSERT into company_operation_date (status = 'SCHEDULED')
 
-Step 2: CREATE CLINIC DATE
-    Admin creates: "Jan 24, 2026 (Saturday)"
-    → INSERT into clinic_operation_date
+Step 2: ASSIGN EMPLOYEES
+    Admin assigns employees directly to the operation date:
+    → INSERT into employee_schedule (employee_id, company_operation_date_id, status = 'ASSIGNED')
 
-Step 3: FIND AVAILABLE STAFF
-    System queries:
-    → Check provider_availability_pattern (availability_pattern = 'WEEKENDS'? YES)
-    → Check provider_availability_date (any exceptions? NO)
-    → Result: Provider is available
+Step 3: EMPLOYEES CONFIRM
+    Employees confirm or decline:
+    → UPDATE employee_schedule (status = 'CONFIRMED' or 'DECLINED')
 
-Step 4: ASSIGN TO SCHEDULE
-    Admin assigns provider to Jan 24
-    → INSERT into clinic_schedule_provider (status = ASSIGNED)
+Step 4: TRACK STATUS
+    Admin monitors schedule:
+    → Query employee_schedule to see who's confirmed/assigned/declined
 
 Step 5: CONFIRM
     Provider confirms
