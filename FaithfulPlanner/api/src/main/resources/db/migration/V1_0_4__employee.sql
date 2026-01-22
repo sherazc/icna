@@ -10,10 +10,11 @@ create table employee
     id             bigserial    not null primary key,
     first_name     varchar(255) not null,
     last_name      varchar(255) not null,
-    email          varchar(255),
+    user_profile_id bigint,
     phone_number   varchar(50),
     company_id     bigint,
-    constraint fk_employee_company foreign key (company_id) references company (id)
+    constraint fk_employee_company foreign key (company_id) references company (id),
+    constraint fk_employee_user_profile foreign key (user_profile_id) references user_profile (id)
 );
 
 create table m2m_employee_employee_type
@@ -50,23 +51,23 @@ VALUES (9, 'Nurse', 'VOLUNTEER'),
 SELECT setval(pg_get_serial_sequence('employee_type', 'id'), (SELECT MAX(id) FROM employee_type));
 
 -- Insert sample employees (providers - from old provider table)
-INSERT INTO employee (id, first_name, last_name, email, phone_number, company_id)
-VALUES (1, 'John', 'Smith', 'john.smith@clinic.com', '(555) 123-4501', 1),
-       (2, 'Sarah', 'Johnson', 'sarah.johnson@clinic.com', '(555) 123-4502', 1),
-       (3, 'Michael', 'Williams', 'michael.williams@clinic.com', '(555) 123-4503', 1),
-       (4, 'Emily', 'Brown', 'emily.brown@clinic.com', '(555) 123-4504', 1),
-       (5, 'David', 'Jones', 'david.jones@clinic.com', '(555) 123-4505', 1);
+INSERT INTO employee (id, first_name, last_name, user_profile_id, phone_number, company_id)
+VALUES (1, 'John', 'Smith', NULL, '(555) 123-4501', 1),
+       (2, 'Sarah', 'Johnson', NULL, '(555) 123-4502', 1),
+       (3, 'Michael', 'Williams', NULL, '(555) 123-4503', 1),
+       (4, 'Emily', 'Brown', NULL, '(555) 123-4504', 1),
+       (5, 'David', 'Jones', NULL, '(555) 123-4505', 1);
 
 -- Insert sample employees (volunteers - from old worker table)
-INSERT INTO employee (id, first_name, last_name, email, phone_number, company_id)
-VALUES (6, 'Jennifer', 'Davis', 'jennifer.davis@clinic.com', '(555) 234-5601', 1),
-       (7, 'Robert', 'Miller', 'robert.miller@clinic.com', '(555) 234-5602', 1),
-       (8, 'Jessica', 'Wilson', 'jessica.wilson@clinic.com', '(555) 234-5603', 1),
-       (9, 'Christopher', 'Moore', 'christopher.moore@clinic.com', '(555) 234-5604', 1),
-       (10, 'Amanda', 'Taylor', 'amanda.taylor@clinic.com', '(555) 234-5605', 1),
-       (11, 'Matthew', 'Anderson', 'matthew.anderson@clinic.com', '(555) 234-5606', 1),
-       (12, 'Ashley', 'Thomas', 'ashley.thomas@clinic.com', '(555) 234-5607', 1),
-       (13, 'Daniel', 'Jackson', 'daniel.jackson@clinic.com', '(555) 234-5608', 1);
+INSERT INTO employee (id, first_name, last_name, user_profile_id, phone_number, company_id)
+VALUES (6, 'Jennifer', 'Davis', NULL, '(555) 234-5601', 1),
+       (7, 'Robert', 'Miller', NULL, '(555) 234-5602', 1),
+       (8, 'Jessica', 'Wilson', NULL, '(555) 234-5603', 1),
+       (9, 'Christopher', 'Moore', NULL, '(555) 234-5604', 1),
+       (10, 'Amanda', 'Taylor', NULL, '(555) 234-5605', 1),
+       (11, 'Matthew', 'Anderson', NULL, '(555) 234-5606', 1),
+       (12, 'Ashley', 'Thomas', NULL, '(555) 234-5607', 1),
+       (13, 'Daniel', 'Jackson', NULL, '(555) 234-5608', 1);
 
 SELECT setval(pg_get_serial_sequence('employee', 'id'), (SELECT MAX(id) FROM employee));
 

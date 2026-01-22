@@ -15,8 +15,8 @@ data class Employee(
     @Column(name = "last_name", nullable = false)
     var lastName: String,
 
-    @Column(name = "email")
-    var email: String?,
+    @Column(name = "user_profile_id")
+    var userProfileId: Long?,
 
     @Column(name = "phone_number")
     var phoneNumber: String?,
