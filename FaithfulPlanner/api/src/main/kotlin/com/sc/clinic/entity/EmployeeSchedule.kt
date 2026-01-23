@@ -14,8 +14,9 @@ data class EmployeeSchedule(
     @Column(name = "company_operation_date_id", nullable = false)
     var companyOperationDateId: Long,
 
-    @Column(name = "user_profile_id", nullable = false)
-    var userProfileId: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_profile_id", nullable = false)
+    var userProfile: UserProfile,
 
     @Column(name = "assignment_status", nullable = false)
     var assignmentStatus: String = "ASSIGNED",
