@@ -53,8 +53,12 @@ class UserProfileService(
             ?: UserProfile(
                 null,
                 userProfileDto.email,
-                userProfileDto.usersPassword?.let { passwordEncoder.encode(userProfileDto.usersPassword) },
+                userProfileDto.usersPassword?.let { passwordEncoder.encode(it) },
+                userProfileDto.firstName,
+                userProfileDto.lastName,
+                userProfileDto.phoneNumber,
                 company,
+                mutableSetOf(),
                 mutableSetOf()
             )
 

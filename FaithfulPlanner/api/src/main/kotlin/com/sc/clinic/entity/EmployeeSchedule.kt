@@ -14,8 +14,8 @@ data class EmployeeSchedule(
     @Column(name = "company_operation_date_id", nullable = false)
     var companyOperationDateId: Long,
 
-    @Column(name = "employee_id", nullable = false)
-    var employeeId: Long,
+    @Column(name = "user_profile_id", nullable = false)
+    var userProfileId: Long,
 
     @Column(name = "assignment_status", nullable = false)
     var assignmentStatus: String = "ASSIGNED",
@@ -29,8 +29,6 @@ data class EmployeeSchedule(
     @Column(name = "notes")
     var notes: String?,
 
-    @Column(name = "assigned_by")
-    var assignedBy: Long?,
 
     @Column(name = "assigned_at", nullable = false)
     var assignedAt: LocalDateTime = LocalDateTime.now(),

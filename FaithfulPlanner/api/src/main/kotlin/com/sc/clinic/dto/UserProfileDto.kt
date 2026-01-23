@@ -15,9 +15,21 @@ class UserProfileDto(
     @param:JsonProperty("usersPassword")
     var usersPassword: String?,
     @param:JsonProperty("companyId")
-    var companyId: Long?
+    var companyId: Long?,
+    @param:JsonProperty("firstName")
+    var firstName: String? = null,
+    @param:JsonProperty("lastName")
+    var lastName: String? = null,
+    @param:JsonProperty("phoneNumber")
+    var phoneNumber: String? = null
 ) {
     constructor(userProfile: UserProfile): this(
-        userProfile.id, userProfile.email, userProfile.userPassword, userProfile.company.id
+        userProfile.id,
+        userProfile.email,
+        userProfile.userPassword,
+        userProfile.company.id,
+        userProfile.firstName,
+        userProfile.lastName,
+        userProfile.phoneNumber
     )
 }

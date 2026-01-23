@@ -26,7 +26,7 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
 
     @Query(
         """
-        select new com.sc.clinic.dto.UserProfileDto(u.id, u.email, u.userPassword, u.company.id) 
+        select new com.sc.clinic.dto.UserProfileDto(u.id, u.email, u.userPassword, u.company.id, u.firstName, u.lastName, u.phoneNumber) 
         from UserProfile u
         where u.company.id = :companyId """)
     fun findActive(companyId: Long): List<UserProfileDto>

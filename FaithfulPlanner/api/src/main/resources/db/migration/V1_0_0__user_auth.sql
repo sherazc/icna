@@ -19,6 +19,9 @@ create table user_profile
     id            bigserial    not null primary key,
     email         varchar(255) not null,
     user_password varchar(1024),
+    first_name    varchar(255),
+    last_name     varchar(255),
+    phone_number  varchar(50),
     company_id      bigint,
     constraint uk_user_profile_email_company unique (email, company_id)
 );
