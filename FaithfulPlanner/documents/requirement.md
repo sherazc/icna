@@ -1,40 +1,34 @@
 CompanyDto
 {
-  employeeTypeGroups: EmployeeTypeGroupDto[]
+  id: number,
+  employeeGroups: EmployeeGroupDto[]
 }
 
-EmployeeTypeGroupDto
+EmployeeGroupDto
 {
+  id: number,
   groupName: string,
-  employeeTypes: EmployeeType[]
+  employeeTypes: EmployeeTypeDto[]
 }
 
-EmployeeType {
-  
+EmployeeTypeDto {
+  id: number,
+  typeName: string
 }
 
 
+# Requirement
+Create a tab for each employee-group
 
-# Requirement.
-create a tab for each employee-group-type
+When user login check if employee-groups are present, 
 
-employee-group-type will have create, update, delete employees
+Then navigate user to company view. Or else navigate user to Dashboard screen
 
-Company View create crud of employee-group-type and employee-type
+On Company view Screen if employee-groups are not available then show message to create employee-groups
 
+In company screen ADMIN and MASTER can CUD employee-group
 
-
-
-# Requirement Login
-When user login check if employee-type-groups are present.
-If they are not then take user to company view. 
-On company view if user is ADMIN then show them 
-
-
-
-
-# Requirement employee type
-
+In company screen BASIC_USER user can view employee-group
 
 
 ## Employee Type Controller
@@ -50,8 +44,4 @@ request
 Get /employee-type/companyId/{companyId}/group
 response
 string[]
-
-
-
-
 
