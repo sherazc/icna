@@ -1,6 +1,6 @@
 package com.sc.clinic.entity
 
-enum class CompanyOperationDateStatus(
+enum class OperationDateStatus(
     val statusCode: String,
     val statusName: String
 ) {
@@ -10,7 +10,7 @@ enum class CompanyOperationDateStatus(
     COMPLETED("COMPLETED", "Completed");
 
     companion object {
-        fun fromCode(code: String): CompanyOperationDateStatus? {
+        fun fromCode(code: String): OperationDateStatus? {
             return entries.find { it.statusCode == code }
         }
     }

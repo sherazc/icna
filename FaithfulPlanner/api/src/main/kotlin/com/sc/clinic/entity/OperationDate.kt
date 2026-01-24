@@ -6,8 +6,8 @@ import java.time.LocalTime
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "company_operation_date")
-data class CompanyOperationDate(
+@Table(name = "operation_date")
+data class OperationDate(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
@@ -26,7 +26,7 @@ data class CompanyOperationDate(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    var status: CompanyOperationDateStatus = CompanyOperationDateStatus.SCHEDULED,
+    var status: OperationDateStatus = OperationDateStatus.SCHEDULED,
 
     @Column(name = "notes")
     var notes: String?,
