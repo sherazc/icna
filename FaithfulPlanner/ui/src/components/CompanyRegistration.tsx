@@ -125,7 +125,7 @@ export default function CompanyRegistration() {
         </div>
         <div className="formGroup">
           <label htmlFor="email">Admin Email</label>
-          <input type="email" id="email" placeholder="Primary admin email"
+          <input type="email" id="email" placeholder="Admin email"
             onChange={onChangeUserProfileText} />
           <ErrorField errors={errors} fieldName="userProfile.email" />
         </div>
@@ -140,6 +140,24 @@ export default function CompanyRegistration() {
           <input type="password" id="passwordConfirm" placeholder="Confirm password"
             onChange={onChangeText} />
           <ErrorField errors={errors} fieldName="passwordConfirm" />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="Admin first name"
+            onChange={onChangeUserProfileText} />
+          <ErrorField errors={errors} fieldName="userProfile.firstName" />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="lastName">Last Name</label>
+          <input type="text" id="lastName" placeholder="Admin last name"
+            onChange={onChangeUserProfileText} />
+          <ErrorField errors={errors} fieldName="userProfile.lastName" />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="phoneNumber">Admin Phone Number</label>
+          <input type="text" id="phoneNumber" placeholder="Admin phone number"
+            onChange={onChangeUserProfileText} />
+          <ErrorField errors={errors} fieldName="userProfile.phoneNumber" />
         </div>
         <div className="formActions">
           <button type="submit" className="btn btnPrimary">Register Organization</button>
