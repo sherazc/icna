@@ -38,6 +38,7 @@ export type AuthRole = 'BASIC_USER' // Users who register for the event
 export const defaultAuthUserTokenDto = (): AuthUserTokenDto => ({
     userProfileId: 0,
     companyId: 0,
+    companyName: "",
     subject: "",
     issuedAtUtc: "",
     expiresAtUtc: "",

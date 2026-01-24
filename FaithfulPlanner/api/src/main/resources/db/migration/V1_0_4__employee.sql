@@ -1,8 +1,17 @@
+create table employee_group
+(
+    id         bigserial    not null primary key,
+    group_name varchar(255) not null,
+    company_id bigint       not null,
+    constraint fk_employee_group_company foreign key (company_id) references company(id)
+);
+
 create table employee_type
 (
-    id        bigserial    not null primary key,
-    type_name varchar(255) not null,
-    employee_type_group varchar(50) not null
+    id                bigserial    not null primary key,
+    type_name         varchar(255) not null,
+    employee_group_id bigint       not null,
+    constraint fk_employee_type_employee_group foreign key (employee_group_id) references employee_group(id)
 );
 
 create table m2m_user_profile_employee_type
@@ -14,27 +23,34 @@ create table m2m_user_profile_employee_type
     constraint fk_user_profile_employee_type_employee_type foreign key (employee_type_id) references employee_type(id)
 );
 
+-- Insert employee groups
+INSERT INTO employee_group (id, group_name, company_id)
+VALUES (1, 'PROVIDER', 1),
+       (2, 'VOLUNTEER', 1);
+
+SELECT setval(pg_get_serial_sequence('employee_group', 'id'), (SELECT MAX(id) FROM employee_group));
+
 -- Insert employee types - PROVIDER group (from old provider_type table)
-INSERT INTO employee_type (id, type_name, employee_type_group)
-VALUES (1, 'General Practitioner', 'PROVIDER'),
-       (2, 'Pediatrician', 'PROVIDER'),
-       (3, 'Cardiologist', 'PROVIDER'),
-       (4, 'Dermatologist', 'PROVIDER'),
-       (5, 'Orthopedic Surgeon', 'PROVIDER'),
-       (6, 'Psychiatrist', 'PROVIDER'),
-       (7, 'Dentist', 'PROVIDER'),
-       (8, 'Ophthalmologist', 'PROVIDER');
+INSERT INTO employee_type (id, type_name, employee_group_id)
+VALUES (1, 'General Practitioner', 1),
+       (2, 'Pediatrician', 1),
+       (3, 'Cardiologist', 1),
+       (4, 'Dermatologist', 1),
+       (5, 'Orthopedic Surgeon', 1),
+       (6, 'Psychiatrist', 1),
+       (7, 'Dentist', 1),
+       (8, 'Ophthalmologist', 1);
 
 -- Insert employee types - VOLUNTEER group (from old worker_type table)
-INSERT INTO employee_type (id, type_name, employee_type_group)
-VALUES (9, 'Nurse', 'VOLUNTEER'),
-       (10, 'Receptionist', 'VOLUNTEER'),
-       (11, 'Medical Assistant', 'VOLUNTEER'),
-       (12, 'Lab Technician', 'VOLUNTEER'),
-       (13, 'Pharmacist', 'VOLUNTEER'),
-       (14, 'Physical Therapist', 'VOLUNTEER'),
-       (15, 'Administrative Staff', 'VOLUNTEER'),
-       (16, 'Billing Specialist', 'VOLUNTEER');
+INSERT INTO employee_type (id, type_name, employee_group_id)
+VALUES (9, 'Nurse', 2),
+       (10, 'Receptionist', 2),
+       (11, 'Medical Assistant', 2),
+       (12, 'Lab Technician', 2),
+       (13, 'Pharmacist', 2),
+       (14, 'Physical Therapist', 2),
+       (15, 'Administrative Staff', 2),
+       (16, 'Billing Specialist', 2);
 
 SELECT setval(pg_get_serial_sequence('employee_type', 'id'), (SELECT MAX(id) FROM employee_type));
 

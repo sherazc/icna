@@ -1,33 +1,57 @@
-# Context
-company is also known as clinic
+CompanyDto
+{
+  employeeTypeGroups: EmployeeTypeGroupDto[]
+}
 
-provider is also known as doctor
+EmployeeTypeGroupDto
+{
+  groupName: string,
+  employeeTypes: EmployeeType[]
+}
 
-worker is also known as volunteer
+EmployeeType {
+  
+}
 
-user_profile is system user
 
-Current ERD clinic_db-public.graphml
 
-I need to design scheduling system for clinic
+# Requirement.
+create a tab for each employee-group-type
 
-this application is to manage scheduling of providers and volunteers that are working in clinic
+employee-group-type will have create, update, delete employees
 
-for now I need to create db design
+Company View create crud of employee-group-type and employee-type
 
-Create sql file in FaithfulPlanner/api/src/main/resources/db/migration
 
-for now I want to get explorer ideas
 
-# Requirement
 
-this clinic is a free clinic that operates on weekends
-Sometimes one day of weekend sometimes both days 
-Sometimes it even open in any day of the week.
-The point is that there is no regular schedule.
+# Requirement Login
+When user login check if employee-type-groups are present.
+If they are not then take user to company view. 
+On company view if user is ADMIN then show them 
 
-provider and employees (volunteers) can suggest when will they be available. like weekends, any day, a day, or a date or multiple dates
 
-system should be able to create new clinic open date
 
-check which provider and employee (volunteer) are available and assign them to open clinic date.
+
+# Requirement employee type
+
+
+
+## Employee Type Controller
+request
+Get /employee-type/companyId/{companyId}
+response
+{
+  typeName: string,
+  employeeTypeGroup: string
+}
+
+request
+Get /employee-type/companyId/{companyId}/group
+response
+string[]
+
+
+
+
+
