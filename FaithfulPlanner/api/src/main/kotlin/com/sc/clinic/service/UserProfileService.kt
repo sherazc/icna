@@ -68,6 +68,9 @@ class UserProfileService(
             userProfileRepository.findById(id)
                 .map {
                     it.email = userProfileDto.email
+                    it.firstName = userProfileDto.firstName
+                    it.lastName = userProfileDto.lastName
+                    it.phoneNumber = userProfileDto.phoneNumber
                     it
                 }
                 .orElse(null)
