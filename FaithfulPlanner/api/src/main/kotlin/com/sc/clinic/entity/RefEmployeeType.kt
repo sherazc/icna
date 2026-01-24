@@ -12,9 +12,9 @@ data class RefEmployeeType(
     @Column(name = "type_name", nullable = false)
     var typeName: String,
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "employee_type_group", nullable = false)
-    var employeeTypeGroup: EmployeeTypeGroup
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_group_id", nullable = false)
+    var employeeGroup: EmployeeGroup
 )
 
 
