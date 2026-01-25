@@ -2,7 +2,9 @@ package com.sc.clinic.service.security
 
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
+import com.sc.clinic.entity.UserRole
 import com.sc.clinic.service.UserProfileService
+import com.sc.clinic.service.model.AuthRole
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -26,6 +28,18 @@ class ScSecurityUserDetailService(val userProfileService: UserProfileService) : 
             ?: throw UsernameNotFoundException("Can not find user. companyId $companyId, email $email")
     }
 
-    private fun getRoles(companyId: Long, email: String): List<String> =
-        userProfileService.findRolesByCompanyAndEmail(companyId, email).map { it.roleName }
+    private fun getRoles(companyId: Long, email: String): List<String>  {
+        val userRolesInDb = userProfileService.findRolesByCompanyAndEmail(companyId, email).map { it.roleName }
+        val roles: MutableSet<String> = HashSet(userRolesInDb)
+        if (userRolesInDb.contains(AuthRole.MASTER.toString())) {
+            AuthRole.entries.forEach { roles.add(it.toString()) }
+        }
+
+        if (userRolesInDb.contains(AuthRole.ADMIN.toString())) {
+            roles.add(AuthRole.BASIC_USER.toString())
+        }
+
+        return ArrayList(roles)
+    }
+
 }
