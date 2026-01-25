@@ -31,17 +31,8 @@ In company screen ADMIN and MASTER can CUD employee-group
 In company screen BASIC_USER user can view employee-group
 
 
-## Employee Type Controller
-request
-Get /employee-type/companyId/{companyId}
-response
-{
-  typeName: string,
-  employeeTypeGroup: string
-}
-
-request
-Get /employee-type/companyId/{companyId}/group
-response
-string[]
+## Employee Group
+Get employee group
+Get /employee-group/companyId/{companyId}
+response: EmployeeGroupDto[]
 
