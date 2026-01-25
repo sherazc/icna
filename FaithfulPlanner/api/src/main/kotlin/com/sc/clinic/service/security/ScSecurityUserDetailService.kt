@@ -9,9 +9,14 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import kotlin.plus
+import kotlin.text.contains
+import kotlin.text.toList
+import kotlin.toString
 
 @Service
 class ScSecurityUserDetailService(val userProfileService: UserProfileService) : UserDetailsService {
+    // Email Regex
     val userNameRegex: Regex = "[0-9]*\\/.{2,}@.{2,}\\..{2,}".toRegex();
 
     override fun loadUserByUsername(username: String): UserDetails {
@@ -28,18 +33,19 @@ class ScSecurityUserDetailService(val userProfileService: UserProfileService) : 
             ?: throw UsernameNotFoundException("Can not find user. companyId $companyId, email $email")
     }
 
-    private fun getRoles(companyId: Long, email: String): List<String>  {
-        val userRolesInDb = userProfileService.findRolesByCompanyAndEmail(companyId, email).map { it.roleName }
-        val roles: MutableSet<String> = HashSet(userRolesInDb)
-        if (userRolesInDb.contains(AuthRole.MASTER.toString())) {
-            AuthRole.entries.forEach { roles.add(it.toString()) }
+    private fun getRoles(companyId: Long, email: String): List<String> {
+        val dbRoles = userProfileService.findRolesByCompanyAndEmail(companyId, email)
+            // .mapTo(destination mutable collection, transformer lambda)
+            // if the last parameter is a lambda then it can be written outside () parenthesis
+            .mapTo(mutableSetOf()) { it.roleName }
+
+        val additionalRoles = when {
+            AuthRole.MASTER.toString() in dbRoles -> AuthRole.entries.map { it.toString() }
+            AuthRole.ADMIN.toString() in dbRoles -> listOf(AuthRole.BASIC_USER.toString())
+            else -> emptyList()
         }
 
-        if (userRolesInDb.contains(AuthRole.ADMIN.toString())) {
-            roles.add(AuthRole.BASIC_USER.toString())
-        }
-
-        return ArrayList(roles)
+        return (dbRoles + additionalRoles).toList()
     }
 
 }
