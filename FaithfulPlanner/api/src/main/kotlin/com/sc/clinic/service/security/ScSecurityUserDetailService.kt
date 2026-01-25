@@ -2,17 +2,12 @@ package com.sc.clinic.service.security
 
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
-import com.sc.clinic.entity.UserRole
 import com.sc.clinic.service.UserProfileService
 import com.sc.clinic.service.model.AuthRole
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import kotlin.plus
-import kotlin.text.contains
-import kotlin.text.toList
-import kotlin.toString
 
 @Service
 class ScSecurityUserDetailService(val userProfileService: UserProfileService) : UserDetailsService {
@@ -39,13 +34,14 @@ class ScSecurityUserDetailService(val userProfileService: UserProfileService) : 
             // if the last parameter is a lambda then it can be written outside () parenthesis
             .mapTo(mutableSetOf()) { it.roleName }
 
+        // when is equivalent to switch in Java/JavaScript
         val additionalRoles = when {
             AuthRole.MASTER.toString() in dbRoles -> AuthRole.entries.map { it.toString() }
             AuthRole.ADMIN.toString() in dbRoles -> listOf(AuthRole.BASIC_USER.toString())
             else -> emptyList()
         }
 
+        // "+" operator can be used to combine 2 collection and create a new collections
         return (dbRoles + additionalRoles).toList()
     }
-
 }
