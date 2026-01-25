@@ -1,11 +1,11 @@
 meta {
-  name: /user-profile/company-id/{companyId}
+  name: /user-profile
   type: http
   seq: 7
 }
 
 get {
-  url: {{base_url}}/api/user-profile/company-id/2
+  url: {{base_url}}/api/company/2/user-profile
   body: json
   auth: none
 }

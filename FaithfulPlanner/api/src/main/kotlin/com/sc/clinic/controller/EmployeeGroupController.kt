@@ -13,12 +13,19 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/api/employee-group")
+@RequestMapping("/api/company/{companyId}/employee-group")
 @RestController
 class EmployeeGroupController(
     private val employeeGroupService: EmployeeGroupService) {
 
-    @GetMapping("/company/{companyId}/count")
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun getGroups(@PathVariable companyId: Long) = employeeGroupService.getGroups(companyId)
+
+    @GetMapping("/count")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun countGroups(@PathVariable companyId: Long) = employeeGroupService.countGroups(companyId)
+
+
+
 }
