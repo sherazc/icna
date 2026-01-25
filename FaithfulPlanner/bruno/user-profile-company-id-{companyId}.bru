@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{base_url}}/api/company/2/user-profile
+  url: {{base_url}}/api/company/1/user-profile
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
 }
 
 script:post-response {

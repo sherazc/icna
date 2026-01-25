@@ -1,0 +1,20 @@
+meta {
+  name: /employee-group
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{base_url}}/api/company/1/employee-group
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

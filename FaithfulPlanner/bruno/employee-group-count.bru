@@ -1,11 +1,11 @@
 meta {
-  name: /employee-group/company/{companyId}/count
+  name: /employee-group/count
   type: http
   seq: 7
 }
 
 get {
-  url: http://localhost:8080/api/employee-group/company/{{companyId}}/count
+  url: {{base_url}}/api/company/1/employee-group/count
   body: none
   auth: bearer
 }
