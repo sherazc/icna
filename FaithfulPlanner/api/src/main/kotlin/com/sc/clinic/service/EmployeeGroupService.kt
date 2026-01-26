@@ -2,7 +2,6 @@ package com.sc.clinic.service
 
 import com.sc.clinic.dto.EmployeeGroupDto
 import com.sc.clinic.repository.EmployeeGroupRepository
-import com.sc.clinic.repository.EmployeeTypeRepository
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,4 +18,7 @@ class EmployeeGroupService(
                     group.id?.let { employeeTypeService.findDtoByEmployeeGroupId(it) } ?: emptyList()
                 )
             }
+
+    fun findGroupNames(companyId: Long) = employeeGroupRepository.findGroupNames(companyId)
+        .filterNotNull()
 }

@@ -21,5 +21,7 @@ class EmployeeGroupController(
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun countGroups(@PathVariable companyId: Long) = employeeGroupService.countGroups(companyId)
 
-
+    @GetMapping("/names")
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun findGroupNames(@PathVariable companyId: Long) = employeeGroupService.findGroupNames(companyId)
 }
