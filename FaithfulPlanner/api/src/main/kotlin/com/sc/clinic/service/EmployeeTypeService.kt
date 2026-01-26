@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class EmployeeTypeService(private val employeeTypeRepository: EmployeeTypeRepository) {
 
-    fun findByEmployeeGroupId(employeeGroupId: Long) = employeeTypeRepository.findByEmployeeGroupId(employeeGroupId)
+    fun findByEmployeeGroupId(employeeGroupId: Long) = employeeTypeRepository.findByEmployeeGroupIdOrderByTypeName(employeeGroupId)
 
     fun findDtoByEmployeeGroupId(employeeGroupId: Long) = findByEmployeeGroupId(employeeGroupId).map { mapEntityToDto(it) }
 

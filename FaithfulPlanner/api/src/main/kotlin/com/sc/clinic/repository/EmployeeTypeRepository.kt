@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface EmployeeTypeRepository : JpaRepository<EmployeeType, Long> {
 
-    fun findByEmployeeGroupId(employeeGroupId: Long): List<EmployeeType>
+    fun findByEmployeeGroupIdOrderByTypeName(employeeGroupId: Long): List<EmployeeType>
 }
 

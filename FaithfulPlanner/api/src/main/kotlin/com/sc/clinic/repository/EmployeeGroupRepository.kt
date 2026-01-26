@@ -11,7 +11,10 @@ interface EmployeeGroupRepository : JpaRepository<EmployeeGroup, Long> {
     fun countByCompanyId(companyId: Long): Long
     fun findByCompanyId(companyId: Long): List<EmployeeGroup>
     fun company(company: Company): MutableList<EmployeeGroup>
-    @Query("SELECT eg.groupName FROM EmployeeGroup eg WHERE eg.company.id = :companyId")
+    @Query("""
+        SELECT eg.groupName FROM EmployeeGroup eg WHERE eg.company.id = :companyId
+        order by eg.groupName
+    """)
     fun findGroupNames(companyId: Long): List<String>
 
 }
