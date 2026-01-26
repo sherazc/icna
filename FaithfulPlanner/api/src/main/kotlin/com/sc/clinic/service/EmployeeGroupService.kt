@@ -19,6 +19,6 @@ class EmployeeGroupService(
                 )
             }
 
-    fun findGroupNames(companyId: Long) = employeeGroupRepository.findGroupNames(companyId)
+    fun getGroupNames(companyId: Long) = employeeGroupRepository.findGroupNames(companyId)
         .filterNotNull()
 }

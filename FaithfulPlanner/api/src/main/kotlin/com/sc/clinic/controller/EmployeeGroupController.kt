@@ -23,5 +23,5 @@ class EmployeeGroupController(
 
     @GetMapping("/names")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun findGroupNames(@PathVariable companyId: Long) = employeeGroupService.findGroupNames(companyId)
+    fun getGroupNames(@PathVariable companyId: Long) = employeeGroupService.getGroupNames(companyId)
 }

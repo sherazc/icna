@@ -16,6 +16,9 @@ export const clinicEndpoints = () => {
         epCompany: () => `${baseUrl}/api/company`,
         epLoginToken: () => `${baseUrl}/api/login/token`,
         epSaveRegistration: () => `${baseUrl}/api/registration`,
+        epGetEmployeeGroups: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group`,
+        epCountEmployeeGroups: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/count`,
+        epGetEmployeeGroupNames: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/names`,
     }
 }
 
