@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Authenticated } from "../components/auth/Authentecated";
+import { Authenticated } from "../components/auth/Authenticated";
 
 export default function AppNav() {
   const location = useLocation();
