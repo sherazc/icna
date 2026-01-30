@@ -90,5 +90,17 @@ export type FormPassword = {
 };
 
 export enum FormState {
-  FRESH, IN_PROGRESS, SUCCESSFUL, FAILED
+    FRESH, IN_PROGRESS, SUCCESSFUL, FAILED
 };
+
+
+export type EmployeeGroupDto = {
+    id?: number;
+    groupName: string;
+    employeeTypes: EmployeeTypeDto[];
+}
+
+export type EmployeeTypeDto = {
+    id?: number;
+    typeName: string;
+}
