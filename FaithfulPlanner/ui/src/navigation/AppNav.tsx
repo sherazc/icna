@@ -1,10 +1,24 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Authenticated } from "../components/auth/Authenticated";
+import type { EmployeeGroupDto } from "../service/service-types";
+import { AppContext } from "../store/context";
 
 export default function AppNav() {
   const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [employeeGroups, setEmployeeGroups] = useState<EmployeeGroupDto[]>();
+  const [{ clinicApis, authUserToken }] = useContext(AppContext);
+
+  useEffect(() => {
+    const loadEmployeeGroups = async () => {
+      if (authUserToken && authUserToken.companyId) {
+        const employeeGroupsResponse = await clinicApis.getEmployeeGroups(authUserToken.companyId);
+        setEmployeeGroups(employeeGroupsResponse);
+      }
+    };
+    loadEmployeeGroups();
+  }, [authUserToken]);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -40,7 +54,7 @@ export default function AppNav() {
         <div className="sidebarHeader">
           <h1>FaithfulPlanner</h1>
         </div>
-        
+
 
         <ul className="navMenu">
           <Authenticated authenticated={false}>
@@ -58,7 +72,7 @@ export default function AppNav() {
             </li>
           </Authenticated>
 
-{/*
+          {/*
           <li className="navItem">
             <Link to="/org-selection" className={`navLink ${isActive("/org-selection")}`} onClick={closeMobileMenu}>
               Select Organization
@@ -72,7 +86,7 @@ export default function AppNav() {
               </Link>
             </li>
           </Authenticated>
-{/*
+          {/*
           <li className="navItem superAdminOnly">
             <Link to="/org-management" className={`navLink ${isActive("/org-management")}`} onClick={closeMobileMenu}>
               Organization Management
@@ -93,7 +107,19 @@ export default function AppNav() {
               </Link>
             </li>
           </Authenticated>
-{/*
+
+          <Authenticated>
+            {employeeGroups && employeeGroups.length > 0 && employeeGroups.map((employeeGroup) => (
+              <li className="navItem">
+                <Link to="/volunteers" className={`navLink ${isActive("/volunteers")}`} onClick={closeMobileMenu}>
+                  {employeeGroup.groupName}
+                </Link>
+              </li>
+            ))}
+          </Authenticated>
+
+
+          {/*
           <li className="navItem">
             <Link to="/schedules" className={`navLink ${isActive("/schedules")}`} onClick={closeMobileMenu}>
               Schedules
