@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class EmployeeGroupTypesDto(
     @param:JsonProperty("id")
-    val id: Long?,
+    override val id: Long?,
     @param:JsonProperty("groupName")
-    val groupName: String,
+    override val groupName: String,
     @param:JsonProperty("employeeTypes")
     val employeeTypes: List<EmployeeTypeDto> = mutableListOf()
-)
+) : EmployeeGroupDto(id, groupName)
