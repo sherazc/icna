@@ -12,16 +12,15 @@ import org.springframework.web.bind.annotation.RestController
 class EmployeeGroupController(
     private val employeeGroupService: EmployeeGroupService
 ) {
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun getGroups(@PathVariable companyId: Long) = employeeGroupService.getGroup(companyId)
 
     @GetMapping("/types")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun getGroups(@PathVariable companyId: Long) = employeeGroupService.getGroupsTypes(companyId)
+    fun getGroupsTypes(@PathVariable companyId: Long) = employeeGroupService.getGroupsTypes(companyId)
 
     @GetMapping("/count")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun countGroups(@PathVariable companyId: Long) = employeeGroupService.countGroups(companyId)
-
-    @GetMapping("/names")
-    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun getGroupNames(@PathVariable companyId: Long) = employeeGroupService.getGroupNames(companyId)
 }

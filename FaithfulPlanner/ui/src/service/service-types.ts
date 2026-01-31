@@ -93,8 +93,12 @@ export enum FormState {
     FRESH, IN_PROGRESS, SUCCESSFUL, FAILED
 };
 
-
 export type EmployeeGroupDto = {
+    id?: number;
+    groupName: string;
+}
+
+export type EmployeeGroupTypeDto = {
     id?: number;
     groupName: string;
     employeeTypes: EmployeeTypeDto[];
