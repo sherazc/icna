@@ -13,9 +13,9 @@ class EmployeeGroupController(
     private val employeeGroupService: EmployeeGroupService
 ) {
 
-    @GetMapping
+    @GetMapping("/types")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun getGroups(@PathVariable companyId: Long) = employeeGroupService.getGroups(companyId)
+    fun getGroups(@PathVariable companyId: Long) = employeeGroupService.getGroupsTypes(companyId)
 
     @GetMapping("/count")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
