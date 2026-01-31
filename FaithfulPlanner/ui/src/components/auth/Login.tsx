@@ -5,7 +5,7 @@ import { ActionNameAuthUser } from "../../store/authUserReducer";
 import { useNavigate } from "react-router-dom";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
-import {isAuthenticate} from "../../service/authentication-services";
+import {isAuthenticated} from "../../service/authentication-services";
 import {ActionNameClinicApis} from "../../store/clinicApisReducer";
 import { createAuthHeader, clinicApis as clinicApisFunction } from "../../service/api/ApiClinic";
 

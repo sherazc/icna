@@ -20,7 +20,7 @@ export function isContainsAnyRoles(authUserToken: AuthUserTokenDto, shouldHaveAn
     return filteredRoles.length > 0;
 }
 
-export const isAuthenticate = (
+export const isAuthenticated = (
     authenticated = true, // content requires authentication.
     authUserToken: AuthUserTokenDto,
     shouldHaveRoles:AuthRole[] = [],

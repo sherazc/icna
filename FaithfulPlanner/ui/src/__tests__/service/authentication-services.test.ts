@@ -1,6 +1,6 @@
 import {defaultAuthUserTokenDto} from "../../service/service-types";
 import {
-    isAuthenticate,
+    isAuthenticated,
     isContainsAllRoles,
     isContainsAnyRoles,
     isValidAuthUserToken
@@ -44,56 +44,56 @@ describe('authentication-service', () => {
 
     test("isAuthenticate unauthenticated", () => {
         const testToken = defaultAuthUserTokenDto();
-        expect(isAuthenticate(false, testToken)).toBeTruthy();
-        expect(isAuthenticate(false, testToken, [])).toBeTruthy();
-        expect(isAuthenticate(false, testToken, [], [])).toBeTruthy();
+        expect(isAuthenticated(false, testToken)).toBeTruthy();
+        expect(isAuthenticated(false, testToken, [])).toBeTruthy();
+        expect(isAuthenticated(false, testToken, [], [])).toBeTruthy();
         testToken.token = "abc"
-        expect(isAuthenticate(false, testToken)).toBeFalsy();
-        expect(isAuthenticate(false, testToken, [])).toBeFalsy();
-        expect(isAuthenticate(false, testToken, [], [])).toBeFalsy();
+        expect(isAuthenticated(false, testToken)).toBeFalsy();
+        expect(isAuthenticated(false, testToken, [])).toBeFalsy();
+        expect(isAuthenticated(false, testToken, [], [])).toBeFalsy();
     });
 
     test("isAuthenticate authenticated", () => {
         const testToken = defaultAuthUserTokenDto();
-        expect(isAuthenticate(true, testToken)).toBeFalsy();
-        expect(isAuthenticate(true, testToken, [])).toBeFalsy();
-        expect(isAuthenticate(true, testToken, [], [])).toBeFalsy();
+        expect(isAuthenticated(true, testToken)).toBeFalsy();
+        expect(isAuthenticated(true, testToken, [])).toBeFalsy();
+        expect(isAuthenticated(true, testToken, [], [])).toBeFalsy();
 
         testToken.token = "abc"
-        expect(isAuthenticate(true, testToken)).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [], [])).toBeTruthy();
+        expect(isAuthenticated(true, testToken)).toBeTruthy();
+        expect(isAuthenticated(true, testToken, [])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, [], [])).toBeTruthy();
     });
 
     test("isAuthenticate shouldHaveRoles", () => {
         const testToken = defaultAuthUserTokenDto();
-        expect(isAuthenticate(true, testToken, ['MASTER'])).toBeFalsy();
-        expect(isAuthenticate(true, testToken, ['MASTER', 'ADMIN'], [])).toBeFalsy();
+        expect(isAuthenticated(true, testToken, ['MASTER'])).toBeFalsy();
+        expect(isAuthenticated(true, testToken, ['MASTER', 'ADMIN'], [])).toBeFalsy();
 
         testToken.token = "abc"
         testToken.roles.push('MASTER')
-        expect(isAuthenticate(true, testToken, ['MASTER'])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, ['MASTER', 'ADMIN'])).toBeFalsy();
+        expect(isAuthenticated(true, testToken, ['MASTER'])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, ['MASTER', 'ADMIN'])).toBeFalsy();
 
         testToken.roles.push('ADMIN')
-        expect(isAuthenticate(true, testToken, ['MASTER'])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, ['MASTER', 'ADMIN'])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, ['MASTER', 'BASIC_USER'])).toBeFalsy();
+        expect(isAuthenticated(true, testToken, ['MASTER'])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, ['MASTER', 'ADMIN'])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, ['MASTER', 'BASIC_USER'])).toBeFalsy();
     });
 
     test("isAuthenticate shouldHaveAnyRoles", () => {
         const testToken = defaultAuthUserTokenDto();
-        expect(isAuthenticate(true, testToken, [], ['MASTER'])).toBeFalsy();
-        expect(isAuthenticate(true, testToken, [], ['MASTER', 'ADMIN'])).toBeFalsy();
+        expect(isAuthenticated(true, testToken, [], ['MASTER'])).toBeFalsy();
+        expect(isAuthenticated(true, testToken, [], ['MASTER', 'ADMIN'])).toBeFalsy();
 
         testToken.token = "abc"
         testToken.roles.push('MASTER')
-        expect(isAuthenticate(true, testToken, [], ['MASTER'])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [], ['MASTER', 'ADMIN'])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, [], ['MASTER'])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, [], ['MASTER', 'ADMIN'])).toBeTruthy();
 
         testToken.roles.push('ADMIN')
-        expect(isAuthenticate(true, testToken, [], ['MASTER'])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [], ['MASTER', 'ADMIN'])).toBeTruthy();
-        expect(isAuthenticate(true, testToken, [], ['MASTER', 'BASIC_USER'])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, [], ['MASTER'])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, [], ['MASTER', 'ADMIN'])).toBeTruthy();
+        expect(isAuthenticated(true, testToken, [], ['MASTER', 'BASIC_USER'])).toBeTruthy();
     });
 });

@@ -1,24 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { Authenticated } from "../components/auth/Authenticated";
-import type { EmployeeGroupDto } from "../service/service-types";
-import { AppContext } from "../store/context";
+import { useEmployeeGroups } from "../hook/useEmployeeGroups";
 
 export default function AppNav() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [employeeGroups, setEmployeeGroups] = useState<EmployeeGroupDto[]>();
-  const [{ clinicApis, authUserToken }] = useContext(AppContext);
-
-  useEffect(() => {
-    const loadEmployeeGroups = async () => {
-      if (authUserToken && authUserToken.companyId) {
-        const employeeGroupsResponse = await clinicApis.getEmployeeGroups(authUserToken.companyId);
-        setEmployeeGroups(employeeGroupsResponse);
-      }
-    };
-    loadEmployeeGroups();
-  }, [authUserToken]);
+  const employeeGroups = useEmployeeGroups()
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
