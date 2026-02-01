@@ -21,5 +21,5 @@ class EmployeeGroupService(
             }
 
     fun getGroups(companyId: Long) = employeeGroupRepository.findGroups(companyId)
-    fun getGroup(groupId: Long): EmployeeGroupDto?
+    fun getGroup(groupId: Long) = employeeGroupRepository.findGroup(groupId)
 }

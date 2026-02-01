@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class EmployeeGroupController(
     private val employeeGroupService: EmployeeGroupService
 ) {
-    @GetMapping
+    @GetMapping("/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun getGroup(@PathVariable groupId: Long) = employeeGroupService.getGroup(groupId)
 

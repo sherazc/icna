@@ -1,11 +1,11 @@
 meta {
-  name: /employee-group/types
+  name: /employee-group/{groupId}
   type: http
-  seq: 10
+  seq: 9
 }
 
 get {
-  url: {{base_url}}/api/company/1/employee-group/types
+  url: {{base_url}}/api/company/1/employee-group/1
   body: none
   auth: bearer
 }

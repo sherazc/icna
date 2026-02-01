@@ -20,5 +20,12 @@ interface EmployeeGroupRepository : JpaRepository<EmployeeGroup, Long> {
     )
     fun findGroups(companyId: Long): List<EmployeeGroupDto>
 
+    @Query(
+        """
+        SELECT new com.sc.clinic.dto.EmployeeGroupDto(eg.id, eg.groupName) 
+        FROM EmployeeGroup eg 
+        WHERE eg.id = :groupId """
+    )
+    fun findGroup(groupId: Long): EmployeeGroupDto?
 }
 
