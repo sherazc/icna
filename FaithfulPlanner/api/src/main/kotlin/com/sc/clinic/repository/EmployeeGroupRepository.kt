@@ -18,7 +18,7 @@ interface EmployeeGroupRepository : JpaRepository<EmployeeGroup, Long> {
         WHERE eg.company.id = :companyId
         order by eg.groupName """
     )
-    fun findGroup(companyId: Long): List<EmployeeGroupDto>
+    fun findGroups(companyId: Long): List<EmployeeGroupDto>
 
 }
 

@@ -1,5 +1,6 @@
 package com.sc.clinic.service
 
+import com.sc.clinic.dto.EmployeeGroupDto
 import com.sc.clinic.dto.EmployeeGroupTypesDto
 import com.sc.clinic.repository.EmployeeGroupRepository
 import org.springframework.stereotype.Service
@@ -19,5 +20,6 @@ class EmployeeGroupService(
                 )
             }
 
-    fun getGroup(companyId: Long) = employeeGroupRepository.findGroup(companyId)
+    fun getGroups(companyId: Long) = employeeGroupRepository.findGroups(companyId)
+    fun getGroup(groupId: Long): EmployeeGroupDto?
 }

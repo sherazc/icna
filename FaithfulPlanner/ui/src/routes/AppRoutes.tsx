@@ -13,6 +13,7 @@ import Settings from "../components/Settings";
 import OrgSettings from "../components/OrgSettings";
 import VolunteerReports from "../components/VolunteerReports";
 import Providers from "../components/Providers";
+import { EmployeeGroup } from "../components/EmployeeGroup";
 
 export default function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ export default function AppRoutes() {
         <Route index element={<Login/>}/>
         <Route path="login" element={<Login/>}/>
         <Route path="dashboard" element={<Dashboard/>}/>
+        <Route path="/employee-group/:employeeGroupId" element={<EmployeeGroup/>}/>
         <Route path="company-registration" element={<CompanyRegistration/>}/>
         <Route path="org-selection" element={<OrgSelection/>}/>
         <Route path="org-management" element={<OrgManagement/>}/>

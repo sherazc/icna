@@ -2,9 +2,9 @@ package com.sc.clinic.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-open class EmployeeGroupDto(
+data class EmployeeGroupDto(
     @param:JsonProperty("id")
-    open val id: Long?,
+    val id: Long?,
     @param:JsonProperty("groupName")
-    open val groupName: String
+    val groupName: String
 )

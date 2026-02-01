@@ -14,7 +14,11 @@ class EmployeeGroupController(
 ) {
     @GetMapping
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun getGroups(@PathVariable companyId: Long) = employeeGroupService.getGroup(companyId)
+    fun getGroup(@PathVariable groupId: Long) = employeeGroupService.getGroup(groupId)
+
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun getGroups(@PathVariable companyId: Long) = employeeGroupService.getGroups(companyId)
 
     @GetMapping("/types")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
