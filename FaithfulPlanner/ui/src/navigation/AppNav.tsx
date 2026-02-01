@@ -95,18 +95,16 @@ export default function AppNav() {
               </Link>
             </li>
           </Authenticated>
-
           <Authenticated>
-            {employeeGroups && employeeGroups.length > 0 && employeeGroups.map((employeeGroup) => (
-              <li className="navItem">
-                <Link to="/volunteers" className={`navLink ${isActive("/volunteers")}`} onClick={closeMobileMenu}>
+            {employeeGroups && employeeGroups.length > 0 && employeeGroups.map((employeeGroup, index) => {
+              const link = `/employee-group/${employeeGroup.id}`
+              return <li className="navItem">
+                <Link key={index} to={link} className={`navLink ${isActive(link)}`} onClick={closeMobileMenu}>
                   {employeeGroup.groupName}
                 </Link>
               </li>
-            ))}
+            })}
           </Authenticated>
-
-
           {/*
           <li className="navItem">
             <Link to="/schedules" className={`navLink ${isActive("/schedules")}`} onClick={closeMobileMenu}>
