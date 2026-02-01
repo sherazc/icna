@@ -22,4 +22,11 @@ class EmployeeGroupService(
 
     fun getGroups(companyId: Long) = employeeGroupRepository.findGroups(companyId)
     fun getGroup(groupId: Long) = employeeGroupRepository.findGroup(groupId)
+
+    fun getGroupTypes(groupId: Long) = employeeGroupRepository.findGroup(groupId)?.let { group ->
+        EmployeeGroupTypesDto(
+            group.id, group.groupName,
+            group.id?.let { employeeTypeService.findDtoByEmployeeGroupId(it) } ?: emptyList()
+        )
+    }
 }
