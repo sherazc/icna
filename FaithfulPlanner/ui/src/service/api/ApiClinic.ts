@@ -1,4 +1,4 @@
-import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypeDto, LoginRequest, RegistrationDto } from "../service-types";
+import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, RegistrationDto } from "../service-types";
 import {
   addHeadersInRequest,
   callApiIntercept,
@@ -58,7 +58,7 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       // addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    getEmployeeGroupsTypes: (companyId: number): Promise<EmployeeGroupTypeDto[]> => {
+    getEmployeeGroupsTypes: (companyId: number): Promise<EmployeeGroupTypesDto[]> => {
       const endpoint = endpoints.epGetEmployeeGroupsTypes(companyId);
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
@@ -82,7 +82,7 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    getEmployeeGroupTypes: (companyId: number, groupId: number): Promise<EmployeeGroupTypeDto> => {
+    getEmployeeGroupTypes: (companyId: number, groupId: number): Promise<EmployeeGroupTypesDto> => {
       const endpoint = endpoints.epGetEmployeeGroupTypes(companyId, groupId);
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);

@@ -97,6 +97,8 @@ export type EmployeeGroupDto = {
     id?: number;
     groupName: string;
 }
+export const defaultEmployeeGroupDto  = (): EmployeeGroupDto => ({id: 0, groupName: ""})
+
 
 /**
  * EmployeeGroupTypeDto extends EmployeeGroupDto.
@@ -104,9 +106,10 @@ export type EmployeeGroupDto = {
  * This syntax '&' is called "TypeScript's intersection type"
  * 
  */
-export type EmployeeGroupTypeDto = EmployeeGroupDto & {
+export type EmployeeGroupTypesDto = EmployeeGroupDto & {
     employeeTypes: EmployeeTypeDto[];
 }
+export const defaultEmployeeGroupTypeDto  = (): EmployeeGroupTypesDto => ({id: 0, groupName: "", employeeTypes: []})
 
 export type EmployeeTypeDto = {
     id?: number;
