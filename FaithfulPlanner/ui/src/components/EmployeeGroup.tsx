@@ -4,6 +4,7 @@ import { ScreenHeader } from "./common/ScreenHeader";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
 import { defaultEmployeeGroupDto, type EmployeeGroupDto } from "../service/service-types";
+import { UnAuthRedirect } from "./auth/UnAuthRedirect";
 
 interface Props { }
 
@@ -20,15 +21,15 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
   useEffect(() => {
     if (employeeGroupId && authUserToken.companyId) {
-      loadEmployeeGroup(authUserToken.companyId, +employeeGroupId)
+      loadEmployeeGroup(authUserToken.companyId, +employeeGroupId);
     }
   }, [employeeGroupId, authUserToken]);
 
   return (
     <div>
+      <UnAuthRedirect/>
       <ScreenHeader screenName={employeeGroup.groupName}>
-        <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
-        <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')">+ New Clinic Date</button>
+        <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')">+ New {employeeGroup.groupName}</button>
       </ScreenHeader>
       Employee Group {employeeGroupId}
     </div>

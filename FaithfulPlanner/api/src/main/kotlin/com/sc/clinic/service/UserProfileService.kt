@@ -18,7 +18,7 @@ class UserProfileService(
 ) {
 
     fun getAllActive(companyId: Long): List<UserProfileDto> = userProfileRepository
-        .findActive(companyId)
+        .findByCompanyId(companyId)
         .map {
             it.usersPassword = null
             it
@@ -62,7 +62,6 @@ class UserProfileService(
                 mutableSetOf()
             )
 
-
     private fun updateEntityWithDto(userProfileDto: UserProfileDto): UserProfile? {
         return userProfileDto.id?.let { id ->
             userProfileRepository.findById(id)
@@ -79,4 +78,12 @@ class UserProfileService(
 
     fun findRolesByCompanyAndEmail(companyId: Long, email: String) =
         userProfileRepository.findRolesByCompanyAndEmail(companyId, email)
+
+    fun findByCompanyIdAndEmployeeGroupId(companyId: Long, groupId: Long) {
+        val users = userProfileRepository.findByCompanyIdAndEmployeeGroupId(companyId, groupId)
+        println(users)
+
+
+        TODO()
+    }
 }
