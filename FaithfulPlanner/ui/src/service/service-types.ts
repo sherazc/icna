@@ -73,6 +73,9 @@ export type UserProfileDto = {
     email: string,
     usersPassword?: string,
     companyId?: number
+    firstName?: string,
+    lastName?: string,
+    phoneNumber?: string
 };
 
 export const defaultUserProfileDto = (): UserProfileDto => ({
