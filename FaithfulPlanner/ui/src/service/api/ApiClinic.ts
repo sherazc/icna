@@ -1,4 +1,4 @@
-import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, RegistrationDto } from "../service-types";
+import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, RegistrationDto, UserProfileEmployeeTypesDto } from "../service-types";
 import {
   addHeadersInRequest,
   callApiIntercept,
@@ -21,6 +21,7 @@ export const clinicEndpoints = () => {
     epGetEmployeeGroupTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/employee-group/${groupId}/types`,
     epCountEmployeeGroups: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/count`,
     epGetEmployeeGroupsTypes: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/types`,
+    epGetUserProfileEmployeeTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}`,
   }
 }
 
@@ -87,13 +88,19 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
-    },    
+    },
+    getUserProfileEmployeeTypes: (companyId: number, groupId: number): Promise<UserProfileEmployeeTypesDto[]> => {
+      const endpoint = endpoints.epGetUserProfileEmployeeTypes(companyId, groupId);
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
   }
   return api;
 }
 
 
 export const createAuthHeader = (authUserTokenDto: AuthUserTokenDto): ApiHeaders => ([[
-    "Authorization", `Bearer ${authUserTokenDto.token}`
+  "Authorization", `Bearer ${authUserTokenDto.token}`
 ]]);
 

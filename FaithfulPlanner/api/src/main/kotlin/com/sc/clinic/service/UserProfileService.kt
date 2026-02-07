@@ -1,10 +1,8 @@
 package com.sc.clinic.service
 
-import com.sc.clinic.dto.EmployeeTypeDto
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileEmployeeTypesDto
 import com.sc.clinic.entity.Company
-import com.sc.clinic.entity.EmployeeType
 import com.sc.clinic.entity.UserProfile
 import com.sc.clinic.exception.ScBadRequestException
 import com.sc.clinic.exception.ScException
@@ -83,13 +81,13 @@ class UserProfileService(
     fun findRolesByCompanyAndEmail(companyId: Long, email: String) =
         userProfileRepository.findRolesByCompanyAndEmail(companyId, email)
 
-    fun findByCompanyIdAndEmployeeGroupId(companyId: Long, groupId: Long) =
+    fun findUserProfileEmployeeTypes(companyId: Long, groupId: Long) =
         userProfileRepository.findByCompanyIdAndEmployeeGroupId(companyId, groupId)
             .map { toUserProfileEmployeeTypes(it) }
-            .map { u -> {
+            .map { u ->
                 u.usersPassword = null
                 u
-            } }
+             }
 
     private fun toUserProfileEmployeeTypes(u: UserProfile): UserProfileEmployeeTypesDto =
         UserProfileEmployeeTypesDto(

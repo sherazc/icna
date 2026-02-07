@@ -98,8 +98,8 @@ export default function AppNav() {
           <Authenticated>
             {employeeGroups && employeeGroups.length > 0 && employeeGroups.map((employeeGroup, index) => {
               const link = `/employee-group/${employeeGroup.id}`
-              return <li className="navItem">
-                <Link key={index} to={link} className={`navLink ${isActive(link)}`} onClick={closeMobileMenu}>
+              return <li className="navItem" key={index}>
+                <Link to={link} className={`navLink ${isActive(link)}`} onClick={closeMobileMenu}>
                   {employeeGroup.groupName}
                 </Link>
               </li>

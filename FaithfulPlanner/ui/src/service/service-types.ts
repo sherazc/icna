@@ -115,3 +115,10 @@ export type EmployeeTypeDto = {
     id?: number;
     typeName: string;
 }
+
+export type UserProfileEmployeeTypesDto = UserProfileDto & {
+    employeeTypes: EmployeeTypeDto[];
+}
+export const defaultUserProfileEmployeeTypesDto:UserProfileEmployeeTypesDto = {
+    ...defaultUserProfileDto(), employeeTypes: []
+}

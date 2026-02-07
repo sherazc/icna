@@ -17,6 +17,6 @@ class UserProfileController(val userProfileService: UserProfileService) {
 
     @GetMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun getAllUserProfiles(@PathVariable companyId: Long, @PathVariable groupId: Long) =
-        userProfileService.findByCompanyIdAndEmployeeGroupId(companyId, groupId)
+    fun getUserProfileEmployeeTypes(@PathVariable companyId: Long, @PathVariable groupId: Long) =
+        userProfileService.findUserProfileEmployeeTypes(companyId, groupId)
 }
