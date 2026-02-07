@@ -37,7 +37,8 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         join u.employeeTypes et
         join et.employeeGroup eg
         where u.company.id = :companyId 
-        and eg.id = :groupId""")
+        and eg.id = :groupId
+        order by u.firstName, u.lastName""")
     fun findByCompanyIdAndEmployeeGroupId(companyId: Long, groupId: Long): List<UserProfile>
 }
 

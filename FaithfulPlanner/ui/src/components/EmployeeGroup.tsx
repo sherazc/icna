@@ -28,20 +28,18 @@ export const EmployeeGroup: React.FC<Props> = () => {
     }
   }, [employeeGroupId, authUserToken]);
 
-
-  const createEmployeeTypes = (employeeTypes: EmployeeTypeDto[]): React.ReactNode => {
-    return <>Employee types</>;
-  }
-
+  const createEmployeeTypes = (employeeTypes: EmployeeTypeDto[]): React.ReactNode => (
+    <small className="smallText">{employeeTypes.map(et => et.typeName).join(", ")}</small>
+  )
 
   const createEmployeeRow = (employee: UserProfileEmployeeTypesDto): React.JSX.Element => (
     <tr key={employee.id}>
       <td>{employee.firstName} {employee.lastName}</td>
-      <td>{employee.employeeTypes.length > 0 && <small className="smallText">({createEmployeeTypes(employee.employeeTypes)})</small>}</td>
-      <td></td>
-      <td>8 <small className="smallText">(Rodriguez, Thompson, Kim, Anderson +4 more)</small></td>
-      <td><span className="badge badgeSuccess">Scheduled</span></td>
+      <td>{employee.employeeTypes.length > 0 && createEmployeeTypes(employee.employeeTypes)}</td>
+      <td>{employee.email}</td>
+      <td>{employee.phoneNumber}</td>
       <td>
+        <span className="badge badgeSuccess">Scheduled</span>
         <button className="actionBtn actionBtnEdit" data-onclick="event.stopPropagation(); openModal('editClinicModal')">Edit</button>
         <button className="actionBtn actionBtnDelete" data-onclick="event.stopPropagation()">Delete</button>
       </td>
@@ -60,22 +58,18 @@ export const EmployeeGroup: React.FC<Props> = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Providers Assigned</th>
-                <th>Volunteers Assigned</th>
-                <th>Status</th>
+                <th>Type</th>
+                <th>Email</th>
+                <th>Phone</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {employees.length > 0 && employees.map(employee => createEmployeeRow(employee))}
-
-
-
             </tbody>
           </table>
         </div>
       </div>
-
     </div>
   );
 }
