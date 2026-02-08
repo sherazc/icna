@@ -47,11 +47,12 @@ export const EmployeeGroup: React.FC<Props> = () => {
     </tr>
   )
 
+  const [show, setShow] = useState<boolean>(false);
   return (
     <div>
       <UnAuthRedirect />
       <ScreenHeader screenName={employeeGroup.groupName}>
-        <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')">+ New {employeeGroup.groupName}</button>
+        <button className="btn btnPrimary" onClick={() => setShow(true)}>+ New {employeeGroup.groupName}</button>
       </ScreenHeader>
       <div className="tableContainer">
         <div className="tableScroll">
@@ -72,7 +73,10 @@ export const EmployeeGroup: React.FC<Props> = () => {
         </div>
       </div>
 
-      <Modal config={{}} show={true}>
+      <Modal config={{
+        title: "New Provider",
+        yesFunction: () => {console.log("Yes " + new Date())}
+      }} show={show} setShow={setShow}>
         test
       </Modal>
     </div>
