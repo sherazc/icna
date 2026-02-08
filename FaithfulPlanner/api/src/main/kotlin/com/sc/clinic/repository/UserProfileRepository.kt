@@ -22,14 +22,12 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         where up.company.id = :companyId and lower(up.email) = lower(:email)""")
     fun findRolesByCompanyAndEmail(companyId: Long, email: String): List<UserRole>
 
-
     @Query(
         """
         select new com.sc.clinic.dto.UserProfileDto(u.id, u.email, u.userPassword, u.company.id, u.firstName, u.lastName, u.phoneNumber) 
         from UserProfile u
         where u.company.id = :companyId """)
     fun findByCompanyId(companyId: Long): List<UserProfileDto>
-
 
     @Query(
         """

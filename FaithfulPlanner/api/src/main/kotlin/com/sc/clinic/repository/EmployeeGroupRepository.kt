@@ -16,16 +16,14 @@ interface EmployeeGroupRepository : JpaRepository<EmployeeGroup, Long> {
         SELECT new com.sc.clinic.dto.EmployeeGroupDto(eg.id, eg.groupName) 
         FROM EmployeeGroup eg 
         WHERE eg.company.id = :companyId
-        order by eg.groupName """
-    )
+        order by eg.groupName """)
     fun findGroups(companyId: Long): List<EmployeeGroupDto>
 
     @Query(
         """
         SELECT new com.sc.clinic.dto.EmployeeGroupDto(eg.id, eg.groupName) 
         FROM EmployeeGroup eg 
-        WHERE eg.id = :groupId """
-    )
+        WHERE eg.id = :groupId """)
     fun findGroup(groupId: Long): EmployeeGroupDto?
 }
 

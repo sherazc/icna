@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
 import { defaultEmployeeGroupDto, type EmployeeGroupDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect";
+import { Modal } from "./common/Modal";
 
 interface Props { }
 
@@ -70,6 +71,10 @@ export const EmployeeGroup: React.FC<Props> = () => {
           </table>
         </div>
       </div>
+
+      <Modal config={{}} show={true}>
+        test
+      </Modal>
     </div>
   );
 }

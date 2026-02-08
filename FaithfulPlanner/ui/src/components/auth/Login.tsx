@@ -5,7 +5,6 @@ import { ActionNameAuthUser } from "../../store/authUserReducer";
 import { useNavigate } from "react-router-dom";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
-import {isAuthenticated} from "../../service/authentication-services";
 import {ActionNameClinicApis} from "../../store/clinicApisReducer";
 import { createAuthHeader, clinicApis as clinicApisFunction } from "../../service/api/ApiClinic";
 
@@ -31,7 +30,7 @@ export default function Login() {
       });
       dispatch({
           type: ActionNameClinicApis.updateClinicApis,
-          payload: clinicApisFunction(createAuthHeader(authUserTokenDto))
+          payload: clinicApisFunction(createAuthHeader(authUserTokenDto)) // TODO: in the error interceptor, detect if it is unauth. Navigate to /
       });
       setFormState(FormState.SUCCESSFUL);
     } catch (error) {
