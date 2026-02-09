@@ -53,12 +53,34 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
     setShow(false);
   }
 
-  // if (!show) {
-  //   return <></>
-  // }
+  const getModalClasses = (showModal: boolean, modalType?: ModalType): string => {
+    let classes = "modal";
+    if (showModal) {
+      classes += " show";
+    }
+    switch (modalType) {
+      case ModalType.ERROR: 
+        classes += " error"
+        break;
+      case ModalType.INFORMATION: 
+        classes += " confirm"
+        break;
+      case ModalType.WARNING: 
+        classes += " warning"
+        break;
+      default: 
+        break;
+    }
+
+    return classes;
+  }
+
+  if (!show) {
+    return <></>
+  }
 
   return (
-    <div id="configModal" className={show ? "modal show" : "modal"}>
+    <div className={getModalClasses(show, modalConfig.modalType)} >
       <div className="modalContent" style={{maxWidth: "500px"}}>
         <div className="modalHeader">
           <h3 id="modalTitle">{modalConfig.title}</h3>

@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
 import { defaultEmployeeGroupDto, type EmployeeGroupDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect";
-import { Modal } from "./common/Modal";
+import { Modal, ModalType } from "./common/Modal";
 
 interface Props { }
 
@@ -75,7 +75,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
       <Modal config={{
         title: "New Provider",
-        yesFunction: () => {console.log("Yes " + new Date())}
+        yesFunction: () => {console.log("Yes " + new Date())},
+        modalType: ModalType.WARNING
+        
       }} show={show} setShow={setShow}>
         test
       </Modal>
