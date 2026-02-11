@@ -1,23 +1,12 @@
+import { ModalType, type ModalConfig } from "../../service/service-types";
 import "./Modal.css"
-
-export enum ModalType { DEFAULT, INFORMATION, WARNING, ERROR }
-export type ModalConfig = {
-  title?: string,
-  yesFunction?: () => void,
-  yesLabel?: string
-  noFunction?: () => void,
-  noLabel?: string
-  closeFunction?: () => void,
-  minimumWidth?: number,
-  modalType?: ModalType
-}
 
 interface Props {
   children: React.ReactNode;
   config: ModalConfig;
   show: boolean;
   setShow: (show: boolean) => void
-}
+};
 
 export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
 
@@ -29,29 +18,30 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
     noFunction: config.noFunction || undefined,
     noLabel: config.noLabel || "",
     closeFunction: config.closeFunction || undefined,
-    // minimumWidth?: number,
-  }
+    maxWidth: config.maxWidth || config.width || undefined,
+    width: config.width || undefined
+  };
 
   const handleClose = () => {
     if (modalConfig.closeFunction) {
       modalConfig.closeFunction();
     }
     setShow(false);
-  }
+  };
 
   const handleYes = () => {
     if (modalConfig.yesFunction) {
       modalConfig.yesFunction();
     }
     setShow(false);
-  }
+  };
 
   const handleNo = () => {
     if (modalConfig.noFunction) {
       modalConfig.noFunction();
     }
     setShow(false);
-  }
+  };
 
   const getModalClasses = (showModal: boolean, modalType?: ModalType): string => {
     let classes = "modal";
@@ -70,10 +60,10 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
         break;
       default: 
         break;
-    }
+    };
 
     return classes;
-  }
+  };
 
   if (!show) {
     return <></>
@@ -81,7 +71,7 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
 
   return (
     <div className={getModalClasses(show, modalConfig.modalType)} >
-      <div className="modalContent" style={{maxWidth: "500px"}}>
+      <div className="modalContent" style={{width: modalConfig.width, maxWidth: modalConfig.maxWidth}}>
         <div className="modalHeader">
           <h3 id="modalTitle">{modalConfig.title}</h3>
           <button className="closeBtn" onClick={handleClose}>&times;</button>

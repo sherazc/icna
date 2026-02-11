@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { ScreenHeader } from "./common/ScreenHeader";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
-import { defaultEmployeeGroupDto, type EmployeeGroupDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
+import { defaultEmployeeGroupDto, ModalType, type EmployeeGroupDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect";
-import { Modal, ModalType } from "./common/Modal";
+import { Modal } from "./common/Modal";
 
 interface Props { }
 
@@ -74,9 +74,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
       </div>
 
       <Modal config={{
-        title: "New Provider",
+        title: `New ${employeeGroup.groupName}`,
         yesFunction: () => {console.log("Yes " + new Date())},
-        modalType: ModalType.WARNING
+        modalType: ModalType.WARNING,
         
       }} show={show} setShow={setShow}>
         test

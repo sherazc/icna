@@ -125,3 +125,17 @@ export type UserProfileEmployeeTypesDto = UserProfileDto & {
 export const defaultUserProfileEmployeeTypesDto:UserProfileEmployeeTypesDto = {
     ...defaultUserProfileDto(), employeeTypes: []
 }
+
+export enum ModalType { DEFAULT, INFORMATION, WARNING, ERROR };
+
+export type ModalConfig = {
+  title?: string,
+  yesFunction?: () => void,
+  yesLabel?: string
+  noFunction?: () => void,
+  noLabel?: string
+  closeFunction?: () => void,
+  width?: string,
+  maxWidth?: string,
+  modalType?: ModalType
+};
