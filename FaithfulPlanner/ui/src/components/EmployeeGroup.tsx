@@ -15,7 +15,6 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [employeeGroup, setEmployeeGroup] = useState<EmployeeGroupDto>(defaultEmployeeGroupDto());
   const [employees, setEmployees] = useState<UserProfileEmployeeTypesDto[]>([]);
 
-
   const loadEmployeeGroup = async (companyId: number, groupId: number) => {
     const employeeGroupResponse = await clinicApis.getEmployeeGroup(companyId, groupId);
     setEmployeeGroup(employeeGroupResponse);
@@ -77,7 +76,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
         title: `New ${employeeGroup.groupName}`,
         yesFunction: () => {console.log("Yes " + new Date())},
         modalType: ModalType.WARNING,
-        
+        // noLabel: "test"
       }} show={show} setShow={setShow}>
         test
       </Modal>

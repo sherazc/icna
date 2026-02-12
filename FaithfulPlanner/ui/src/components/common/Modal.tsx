@@ -61,7 +61,6 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
       default: 
         break;
     };
-
     return classes;
   };
 
@@ -73,17 +72,15 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
     <div className={getModalClasses(show, modalConfig.modalType)} >
       <div className="modalContent" style={{width: modalConfig.width, maxWidth: modalConfig.maxWidth}}>
         <div className="modalHeader">
-          <h3 id="modalTitle">{modalConfig.title}</h3>
+          <h3>{modalConfig.title}</h3>
           <button className="closeBtn" onClick={handleClose}>&times;</button>
         </div>
-        <div style={{padding: "20px", borderBottom: "1px solid var(--border-color)"}}>
-          <p id="modalMessage" className="text-secondary">
-            {children}
-          </p>
+        <div className="text-secondary">
+          {children}
         </div>
         <div className="modalActions">
-          <button id="modalCancelBtn" className="btn btnSecondary" onClick={handleNo} style={{display: "none"}}>Cancel</button>
-          <button id="modalOkBtn" className="btn btnPrimary" onClick={handleYes}>{modalConfig.yesLabel}</button>
+          {modalConfig.noLabel && <button className="btn btnSecondary" onClick={handleNo}>{modalConfig.noLabel}</button>}
+          <button className="btn btnPrimary" onClick={handleYes}>{modalConfig.yesLabel}</button>
         </div>
       </div>
     </div>
