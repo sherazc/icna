@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ScreenHeader } from "./common/ScreenHeader";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
-import { defaultEmployeeGroupDto, ModalType, type EmployeeGroupDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
+import { defaultEmployeeGroupDto, defaultUserProfileEmployeeTypesDto, ModalType, type EmployeeGroupDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect";
 import { Modal } from "./common/Modal";
 
@@ -14,6 +14,10 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [employeeGroup, setEmployeeGroup] = useState<EmployeeGroupDto>(defaultEmployeeGroupDto());
   const [employees, setEmployees] = useState<UserProfileEmployeeTypesDto[]>([]);
+  const [modalEmployee, setModalEmployee] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
+
+
+
 
   const loadEmployeeGroup = async (companyId: number, groupId: number) => {
     const employeeGroupResponse = await clinicApis.getEmployeeGroup(companyId, groupId);
@@ -74,13 +78,32 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
       <Modal config={{
         title: `New ${employeeGroup.groupName}`,
-        yesFunction: () => {console.log("Yes " + new Date())},
+        yesFunction: () => { console.log("Yes " + new Date()) },
         modalType: ModalType.WARNING,
         // noLabel: "test"
       }} show={show} setShow={setShow}>
-        test
+        <form>
+          <div id="firstName" className="formGroup">
+            <label htmlFor="firstName">First Name</label>
+            <input type="text"  />
+          </div>
+        </form>
       </Modal>
     </div>
   );
 }
 
+
+/*
+
+export type UserProfileDto = {
+  id?: number,
+  email: string,
+  usersPassword?: string,
+  companyId?: number
+  firstName?: string,
+  lastName?: string,
+  phoneNumber?: string
+};
+
+*/

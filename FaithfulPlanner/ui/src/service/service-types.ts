@@ -100,7 +100,7 @@ export type EmployeeGroupDto = {
     id?: number;
     groupName: string;
 }
-export const defaultEmployeeGroupDto  = (): EmployeeGroupDto => ({id: 0, groupName: ""})
+export const defaultEmployeeGroupDto = (): EmployeeGroupDto => ({ id: 0, groupName: "" })
 
 
 /**
@@ -112,7 +112,7 @@ export const defaultEmployeeGroupDto  = (): EmployeeGroupDto => ({id: 0, groupNa
 export type EmployeeGroupTypesDto = EmployeeGroupDto & {
     employeeTypes: EmployeeTypeDto[];
 }
-export const defaultEmployeeGroupTypeDto  = (): EmployeeGroupTypesDto => ({id: 0, groupName: "", employeeTypes: []})
+export const defaultEmployeeGroupTypeDto = (): EmployeeGroupTypesDto => ({ id: 0, groupName: "", employeeTypes: [] })
 
 export type EmployeeTypeDto = {
     id?: number;
@@ -122,20 +122,21 @@ export type EmployeeTypeDto = {
 export type UserProfileEmployeeTypesDto = UserProfileDto & {
     employeeTypes: EmployeeTypeDto[];
 }
-export const defaultUserProfileEmployeeTypesDto:UserProfileEmployeeTypesDto = {
+
+export const defaultUserProfileEmployeeTypesDto = (): UserProfileEmployeeTypesDto => ({
     ...defaultUserProfileDto(), employeeTypes: []
-}
+});
 
 export enum ModalType { DEFAULT, INFORMATION, WARNING, ERROR };
 
 export type ModalConfig = {
-  title?: string,
-  yesFunction?: () => void,
-  yesLabel?: string
-  noFunction?: () => void,
-  noLabel?: string
-  closeFunction?: () => void,
-  width?: string,
-  maxWidth?: string,
-  modalType?: ModalType
+    title?: string,
+    yesFunction?: () => void,
+    yesLabel?: string
+    noFunction?: () => void,
+    noLabel?: string
+    closeFunction?: () => void,
+    width?: string,
+    maxWidth?: string,
+    modalType?: ModalType
 };
