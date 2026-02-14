@@ -15,9 +15,12 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [employeeGroup, setEmployeeGroup] = useState<EmployeeGroupDto>(defaultEmployeeGroupDto());
   const [employees, setEmployees] = useState<UserProfileEmployeeTypesDto[]>([]);
   const [modalEmployee, setModalEmployee] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
+  const [showEmployeeModal, setShowEmployeeModal] = useState<boolean>(false);
 
-
-
+  const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = event.target;
+    setModalEmployee(prevData => ({ ...prevData, [id]: value }));
+  };
 
   const loadEmployeeGroup = async (companyId: number, groupId: number) => {
     const employeeGroupResponse = await clinicApis.getEmployeeGroup(companyId, groupId);
@@ -25,6 +28,22 @@ export const EmployeeGroup: React.FC<Props> = () => {
     const employeesResponse = await clinicApis.getUserProfileEmployeeTypes(companyId, groupId);
     setEmployees(employeesResponse);
   };
+
+  const onNewEmployee = () => {
+    console.log(`New employee`);
+    setModalEmployee({...defaultUserProfileEmployeeTypesDto(), companyId: authUserToken.companyId});
+    setShowEmployeeModal(true);
+  }
+
+  const onEditEmployee = (employee: UserProfileEmployeeTypesDto) => {
+    console.log(`Edit employee ${employee.id}`);
+    setModalEmployee(employee);
+    setShowEmployeeModal(true);
+  }
+
+  const onDeleteEmployee = (employee: UserProfileEmployeeTypesDto) => {
+    console.log(`Delete employee ${employee.id}`);
+  }
 
   useEffect(() => {
     if (employeeGroupId && authUserToken.companyId) {
@@ -44,18 +63,18 @@ export const EmployeeGroup: React.FC<Props> = () => {
       <td>{employee.phoneNumber}</td>
       <td>
         <span className="badge badgeSuccess">Scheduled</span>
-        <button className="actionBtn actionBtnEdit" data-onclick="event.stopPropagation(); openModal('editClinicModal')">Edit</button>
-        <button className="actionBtn actionBtnDelete" data-onclick="event.stopPropagation()">Delete</button>
+        <button className="actionBtn actionBtnEdit" onClick={() => onEditEmployee(employee)}>Edit</button>
+        <button className="actionBtn actionBtnDelete" onClick={() => onDeleteEmployee(employee)}>Delete</button>
       </td>
     </tr>
   )
 
-  const [show, setShow] = useState<boolean>(false);
+  
   return (
     <div>
       <UnAuthRedirect />
       <ScreenHeader screenName={employeeGroup.groupName}>
-        <button className="btn btnPrimary" onClick={() => setShow(true)}>+ New {employeeGroup.groupName}</button>
+        <button className="btn btnPrimary" onClick={onNewEmployee}>+ New {employeeGroup.groupName}</button>
       </ScreenHeader>
       <div className="tableContainer">
         <div className="tableScroll">
@@ -75,17 +94,37 @@ export const EmployeeGroup: React.FC<Props> = () => {
           </table>
         </div>
       </div>
-
       <Modal config={{
-        title: `New ${employeeGroup.groupName}`,
+        title: modalEmployee.id ? `Edit ${employeeGroup.groupName}` : `New ${employeeGroup.groupName}`,
         yesFunction: () => { console.log("Yes " + new Date()) },
         modalType: ModalType.WARNING,
-        // noLabel: "test"
-      }} show={show} setShow={setShow}>
+        yesLabel: "Save",
+        noLabel: "Cancel"
+      }} show={showEmployeeModal} setShow={setShowEmployeeModal}>
         <form>
+          <input id="id" type="number" onChange={onChangeText}
+            value={modalEmployee.id}/>
+          <input id="companyId" type="number" onChange={onChangeText}
+            value={modalEmployee.companyId}/>
           <div id="firstName" className="formGroup">
             <label htmlFor="firstName">First Name</label>
-            <input type="text"  />
+            <input id="firstName" type="text" onChange={onChangeText}
+              value={modalEmployee.firstName}/>
+          </div>
+          <div id="lastName" className="formGroup">
+            <label htmlFor="lastName">Last Name</label>
+            <input id="lastName" type="text" onChange={onChangeText}
+              value={modalEmployee.lastName}/>
+          </div>
+          <div id="email" className="formGroup">
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" onChange={onChangeText}
+              value={modalEmployee.email}/>
+          </div>
+          <div id="phoneNumber" className="formGroup">
+            <label htmlFor="phoneNumber">Phone Number</label>
+            <input id="phoneNumber" type="text" onChange={onChangeText}
+              value={modalEmployee.phoneNumber}/>
           </div>
         </form>
       </Modal>
@@ -95,7 +134,6 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
 
 /*
-
 export type UserProfileDto = {
   id?: number,
   email: string,
@@ -105,5 +143,4 @@ export type UserProfileDto = {
   lastName?: string,
   phoneNumber?: string
 };
-
 */
