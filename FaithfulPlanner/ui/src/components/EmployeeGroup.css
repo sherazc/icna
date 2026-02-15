@@ -17,8 +17,9 @@
   border-radius: 4px;
   background-color: #f9f9f9;
   font-size: 0.95rem;
-  cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
 }
 
 .columnItem:hover {
@@ -26,3 +27,8 @@
   border-color: #d0d0d0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.columnItem .checkboxLabel {
+  margin-bottom: 0;
+}
+

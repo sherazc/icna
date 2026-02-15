@@ -87,12 +87,42 @@ export const EmployeeGroup: React.FC<Props> = () => {
     );
   };
   
+  const onEmployeeTypeChange = (employeeType: EmployeeTypeDto, isChecked: boolean) => {
+    setModalEmployee(prevData => {
+      const currentTypes = [...prevData.employeeTypes];
+      if (isChecked) {
+        // Add type if not already present
+        if (!currentTypes.some(t => t.id === employeeType.id)) {
+          currentTypes.push(employeeType);
+        }
+      } else {
+        // Remove type if unchecked
+        return {
+          ...prevData,
+          employeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
+        };
+      }
+      return { ...prevData, employeeTypes: currentTypes };
+    });
+  };
+
   const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
-    types.map(t => (
-      <div key={t.id} className="columnItem">
-        {t.typeName}
-      </div>
-    ))
+    types.map(t => {
+      const isSelected = selectedTypes.some(st => st.id === t.id);
+      return (
+        <div key={t.id} className="columnItem">
+          <label className="checkboxLabel">
+            <input
+              type="checkbox"
+              id={`type-${t.id}`}
+              checked={isSelected}
+              onChange={(e) => onEmployeeTypeChange(t, e.target.checked)}
+            />
+            <span>{t.typeName}</span>
+          </label>
+        </div>
+      );
+    })
   );
   
   return (
