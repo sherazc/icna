@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ScreenHeader } from "./common/ScreenHeader";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
-import { defaultEmployeeGroupDto, defaultEmployeeGroupTypeDto, defaultUserProfileEmployeeTypesDto, ModalType, type EmployeeGroupDto, type EmployeeGroupTypesDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
+import { defaultEmployeeGroupTypeDto, defaultUserProfileEmployeeTypesDto, ModalType, type EmployeeGroupTypesDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect";
 import { Modal } from "./common/Modal";
 
@@ -12,7 +12,6 @@ interface Props { }
 export const EmployeeGroup: React.FC<Props> = () => {
   const { employeeGroupId } = useParams();
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
-  const [employeeGroup, setEmployeeGroup] = useState<EmployeeGroupDto>(defaultEmployeeGroupDto());
   const [employees, setEmployees] = useState<UserProfileEmployeeTypesDto[]>([]);
   const [modalEmployee, setModalEmployee] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
   const [modalEmployeeDelete, setModalEmployeeDelete] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
@@ -26,8 +25,6 @@ export const EmployeeGroup: React.FC<Props> = () => {
   };
 
   const loadData = async (companyId: number, groupId: number) => {
-    const employeeGroupResponse = await clinicApis.getEmployeeGroup(companyId, groupId);
-    setEmployeeGroup(employeeGroupResponse);
     const employeesResponse = await clinicApis.getUserProfileEmployeeTypes(companyId, groupId);
     setEmployees(employeesResponse);
     const employeeGroupTypesResponse = await clinicApis.getEmployeeGroupTypes(companyId, groupId);
@@ -76,12 +73,27 @@ export const EmployeeGroup: React.FC<Props> = () => {
     </tr>
   )
 
+
+  const buildColumns = (groupTypes: EmployeeGroupTypesDto) => {
+    const column1 = groupTypes.employeeTypes.splice(0, groupTypes.employeeTypes.length/2);
+    const column2 = groupTypes.employeeTypes.splice(groupTypes.employeeTypes.length/2);
+    console.log("All types");
+    groupTypes.employeeTypes.forEach(t => console.log(t.typeName));
+
+    // console.log("Column 1");
+    // column1.forEach(t => console.log(t.typeName));
+
+    // console.log("Column 2");
+    // column2.forEach(t => console.log(t.typeName));
+    return <></>
+  }
+
   
   return (
     <div>
       <UnAuthRedirect />
-      <ScreenHeader screenName={employeeGroup.groupName}>
-        <button className="btn btnPrimary" onClick={onNewEmployee}>+ New {employeeGroup.groupName}</button>
+      <ScreenHeader screenName={employeeGroupTypes.groupName}>
+        <button className="btn btnPrimary" onClick={onNewEmployee}>+ New {employeeGroupTypes.groupName}</button>
       </ScreenHeader>
       <div className="tableContainer">
         <div className="tableScroll">
@@ -102,7 +114,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
         </div>
       </div>
       <Modal config={{
-        title: `Delete ${employeeGroup.groupName}`,
+        title: `Delete ${employeeGroupTypes.groupName}`,
         yesFunction: () => { console.log("Yes " + new Date()) },
         modalType: ModalType.WARNING,
         yesLabel: "Delete",
@@ -112,7 +124,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
       </Modal>
 
       <Modal config={{
-        title: modalEmployee.id ? `Edit ${employeeGroup.groupName}` : `New ${employeeGroup.groupName}`,
+        title: modalEmployee.id ? `Edit ${employeeGroupTypes.groupName}` : `New ${employeeGroupTypes.groupName}`,
         yesFunction: () => { console.log("Yes " + new Date()) },
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
@@ -143,6 +155,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
             <input id="phoneNumber" type="text" onChange={onChangeText}
               value={modalEmployee.phoneNumber}/>
           </div>
+          {buildColumns(employeeGroupTypes)}
         </form>
       </Modal>
     </div>
