@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ScreenHeader } from "./common/ScreenHeader";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
-import { defaultEmployeeGroupDto, defaultUserProfileEmployeeTypesDto, ModalType, type EmployeeGroupDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
+import { defaultEmployeeGroupDto, defaultEmployeeGroupTypeDto, defaultUserProfileEmployeeTypesDto, ModalType, type EmployeeGroupDto, type EmployeeGroupTypesDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect";
 import { Modal } from "./common/Modal";
 
@@ -15,18 +15,23 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [employeeGroup, setEmployeeGroup] = useState<EmployeeGroupDto>(defaultEmployeeGroupDto());
   const [employees, setEmployees] = useState<UserProfileEmployeeTypesDto[]>([]);
   const [modalEmployee, setModalEmployee] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
+  const [modalEmployeeDelete, setModalEmployeeDelete] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
   const [showEmployeeModal, setShowEmployeeModal] = useState<boolean>(false);
+  const [showEmployeeDeleteModal, setShowEmployeeDeleteModal] = useState<boolean>(false);
+  const [employeeGroupTypes, setEmployeeGroupTypes] = useState<EmployeeGroupTypesDto>(defaultEmployeeGroupTypeDto());
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setModalEmployee(prevData => ({ ...prevData, [id]: value }));
   };
 
-  const loadEmployeeGroup = async (companyId: number, groupId: number) => {
+  const loadData = async (companyId: number, groupId: number) => {
     const employeeGroupResponse = await clinicApis.getEmployeeGroup(companyId, groupId);
     setEmployeeGroup(employeeGroupResponse);
     const employeesResponse = await clinicApis.getUserProfileEmployeeTypes(companyId, groupId);
     setEmployees(employeesResponse);
+    const employeeGroupTypesResponse = await clinicApis.getEmployeeGroupTypes(companyId, groupId);
+    setEmployeeGroupTypes(employeeGroupTypesResponse);
   };
 
   const onNewEmployee = () => {
@@ -36,18 +41,20 @@ export const EmployeeGroup: React.FC<Props> = () => {
   }
 
   const onEditEmployee = (employee: UserProfileEmployeeTypesDto) => {
-    console.log(`Edit employee ${employee.id}`);
+    console.log(`Edit employee ${employee.id}`, employee);
     setModalEmployee(employee);
     setShowEmployeeModal(true);
   }
 
   const onDeleteEmployee = (employee: UserProfileEmployeeTypesDto) => {
     console.log(`Delete employee ${employee.id}`);
+    setModalEmployeeDelete(employee);
+    setShowEmployeeDeleteModal(true);
   }
 
   useEffect(() => {
     if (employeeGroupId && authUserToken.companyId) {
-      loadEmployeeGroup(authUserToken.companyId, +employeeGroupId);
+      loadData(authUserToken.companyId, +employeeGroupId);
     }
   }, [employeeGroupId, authUserToken]);
 
@@ -95,9 +102,19 @@ export const EmployeeGroup: React.FC<Props> = () => {
         </div>
       </div>
       <Modal config={{
-        title: modalEmployee.id ? `Edit ${employeeGroup.groupName}` : `New ${employeeGroup.groupName}`,
+        title: `Delete ${employeeGroup.groupName}`,
         yesFunction: () => { console.log("Yes " + new Date()) },
         modalType: ModalType.WARNING,
+        yesLabel: "Delete",
+        noLabel: "Cancel"
+      }} show={showEmployeeDeleteModal} setShow={setShowEmployeeDeleteModal}>
+        Delete {modalEmployeeDelete.firstName} {modalEmployeeDelete.lastName}
+      </Modal>
+
+      <Modal config={{
+        title: modalEmployee.id ? `Edit ${employeeGroup.groupName}` : `New ${employeeGroup.groupName}`,
+        yesFunction: () => { console.log("Yes " + new Date()) },
+        modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"
       }} show={showEmployeeModal} setShow={setShowEmployeeModal}>
