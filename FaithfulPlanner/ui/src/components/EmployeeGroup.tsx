@@ -80,16 +80,16 @@ export const EmployeeGroup: React.FC<Props> = () => {
     const column2 = groupTypes.employeeTypes.slice(middle);
     
     return (
-      <div>
-        <div>{buildColumn(column1, selectedTypes)}</div>
-        <div>{buildColumn(column2, selectedTypes)}</div>
-    </div>
+      <div className="columnsContainer">
+        <div className="column">{buildColumn(column1, selectedTypes)}</div>
+        <div className="column">{buildColumn(column2, selectedTypes)}</div>
+      </div>
     );
   };
   
   const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
     types.map(t => (
-      <div>
+      <div key={t.id} className="columnItem">
         {t.typeName}
       </div>
     ))
