@@ -2,8 +2,6 @@ package com.sc.clinic.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.sc.clinic.entity.UserProfile
-import jakarta.validation.constraints.Email
-import jakarta.validation.constraints.NotBlank
 
 class UserProfileEmployeeTypesDto(
     id: Long?,
@@ -18,5 +16,14 @@ class UserProfileEmployeeTypesDto(
 ) : UserProfileDto(
     id, email, usersPassword, companyId, firstName, lastName, phoneNumber
 ) {
-    constructor(userProfile: UserProfile, employeeTypesDto: List<EmployeeTypeDto>)
+    constructor(userProfile: UserProfile, employeeTypesDto: List<EmployeeTypeDto>): this(
+        userProfile.id,
+        userProfile.email,
+        userProfile.userPassword,
+        userProfile.company.id,
+        userProfile.firstName,
+        userProfile.lastName,
+        userProfile.phoneNumber,
+        employeeTypesDto
+    )
 }
