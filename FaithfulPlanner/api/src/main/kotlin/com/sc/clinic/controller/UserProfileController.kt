@@ -27,6 +27,8 @@ class UserProfileController(val userProfileService: UserProfileService) {
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
     fun saveUserProfileEmployeeTypes(@PathVariable companyId: Long, @PathVariable groupId: Long, @RequestBody userEmployeeTypes: UserProfileEmployeeTypesDto): UserProfileEmployeeTypesDto {
         println(userEmployeeTypes)
+
+
         return userEmployeeTypes
     }
 }
