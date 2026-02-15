@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -22,9 +23,9 @@ class UserProfileController(val userProfileService: UserProfileService) {
     fun getUserProfileEmployeeTypes(@PathVariable companyId: Long, @PathVariable groupId: Long) =
         userProfileService.findUserProfileEmployeeTypes(companyId, groupId)
 
-    @PostMapping
+    @PostMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
-    fun saveUserProfileEmployeeTypes(userEmployeeTypes: UserProfileEmployeeTypesDto): UserProfileEmployeeTypesDto {
+    fun saveUserProfileEmployeeTypes(@PathVariable companyId: Long, @PathVariable groupId: Long, @RequestBody userEmployeeTypes: UserProfileEmployeeTypesDto): UserProfileEmployeeTypesDto {
         println(userEmployeeTypes)
         return userEmployeeTypes
     }

@@ -44,15 +44,15 @@ export const validateSaveEmployeeForm = (employee: UserProfileEmployeeTypesDto):
 
   if (isBlankString(employee.firstName)) {
     addFieldError(errors, {
-      field: "email",
-      message: "Invalid email.",
+      field: "firstName",
+      message: "Invalid first name.",
     });
   }
 
   if (isBlankString(employee.lastName)) {
     addFieldError(errors, {
-      field: "email",
-      message: "Invalid email.",
+      field: "lastName",
+      message: "Invalid last name.",
     });
   }
 

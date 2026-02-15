@@ -47,19 +47,19 @@ export const EmployeeGroup: React.FC<Props> = () => {
     console.log(`New employee`);
     setModalEmployee({ ...defaultUserProfileEmployeeTypesDto(), companyId: authUserToken.companyId });
     setShowModalEmployeeModal(true);
-  }
+  };
 
   const onEditModalEmployee = (employee: UserProfileEmployeeTypesDto) => {
     console.log(`Edit employee ${employee.id}`, employee);
     setModalEmployee(employee);
     setShowModalEmployeeModal(true);
-  }
+  };
 
   const onDeleteEmployee = (employee: UserProfileEmployeeTypesDto) => {
     console.log(`Delete employee ${employee.id}`);
     setModalEmployeeDelete(employee);
     setShowEmployeeDeleteModal(true);
-  }
+  };
 
   const onModalEmployeeSave = (employee: UserProfileEmployeeTypesDto) => {
     const save = async (groupId: number, employee: UserProfileEmployeeTypesDto) => {
@@ -87,9 +87,6 @@ export const EmployeeGroup: React.FC<Props> = () => {
     save(touchNumber(employeeGroupId), employee);
   };
 
-
-
-
   useEffect(() => {
     if (employeeGroupId && authUserToken.companyId) {
       loadData(authUserToken.companyId, +employeeGroupId);
@@ -98,7 +95,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
   const createEmployeeTypes = (employeeTypes: EmployeeTypeDto[]): React.ReactNode => (
     <small className="smallText">{employeeTypes.map(et => et.typeName).join(", ")}</small>
-  )
+  );
 
   const createEmployeeRow = (employee: UserProfileEmployeeTypesDto): React.JSX.Element => (
     <tr key={employee.id}>
@@ -112,7 +109,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
         <button className="actionBtn actionBtnDelete" onClick={() => onDeleteEmployee(employee)}>Delete</button>
       </td>
     </tr>
-  )
+  );
 
   const buildColumns = (groupTypes: EmployeeGroupTypesDto, selectedTypes: EmployeeTypeDto[]) => {
     const middle = groupTypes.employeeTypes.length / 2;
