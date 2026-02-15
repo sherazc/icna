@@ -1,4 +1,5 @@
 import type React from "react";
+import "./EmployeeGroup.css"
 import { useParams } from "react-router-dom";
 import { ScreenHeader } from "./common/ScreenHeader";
 import { useContext, useEffect, useState } from "react";
@@ -73,21 +74,26 @@ export const EmployeeGroup: React.FC<Props> = () => {
     </tr>
   )
 
-
-  const buildColumns = (groupTypes: EmployeeGroupTypesDto) => {
-    const column1 = groupTypes.employeeTypes.splice(0, groupTypes.employeeTypes.length/2);
-    const column2 = groupTypes.employeeTypes.splice(groupTypes.employeeTypes.length/2);
-    console.log("All types");
-    groupTypes.employeeTypes.forEach(t => console.log(t.typeName));
-
-    // console.log("Column 1");
-    // column1.forEach(t => console.log(t.typeName));
-
-    // console.log("Column 2");
-    // column2.forEach(t => console.log(t.typeName));
-    return <></>
-  }
-
+  const buildColumns = (groupTypes: EmployeeGroupTypesDto, selectedTypes: EmployeeTypeDto[]) => {
+    const middle = groupTypes.employeeTypes.length/2;
+    const column1 = groupTypes.employeeTypes.slice(0, middle);
+    const column2 = groupTypes.employeeTypes.slice(middle);
+    
+    return (
+      <div>
+        <div>{buildColumn(column1, selectedTypes)}</div>
+        <div>{buildColumn(column2, selectedTypes)}</div>
+    </div>
+    );
+  };
+  
+  const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
+    types.map(t => (
+      <div>
+        {t.typeName}
+      </div>
+    ))
+  );
   
   return (
     <div>
@@ -155,22 +161,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
             <input id="phoneNumber" type="text" onChange={onChangeText}
               value={modalEmployee.phoneNumber}/>
           </div>
-          {buildColumns(employeeGroupTypes)}
+          {buildColumns(employeeGroupTypes, modalEmployee.employeeTypes)}
         </form>
       </Modal>
     </div>
   );
 }
-
-
-/*
-export type UserProfileDto = {
-  id?: number,
-  email: string,
-  usersPassword?: string,
-  companyId?: number
-  firstName?: string,
-  lastName?: string,
-  phoneNumber?: string
-};
-*/
