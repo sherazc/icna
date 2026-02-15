@@ -56,7 +56,6 @@ export default function CompanyRegistration() {
     setRegistrationPassword(prevData => ({ ...prevData, [id]: value }));
   };
 
-
   const onChangeUserProfileText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setRegistrationDto(prevData => ({

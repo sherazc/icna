@@ -4,9 +4,14 @@ import { useParams } from "react-router-dom";
 import { ScreenHeader } from "./common/ScreenHeader";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
-import { defaultEmployeeGroupTypeDto, defaultUserProfileEmployeeTypesDto, ModalType, type EmployeeGroupTypesDto, type EmployeeTypeDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
+import { defaultEmployeeGroupTypeDto, defaultUserProfileEmployeeTypesDto, FormState, ModalType, type EmployeeGroupTypesDto, type EmployeeTypeDto, type ErrorDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect";
 import { Modal } from "./common/Modal";
+import { touchNumber } from "../service/utilities";
+import { toScErrorResponses, validateSaveEmployeeForm } from "../service/errors-helpers";
+import { ErrorField } from "./common/ErrorField";
+import { ErrorForm } from "./common/ErrorForm";
+import { Loading } from "./common/Loading";
 
 interface Props { }
 
@@ -14,11 +19,17 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const { employeeGroupId } = useParams();
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [employees, setEmployees] = useState<UserProfileEmployeeTypesDto[]>([]);
-  const [modalEmployee, setModalEmployee] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
-  const [modalEmployeeDelete, setModalEmployeeDelete] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
-  const [showEmployeeModal, setShowEmployeeModal] = useState<boolean>(false);
-  const [showEmployeeDeleteModal, setShowEmployeeDeleteModal] = useState<boolean>(false);
   const [employeeGroupTypes, setEmployeeGroupTypes] = useState<EmployeeGroupTypesDto>(defaultEmployeeGroupTypeDto());
+
+  // Delete Employee Modal
+  const [showEmployeeDeleteModal, setShowEmployeeDeleteModal] = useState<boolean>(false);
+  const [modalEmployeeDelete, setModalEmployeeDelete] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
+
+  // Save Employee Modal Form
+  const [modalEmployee, setModalEmployee] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
+  const [showModalEmployeeModal, setShowModalEmployeeModal] = useState<boolean>(false);
+  const [modalEmployeeFormState, setModalEmployeeFormState] = useState<FormState>(FormState.FRESH);
+  const [modalEmployeeErrors, setModalEmployeeErrors] = useState<ErrorDto[]>([]);
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -34,14 +45,14 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
   const onNewEmployee = () => {
     console.log(`New employee`);
-    setModalEmployee({...defaultUserProfileEmployeeTypesDto(), companyId: authUserToken.companyId});
-    setShowEmployeeModal(true);
+    setModalEmployee({ ...defaultUserProfileEmployeeTypesDto(), companyId: authUserToken.companyId });
+    setShowModalEmployeeModal(true);
   }
 
-  const onEditEmployee = (employee: UserProfileEmployeeTypesDto) => {
+  const onEditModalEmployee = (employee: UserProfileEmployeeTypesDto) => {
     console.log(`Edit employee ${employee.id}`, employee);
     setModalEmployee(employee);
-    setShowEmployeeModal(true);
+    setShowModalEmployeeModal(true);
   }
 
   const onDeleteEmployee = (employee: UserProfileEmployeeTypesDto) => {
@@ -50,9 +61,33 @@ export const EmployeeGroup: React.FC<Props> = () => {
     setShowEmployeeDeleteModal(true);
   }
 
-  const onSave = () => {
-    console.log(modalEmployee);
+  const onModalEmployeeSave = (employee: UserProfileEmployeeTypesDto) => {
+    const save = async (groupId: number, employee: UserProfileEmployeeTypesDto) => {
+      setModalEmployeeFormState(FormState.IN_PROGRESS);
+      const submitErrors: ErrorDto[] = [];
+      const saveEmployeeForm: UserProfileEmployeeTypesDto = { ...employee };
+
+      submitErrors.push(...validateSaveEmployeeForm(saveEmployeeForm));
+
+      if (submitErrors.length < 1) {
+        try {
+          const savedEmployee = await clinicApis.saveUserProfileEmployeeTypes(touchNumber(saveEmployeeForm.companyId), groupId, saveEmployeeForm);
+          console.log(savedEmployee);
+          setModalEmployeeFormState(FormState.SUCCESSFUL);
+        } catch (error) {
+          const apiErrors: ErrorDto[] = toScErrorResponses(error);
+          submitErrors.push(...apiErrors);
+          submitErrors.push({ message: "Failed to save" });
+          setModalEmployeeFormState(FormState.FAILED);
+        }
+      }
+      setModalEmployeeErrors(submitErrors);
+    }
+
+    save(touchNumber(employeeGroupId), employee);
   };
+
+
 
 
   useEffect(() => {
@@ -73,17 +108,17 @@ export const EmployeeGroup: React.FC<Props> = () => {
       <td>{employee.phoneNumber}</td>
       <td>
         <span className="badge badgeSuccess">Scheduled</span>
-        <button className="actionBtn actionBtnEdit" onClick={() => onEditEmployee(employee)}>Edit</button>
+        <button className="actionBtn actionBtnEdit" onClick={() => onEditModalEmployee(employee)}>Edit</button>
         <button className="actionBtn actionBtnDelete" onClick={() => onDeleteEmployee(employee)}>Delete</button>
       </td>
     </tr>
   )
 
   const buildColumns = (groupTypes: EmployeeGroupTypesDto, selectedTypes: EmployeeTypeDto[]) => {
-    const middle = groupTypes.employeeTypes.length/2;
+    const middle = groupTypes.employeeTypes.length / 2;
     const column1 = groupTypes.employeeTypes.slice(0, middle);
     const column2 = groupTypes.employeeTypes.slice(middle);
-    
+
     return (
       <div className="columnsContainer">
         <div className="column">{buildColumn(column1, selectedTypes)}</div>
@@ -91,7 +126,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
       </div>
     );
   };
-  
+
   const onEmployeeTypeChange = (employeeType: EmployeeTypeDto, isChecked: boolean) => {
     setModalEmployee(prevData => {
       const currentTypes = [...prevData.employeeTypes];
@@ -129,7 +164,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
       );
     })
   );
-  
+
   return (
     <div>
       <UnAuthRedirect />
@@ -166,35 +201,41 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
       <Modal config={{
         title: modalEmployee.id ? `Edit ${employeeGroupTypes.groupName}` : `New ${employeeGroupTypes.groupName}`,
-        yesFunction: onSave,
+        yesFunction: () => onModalEmployeeSave(modalEmployee),
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"
-      }} show={showEmployeeModal} setShow={setShowEmployeeModal}>
+      }} show={showModalEmployeeModal} setShow={setShowModalEmployeeModal}>
         <form>
+          <ErrorForm formState={modalEmployeeFormState} errors={modalEmployeeErrors} />
+          <Loading formState={modalEmployeeFormState} />
           <input id="id" type="number" onChange={onChangeText}
-            value={modalEmployee.id}/>
+            value={modalEmployee.id} />
           <input id="companyId" type="number" onChange={onChangeText}
-            value={modalEmployee.companyId}/>
-          <div id="firstName" className="formGroup">
+            value={modalEmployee.companyId} />
+          <div className="formGroup">
             <label htmlFor="firstName">First Name</label>
             <input id="firstName" type="text" onChange={onChangeText}
-              value={modalEmployee.firstName}/>
+              value={modalEmployee.firstName} />
+            <ErrorField errors={modalEmployeeErrors} fieldName="firstName" />
           </div>
-          <div id="lastName" className="formGroup">
+          <div className="formGroup">
             <label htmlFor="lastName">Last Name</label>
             <input id="lastName" type="text" onChange={onChangeText}
-              value={modalEmployee.lastName}/>
+              value={modalEmployee.lastName} />
+            <ErrorField errors={modalEmployeeErrors} fieldName="lastName" />
           </div>
-          <div id="email" className="formGroup">
+          <div className="formGroup">
             <label htmlFor="email">Email</label>
             <input id="email" type="email" onChange={onChangeText}
-              value={modalEmployee.email}/>
+              value={modalEmployee.email} />
+            <ErrorField errors={modalEmployeeErrors} fieldName="email" />
           </div>
-          <div id="phoneNumber" className="formGroup">
+          <div className="formGroup">
             <label htmlFor="phoneNumber">Phone Number</label>
             <input id="phoneNumber" type="text" onChange={onChangeText}
-              value={modalEmployee.phoneNumber}/>
+              value={modalEmployee.phoneNumber} />
+            <ErrorField errors={modalEmployeeErrors} fieldName="phoneNumber" />
           </div>
           {buildColumns(employeeGroupTypes, modalEmployee.employeeTypes)}
         </form>

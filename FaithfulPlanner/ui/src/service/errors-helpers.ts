@@ -1,4 +1,4 @@
-import type { ErrorDto, RegistrationDto } from "./service-types";
+import type { ErrorDto, RegistrationDto, UserProfileEmployeeTypesDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -37,6 +37,35 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Erro
   }
   return errors;
 };
+
+
+export const validateSaveEmployeeForm = (employee: UserProfileEmployeeTypesDto): ErrorDto[] => {
+  const errors: ErrorDto[] = [];
+
+  if (isBlankString(employee.firstName)) {
+    addFieldError(errors, {
+      field: "email",
+      message: "Invalid email.",
+    });
+  }
+
+  if (isBlankString(employee.lastName)) {
+    addFieldError(errors, {
+      field: "email",
+      message: "Invalid email.",
+    });
+  }
+
+  if (isBlankString(employee.email)) {
+    addFieldError(errors, {
+      field: "email",
+      message: "Invalid email.",
+    });
+  }
+
+  return errors;
+};
+
 
 export const toScErrorResponses = (error: unknown, fallbackError?: string): ErrorDto[] => {
   if (!error && fallbackError) return [{ message: fallbackError }];
