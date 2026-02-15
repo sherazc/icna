@@ -33,7 +33,8 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
     if (modalConfig.yesFunction) {
       modalConfig.yesFunction();
     }
-    setShow(false);
+    // The user of the modal should be responsible for closing the modal.
+    // setShow(false);
   };
 
   const handleNo = () => {

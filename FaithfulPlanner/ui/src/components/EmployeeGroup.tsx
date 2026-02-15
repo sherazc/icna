@@ -50,6 +50,11 @@ export const EmployeeGroup: React.FC<Props> = () => {
     setShowEmployeeDeleteModal(true);
   }
 
+  const onSave = () => {
+    console.log(modalEmployee);
+  };
+
+
   useEffect(() => {
     if (employeeGroupId && authUserToken.companyId) {
       loadData(authUserToken.companyId, +employeeGroupId);
@@ -161,7 +166,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
       <Modal config={{
         title: modalEmployee.id ? `Edit ${employeeGroupTypes.groupName}` : `New ${employeeGroupTypes.groupName}`,
-        yesFunction: () => { console.log("Yes " + new Date()) },
+        yesFunction: onSave,
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"

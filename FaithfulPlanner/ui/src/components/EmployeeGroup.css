@@ -12,20 +12,9 @@
 }
 
 .columnItem {
-  padding: 0.75rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
-}
-
-.columnItem:hover {
-  background-color: #f0f0f0;
-  border-color: #d0d0d0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
 }
 
 .columnItem .checkboxLabel {
