@@ -1,0 +1,42 @@
+meta {
+  name: /user-profile/group/{groupId} Save User
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base_url}}/api/company/1/user-profile/group/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  {
+    "id": 14,
+    "email": "david.jones@employee.local",
+    "usersPassword": null,
+    "companyId": 1,
+    "firstName": "David",
+    "lastName": "Jones",
+    "phoneNumber": "(555) 123-4505",
+    "employeeTypes": [
+      {
+        "id": 1,
+        "typeName": "General Practitioner"
+      },
+      {
+        "id": 5,
+        "typeName": "Orthopedic Surgeon"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
