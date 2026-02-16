@@ -6,10 +6,9 @@ const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const findErrorField = (errors: ErrorDto[], fieldName: string) => errors.find(e => e.field === fieldName);
 
 export const findErrorsForm = (errors?: ErrorDto[]): ErrorDto[] => {
-    if (errors === undefined || errors === null) return [];
-    return errors.filter(e => !e.field);
-}   
-
+  if (errors === undefined || errors === null) return [];
+  return errors.filter(e => !e.field);
+};
 
 export const errorClass = (errors: ErrorDto[], fieldName: string, className: string): string =>
   findErrorField(errors, fieldName) === undefined ? "" : className;
@@ -17,7 +16,7 @@ export const errorClass = (errors: ErrorDto[], fieldName: string, className: str
 
 const addFieldError = (errors: ErrorDto[], error: ErrorDto) => {
   !errors.find(e => e.field === error.field) && errors.push(error);
-}
+};
 
 export const validateRegistrationForm = (registrationDto: RegistrationDto): ErrorDto[] => {
   const errors: ErrorDto[] = [];
@@ -38,8 +37,7 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Erro
   return errors;
 };
 
-
-export const validateSaveEmployeeForm = (employee: UserProfileEmployeeTypesDto): ErrorDto[] => {
+export const validateSaveEmployeeForm = (employee: UserProfileEmployeeTypesDto, confirmPassword: string): ErrorDto[] => {
   const errors: ErrorDto[] = [];
 
   if (isBlankString(employee.firstName)) {
@@ -63,6 +61,20 @@ export const validateSaveEmployeeForm = (employee: UserProfileEmployeeTypesDto):
     });
   }
 
+  if (!employee.id) {
+    if (!employee.usersPassword || employee.usersPassword.length < 5) {
+      addFieldError(errors, {
+        field: "usersPassword",
+        message: "Invalid password. Password must be 5 or more characters long.",
+      });
+    } else if (employee.usersPassword && employee.usersPassword !== confirmPassword) {
+      addFieldError(errors, {
+        field: "confirmPassword",
+        message: "Password and confirm password do not match.",
+      });
+    }
+  }
+
   return errors;
 };
 
@@ -75,7 +87,7 @@ export const toScErrorResponses = (error: unknown, fallbackError?: string): Erro
   if (typeof error === 'string') {
     try {
       errorObject = JSON.parse(error);
-    } catch(parseError) {
+    } catch (parseError) {
       errorObject = [{ message: error }];
     }
   } else {

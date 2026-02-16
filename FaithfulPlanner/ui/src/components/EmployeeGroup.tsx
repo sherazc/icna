@@ -30,6 +30,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [showModalEmployeeModal, setShowModalEmployeeModal] = useState<boolean>(false);
   const [modalEmployeeFormState, setModalEmployeeFormState] = useState<FormState>(FormState.FRESH);
   const [modalEmployeeErrors, setModalEmployeeErrors] = useState<ErrorDto[]>([]);
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -46,12 +49,14 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const onNewEmployee = () => {
     console.log(`New employee`);
     setModalEmployee({ ...defaultUserProfileEmployeeTypesDto(), companyId: authUserToken.companyId });
+    setModalEmployeeErrors([])
     setShowModalEmployeeModal(true);
   };
 
   const onEditModalEmployee = (employee: UserProfileEmployeeTypesDto) => {
     console.log(`Edit employee ${employee.id}`, employee);
     setModalEmployee(employee);
+    setModalEmployeeErrors([])
     setShowModalEmployeeModal(true);
   };
 
@@ -67,7 +72,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
       const submitErrors: ErrorDto[] = [];
       const saveEmployeeForm: UserProfileEmployeeTypesDto = { ...employee };
 
-      submitErrors.push(...validateSaveEmployeeForm(saveEmployeeForm));
+      submitErrors.push(...validateSaveEmployeeForm(saveEmployeeForm, confirmPassword));
 
       if (submitErrors.length < 1) {
         try {
@@ -80,6 +85,8 @@ export const EmployeeGroup: React.FC<Props> = () => {
           submitErrors.push({ message: "Failed to save" });
           setModalEmployeeFormState(FormState.FAILED);
         }
+      } else {
+        setModalEmployeeFormState(FormState.FAILED);
       }
       setModalEmployeeErrors(submitErrors);
     }
@@ -211,6 +218,29 @@ export const EmployeeGroup: React.FC<Props> = () => {
           <input id="companyId" type="number" onChange={onChangeText}
             value={modalEmployee.companyId} />
           <div className="formGroup">
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" onChange={onChangeText}
+              value={modalEmployee.email} />
+            <ErrorField errors={modalEmployeeErrors} fieldName="email" />
+          </div>
+
+          {/* Password */}
+          {!modalEmployee.id && <>
+            <div className="formGroup">
+              <label htmlFor="usersPassword">Password</label>
+              <input id="usersPassword" type="password" onChange={onChangeText}
+                value={modalEmployee.usersPassword} />
+              <ErrorField errors={modalEmployeeErrors} fieldName="usersPassword" />
+            </div>
+            <div className="formGroup">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input id="confirmPassword" type="password" onChange={(event) => setConfirmPassword(event.target.value)}
+                value={confirmPassword} />
+              <ErrorField errors={modalEmployeeErrors} fieldName="confirmPassword" />
+            </div>
+          </>}
+
+          <div className="formGroup">
             <label htmlFor="firstName">First Name</label>
             <input id="firstName" type="text" onChange={onChangeText}
               value={modalEmployee.firstName} />
@@ -221,12 +251,6 @@ export const EmployeeGroup: React.FC<Props> = () => {
             <input id="lastName" type="text" onChange={onChangeText}
               value={modalEmployee.lastName} />
             <ErrorField errors={modalEmployeeErrors} fieldName="lastName" />
-          </div>
-          <div className="formGroup">
-            <label htmlFor="email">Email</label>
-            <input id="email" type="email" onChange={onChangeText}
-              value={modalEmployee.email} />
-            <ErrorField errors={modalEmployeeErrors} fieldName="email" />
           </div>
           <div className="formGroup">
             <label htmlFor="phoneNumber">Phone Number</label>
