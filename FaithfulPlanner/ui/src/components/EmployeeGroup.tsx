@@ -213,10 +213,14 @@ export const EmployeeGroup: React.FC<Props> = () => {
         <form>
           <ErrorForm formState={modalEmployeeFormState} errors={modalEmployeeErrors} />
           <Loading formState={modalEmployeeFormState} />
+
+          {/* 
           <input id="id" type="number" onChange={onChangeText}
             value={modalEmployee.id} />
           <input id="companyId" type="number" onChange={onChangeText}
-            value={modalEmployee.companyId} />
+            value={modalEmployee.companyId} /> 
+          */}
+
           <div className="formGroup">
             <label htmlFor="email">Email</label>
             <input id="email" type="email" onChange={onChangeText}

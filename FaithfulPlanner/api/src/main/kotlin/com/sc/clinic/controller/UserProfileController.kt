@@ -25,10 +25,10 @@ class UserProfileController(val userProfileService: UserProfileService) {
 
     @PostMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
-    fun saveUserProfileEmployeeTypes(@PathVariable companyId: Long, @PathVariable groupId: Long, @RequestBody userEmployeeTypes: UserProfileEmployeeTypesDto): UserProfileEmployeeTypesDto {
-        println(userEmployeeTypes)
-
-
-        return userEmployeeTypes
-    }
+    fun saveUserProfileEmployeeTypes(
+        @PathVariable companyId: Long,
+        @PathVariable groupId: Long,
+        @RequestBody userEmployeeTypes: UserProfileEmployeeTypesDto
+    ): UserProfileEmployeeTypesDto =
+        userProfileService.saveUserEmployee(companyId, groupId, userEmployeeTypes)
 }

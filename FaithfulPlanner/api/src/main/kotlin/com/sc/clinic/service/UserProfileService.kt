@@ -16,7 +16,8 @@ class UserProfileService(
     private val userProfileRepository: UserProfileRepository,
     private val userRoleService: UserRoleService,
     private val passwordEncoder: PasswordEncoder,
-    private val employeeTypeService: EmployeeTypeService
+    private val employeeTypeService: EmployeeTypeService,
+    val companyService: CompanyService,
 ) {
 
     fun getAllActive(companyId: Long): List<UserProfileDto> = userProfileRepository
@@ -93,5 +94,16 @@ class UserProfileService(
         UserProfileEmployeeTypesDto(
             u,
             u.employeeTypes.map { et -> employeeTypeService.mapEntityToDto(et) })
+
+    fun saveUserEmployee(
+        companyId: Long,
+        groupId: Long,
+        userEmployee: UserProfileEmployeeTypesDto
+    ): UserProfileEmployeeTypesDto {
+        validate(userEmployee)
+        val company: Company = companyService.findById(companyId)
+
+        TODO("Not yet implemented")
+    }
 
 }
