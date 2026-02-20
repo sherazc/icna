@@ -36,6 +36,19 @@ class UserProfileService(
         return userProfileRepository.save(userProfileEntity)
     }
 
+    fun saveUserEmployee(
+        companyId: Long, groupId: Long, userEmployee: UserProfileEmployeeTypesDto
+    ): UserProfileEmployeeTypesDto {
+        validate(userEmployee)
+        val company: Company = companyService.findById(companyId)
+        val userProfileEntity = getOrCreateUserProfileEntity(company, userEmployee)
+        userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
+        employeeTypeService.updateEmployeeTypes(userProfileEntity, userEmployee.employeeTypesDto)
+
+        TODO("Not yet implemented")
+    }
+
+
     private fun validate(userProfileDto: UserProfileDto) {
         if (userProfileDto.companyId == null) throw ScException("Can not save User Profile. Company ID is not set.")
         if (userProfileDto.id == null && isUserExists(userProfileDto.companyId!!, userProfileDto.email))
@@ -88,22 +101,10 @@ class UserProfileService(
             .map { u ->
                 u.usersPassword = null
                 u
-             }
+            }
 
     private fun toUserProfileEmployeeTypes(u: UserProfile): UserProfileEmployeeTypesDto =
         UserProfileEmployeeTypesDto(
             u,
             u.employeeTypes.map { et -> employeeTypeService.mapEntityToDto(et) })
-
-    fun saveUserEmployee(
-        companyId: Long,
-        groupId: Long,
-        userEmployee: UserProfileEmployeeTypesDto
-    ): UserProfileEmployeeTypesDto {
-        validate(userEmployee)
-        val company: Company = companyService.findById(companyId)
-
-        TODO("Not yet implemented")
-    }
-
 }

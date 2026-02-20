@@ -49,8 +49,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
         .findByCompanyNameIgnoreCase(companyName).firstOrNull()
 
     fun isCompanyNameExists(companyName: String): Boolean = findCompanyByName(companyName) != null
-    fun findById(companyId: Long): Company {
 
-        TODO("Not yet implemented")
-    }
+    fun findById(companyId: Long): Company =
+        companyRepository.findById(companyId).orElseThrow { ScException("companyId", "Company not found. $companyId") }
 }
