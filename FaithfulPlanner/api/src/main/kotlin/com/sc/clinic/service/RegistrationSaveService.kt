@@ -19,10 +19,9 @@ class RegistrationSaveService(
         val companyEntity = companyService.saveCompany(registrationDto.company)
         // Save User
         registrationDto.userProfile.companyId = companyEntity.id
-        val userProfileEntity = userProfileService.saveRegistrationAdmin(companyEntity, registrationDto.userProfile)
 
         // Build response
-        val userProfile = UserProfileDto(userProfileEntity)
+        val userProfile = userProfileService.saveRegistrationAdmin(companyEntity, registrationDto.userProfile)
         userProfile.usersPassword = null
         return RegistrationDto(CompanyDto(companyEntity), userProfile)
     }

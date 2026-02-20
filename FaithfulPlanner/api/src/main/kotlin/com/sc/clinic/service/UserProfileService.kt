@@ -27,24 +27,25 @@ class UserProfileService(
         }
 
 
-    fun saveRegistrationAdmin(company: Company, userProfileDto: UserProfileDto): UserProfile {
-        validate(userProfileDto)
-        val userProfileEntity = getOrCreateUserProfileEntity(company, userProfileDto)
+    fun saveRegistrationAdmin(company: Company, user: UserProfileDto): UserProfileDto {
+        validate(user)
+        val userProfileEntity = getOrCreateUserProfileEntity(company, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
-        return userProfileRepository.save(userProfileEntity)
+        val savedUser = userProfileRepository.save(userProfileEntity)
+        return UserProfileDto(savedUser)
     }
 
     fun saveUserEmployee(
-        companyId: Long, groupId: Long, userEmployee: UserProfileDto
+        companyId: Long, user: UserProfileDto
     ): UserProfileDto {
-        validate(userEmployee)
+        validate(user)
         val company: Company = companyService.findById(companyId)
-        val userProfileEntity = getOrCreateUserProfileEntity(company, userEmployee)
+        val userProfileEntity = getOrCreateUserProfileEntity(company, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
-        employeeTypeService.updateEmployeeTypes(userProfileEntity, userEmployee.employeeTypesDto)
-
-        TODO("Not yet implemented")
+        employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
+        val savedUser = userProfileRepository.save(userProfileEntity)
+        return UserProfileDto(savedUser)
     }
 
 

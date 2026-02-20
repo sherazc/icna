@@ -30,5 +30,5 @@ class UserProfileController(val userProfileService: UserProfileService) {
         @PathVariable groupId: Long,
         @RequestBody userEmployeeTypes: UserProfileDto
     ): UserProfileDto =
-        userProfileService.saveUserEmployee(companyId, groupId, userEmployeeTypes)
+        userProfileService.saveUserEmployee(companyId, userEmployeeTypes)
 }
