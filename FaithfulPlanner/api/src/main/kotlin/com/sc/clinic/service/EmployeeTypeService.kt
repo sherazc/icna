@@ -11,10 +11,7 @@ class EmployeeTypeService(private val employeeTypeRepository: EmployeeTypeReposi
 
     fun findByEmployeeGroupId(employeeGroupId: Long) = employeeTypeRepository.findByEmployeeGroupIdOrderByTypeName(employeeGroupId)
 
-    fun findDtoByEmployeeGroupId(employeeGroupId: Long) = findByEmployeeGroupId(employeeGroupId).map { mapEntityToDto(it) }
-
-
-    fun mapEntityToDto(employeeType: EmployeeType) = EmployeeTypeDto(employeeType.id,employeeType.typeName)
+    fun findDtoByEmployeeGroupId(employeeGroupId: Long) = findByEmployeeGroupId(employeeGroupId).map { EmployeeTypeDto(it) }
 
     fun updateEmployeeTypes(userProfileEntity: UserProfile, userEmployeeTypes: List<EmployeeTypeDto>) {
         val employeeTypeIds = userEmployeeTypes.map { it.id }

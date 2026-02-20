@@ -1,6 +1,6 @@
 package com.sc.clinic.controller
 
-import com.sc.clinic.dto.UserProfileEmployeeTypesDto
+import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.service.UserProfileService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -28,7 +28,7 @@ class UserProfileController(val userProfileService: UserProfileService) {
     fun saveUserProfileEmployeeTypes(
         @PathVariable companyId: Long,
         @PathVariable groupId: Long,
-        @RequestBody userEmployeeTypes: UserProfileEmployeeTypesDto
-    ): UserProfileEmployeeTypesDto =
+        @RequestBody userEmployeeTypes: UserProfileDto
+    ): UserProfileDto =
         userProfileService.saveUserEmployee(companyId, groupId, userEmployeeTypes)
 }

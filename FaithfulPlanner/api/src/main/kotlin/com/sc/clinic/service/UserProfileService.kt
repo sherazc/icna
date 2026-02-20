@@ -1,7 +1,6 @@
 package com.sc.clinic.service
 
 import com.sc.clinic.dto.UserProfileDto
-import com.sc.clinic.dto.UserProfileEmployeeTypesDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.UserProfile
 import com.sc.clinic.exception.ScBadRequestException
@@ -37,8 +36,8 @@ class UserProfileService(
     }
 
     fun saveUserEmployee(
-        companyId: Long, groupId: Long, userEmployee: UserProfileEmployeeTypesDto
-    ): UserProfileEmployeeTypesDto {
+        companyId: Long, groupId: Long, userEmployee: UserProfileDto
+    ): UserProfileDto {
         validate(userEmployee)
         val company: Company = companyService.findById(companyId)
         val userProfileEntity = getOrCreateUserProfileEntity(company, userEmployee)
@@ -97,14 +96,9 @@ class UserProfileService(
 
     fun findUserProfileEmployeeTypes(companyId: Long, groupId: Long) =
         userProfileRepository.findByCompanyIdAndEmployeeGroupId(companyId, groupId)
-            .map { toUserProfileEmployeeTypes(it) }
+            .map { UserProfileDto(it) }
             .map { u ->
                 u.usersPassword = null
                 u
             }
-
-    private fun toUserProfileEmployeeTypes(u: UserProfile): UserProfileEmployeeTypesDto =
-        UserProfileEmployeeTypesDto(
-            u,
-            u.employeeTypes.map { et -> employeeTypeService.mapEntityToDto(et) })
 }
