@@ -7,7 +7,8 @@ import { AppContext } from "../store/context";
 import {
   defaultEmployeeGroupTypeDto,
   defaultUserProfileDto,
-  FormState, ModalType,
+  FormState, 
+  ModalType,
   type EmployeeGroupTypesDto,
   type EmployeeTypeDto,
   type ErrorDto,
@@ -77,6 +78,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
     const save = async (groupId: number, employee: UserProfileDto) => {
       setModalEmployeeFormState(FormState.IN_PROGRESS);
       const submitErrors: ErrorDto[] = [];
+      setModalEmployeeErrors([]);
       const saveEmployeeForm: UserProfileDto = { ...employee };
 
       submitErrors.push(...validateSaveEmployeeForm(saveEmployeeForm, confirmPassword));
@@ -86,6 +88,11 @@ export const EmployeeGroup: React.FC<Props> = () => {
           const savedEmployee = await clinicApis.saveUserProfileEmployeeTypes(touchNumber(saveEmployeeForm.companyId), groupId, saveEmployeeForm);
           console.log(savedEmployee);
           setModalEmployeeFormState(FormState.SUCCESSFUL);
+          setShowModalEmployeeModal(false);
+          setModalEmployee(defaultUserProfileDto());
+          const employeesResponse = await clinicApis.getUserProfileEmployeeTypes(authUserToken.companyId, groupId);
+          setEmployees(employeesResponse);
+          setConfirmPassword("");
         } catch (error) {
           const apiErrors: ErrorDto[] = toScErrorResponses(error);
           submitErrors.push(...apiErrors);

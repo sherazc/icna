@@ -48,7 +48,6 @@ class UserProfileService(
         return UserProfileDto(savedUser)
     }
 
-
     private fun validate(userProfileDto: UserProfileDto) {
         if (userProfileDto.companyId == null) throw ScException("Can not save User Profile. Company ID is not set.")
         if (userProfileDto.id == null && isUserExists(userProfileDto.companyId!!, userProfileDto.email))
@@ -60,7 +59,6 @@ class UserProfileService(
 
     fun findByCompanyIdAndEmail(companyId: Long, email: String): UserProfile? =
         userProfileRepository.findByCompanyIdAndEmail(companyId, email).firstOrNull()
-
 
     fun getOrCreateUserProfileEntity(company: Company, userProfileDto: UserProfileDto): UserProfile =
         updateEntityWithDto(userProfileDto)
