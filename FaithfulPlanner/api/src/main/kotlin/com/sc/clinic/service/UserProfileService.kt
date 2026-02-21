@@ -26,12 +26,12 @@ class UserProfileService(
             it
         }
 
-
     fun saveRegistrationAdmin(company: Company, user: UserProfileDto): UserProfileDto {
         validate(user)
         val userProfileEntity = getOrCreateUserProfileEntity(company, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
+        employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
         val savedUser = userProfileRepository.save(userProfileEntity)
         return UserProfileDto(savedUser)
     }
