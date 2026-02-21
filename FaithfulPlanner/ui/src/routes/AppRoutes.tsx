@@ -5,14 +5,12 @@ import Dashboard from "../components/Dashboard";
 import CompanyRegistration from "../components/CompanyRegistration";
 import OrgSelection from "../components/OrgSelection";
 import OrgManagement from "../components/OrgManagement";
-import Volunteers from "../components/Volunteers";
 import Schedules from "../components/Schedules";
 import ShiftDetails from "../components/ShiftDetails";
 import Notifications from "../components/Notifications";
 import Settings from "../components/Settings";
 import OrgSettings from "../components/OrgSettings";
 import VolunteerReports from "../components/VolunteerReports";
-import Providers from "../components/Providers";
 import { EmployeeGroup } from "../components/EmployeeGroup";
 
 export default function AppRoutes() {
@@ -26,14 +24,12 @@ export default function AppRoutes() {
         <Route path="company-registration" element={<CompanyRegistration/>}/>
         <Route path="org-selection" element={<OrgSelection/>}/>
         <Route path="org-management" element={<OrgManagement/>}/>
-        <Route path="volunteers" element={<Volunteers/>}/>
         <Route path="schedules" element={<Schedules/>}/>
         <Route path="shift-details" element={<ShiftDetails/>}/>
         <Route path="notifications" element={<Notifications/>}/>
         <Route path="settings" element={<Settings/>}/>
         <Route path="org-settings" element={<OrgSettings/>}/>
         <Route path="volunteer-reports" element={<VolunteerReports/>}/>
-        <Route path="providers" element={<Providers/>}/>
       </Route>
     </Routes>
   );
