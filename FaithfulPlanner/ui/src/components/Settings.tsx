@@ -6,7 +6,7 @@ export default function Settings() {
         <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
       </div>
 
-      <div className="dashboardGrid">
+      <div className="cardsGrid">
         <div className="card">
           <h3>User Profile</h3>
           <div className="formGroup">
@@ -23,6 +23,7 @@ export default function Settings() {
           </div>
           <button className="btn btnPrimary fullWidth marginTop15">Save Profile</button>
         </div>
+
 
         <div className="card">
           <h3>Account Settings</h3>
@@ -165,6 +166,9 @@ export default function Settings() {
           </div>
           <button className="btn btnPrimary fullWidth marginTop15">Save Shift Settings</button>
         </div>
+
+
+
       </div>
     </div>
   );

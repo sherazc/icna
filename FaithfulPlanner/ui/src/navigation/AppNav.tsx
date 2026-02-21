@@ -97,26 +97,36 @@ export default function AppNav() {
               Schedules
             </Link>
           </li>
+          */}
+          {/*
           <li className="navItem">
             <Link to="/shift-details" className={`navLink ${isActive("/shift-details")}`} onClick={closeMobileMenu}>
               Shift Details
             </Link>
           </li>
+          */}
+          {/*
           <li className="navItem">
             <Link to="/notifications" className={`navLink ${isActive("/notifications")}`} onClick={closeMobileMenu}>
               Notifications
             </Link>
           </li>
+          */}
+          
+          
           <li className="navItem">
             <Link to="/settings" className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
               Settings
             </Link>
           </li>
+          
           <li className="navItem">
             <Link to="/org-settings" className={`navLink ${isActive("/org-settings")}`} onClick={closeMobileMenu}>
               Organization Settings
             </Link>
           </li>
+          
+          {/*
           <li className="navItem">
             <Link to="/volunteer-reports" className={`navLink ${isActive("/volunteer-reports")}`} onClick={closeMobileMenu}>
               Volunteer Reports

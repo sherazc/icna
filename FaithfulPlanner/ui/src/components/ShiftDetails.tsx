@@ -6,7 +6,7 @@ export default function ShiftDetails() {
         <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
       </div>
 
-      <div className="dashboardGrid">
+      <div className="cardsGrid">
         <div className="card">
           <h3>Shift Information</h3>
           <div className="cardStat">

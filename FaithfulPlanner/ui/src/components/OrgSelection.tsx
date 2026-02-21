@@ -6,7 +6,7 @@ export default function OrgSelection() {
         <button className="btn btnLogout" data-onclick="switchScreen('login')">Logout</button>
       </div>
 
-      <div className="dashboardGrid">
+      <div className="cardsGrid">
         <div className="card" data-onclick="selectOrganization('mercy-clinic')">
           <h3>Mercy Free Clinic</h3>
           <div className="cardStat">

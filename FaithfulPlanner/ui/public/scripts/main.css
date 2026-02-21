@@ -351,7 +351,7 @@ body {
 }
 
 /* Dashboard Content */
-.dashboardGrid {
+.cardsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-20);
@@ -1015,7 +1015,7 @@ tbody tr.selected:hover {
     flex-wrap: wrap;
   }
 
-  .dashboardGrid {
+  .cardsGrid {
     grid-template-columns: 1fr;
   }
 }
@@ -1504,7 +1504,7 @@ tbody tr.selected:hover {
     font-size: 24px;
   }
 
-  .dashboardGrid {
+  .cardsGrid {
     grid-template-columns: 1fr;
     gap: 15px;
   }

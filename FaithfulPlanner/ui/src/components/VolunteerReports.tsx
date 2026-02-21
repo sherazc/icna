@@ -41,7 +41,7 @@ export default function VolunteerReports() {
         </div>
 
         {/* <!-- Summary Section --> */}
-        <div className="dashboardGrid mb-3fullWidth">
+        <div className="cardsGrid mb-3fullWidth">
           <div className="card">
             <h3>Summary</h3>
             <div className="cardStat">
