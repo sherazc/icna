@@ -4,6 +4,7 @@ import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.service.UserProfileService
 import com.sc.clinic.service.model.AuthRole
+import jakarta.transaction.Transactional
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -14,6 +15,7 @@ class ScSecurityUserDetailService(val userProfileService: UserProfileService) : 
     // Email Regex
     val userNameRegex: Regex = "[0-9]*\\/.{2,}@.{2,}\\..{2,}".toRegex();
 
+    @Transactional
     override fun loadUserByUsername(username: String): UserDetails {
 
         if (!username.matches(userNameRegex)) throw UsernameNotFoundException("Invalid user name format: $username")

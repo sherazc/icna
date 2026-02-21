@@ -52,9 +52,7 @@ class UserProfileService(
     private fun validate(userProfileDto: UserProfileDto) {
         if (userProfileDto.companyId == null) throw ScException("Can not save User Profile. Company ID is not set.")
         if (userProfileDto.id == null && isUserExists(userProfileDto.companyId!!, userProfileDto.email))
-            throw ScBadRequestException(
-                "Can not save User Profile. ${userProfileDto.email} already exists in CompanyId ${userProfileDto.companyId}"
-            )
+            throw ScBadRequestException("email", "${userProfileDto.email} already exists")
     }
 
     fun isUserExists(companyId: Long, email: String): Boolean =
