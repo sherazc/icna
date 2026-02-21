@@ -75,11 +75,12 @@ export type UserProfileDto = {
     companyId?: number
     firstName?: string,
     lastName?: string,
-    phoneNumber?: string
+    phoneNumber?: string,
+    employeeTypes: EmployeeTypeDto[]
 };
 
 export const defaultUserProfileDto = (): UserProfileDto => ({
-    email: "",
+    email: "", employeeTypes: []
 });
 
 export type ErrorDto = {
@@ -118,14 +119,6 @@ export type EmployeeTypeDto = {
     id?: number;
     typeName: string;
 }
-
-export type UserProfileEmployeeTypesDto = UserProfileDto & {
-    employeeTypes: EmployeeTypeDto[];
-}
-
-export const defaultUserProfileEmployeeTypesDto = (): UserProfileEmployeeTypesDto => ({
-    ...defaultUserProfileDto(), employeeTypes: []
-});
 
 export enum ModalType { DEFAULT, INFORMATION, WARNING, ERROR };
 

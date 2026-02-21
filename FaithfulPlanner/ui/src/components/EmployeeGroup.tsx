@@ -4,8 +4,15 @@ import { useParams } from "react-router-dom";
 import { ScreenHeader } from "./common/ScreenHeader";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
-import { defaultEmployeeGroupTypeDto, defaultUserProfileEmployeeTypesDto, FormState, ModalType, type EmployeeGroupTypesDto, type EmployeeTypeDto, type ErrorDto, type UserProfileEmployeeTypesDto } from "../service/service-types";
-import { UnAuthRedirect } from "./auth/UnAuthRedirect";
+import {
+  defaultEmployeeGroupTypeDto,
+  defaultUserProfileDto,
+  FormState, ModalType,
+  type EmployeeGroupTypesDto,
+  type EmployeeTypeDto,
+  type ErrorDto,
+  type UserProfileDto
+} from "../service/service-types"; import { UnAuthRedirect } from "./auth/UnAuthRedirect";
 import { Modal } from "./common/Modal";
 import { touchNumber } from "../service/utilities";
 import { toScErrorResponses, validateSaveEmployeeForm } from "../service/errors-helpers";
@@ -18,15 +25,15 @@ interface Props { }
 export const EmployeeGroup: React.FC<Props> = () => {
   const { employeeGroupId } = useParams();
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
-  const [employees, setEmployees] = useState<UserProfileEmployeeTypesDto[]>([]);
+  const [employees, setEmployees] = useState<UserProfileDto[]>([]);
   const [employeeGroupTypes, setEmployeeGroupTypes] = useState<EmployeeGroupTypesDto>(defaultEmployeeGroupTypeDto());
 
   // Delete Employee Modal
   const [showEmployeeDeleteModal, setShowEmployeeDeleteModal] = useState<boolean>(false);
-  const [modalEmployeeDelete, setModalEmployeeDelete] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
+  const [modalEmployeeDelete, setModalEmployeeDelete] = useState<UserProfileDto>(defaultUserProfileDto());
 
   // Save Employee Modal Form
-  const [modalEmployee, setModalEmployee] = useState<UserProfileEmployeeTypesDto>(defaultUserProfileEmployeeTypesDto());
+  const [modalEmployee, setModalEmployee] = useState<UserProfileDto>(defaultUserProfileDto());
   const [showModalEmployeeModal, setShowModalEmployeeModal] = useState<boolean>(false);
   const [modalEmployeeFormState, setModalEmployeeFormState] = useState<FormState>(FormState.FRESH);
   const [modalEmployeeErrors, setModalEmployeeErrors] = useState<ErrorDto[]>([]);
@@ -48,29 +55,29 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
   const onNewEmployee = () => {
     console.log(`New employee`);
-    setModalEmployee({ ...defaultUserProfileEmployeeTypesDto(), companyId: authUserToken.companyId });
+    setModalEmployee({ ...defaultUserProfileDto(), companyId: authUserToken.companyId });
     setModalEmployeeErrors([])
     setShowModalEmployeeModal(true);
   };
 
-  const onEditModalEmployee = (employee: UserProfileEmployeeTypesDto) => {
+  const onEditModalEmployee = (employee: UserProfileDto) => {
     console.log(`Edit employee ${employee.id}`, employee);
     setModalEmployee(employee);
     setModalEmployeeErrors([])
     setShowModalEmployeeModal(true);
   };
 
-  const onDeleteEmployee = (employee: UserProfileEmployeeTypesDto) => {
+  const onDeleteEmployee = (employee: UserProfileDto) => {
     console.log(`Delete employee ${employee.id}`);
     setModalEmployeeDelete(employee);
     setShowEmployeeDeleteModal(true);
   };
 
-  const onModalEmployeeSave = (employee: UserProfileEmployeeTypesDto) => {
-    const save = async (groupId: number, employee: UserProfileEmployeeTypesDto) => {
+  const onModalEmployeeSave = (employee: UserProfileDto) => {
+    const save = async (groupId: number, employee: UserProfileDto) => {
       setModalEmployeeFormState(FormState.IN_PROGRESS);
       const submitErrors: ErrorDto[] = [];
-      const saveEmployeeForm: UserProfileEmployeeTypesDto = { ...employee };
+      const saveEmployeeForm: UserProfileDto = { ...employee };
 
       submitErrors.push(...validateSaveEmployeeForm(saveEmployeeForm, confirmPassword));
 
@@ -104,7 +111,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
     <small className="smallText">{employeeTypes.map(et => et.typeName).join(", ")}</small>
   );
 
-  const createEmployeeRow = (employee: UserProfileEmployeeTypesDto): React.JSX.Element => (
+  const createEmployeeRow = (employee: UserProfileDto): React.JSX.Element => (
     <tr key={employee.id}>
       <td>{employee.firstName} {employee.lastName}</td>
       <td>{employee.employeeTypes.length > 0 && createEmployeeTypes(employee.employeeTypes)}</td>
