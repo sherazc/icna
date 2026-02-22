@@ -25,7 +25,7 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
     <div className="card employee-group-settings">
       <div className="settings-header">
         <h2>Employee Groups</h2>
-        <button className="btn btn-primary btn-sm">+ Add Group</button>
+        <button className="btn btnPrimary btn-sm">+ Add Group</button>
       </div>
 
       <div className="groups-container">
@@ -73,13 +73,13 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
         ) : (
           <div className="empty-state-container">
             <p>No employee groups created yet</p>
-            <button className="btn btn-primary">Create First Group</button>
+            <button className="btn btnPrimary">Create First Group</button>
           </div>
         )}
       </div>
 
       <div className="settings-footer">
-        <button className="btn btn-primary btn-lg">Save All Changes</button>
+        <button className="btn btnPrimary btn-lg">Save All Changes</button>
       </div>
     </div>
   );
