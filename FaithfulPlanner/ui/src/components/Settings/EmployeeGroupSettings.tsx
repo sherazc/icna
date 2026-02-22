@@ -5,7 +5,7 @@ import { AppContext } from "../../store/context";
 interface Props { }
 export const EmployeeGroupSettings: React.FC<Props> = () => {
 
-  const [{authUserToken,  clinicApis }] = useContext(AppContext);
+  const [{ authUserToken, clinicApis }] = useContext(AppContext);
 
   const [groups, setGroups] = useState<EmployeeGroupTypesDto[]>([]);
 
@@ -23,13 +23,29 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   return (
     <div className="card">
       <h3>Employee Group</h3>
-      
+      <div>
+        <div>
+          <label >Provider Group</label>
+          <input type="text" />
+          <button className="actionBtn actionBtnEdit" >Add Group</button>
+        </div>
+
+        {/* 
+        <div className="formGroup">
+          <label >Email</label>
+          <input type="text" />
+          <button className="actionBtn actionBtnEdit" >Add Group</button>
+        </div>
+        */}
+
+      </div>
       {groups && groups.length > 0 && groups.map(group => (
         <div key={group.id}>
-          <div>{group.groupName}</div>
+          <h4>{group.groupName}</h4>
           {group.employeeTypes && group.employeeTypes.length > 0 && group.employeeTypes.map(employeeType => (
             <div key={employeeType.id}>
               <div>{employeeType.typeName}</div>
+
             </div>
           ))}
         </div>
