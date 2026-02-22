@@ -112,20 +112,14 @@ export default function AppNav() {
             </Link>
           </li>
           */}
-          
-          
-          <li className="navItem">
-            <Link to="/settings" className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
-              Settings
-            </Link>
-          </li>
-          
-          <li className="navItem">
-            <Link to="/org-settings" className={`navLink ${isActive("/org-settings")}`} onClick={closeMobileMenu}>
-              Organization Settings
-            </Link>
-          </li>
-          
+
+          <Authenticated shouldHaveRoles={["ADMIN"]}>
+            <li className="navItem">
+              <Link to="/settings" className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
+                Settings
+              </Link>
+            </li>
+          </Authenticated>
           {/*
           <li className="navItem">
             <Link to="/volunteer-reports" className={`navLink ${isActive("/volunteer-reports")}`} onClick={closeMobileMenu}>

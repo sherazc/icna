@@ -20,7 +20,7 @@ export const clinicEndpoints = () => {
     epGetEmployeeGroup: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/employee-group/${groupId}`,
     epGetEmployeeGroupTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/employee-group/${groupId}/types`,
     epCountEmployeeGroups: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/count`,
-    epGetEmployeeGroupsTypes: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/types`,
+    epEmployeeGroupsTypes: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/types`,
     epUserProfileEmployeeTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}`,
   }
 }
@@ -60,7 +60,7 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       return callApiIntercept(request, interceptorCbs);
     },
     getEmployeeGroupsTypes: (companyId: number): Promise<EmployeeGroupTypesDto[]> => {
-      const endpoint = endpoints.epGetEmployeeGroupsTypes(companyId);
+      const endpoint = endpoints.epEmployeeGroupsTypes(companyId);
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);

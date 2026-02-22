@@ -8,8 +8,7 @@ import OrgManagement from "../components/OrgManagement";
 import Schedules from "../components/Schedules";
 import ShiftDetails from "../components/ShiftDetails";
 import Notifications from "../components/Notifications";
-import Settings from "../components/Settings";
-import OrgSettings from "../components/OrgSettings";
+import Settings from "../components/Settings/Settings";
 import VolunteerReports from "../components/VolunteerReports";
 import { EmployeeGroup } from "../components/EmployeeGroup";
 
@@ -28,7 +27,6 @@ export default function AppRoutes() {
         <Route path="shift-details" element={<ShiftDetails/>}/>
         <Route path="notifications" element={<Notifications/>}/>
         <Route path="settings" element={<Settings/>}/>
-        <Route path="org-settings" element={<OrgSettings/>}/>
         <Route path="volunteer-reports" element={<VolunteerReports/>}/>
       </Route>
     </Routes>

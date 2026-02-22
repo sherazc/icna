@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   screenName: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const ScreenHeader: React.FC<Props> = ({ screenName, children }) => {
