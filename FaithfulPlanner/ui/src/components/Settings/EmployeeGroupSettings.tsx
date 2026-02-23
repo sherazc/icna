@@ -1,13 +1,22 @@
 import { useContext, useEffect, useState } from "react";
-import type { EmployeeGroupTypesDto, EmployeeTypeDto } from "../../service/service-types";
+import { defaultEmployeeGroupDto, defaultEmployeeGroupTypeDto, type EmployeeGroupTypesDto, type EmployeeTypeDto, type ModalConfig } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import "./EmployeeGroupSettings.css";
+import { Modal } from "../common/Modal";
+import { touchNumber } from "../../service/utilities";
 
 interface Props { }
+
+let tempId = -1;
 export const EmployeeGroupSettings: React.FC<Props> = () => {
 
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [groups, setGroups] = useState<EmployeeGroupTypesDto[]>([]);
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [modalConfig, setModalConfig] = useState<ModalConfig>({});
+  const [modalMessage, setModalMessage] = useState<string>("");
+
+
 
   const loadData = async () => {
     const groupsResponse = await clinicApis.getEmployeeGroupsTypes(authUserToken.companyId)
@@ -17,6 +26,23 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   useEffect(() => {
     loadData();
   }, [authUserToken]);
+
+
+  const onAddGroup = () => {
+    const groupNew = defaultEmployeeGroupTypeDto();
+    groupNew.id = tempId--;
+    const allGroups = [...groups];
+    allGroups.push(groupNew);
+    setGroups(allGroups);
+  }
+
+  const onDeleteGroup = (groupId: number) => {
+    console.log(groupId);
+
+    if (groupId < 0) {
+
+    }
+  }
 
   const createGroupCard = (group: EmployeeGroupTypesDto) => (
     <div key={group.id} className="group-card">
@@ -31,7 +57,8 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
         </div>
         <div className="group-actions">
           <button className="btn btn-icon btn-edit" title="Edit group">✎</button>
-          <button className="btn btn-icon btn-delete" title="Delete group">🗑</button>
+          <button className="btn btn-icon btn-delete" title="Delete group"
+            onClick={() => onDeleteGroup(touchNumber(group.id))}>🗑</button>
         </div>
       </div>
       <div className="employee-types-section">
@@ -61,24 +88,30 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   );
 
   return (
-    <div className="card employee-group-settings">
-      <div className="settings-header">
-        <h2>Employee Groups</h2>
-        <button className="btn btnPrimary btn-sm">+ Add Group</button>
+    <>
+      <div className="card employee-group-settings">
+        <div className="settings-header">
+          <h2>Employee Groups</h2>
+          <button className="btn btnPrimary btn-sm" onClick={onAddGroup}>+ Add Group</button>
+        </div>
+        <div className="groups-container">
+          {groups && groups.length > 0 ? (
+            groups.map(group => createGroupCard(group))
+          ) : (
+            <div className="empty-state-container">
+              <p>No employee groups created yet</p>
+              <button className="btn btnPrimary">Create First Group</button>
+            </div>
+          )}
+        </div>
+        <div className="settings-footer">
+          <button className="btn btnPrimary btn-lg">Save All Changes</button>
+        </div>
       </div>
-      <div className="groups-container">
-        {groups && groups.length > 0 ? (
-          groups.map(group => createGroupCard(group))
-        ) : (
-          <div className="empty-state-container">
-            <p>No employee groups created yet</p>
-            <button className="btn btnPrimary">Create First Group</button>
-          </div>
-        )}
-      </div>
-      <div className="settings-footer">
-        <button className="btn btnPrimary btn-lg">Save All Changes</button>
-      </div>
-    </div>
+
+      <Modal setShow={setModalShow} show={modalShow} config={modalConfig}>
+        {modalMessage}
+      </Modal>
+    </>
   );
 }
