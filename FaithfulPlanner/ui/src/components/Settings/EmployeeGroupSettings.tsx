@@ -36,12 +36,19 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
     setGroups(allGroups);
   }
 
-  const onDeleteGroup = (groupId: number) => {
-    console.log(groupId);
-
+  const onDeleteGroup = async (groupId: number) => {
     if (groupId < 0) {
-
+      deleteGroup(groupId);
+    } else {
+      // Call API to check if there are employees in the group
+      // Show modal that it can not be deleted until employees are deleted
+      // else call deleteGroup(groupId);
+      
     }
+  }
+
+  const deleteGroup = (groupId: number) => {
+    console.log(`Deleting ${groupId}`);
   }
 
   const createGroupCard = (group: EmployeeGroupTypesDto) => (
