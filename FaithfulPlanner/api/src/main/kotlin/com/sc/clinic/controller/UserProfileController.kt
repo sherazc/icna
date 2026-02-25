@@ -2,6 +2,7 @@ package com.sc.clinic.controller
 
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.service.UserProfileService
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,11 +24,10 @@ class UserProfileController(val userProfileService: UserProfileService) {
     fun getUserProfileEmployeeTypes(@PathVariable companyId: Long, @PathVariable groupId: Long) =
         userProfileService.findUserProfiles(companyId, groupId)
 
-
-    @GetMapping("/{groupId}/has-users")
+    @GetMapping("/group/{groupId}/has-users")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun hasUserProfiles(@PathVariable companyId: Long, @PathVariable groupId: Long): Boolean
-            = userProfileService.hasUserProfiles(companyId, groupId)
+    fun hasUserProfiles(@PathVariable companyId: Long, @PathVariable groupId: Long)
+        = userProfileService.hasUserProfiles(companyId, groupId)
 
     @PostMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
