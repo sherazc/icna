@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class EmployeeGroupService(
-    val employeeGroupRepository: EmployeeGroupRepository, val employeeTypeService: EmployeeTypeService
+    val employeeGroupRepository: EmployeeGroupRepository,
+    val employeeTypeService: EmployeeTypeService
 ) {
     fun countGroups(companyId: Long) = employeeGroupRepository.countByCompanyId(companyId)
 

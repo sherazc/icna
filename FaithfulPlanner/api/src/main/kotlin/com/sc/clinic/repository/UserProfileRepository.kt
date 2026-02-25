@@ -38,5 +38,16 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         and eg.id = :groupId
         order by u.firstName, u.lastName""")
     fun findByCompanyIdAndEmployeeGroupId(companyId: Long, groupId: Long): List<UserProfile>
+
+
+    @Query(
+        """
+        select case when count(u) > 0 then true else false end 
+        from UserProfile u 
+        join u.employeeTypes et
+        join et.employeeGroup eg
+        where u.company.id = :companyId 
+        and eg.id = :groupId""")
+    fun hasByCompanyIdAndEmployeeGroupId(companyId: Long, groupId: Long): Boolean
 }
 

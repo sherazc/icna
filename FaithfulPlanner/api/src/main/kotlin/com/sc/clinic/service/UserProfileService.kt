@@ -91,11 +91,13 @@ class UserProfileService(
     fun findRolesByCompanyAndEmail(companyId: Long, email: String) =
         userProfileRepository.findRolesByCompanyAndEmail(companyId, email)
 
-    fun findUserProfileEmployeeTypes(companyId: Long, groupId: Long) =
+    fun findUserProfiles(companyId: Long, groupId: Long) =
         userProfileRepository.findByCompanyIdAndEmployeeGroupId(companyId, groupId)
             .map { UserProfileDto(it) }
             .map { u ->
                 u.usersPassword = null
                 u
             }
+    fun hasUserProfiles(companyId: Long, groupId: Long) =
+        userProfileRepository.hasByCompanyIdAndEmployeeGroupId(companyId, groupId)
 }
