@@ -29,4 +29,8 @@ class EmployeeGroupService(
             group.id?.let { employeeTypeService.findDtoByEmployeeGroupId(it) } ?: emptyList()
         )
     }
+
+    fun hasEmployees(groupId: Long): Boolean {
+        TODO("Not yet implemented")
+    }
 }

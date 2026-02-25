@@ -25,5 +25,14 @@ interface EmployeeGroupRepository : JpaRepository<EmployeeGroup, Long> {
         FROM EmployeeGroup eg 
         WHERE eg.id = :groupId """)
     fun findGroup(groupId: Long): EmployeeGroupDto?
+
+    @Query(
+        """
+        SELECT case when count(eg) > 0 then true else false end
+        FROM EmployeeGroup eg 
+        WHERE eg.id = :groupId 
+        
+        """)
+    fun hasEmployees(): Boolean
 }
 
