@@ -22,6 +22,7 @@ export const clinicEndpoints = () => {
     epCountEmployeeGroups: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/count`,
     epEmployeeGroupsTypes: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/types`,
     epUserProfileEmployeeTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}`,
+    epHasUsersInGroup: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}/has-users`,
   }
 }
 
@@ -102,6 +103,12 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
         payload: userEmployeeTypes,
         headers: CONTENT_JSON_HEADER()
        };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    hasUsersInGroup: (companyId: number, groupId: number): Promise<boolean> => {
+      const endpoint = endpoints.epHasUsersInGroup(companyId, groupId);
+      const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },

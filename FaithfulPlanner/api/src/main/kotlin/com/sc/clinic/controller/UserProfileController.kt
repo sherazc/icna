@@ -2,7 +2,6 @@ package com.sc.clinic.controller
 
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.service.UserProfileService
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

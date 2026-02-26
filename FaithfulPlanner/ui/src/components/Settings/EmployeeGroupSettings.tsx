@@ -36,14 +36,21 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
     setGroups(allGroups);
   }
 
-  const onDeleteGroup = async (groupId: number) => {
+  const onDeleteGroup = async (companyId: number, groupId: number) => {
     if (groupId < 0) {
       deleteGroup(groupId);
     } else {
-      // Call API to check if there are employees in the group
+      const hasEmployees: boolean = await clinicApis.hasUsersInGroup(companyId, groupId);
+      
       // Show modal that it can not be deleted until employees are deleted
       // else call deleteGroup(groupId);
-      
+      if(hasEmployees) {
+        setModalConfig(mc => ({...mc,
+          title: "Can not delete group"
+        }))
+      } else {
+        deleteGroup(groupId);
+      }
     }
   }
 
@@ -65,7 +72,7 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
         <div className="group-actions">
           <button className="btn btn-icon btn-edit" title="Edit group">✎</button>
           <button className="btn btn-icon btn-delete" title="Delete group"
-            onClick={() => onDeleteGroup(touchNumber(group.id))}>🗑</button>
+            onClick={() => onDeleteGroup(authUserToken.companyId, touchNumber(group.id))}>🗑</button>
         </div>
       </div>
       <div className="employee-types-section">
