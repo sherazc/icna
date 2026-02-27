@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { defaultEmployeeGroupDto, defaultEmployeeGroupTypeDto, type EmployeeGroupTypesDto, type EmployeeTypeDto, type ModalConfig } from "../../service/service-types";
+import { defaultEmployeeGroupTypeDto, ModalType, type EmployeeGroupTypesDto, type EmployeeTypeDto, type ModalConfig } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import "./EmployeeGroupSettings.css";
 import { Modal } from "../common/Modal";
@@ -16,8 +16,6 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   const [modalConfig, setModalConfig] = useState<ModalConfig>({});
   const [modalMessage, setModalMessage] = useState<string>("");
 
-
-
   const loadData = async () => {
     const groupsResponse = await clinicApis.getEmployeeGroupsTypes(authUserToken.companyId)
     setGroups(groupsResponse);
@@ -27,27 +25,30 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
     loadData();
   }, [authUserToken]);
 
-
   const onAddGroup = () => {
     const groupNew = defaultEmployeeGroupTypeDto();
     groupNew.id = tempId--;
     const allGroups = [...groups];
     allGroups.push(groupNew);
     setGroups(allGroups);
-  }
+  };
 
   const onDeleteGroup = async (companyId: number, groupId: number) => {
     if (groupId < 0) {
       deleteGroup(groupId);
     } else {
       const hasEmployees: boolean = await clinicApis.hasUsersInGroup(companyId, groupId);
-      
-      // Show modal that it can not be deleted until employees are deleted
-      // else call deleteGroup(groupId);
-      if(hasEmployees) {
-        setModalConfig(mc => ({...mc,
-          title: "Can not delete group"
-        }))
+
+      if (hasEmployees) {
+        setModalConfig(mc => ({
+          ...mc,
+          title: "Delete group",
+          modalType: ModalType.ERROR,
+          yesLabel: "Ok",
+          yesFunction: () => setModalShow(false)
+        }));
+        setModalMessage("Can not delete group. There are employees in this group.");
+        setModalShow(true);
       } else {
         deleteGroup(groupId);
       }
@@ -55,7 +56,8 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   }
 
   const deleteGroup = (groupId: number) => {
-    console.log(`Deleting ${groupId}`);
+    const filteredGroups = groups.filter(a => a.id !== groupId);
+    setGroups(filteredGroups);
   }
 
   const createGroupCard = (group: EmployeeGroupTypesDto) => (
