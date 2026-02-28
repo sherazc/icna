@@ -33,6 +33,13 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
     setGroups(allGroups);
   };
 
+  const onAddType = (groupId: number) => {
+    const groupsNew = [...groups];
+    const index = groupsNew.findIndex((g) => g.id === groupId);
+    groupsNew[index].employeeTypes.push({id: tempId--, typeName: ""});
+    setGroups(groupsNew);
+  };
+
   const onDeleteGroup = async (companyId: number, groupId: number) => {
     if (groupId < 0) {
       deleteGroup(groupId);
@@ -40,25 +47,51 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
       const hasEmployees: boolean = await clinicApis.hasUsersInGroup(companyId, groupId);
 
       if (hasEmployees) {
-        setModalConfig(mc => ({
-          ...mc,
+        setModalConfig({
           title: "Delete group",
           modalType: ModalType.ERROR,
           yesLabel: "Ok",
           yesFunction: () => setModalShow(false)
-        }));
+        });
         setModalMessage("Can not delete group. There are employees in this group.");
         setModalShow(true);
       } else {
         deleteGroup(groupId);
       }
     }
-  }
+  };
 
   const deleteGroup = (groupId: number) => {
     const filteredGroups = groups.filter(a => a.id !== groupId);
     setGroups(filteredGroups);
-  }
+  };
+
+
+  const onDeleteType = async (groupId: number, typeId: number) => {
+    if (typeId < 0) {
+      deleteType(groupId, typeId);
+    } else {
+      setModalConfig({
+        title: "Delete type",
+        modalType: ModalType.WARNING,
+        yesLabel: "Ok",
+        yesFunction: () => {
+          deleteType(groupId, typeId);
+          setModalShow(false);
+        },
+        noLabel: "Cancel"
+      });
+      setModalMessage("Employee type label will be removed from the employees that it is attached to.");
+      setModalShow(true);
+    }
+  };
+
+  const deleteType = (groupId: number, typeId: number) => {
+    const groupsNew = [...groups];
+    const index = groupsNew.findIndex((g) => g.id === groupId);
+    groupsNew[index].employeeTypes = groupsNew[index].employeeTypes.filter(t => t.id !== typeId);
+    setGroups(groupsNew);
+  };
 
   const createGroupCard = (group: EmployeeGroupTypesDto) => (
     <div key={group.id} className="group-card">
@@ -81,17 +114,18 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
         <div className="section-label">Employee Types</div>
         {group.employeeTypes && group.employeeTypes.length > 0 ? (
           <div className="employee-types-list">
-            {group.employeeTypes.map(employeeType => createEmployeeTypeField(employeeType))}
+            {group.employeeTypes.map(employeeType => createEmployeeTypeField(touchNumber(group.id), employeeType))}
           </div>
         ) : (
           <div className="empty-state">No employee types added</div>
         )}
-        <button className="btn btn-secondary btn-sm btn-add-type">+ Add Type</button>
+        <button className="btn btn-secondary btn-sm btn-add-type"
+          onClick={() => onAddType(touchNumber(group.id))}>+ Add Type</button>
       </div>
     </div>
   );
 
-  const createEmployeeTypeField = (employeeType: EmployeeTypeDto) => (
+  const createEmployeeTypeField = (groupId: number, employeeType: EmployeeTypeDto) => (
     <div key={employeeType.id} className="employee-type-item">
       <input
         type="text"
@@ -99,7 +133,8 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
         className="employee-type-input"
         placeholder="Employee type name"
       />
-      <button className="btn btn-icon btn-remove" title="Remove type">×</button>
+      <button className="btn btn-icon btn-remove" title="Remove type"
+        onClick={() => onDeleteType(groupId, touchNumber(employeeType.id))}>×</button>
     </div>
   );
 
