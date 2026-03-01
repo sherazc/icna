@@ -93,6 +93,21 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
     setGroups(groupsNew);
   };
 
+  const onChangeGroupName = (event: React.ChangeEvent<HTMLInputElement>, groupId: number) => {
+    const groupsNew = [...groups];
+    const index = groupsNew.findIndex((g) => g.id === groupId);
+    groupsNew[index].groupName = event.target.value;
+    setGroups(groupsNew);
+  };
+
+  const onChangeTypeName = (event: React.ChangeEvent<HTMLInputElement>, groupId: number, typeId: number) => {
+    const groupsNew = [...groups];
+    const indexGroup = groupsNew.findIndex((g) => g.id === groupId);
+    const indexType = groupsNew[indexGroup].employeeTypes.findIndex((t) => t.id === typeId);
+    groupsNew[indexGroup].employeeTypes[indexType].typeName = event.target.value;
+    setGroups(groupsNew);
+  };
+
   const createGroupCard = (group: EmployeeGroupTypesDto) => (
     <div key={group.id} className="group-card">
       <div className="group-header">
@@ -100,9 +115,9 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
           <input
             type="text"
             defaultValue={group.groupName}
-            className="group-name-input"
+            className={group.groupName ? "group-name-input" : "group-name-input input-empty"}
             placeholder="Group name"
-            style={group.groupName ? {} : {backgroundColor: "pink"}}
+            onChange={(e) => onChangeGroupName(e, touchNumber(group.id))}
           />
         </div>
         <div className="group-actions">
@@ -127,13 +142,14 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   );
 
   const createEmployeeTypeField = (groupId: number, employeeType: EmployeeTypeDto) => (
-    <div key={employeeType.id} className="employee-type-item">
+    <div key={employeeType.id} 
+    className={employeeType.typeName ? "employee-type-item" : "employee-type-item input-empty"}>
       <input
         type="text"
         defaultValue={employeeType.typeName}
         className="employee-type-input"
         placeholder="Employee type name"
-      />
+        onChange={e => onChangeTypeName(e, groupId, touchNumber(employeeType.id))}/>
       <button className="btn btn-icon btn-remove" title="Remove type"
         onClick={() => onDeleteType(groupId, touchNumber(employeeType.id))}>×</button>
     </div>

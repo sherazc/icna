@@ -163,8 +163,12 @@
   transition: background-color 0.2s ease;
 }
 
-input-empty {
-  background-color: var(--warning);
+.input-empty {
+  background-color: var(--error-light);
+}
+
+.input-empty::placeholder {
+  color: var(--text-secondary);
 }
 
 .employee-type-item:hover {
