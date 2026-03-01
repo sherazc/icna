@@ -1,4 +1,4 @@
-import type { ErrorDto, RegistrationDto, UserProfileEmployeeTypesDto } from "./service-types";
+import type { ErrorDto, RegistrationDto, UserProfileDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -37,7 +37,7 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Erro
   return errors;
 };
 
-export const validateSaveEmployeeForm = (employee: UserProfileEmployeeTypesDto, confirmPassword: string): ErrorDto[] => {
+export const validateSaveEmployeeForm = (employee: UserProfileDto, confirmPassword: string): ErrorDto[] => {
   const errors: ErrorDto[] = [];
 
   if (isBlankString(employee.firstName)) {
