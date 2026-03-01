@@ -162,6 +162,10 @@
   transition: background-color 0.2s ease;
 }
 
+input-empty {
+  background-color: var(--warning);
+}
+
 .employee-type-item:hover {
   background-color: #f5f5f5;
 }

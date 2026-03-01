@@ -102,6 +102,7 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
             defaultValue={group.groupName}
             className="group-name-input"
             placeholder="Group name"
+            style={group.groupName ? {} : {backgroundColor: "pink"}}
           />
         </div>
         <div className="group-actions">
