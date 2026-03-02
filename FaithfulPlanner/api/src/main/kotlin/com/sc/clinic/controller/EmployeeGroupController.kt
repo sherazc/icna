@@ -1,9 +1,12 @@
 package com.sc.clinic.controller
 
+import com.sc.clinic.dto.EmployeeGroupTypesDto
 import com.sc.clinic.service.EmployeeGroupService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -32,4 +35,9 @@ class EmployeeGroupController(
     @GetMapping("/count")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun countGroups(@PathVariable companyId: Long) = employeeGroupService.countGroups(companyId)
+
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun save(@PathVariable companyId: Long, @RequestBody employeeGroupTypes: EmployeeGroupTypesDto)
+        = employeeGroupService.save(companyId, employeeGroupTypes)
 }

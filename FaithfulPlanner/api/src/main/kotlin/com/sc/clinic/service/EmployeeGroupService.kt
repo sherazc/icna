@@ -31,7 +31,10 @@ class EmployeeGroupService(
         )
     }
 
-    fun hasEmployees(groupId: Long): Boolean {
+    fun save(companyId: Long, employeeGroupTypes: EmployeeGroupTypesDto): EmployeeGroupTypesDto {
+        println(companyId)
+        println(employeeGroupTypes)
         TODO("Not yet implemented")
     }
+
 }
