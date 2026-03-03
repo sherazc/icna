@@ -31,10 +31,9 @@ class EmployeeGroupService(
         )
     }
 
-    fun save(companyId: Long, employeeGroupTypes: EmployeeGroupTypesDto): EmployeeGroupTypesDto {
+    fun save(companyId: Long, employeeGroupsTypes: List<EmployeeGroupTypesDto>): List<EmployeeGroupTypesDto> {
         println(companyId)
-        println(employeeGroupTypes)
+        println(employeeGroupsTypes)
         TODO("Not yet implemented")
     }
-
 }

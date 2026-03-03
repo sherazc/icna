@@ -1,0 +1,116 @@
+meta {
+  name: /employee-group/types save
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{base_url}}/api/company/1/employee-group/types
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  [
+    {
+      "id": 1,
+      "groupName": "PROVIDER",
+      "employeeTypes": [
+        {
+          "id": 3,
+          "typeName": "Cardiologist"
+        },
+        {
+          "id": 7,
+          "typeName": "Dentist"
+        },
+        {
+          "id": 4,
+          "typeName": "Dermatologist"
+        },
+        {
+          "id": 1,
+          "typeName": "General Practitioner"
+        },
+        {
+          "id": 8,
+          "typeName": "Ophthalmologist"
+        },
+        {
+          "id": 5,
+          "typeName": "Orthopedic Surgeon"
+        },
+        {
+          "id": 2,
+          "typeName": "Pediatrician"
+        },
+        {
+          "id": 6,
+          "typeName": "Psychiatrist"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "groupName": "VOLUNTEER",
+      "employeeTypes": [
+        {
+          "id": 15,
+          "typeName": "Administrative Staff"
+        },
+        {
+          "id": 16,
+          "typeName": "Billing Specialist"
+        },
+        {
+          "id": 12,
+          "typeName": "Lab Technician"
+        },
+        {
+          "id": 11,
+          "typeName": "Medical Assistant"
+        },
+        {
+          "id": 9,
+          "typeName": "Nurse"
+        },
+        {
+          "id": 13,
+          "typeName": "Pharmacist"
+        },
+        {
+          "id": 14,
+          "typeName": "Physical Therapist"
+        },
+        {
+          "id": 10,
+          "typeName": "Receptionist"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "groupName": "Management",
+      "employeeTypes": []
+    },
+    {
+      "id": 4,
+      "groupName": "Board",
+      "employeeTypes": []
+    },
+    {
+      "id": 5,
+      "groupName": "Shurah",
+      "employeeTypes": []
+    }
+  ]
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

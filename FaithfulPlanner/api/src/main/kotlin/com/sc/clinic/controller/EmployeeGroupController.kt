@@ -36,8 +36,8 @@ class EmployeeGroupController(
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun countGroups(@PathVariable companyId: Long) = employeeGroupService.countGroups(companyId)
 
-    @PostMapping
+    @PostMapping("/types")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun save(@PathVariable companyId: Long, @RequestBody employeeGroupTypes: EmployeeGroupTypesDto)
-        = employeeGroupService.save(companyId, employeeGroupTypes)
+    fun save(@PathVariable companyId: Long, @RequestBody employeeGroupsTypes: List<EmployeeGroupTypesDto>)
+        = employeeGroupService.save(companyId, employeeGroupsTypes)
 }
