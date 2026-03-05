@@ -21,4 +21,11 @@ class EmployeeTypeService(private val employeeTypeRepository: EmployeeTypeReposi
         val employeeTypes = employeeTypeRepository.findAllById(employeeTypeIds).toMutableSet()
         userProfileEntity.employeeTypes = employeeTypes
     }
+
+    fun deleteType(existingTypeId: Long?) {
+        println(existingTypeId)
+        // Remove type from employees - Do it in SQL
+        // Delete type
+        TODO("Not yet implemented")
+    }
 }
