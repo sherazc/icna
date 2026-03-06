@@ -46,9 +46,8 @@ class EmployeeGroupService(
 
     private fun deleteTypeIfNotExists(existingGroupId: Long?, existingTypeId: Long?,
                                       newEmployeeGroupsTypes: List<EmployeeGroupTypesDto>) {
-
-        val groupAndTypeFound = newEmployeeGroupsTypes.any { gts -> gts.employeeTypes.any { ts -> gts.id?.equals(existingGroupId) == true && ts.id?.equals(existingTypeId) == true } }
-
+        val groupAndTypeFound = newEmployeeGroupsTypes.any { gts -> gts.employeeTypes.any {
+            ts -> gts.id?.equals(existingGroupId) == true && ts.id?.equals(existingTypeId) == true } }
         if (!groupAndTypeFound) {
             employeeTypeService.deleteType(existingTypeId)
         }

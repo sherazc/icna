@@ -6,7 +6,10 @@ import com.sc.clinic.repository.EmployeeTypeRepository
 import org.springframework.stereotype.Service
 
 @Service
-class EmployeeTypeService(private val employeeTypeRepository: EmployeeTypeRepository) {
+class EmployeeTypeService(
+    private val employeeTypeRepository: EmployeeTypeRepository,
+    private val userProfileService: UserProfileService
+) {
 
     fun findByEmployeeGroupId(employeeGroupId: Long) =
         employeeTypeRepository.findByEmployeeGroupIdOrderByTypeName(employeeGroupId)
@@ -24,8 +27,11 @@ class EmployeeTypeService(private val employeeTypeRepository: EmployeeTypeReposi
 
     fun deleteType(existingTypeId: Long?) {
         println(existingTypeId)
+        userProfileService
         // Remove type from employees - Do it in SQL
         // Delete type
+
+
         TODO("Not yet implemented")
     }
 }
