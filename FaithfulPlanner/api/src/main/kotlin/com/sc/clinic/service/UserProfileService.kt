@@ -101,15 +101,4 @@ class UserProfileService(
 
     fun hasUserProfiles(companyId: Long, groupId: Long) =
         userProfileRepository.hasByCompanyIdAndEmployeeGroupId(companyId, groupId)
-
-    fun findByEmployeeType(typeId: Long): List<UserProfile> = userProfileRepository.findByEmployeeType(typeId)
-
-    fun detachEmployeeType(typeId: Long) {
-        findByEmployeeType(typeId).forEach { u ->
-            u.employeeTypes.firstOrNull { et -> et.id == typeId }.let { et2 ->
-                u.employeeTypes.remove(et2)
-                userProfileRepository.save(u)
-            }
-        }
-    }
 }
