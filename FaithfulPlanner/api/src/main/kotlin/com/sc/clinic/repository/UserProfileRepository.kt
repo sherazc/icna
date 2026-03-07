@@ -49,5 +49,13 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         where u.company.id = :companyId 
         and eg.id = :groupId""")
     fun hasByCompanyIdAndEmployeeGroupId(companyId: Long, groupId: Long): Boolean
+
+    @Query(
+        """
+        select u from UserProfile u 
+        join u.employeeTypes et
+        where u.company.id = :companyId 
+        and et.id = :typeId""")
+    fun findByEmployeeType(typeId: Long): List<UserProfile>
 }
 

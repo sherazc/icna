@@ -25,9 +25,10 @@ class EmployeeTypeService(
         userProfileEntity.employeeTypes = employeeTypes
     }
 
-    fun deleteType(existingTypeId: Long?) {
-        println(existingTypeId)
-        userProfileService
+    fun deleteType(typeId: Long?) {
+        println(typeId)
+        typeId?.let { userProfileService.detachEmployeeType(typeId) }
+
         // Remove type from employees - Do it in SQL
         // Delete type
 
