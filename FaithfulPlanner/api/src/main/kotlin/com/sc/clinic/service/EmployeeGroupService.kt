@@ -2,6 +2,7 @@ package com.sc.clinic.service
 
 import com.sc.clinic.dto.EmployeeGroupTypesDto
 import com.sc.clinic.dto.EmployeeTypeDto
+import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.EmployeeGroup
 import com.sc.clinic.entity.EmployeeType
 import com.sc.clinic.repository.EmployeeGroupRepository
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Service
 @Service
 class EmployeeGroupService(
     val employeeGroupRepository: EmployeeGroupRepository,
-    val employeeTypeService: EmployeeTypeService
+    val employeeTypeService: EmployeeTypeService,
+    private val companyService: CompanyService
 ) {
     fun countGroups(companyId: Long) = employeeGroupRepository.countByCompanyId(companyId)
 
@@ -34,6 +36,7 @@ class EmployeeGroupService(
     }
 
     fun save(companyId: Long, employeeGroupsTypes: List<EmployeeGroupTypesDto>): List<EmployeeGroupTypesDto> {
+        val company = companyService.findById(companyId)
         val existingGroupsTypes = getGroupsTypes(companyId)
 
         // Delete types
@@ -46,12 +49,12 @@ class EmployeeGroupService(
         // Delete groups
         existingGroupsTypes.forEach { gts ->
             val noneExists = employeeGroupsTypes.none { gtDto -> gts.id?.equals(gtDto.id) == true }
-            if (noneExists) gts.id?.let { id -> employeeGroupRepository.deleteById(id)}
+            if (noneExists) gts.id?.let { id -> employeeGroupRepository.deleteById(id) }
         }
 
         // Save Groups & Types
         val savedEmployeeGroups = employeeGroupsTypes.map { egDto ->
-            val group: EmployeeGroup = getOrCreateGroupEntity(egDto)
+            val group: EmployeeGroup = getOrCreateGroupEntity(company, egDto)
             employeeGroupRepository.save(group)
             val employeeTypes: List<EmployeeType> = employeeTypeService.updateGroupTypes(group, egDto.employeeTypes)
             EmployeeGroupTypesDto(group, employeeTypes)
@@ -60,9 +63,10 @@ class EmployeeGroupService(
         return savedEmployeeGroups
     }
 
-    private fun getOrCreateGroupEntity(egDto: EmployeeGroupTypesDto): EmployeeGroup {
-        egDto.id?.let { id -> if (id < 0) egDto.id = null }
-        TODO("Not yet implemented")
+    private fun getOrCreateGroupEntity(company: Company, egDto: EmployeeGroupTypesDto): EmployeeGroup {
+        return egDto.id
+            ?.let { id -> if (id > 0) employeeGroupRepository.findById(id).orElse(null) else null }
+            ?: EmployeeGroup(null, egDto.groupName, company)
     }
 
     private fun deleteTypeIfNotExists(
