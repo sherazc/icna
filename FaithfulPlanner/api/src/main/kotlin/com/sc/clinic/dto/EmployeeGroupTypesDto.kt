@@ -15,7 +15,7 @@ data class EmployeeGroupTypesDto(
     constructor(group: EmployeeGroup, types: List<EmployeeType>):this (
         group.id,
         group.groupName,
-        types.map { EmployeeTypeDto(it) }
+        types.map { EmployeeTypeDto(it) }.sortedBy { it.typeName }
     )
 }
 

@@ -58,7 +58,8 @@ class EmployeeGroupService(
             employeeGroupRepository.save(group)
             val employeeTypes: List<EmployeeType> = employeeTypeService.updateGroupTypes(group, egDto.employeeTypes)
             EmployeeGroupTypesDto(group, employeeTypes)
-        }
+        }.sortedBy { it.groupName }
+
 
         return savedEmployeeGroups
     }
