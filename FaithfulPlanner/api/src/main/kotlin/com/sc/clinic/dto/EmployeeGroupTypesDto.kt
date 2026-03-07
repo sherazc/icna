@@ -1,12 +1,21 @@
 package com.sc.clinic.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.sc.clinic.entity.EmployeeGroup
+import com.sc.clinic.entity.EmployeeType
 
 data class EmployeeGroupTypesDto(
     @param:JsonProperty("id")
-    val id: Long?,
+    var id: Long?,
     @param:JsonProperty("groupName")
-    val groupName: String,
+    var groupName: String,
     @param:JsonProperty("employeeTypes")
-    val employeeTypes: List<EmployeeTypeDto> = mutableListOf()
-)
+    var employeeTypes: List<EmployeeTypeDto> = mutableListOf()
+) {
+    constructor(group: EmployeeGroup, types: List<EmployeeType>):this (
+        group.id,
+        group.groupName,
+        types.map { EmployeeTypeDto(it) }
+    )
+}
+

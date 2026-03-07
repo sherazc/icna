@@ -106,7 +106,7 @@ class UserProfileService(
 
     fun detachEmployeeType(typeId: Long) {
         findByEmployeeType(typeId).forEach { u ->
-            u.employeeTypes.filter { et -> et.id == typeId }.firstOrNull().let { et2 ->
+            u.employeeTypes.firstOrNull { et -> et.id == typeId }.let { et2 ->
                 u.employeeTypes.remove(et2)
                 userProfileRepository.save(u)
             }

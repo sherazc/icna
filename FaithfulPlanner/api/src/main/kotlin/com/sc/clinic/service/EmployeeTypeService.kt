@@ -1,6 +1,8 @@
 package com.sc.clinic.service
 
 import com.sc.clinic.dto.EmployeeTypeDto
+import com.sc.clinic.entity.EmployeeGroup
+import com.sc.clinic.entity.EmployeeType
 import com.sc.clinic.entity.UserProfile
 import com.sc.clinic.repository.EmployeeTypeRepository
 import org.springframework.stereotype.Service
@@ -26,13 +28,13 @@ class EmployeeTypeService(
     }
 
     fun deleteType(typeId: Long?) {
-        println(typeId)
-        typeId?.let { userProfileService.detachEmployeeType(typeId) }
+        typeId?.let {
+            userProfileService.detachEmployeeType(typeId)
+            employeeTypeRepository.deleteById(typeId)
+        }
+    }
 
-        // Remove type from employees - Do it in SQL
-        // Delete type
-
-
+    fun updateGroupTypes(group: EmployeeGroup, employeeTypes: List<EmployeeTypeDto>): List<EmployeeType> {
         TODO("Not yet implemented")
     }
 }

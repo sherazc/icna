@@ -2,6 +2,8 @@ package com.sc.clinic.service
 
 import com.sc.clinic.dto.EmployeeGroupTypesDto
 import com.sc.clinic.dto.EmployeeTypeDto
+import com.sc.clinic.entity.EmployeeGroup
+import com.sc.clinic.entity.EmployeeType
 import com.sc.clinic.repository.EmployeeGroupRepository
 import org.springframework.stereotype.Service
 
@@ -33,21 +35,45 @@ class EmployeeGroupService(
 
     fun save(companyId: Long, employeeGroupsTypes: List<EmployeeGroupTypesDto>): List<EmployeeGroupTypesDto> {
         val existingGroupsTypes = getGroupsTypes(companyId)
-        val exitingTypes = mutableListOf<EmployeeTypeDto>()
+
         // Delete types
-        existingGroupsTypes.forEach { gts -> gts.employeeTypes.forEach { t -> deleteTypeIfNotExists(gts.id, t.id, employeeGroupsTypes) } }
-        // Find by typeId.
-        // Throw exception if group is linked to employees
+        existingGroupsTypes.forEach { gts ->
+            gts.employeeTypes.forEach { t ->
+                deleteTypeIfNotExists(gts.id, t.id, employeeGroupsTypes)
+            }
+        }
+
         // Delete groups
-        println(companyId)
-        println(employeeGroupsTypes)
+        existingGroupsTypes.forEach { gts ->
+            val noneExists = employeeGroupsTypes.none { gtDto -> gts.id?.equals(gtDto.id) == true }
+            if (noneExists) gts.id?.let { id -> employeeGroupRepository.deleteById(id)}
+        }
+
+        // Save Groups & Types
+        val savedEmployeeGroups = employeeGroupsTypes.map { egDto ->
+            val group: EmployeeGroup = getOrCreateGroupEntity(egDto)
+            employeeGroupRepository.save(group)
+            val employeeTypes: List<EmployeeType> = employeeTypeService.updateGroupTypes(group, egDto.employeeTypes)
+            EmployeeGroupTypesDto(group, employeeTypes)
+        }
+
+        return savedEmployeeGroups
+    }
+
+    private fun getOrCreateGroupEntity(egDto: EmployeeGroupTypesDto): EmployeeGroup {
+        egDto.id?.let { id -> if (id < 0) egDto.id = null }
         TODO("Not yet implemented")
     }
 
-    private fun deleteTypeIfNotExists(existingGroupId: Long?, existingTypeId: Long?,
-                                      newEmployeeGroupsTypes: List<EmployeeGroupTypesDto>) {
-        val groupAndTypeFound = newEmployeeGroupsTypes.any { gts -> gts.employeeTypes.any {
-            ts -> gts.id?.equals(existingGroupId) == true && ts.id?.equals(existingTypeId) == true } }
+    private fun deleteTypeIfNotExists(
+        existingGroupId: Long?, existingTypeId: Long?,
+        newEmployeeGroupsTypes: List<EmployeeGroupTypesDto>
+    ) {
+
+        val groupAndTypeFound = newEmployeeGroupsTypes.any { gts ->
+            gts.employeeTypes.any { ts -> gts.id?.equals(existingGroupId) == true && ts.id?.equals(existingTypeId) == true }
+        }
+
         if (!groupAndTypeFound) {
             employeeTypeService.deleteType(existingTypeId)
         }
