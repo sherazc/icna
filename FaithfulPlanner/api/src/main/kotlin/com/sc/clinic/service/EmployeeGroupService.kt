@@ -65,7 +65,12 @@ class EmployeeGroupService(
 
     private fun getOrCreateGroupEntity(company: Company, egDto: EmployeeGroupTypesDto): EmployeeGroup {
         return egDto.id
-            ?.let { id -> if (id > 0) employeeGroupRepository.findById(id).orElse(null) else null }
+            ?.let { id -> if (id > 0) employeeGroupRepository.findById(id)
+                .map { group ->
+                    group.groupName = egDto.groupName
+                    group
+                }
+                .orElse(null) else null }
             ?: EmployeeGroup(null, egDto.groupName, company)
     }
 
