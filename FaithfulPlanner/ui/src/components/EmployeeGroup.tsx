@@ -40,8 +40,6 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [modalEmployeeErrors, setModalEmployeeErrors] = useState<ErrorDto[]>([]);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-
-
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setModalEmployee(prevData => ({ ...prevData, [id]: value }));

@@ -76,6 +76,7 @@ export type UserProfileDto = {
     firstName?: string,
     lastName?: string,
     phoneNumber?: string,
+    employeeGroupId?: number,
     employeeTypes: EmployeeTypeDto[]
 };
 
