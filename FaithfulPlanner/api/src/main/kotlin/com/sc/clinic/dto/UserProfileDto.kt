@@ -22,6 +22,8 @@ open class UserProfileDto(
     var lastName: String? = null,
     @param:JsonProperty("phoneNumber")
     var phoneNumber: String? = null,
+    @param:JsonProperty("employeeGroupId")
+    var employeeGroupId: Long?,
     @param:JsonProperty("employeeTypes")
     var employeeTypesDto: List<EmployeeTypeDto> = mutableListOf()
 ) {
@@ -33,6 +35,7 @@ open class UserProfileDto(
         userProfile.firstName,
         userProfile.lastName,
         userProfile.phoneNumber,
+        userProfile.employeeGroup?.id,
         userProfile.employeeTypes.map { EmployeeTypeDto(it) }
     )
 }

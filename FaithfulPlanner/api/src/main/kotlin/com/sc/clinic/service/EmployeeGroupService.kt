@@ -24,10 +24,11 @@ class EmployeeGroupService(
                 )
             }.sortedBy { it.groupName }
 
-    fun getGroups(companyId: Long) = employeeGroupRepository.findGroups(companyId)
-    fun getGroup(groupId: Long) = employeeGroupRepository.findGroup(groupId)
+    fun getGroupsDto(companyId: Long) = employeeGroupRepository.findGroupsDto(companyId)
+    fun getGroupDto(groupId: Long) = employeeGroupRepository.findGroupDto(groupId)
+    fun getGroup(groupId: Long): EmployeeGroup? = employeeGroupRepository.findById(groupId).orElse(null)
 
-    fun getGroupTypes(groupId: Long) = employeeGroupRepository.findGroup(groupId)?.let { group ->
+    fun getGroupTypes(groupId: Long) = employeeGroupRepository.findGroupDto(groupId)?.let { group ->
         EmployeeGroupTypesDto(
             group.id, group.groupName,
             group.id?.let { employeeTypeService.findDtoByEmployeeGroupId(it) } ?: emptyList()

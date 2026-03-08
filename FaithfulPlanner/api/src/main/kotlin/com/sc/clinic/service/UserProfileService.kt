@@ -2,6 +2,7 @@ package com.sc.clinic.service
 
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.Company
+import com.sc.clinic.entity.EmployeeGroup
 import com.sc.clinic.entity.UserProfile
 import com.sc.clinic.exception.ScBadRequestException
 import com.sc.clinic.exception.ScException
@@ -16,6 +17,7 @@ class UserProfileService(
     private val userRoleService: UserRoleService,
     private val passwordEncoder: PasswordEncoder,
     private val employeeTypeService: EmployeeTypeService,
+    private val employeeGroupService: EmployeeGroupService,
     val companyService: CompanyService,
 ) {
 
@@ -28,7 +30,7 @@ class UserProfileService(
 
     fun saveRegistrationAdmin(company: Company, user: UserProfileDto): UserProfileDto {
         validate(user)
-        val userProfileEntity = getOrCreateUserProfileEntity(company, user)
+        val userProfileEntity = getOrCreateUserProfileEntity(company, null, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
         employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
@@ -37,11 +39,12 @@ class UserProfileService(
     }
 
     fun saveUserEmployee(
-        companyId: Long, user: UserProfileDto
+        companyId: Long, groupId: Long, user: UserProfileDto
     ): UserProfileDto {
         validate(user)
         val company: Company = companyService.findById(companyId)
-        val userProfileEntity = getOrCreateUserProfileEntity(company, user)
+        val group: EmployeeGroup? = employeeGroupService.getGroup(groupId)
+        val userProfileEntity = getOrCreateUserProfileEntity(company, group, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
         val savedUser = userProfileRepository.save(userProfileEntity)
@@ -60,7 +63,7 @@ class UserProfileService(
     fun findByCompanyIdAndEmail(companyId: Long, email: String): UserProfile? =
         userProfileRepository.findByCompanyIdAndEmail(companyId, email).firstOrNull()
 
-    fun getOrCreateUserProfileEntity(company: Company, userProfileDto: UserProfileDto): UserProfile =
+    fun getOrCreateUserProfileEntity(company: Company, group: EmployeeGroup?, userProfileDto: UserProfileDto): UserProfile =
         updateEntityWithDto(userProfileDto)
             ?: UserProfile(
                 null,
@@ -70,6 +73,7 @@ class UserProfileService(
                 userProfileDto.lastName,
                 userProfileDto.phoneNumber,
                 company,
+                group,
                 mutableSetOf(),
                 mutableSetOf()
             )
