@@ -1,7 +1,6 @@
 package com.sc.clinic.service
 
 import com.sc.clinic.dto.EmployeeGroupTypesDto
-import com.sc.clinic.dto.EmployeeTypeDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.EmployeeGroup
 import com.sc.clinic.entity.EmployeeType
@@ -23,7 +22,7 @@ class EmployeeGroupService(
                     group.id, group.groupName,
                     group.id?.let { employeeTypeService.findDtoByEmployeeGroupId(it) } ?: emptyList()
                 )
-            }
+            }.sortedBy { it.groupName }
 
     fun getGroups(companyId: Long) = employeeGroupRepository.findGroups(companyId)
     fun getGroup(groupId: Long) = employeeGroupRepository.findGroup(groupId)
@@ -60,18 +59,19 @@ class EmployeeGroupService(
             EmployeeGroupTypesDto(group, employeeTypes)
         }.sortedBy { it.groupName }
 
-
         return savedEmployeeGroups
     }
 
     private fun getOrCreateGroupEntity(company: Company, egDto: EmployeeGroupTypesDto): EmployeeGroup {
         return egDto.id
-            ?.let { id -> if (id > 0) employeeGroupRepository.findById(id)
-                .map { group ->
-                    group.groupName = egDto.groupName
-                    group
-                }
-                .orElse(null) else null }
+            ?.let { id ->
+                if (id > 0) employeeGroupRepository.findById(id)
+                    .map { group ->
+                        group.groupName = egDto.groupName
+                        group
+                    }
+                    .orElse(null) else null
+            }
             ?: EmployeeGroup(null, egDto.groupName, company)
     }
 

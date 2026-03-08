@@ -108,6 +108,10 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
     setGroups(groupsNew);
   };
 
+  const onSave = async () => {
+    const savedGroups = await clinicApis.saveEmployeeGroupsTypes(authUserToken.companyId, groups);
+  }
+
   const createGroupCard = (group: EmployeeGroupTypesDto) => (
     <div key={group.id} className="group-card">
       <div className="group-header">
