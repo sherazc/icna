@@ -1,4 +1,4 @@
-import type { ErrorDto, RegistrationDto, UserProfileDto } from "./service-types";
+import type { EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, RegistrationDto, UserProfileDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -113,4 +113,23 @@ export const toScErrorResponses = (error: unknown, fallbackError?: string): Erro
     console.error(errorObject)
     return [{ message: fallbackError }]
   }
+};
+
+export const validateEmployeeGroupsForm = (groups: EmployeeGroupTypesDto[]): ErrorDto[] => {
+  const errors: ErrorDto[] = [];
+  const types: EmployeeTypeDto[] = [];
+  groups.forEach((g) => {
+    types.push(...g.employeeTypes)
+  });
+
+  const emptyGroupNameIndex = groups.findIndex(g => !g.groupName || g.groupName.length < 1);
+  if (emptyGroupNameIndex > -1) {
+    errors.push({message: "Employee group name can not be empty."})
+  }
+
+  const emptyTypeNameIndex = types.findIndex(t => !t.typeName || t.typeName.length < 1);
+  if (emptyTypeNameIndex > -1) {
+    errors.push({message: "Employee type name can not be empty."})
+  }
+  return errors;
 };

@@ -1,9 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { defaultEmployeeGroupTypeDto, ModalType, type EmployeeGroupTypesDto, type EmployeeTypeDto, type ModalConfig } from "../../service/service-types";
+import { defaultEmployeeGroupTypeDto, FormState, ModalType, type EmployeeGroupTypesDto, type EmployeeTypeDto, type ErrorDto, type ModalConfig } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import "./EmployeeGroupSettings.css";
 import { Modal } from "../common/Modal";
 import { touchNumber } from "../../service/utilities";
+import { toScErrorResponses, validateEmployeeGroupsForm } from "../../service/errors-helpers";
+import { ErrorForm } from "../common/ErrorForm";
+import { Loading } from "../common/Loading";
 
 interface Props { }
 
@@ -15,6 +18,8 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [modalConfig, setModalConfig] = useState<ModalConfig>({});
   const [modalMessage, setModalMessage] = useState<string>("");
+  const [formState, setFormState] = useState<FormState>(FormState.FRESH);
+  const [errors, setErrors] = useState<ErrorDto[]>([]);
 
   const loadData = async () => {
     const groupsResponse = await clinicApis.getEmployeeGroupsTypes(authUserToken.companyId)
@@ -36,7 +41,7 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   const onAddType = (groupId: number) => {
     const groupsNew = [...groups];
     const index = groupsNew.findIndex((g) => g.id === groupId);
-    groupsNew[index].employeeTypes.push({id: tempId--, typeName: ""});
+    groupsNew[index].employeeTypes.push({ id: tempId--, typeName: "" });
     setGroups(groupsNew);
   };
 
@@ -109,7 +114,24 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   };
 
   const onSave = async () => {
-    const savedGroups = await clinicApis.saveEmployeeGroupsTypes(authUserToken.companyId, groups);
+    setFormState(FormState.IN_PROGRESS);
+    const submitErrors: ErrorDto[] = [];
+    submitErrors.push(...validateEmployeeGroupsForm(groups));
+    if (submitErrors.length < 1) {
+      try {
+        const savedGroups = await clinicApis.saveEmployeeGroupsTypes(authUserToken.companyId, groups);
+        setGroups(savedGroups);
+        setFormState(FormState.SUCCESSFUL);
+      } catch (error) {
+        const apiErrors: ErrorDto[] = toScErrorResponses(error);
+        submitErrors.push(...apiErrors);
+        submitErrors.push({ message: "Failed to register" });
+        setFormState(FormState.FAILED);
+      }
+    } else {
+      setFormState(FormState.FAILED);
+    }
+    setErrors(submitErrors);
   }
 
   const createGroupCard = (group: EmployeeGroupTypesDto) => (
@@ -146,14 +168,14 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
   );
 
   const createEmployeeTypeField = (groupId: number, employeeType: EmployeeTypeDto) => (
-    <div key={employeeType.id} 
-    className={employeeType.typeName ? "employee-type-item" : "employee-type-item input-empty"}>
+    <div key={employeeType.id}
+      className={employeeType.typeName ? "employee-type-item" : "employee-type-item input-empty"}>
       <input
         type="text"
         defaultValue={employeeType.typeName}
         className="employee-type-input"
         placeholder="Employee type name"
-        onChange={e => onChangeTypeName(e, groupId, touchNumber(employeeType.id))}/>
+        onChange={e => onChangeTypeName(e, groupId, touchNumber(employeeType.id))} />
       <button className="btn btn-icon btn-remove" title="Remove type"
         onClick={() => onDeleteType(groupId, touchNumber(employeeType.id))}>×</button>
     </div>
@@ -166,6 +188,8 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
           <h2>Employee Groups</h2>
           <button className="btn btnPrimary btn-sm" onClick={onAddGroup}>+ Add Group</button>
         </div>
+        <ErrorForm formState={formState} errors={errors} />
+        <Loading formState={formState} />
         <div className="groups-container">
           {groups && groups.length > 0 ? (
             groups.map(group => createGroupCard(group))
@@ -176,8 +200,9 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
             </div>
           )}
         </div>
+        <Loading formState={formState}/>
         <div className="settings-footer">
-          <button className="btn btnPrimary btn-lg">Save All Changes</button>
+          <button className="btn btnPrimary btn-lg" onClick={() => onSave()}>Save All Changes</button>
         </div>
       </div>
 
