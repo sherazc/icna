@@ -1,7 +1,7 @@
 meta {
   name: /employee-group/types save
   type: http
-  seq: 15
+  seq: 16
 }
 
 post {
@@ -18,10 +18,10 @@ body:json {
   [
     {
       "id": 1,
-      "groupName": "PROVIDER",
+      "groupName": "PROVIDERee",
       "employeeTypes": [
         {
-          "id": 3,
+          "id": -1,
           "typeName": "Cardiologist"
         },
         {
@@ -100,7 +100,12 @@ body:json {
     {
       "id": 4,
       "groupName": "Board",
-      "employeeTypes": []
+      "employeeTypes": [
+        {
+          "id": -1,
+          "typeName": "Board 1"
+        }
+      ]
     },
     {
       "id": 5,
