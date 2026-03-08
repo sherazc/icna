@@ -28,6 +28,10 @@ data class UserProfile(
     @JoinColumn(name = "company_id")
     var company: Company,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_group_id")
+    var employeeGroup: EmployeeGroup? = null,
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "m2m_user_profile_user_role",
