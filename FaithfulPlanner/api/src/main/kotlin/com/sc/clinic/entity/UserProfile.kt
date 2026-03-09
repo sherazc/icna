@@ -32,7 +32,7 @@ data class UserProfile(
     @JoinColumn(name = "employee_group_id")
     var employeeGroup: EmployeeGroup? = null,
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "m2m_user_profile_user_role",
         joinColumns = [JoinColumn(name = "user_profile_id")],
@@ -40,7 +40,7 @@ data class UserProfile(
     )
     var userRoles: MutableSet<UserRole>? = mutableSetOf(),
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "m2m_user_profile_employee_type",
         joinColumns = [JoinColumn(name = "user_profile_id")],

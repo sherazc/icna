@@ -3,6 +3,7 @@ package com.sc.clinic.controller
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.service.UserProfileService
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,6 +18,11 @@ class UserProfileController(val userProfileService: UserProfileService) {
     @GetMapping
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun getAllUserProfiles(@PathVariable companyId: Long) = userProfileService.getAllActive(companyId)
+
+    @DeleteMapping("/{userProfileId}")
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
+    fun deleteUser(@PathVariable companyId: Long, @PathVariable userProfileId: Long)
+        = userProfileService.deleteUser(userProfileId)
 
     @GetMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")

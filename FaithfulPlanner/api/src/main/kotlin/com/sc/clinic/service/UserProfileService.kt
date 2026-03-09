@@ -6,8 +6,11 @@ import com.sc.clinic.entity.EmployeeGroup
 import com.sc.clinic.entity.UserProfile
 import com.sc.clinic.exception.ScBadRequestException
 import com.sc.clinic.exception.ScException
+import com.sc.clinic.exception.ScGlobalExceptionHandler
 import com.sc.clinic.repository.UserProfileRepository
 import com.sc.clinic.service.model.AuthRole
+import jakarta.transaction.Transactional
+import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -19,7 +22,12 @@ class UserProfileService(
     private val employeeTypeService: EmployeeTypeService,
     private val employeeGroupService: EmployeeGroupService,
     val companyService: CompanyService,
+    private val scheduleService: ScheduleService,
 ) {
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(ScGlobalExceptionHandler::class.java)
+    }
 
     fun getAllActive(companyId: Long): List<UserProfileDto> = userProfileRepository
         .findByCompanyId(companyId)
@@ -63,7 +71,11 @@ class UserProfileService(
     fun findByCompanyIdAndEmail(companyId: Long, email: String): UserProfile? =
         userProfileRepository.findByCompanyIdAndEmail(companyId, email).firstOrNull()
 
-    fun getOrCreateUserProfileEntity(company: Company, group: EmployeeGroup?, userProfileDto: UserProfileDto): UserProfile =
+    fun getOrCreateUserProfileEntity(
+        company: Company,
+        group: EmployeeGroup?,
+        userProfileDto: UserProfileDto
+    ): UserProfile =
         updateEntityWithDto(userProfileDto)
             ?: UserProfile(
                 null,
@@ -105,4 +117,19 @@ class UserProfileService(
 
     fun hasUserProfiles(companyId: Long, groupId: Long) =
         userProfileRepository.hasByCompanyIdAndEmployeeGroupId(companyId, groupId)
+
+    @Transactional
+    fun deleteUser(userProfileId: Long) {
+        logger.debug("Deleting user. {}", userProfileId)
+        val deleteCountSchedule = scheduleService.deleteUserSchedule(userProfileId)
+        logger.info("Deleted schedules. UserProfileId={}, Deleted Count={}", userProfileId, deleteCountSchedule)
+
+        userProfileRepository.findById(userProfileId).orElse(null)
+            ?.let { up ->
+                up.employeeTypes = mutableSetOf()
+                up.userRoles = mutableSetOf()
+                userProfileRepository.save(up)
+                userProfileRepository.delete(up)
+            }
+    }
 }
