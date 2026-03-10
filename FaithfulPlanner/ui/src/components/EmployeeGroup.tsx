@@ -7,7 +7,7 @@ import { AppContext } from "../store/context";
 import {
   defaultEmployeeGroupTypeDto,
   defaultUserProfileDto,
-  FormState, 
+  FormState,
   ModalType,
   type EmployeeGroupTypesDto,
   type EmployeeTypeDto,
@@ -40,6 +40,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [modalEmployeeErrors, setModalEmployeeErrors] = useState<ErrorDto[]>([]);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
+  const [modalEmployeeDeleteState, setModalEmployeeDeleteFormState] = useState<FormState>(FormState.FRESH);
+  const [modalEmployeeDeleteErrors, setModalEmployeeDeleteErrors] = useState<ErrorDto[]>([]);
+
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setModalEmployee(prevData => ({ ...prevData, [id]: value }));
@@ -71,6 +74,24 @@ export const EmployeeGroup: React.FC<Props> = () => {
     setModalEmployeeDelete(employee);
     setShowEmployeeDeleteModal(true);
   };
+
+  const deleteEmployee = async (companyId: number, groupId: number, userProfileId: number) => {
+    const submitErrors: ErrorDto[] = [];
+    setModalEmployeeDeleteErrors([]);
+    try {
+      setModalEmployeeDeleteFormState(FormState.IN_PROGRESS);
+      await clinicApis.deleteUserProfile(companyId, userProfileId);
+      const employeesResponse = await clinicApis.getUserProfileEmployeeTypes(companyId, groupId);
+      setEmployees(employeesResponse);
+      setModalEmployeeDeleteFormState(FormState.SUCCESSFUL);
+      setShowEmployeeDeleteModal(false);
+    } catch (error) {
+      const apiErrors: ErrorDto[] = toScErrorResponses(error);
+      submitErrors.push(...apiErrors);
+      submitErrors.push({ message: "Failed to delete" });
+    }
+    setModalEmployeeDeleteErrors(submitErrors);
+  }
 
   const onModalEmployeeSave = (employee: UserProfileDto) => {
     const save = async (groupId: number, employee: UserProfileDto) => {
@@ -207,12 +228,14 @@ export const EmployeeGroup: React.FC<Props> = () => {
       </div>
       <Modal config={{
         title: `Delete ${employeeGroupTypes.groupName}`,
-        yesFunction: () => { console.log("Yes " + new Date()) },
+        yesFunction: () => deleteEmployee(authUserToken.companyId, touchNumber(employeeGroupId), touchNumber(modalEmployeeDelete.id)),
         modalType: ModalType.WARNING,
         yesLabel: "Delete",
         noLabel: "Cancel"
       }} show={showEmployeeDeleteModal} setShow={setShowEmployeeDeleteModal}>
         <>
+          <ErrorForm formState={modalEmployeeDeleteState} errors={modalEmployeeDeleteErrors} />
+          <Loading formState={modalEmployeeDeleteState} />
           <div>Delete {modalEmployeeDelete.firstName} {modalEmployeeDelete.lastName}. </div>
           <div><strong>Warning:</strong> This will also delete all of this user's schedules.</div>
         </>

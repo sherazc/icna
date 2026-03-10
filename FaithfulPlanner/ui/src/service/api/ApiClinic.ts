@@ -124,7 +124,7 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    deleteUserProfile: (companyId: number, userProfileId: number): Promise<void> => {
+    deleteUserProfile: (companyId: number, userProfileId: number): Promise<string> => {
       const endpoint = endpoints.epUserProfile(companyId, userProfileId);
       const request: ApiRequest = {endpoint, method: "DELETE"};
       addHeadersInRequest(request, commonHeaders);

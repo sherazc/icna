@@ -119,7 +119,7 @@ class UserProfileService(
         userProfileRepository.hasByCompanyIdAndEmployeeGroupId(companyId, groupId)
 
     @Transactional
-    fun deleteUser(userProfileId: Long) {
+    fun deleteUser(userProfileId: Long): Boolean {
         logger.debug("Deleting user. {}", userProfileId)
         val deleteCountSchedule = scheduleService.deleteUserSchedule(userProfileId)
         logger.info("Deleted schedules. UserProfileId={}, Deleted Count={}", userProfileId, deleteCountSchedule)
@@ -131,5 +131,6 @@ class UserProfileService(
                 userProfileRepository.save(up)
                 userProfileRepository.delete(up)
             }
+        return true;
     }
 }
