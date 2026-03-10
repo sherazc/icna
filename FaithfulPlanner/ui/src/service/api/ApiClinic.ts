@@ -21,6 +21,7 @@ export const clinicEndpoints = () => {
     epEmployeeGroupTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/employee-group/${groupId}/types`,
     epCountEmployeeGroups: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/count`,
     epEmployeeGroupsTypes: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/types`,
+    epUserProfile: (companyId: number, userProfileId: number) => `${baseUrl}/api/company/${companyId}/user-profile/${userProfileId}`,
     epUserProfileEmployeeTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}`,
     epHasUsersInGroup: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}/has-users`,
   }
@@ -123,7 +124,13 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-  }
+    deleteUserProfile: (companyId: number, userProfileId: number): Promise<void> => {
+      const endpoint = endpoints.epUserProfile(companyId, userProfileId);
+      const request: ApiRequest = {endpoint, method: "DELETE"};
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    }
+  };
   return api;
 }
 

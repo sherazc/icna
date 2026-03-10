@@ -212,7 +212,10 @@ export const EmployeeGroup: React.FC<Props> = () => {
         yesLabel: "Delete",
         noLabel: "Cancel"
       }} show={showEmployeeDeleteModal} setShow={setShowEmployeeDeleteModal}>
-        Delete {modalEmployeeDelete.firstName} {modalEmployeeDelete.lastName}
+        <>
+          <div>Delete {modalEmployeeDelete.firstName} {modalEmployeeDelete.lastName}. </div>
+          <div><strong>Warning:</strong> This will also delete all of this user's schedules.</div>
+        </>
       </Modal>
 
       <Modal config={{
