@@ -1,4 +1,5 @@
 import { UnAuthRedirect } from "./auth/UnAuthRedirect"
+import { Modal } from "./common/Modal";
 import { ScreenHeader } from "./common/ScreenHeader"
 
 export default function Dashboard() {
@@ -165,6 +166,37 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+
+
+      <Modal config={{
+        title: modalEmployee.id ? `Edit ${employeeGroupTypes.groupName}` : `New ${employeeGroupTypes.groupName}`,
+        yesFunction: () => onModalEmployeeSave(modalEmployee),
+        modalType: ModalType.DEFAULT,
+        yesLabel: "Save",
+        noLabel: "Cancel"
+      }} show={showModalEmployeeModal} setShow={setShowModalEmployeeModal}>
+        <form>
+
+          <ErrorForm formState={modalEmployeeFormState} errors={modalEmployeeErrors} />
+          <Loading formState={modalEmployeeFormState} />
+
+
+          <div className="formGroup">
+            <label htmlFor="email">Clinic Date</label>
+            <input id="email" type="email" onChange={onChangeText}
+              value={modalEmployee.email} />
+            <ErrorField errors={modalEmployeeErrors} fieldName="email" />
+          </div>
+
+          <div className="formGroup">
+            <label htmlFor="firstName">First Name</label>
+            <input id="firstName" type="text" onChange={onChangeText}
+              value={modalEmployee.firstName} />
+            <ErrorField errors={modalEmployeeErrors} fieldName="firstName" />
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }

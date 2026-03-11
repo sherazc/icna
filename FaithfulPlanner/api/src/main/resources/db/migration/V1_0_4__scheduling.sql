@@ -5,12 +5,7 @@ create table operation_date
     id                  bigserial    not null primary key,
     company_id          bigint       not null,
     operation_date      date         not null,
-    start_time          time,
-    end_time            time,
-    status              varchar(50)  not null default 'SCHEDULED', -- SCHEDULED, CONFIRMED, CANCELLED, COMPLETED
     notes               text,
-    created_at          timestamp    not null default current_timestamp,
-    updated_at          timestamp    not null default current_timestamp,
     constraint fk_operation_date_company foreign key (company_id) references company(id),
     constraint uk_operation_date unique (company_id, operation_date)
 );
@@ -23,12 +18,7 @@ create table schedule
     id                      bigserial    not null primary key,
     operation_date_id       bigint       not null,
     user_profile_id         bigint       not null,
-    assignment_status       varchar(50)  not null default 'ASSIGNED', -- ASSIGNED, CONFIRMED, DECLINED, CANCELLED
-    start_time              time,
-    end_time                time,
     notes                   text,
-    assigned_at             timestamp    not null default current_timestamp,
-    confirmed_at            timestamp,
     constraint fk_schedule_operation_date foreign key (operation_date_id) references operation_date(id),
     constraint fk_schedule_user_profile foreign key (user_profile_id) references user_profile(id),
     constraint uk_schedule unique (operation_date_id, user_profile_id)
