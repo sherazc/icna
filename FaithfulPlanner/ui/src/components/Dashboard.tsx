@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { defaultOperationDateDto, FormState, ModalType, type ErrorDto, type OperationDateDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect"
 import { ErrorField } from "./common/ErrorField";
@@ -6,24 +6,33 @@ import { ErrorForm } from "./common/ErrorForm";
 import { Loading } from "./common/Loading";
 import { Modal } from "./common/Modal";
 import { ScreenHeader } from "./common/ScreenHeader"
+import { AppContext } from "../store/context";
 
 export default function Dashboard() {
-const [modalOperationDate, setModalOperationDate] = useState<OperationDateDto>(defaultOperationDateDto());
+  const [{ 
+  // authUserToken, clinicApis 
+  }] = useContext(AppContext);
+  const [modalOperationDate, setModalOperationDate] = useState<OperationDateDto>(defaultOperationDateDto());
   const [showOperationDateModal, setShowOperationDateModal] = useState<boolean>(false);
   const [modalOperationDateFormState, setModalOperationDateFormState] = useState<FormState>(FormState.FRESH);
   const [modalOperationDateErrors, setModalOperationDateErrors] = useState<ErrorDto[]>([]);
-  
+
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { id, value } = event.target;
-      setModalOperationDate(prevData => ({ ...prevData, [id]: value }));
-    };
+    const { id, value } = event.target;
+    setModalOperationDate(prevData => ({ ...prevData, [id]: value }));
+  };
+
+  const onNewOperationDate = () => {
+
+  }
 
   return (
     <div id="dashboard">
-      <UnAuthRedirect/>
-      <ScreenHeader screenName="Dashboard"> 
+      <UnAuthRedirect />
+      <ScreenHeader screenName="Dashboard">
         <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
-        <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')">+ New Clinic Date</button>
+        <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')"
+        >+ New Clinic Date</button>
       </ScreenHeader>
 
       <div className="tableContainer">
@@ -183,7 +192,7 @@ const [modalOperationDate, setModalOperationDate] = useState<OperationDateDto>(d
       </div>
       <Modal config={{
         title: modalOperationDate.id ? `Edit Clinic Date` : `Add New Clinic Date`,
-        yesFunction: () => {console.log(new Date())},
+        yesFunction: () => { console.log(new Date()) },
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"
@@ -194,7 +203,7 @@ const [modalOperationDate, setModalOperationDate] = useState<OperationDateDto>(d
           <div className="formGroup">
             <label htmlFor="operationDate">Clinic Date</label>
             <input id="operationDate" type="operationDate" onChange={onChangeText}
-              value={modalOperationDate.operationDate} />
+              value={modalOperationDate.operationDateString} />
             <ErrorField errors={modalOperationDateErrors} fieldName="operationDate" />
           </div>
           <div className="formGroup">

@@ -11,29 +11,15 @@ data class Schedule(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
 
-    @Column(name = "operation_date_id", nullable = false)
-    var operationDateId: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "operation_date_id", nullable = false)
+    var operationDate: OperationDate,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_profile_id", nullable = false)
     var userProfile: UserProfile,
 
-    @Column(name = "assignment_status", nullable = false)
-    var assignmentStatus: String = "ASSIGNED",
-
-    @Column(name = "start_time")
-    var startTime: LocalTime?,
-
-    @Column(name = "end_time")
-    var endTime: LocalTime?,
-
     @Column(name = "notes")
-    var notes: String?,
-
-    @Column(name = "assigned_at", nullable = false)
-    var assignedAt: LocalDateTime = LocalDateTime.now(),
-
-    @Column(name = "confirmed_at")
-    var confirmedAt: LocalDateTime?
+    var notes: String?
 )
 
