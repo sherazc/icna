@@ -1,8 +1,23 @@
+import { useState } from "react";
+import { defaultOperationDateDto, FormState, ModalType, type ErrorDto, type OperationDateDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect"
+import { ErrorField } from "./common/ErrorField";
+import { ErrorForm } from "./common/ErrorForm";
+import { Loading } from "./common/Loading";
 import { Modal } from "./common/Modal";
 import { ScreenHeader } from "./common/ScreenHeader"
 
 export default function Dashboard() {
+const [modalOperationDate, setModalOperationDate] = useState<OperationDateDto>(defaultOperationDateDto());
+  const [showOperationDateModal, setShowOperationDateModal] = useState<boolean>(false);
+  const [modalOperationDateFormState, setModalOperationDateFormState] = useState<FormState>(FormState.FRESH);
+  const [modalOperationDateErrors, setModalOperationDateErrors] = useState<ErrorDto[]>([]);
+  
+  const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { id, value } = event.target;
+      setModalOperationDate(prevData => ({ ...prevData, [id]: value }));
+    };
+
   return (
     <div id="dashboard">
       <UnAuthRedirect/>
@@ -166,34 +181,27 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
-
-
       <Modal config={{
-        title: modalEmployee.id ? `Edit ${employeeGroupTypes.groupName}` : `New ${employeeGroupTypes.groupName}`,
-        yesFunction: () => onModalEmployeeSave(modalEmployee),
+        title: modalOperationDate.id ? `Edit Clinic Date` : `Add New Clinic Date`,
+        yesFunction: () => {console.log(new Date())},
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"
-      }} show={showModalEmployeeModal} setShow={setShowModalEmployeeModal}>
+      }} show={showOperationDateModal} setShow={setShowOperationDateModal}>
         <form>
-
-          <ErrorForm formState={modalEmployeeFormState} errors={modalEmployeeErrors} />
-          <Loading formState={modalEmployeeFormState} />
-
-
+          <ErrorForm formState={modalOperationDateFormState} errors={modalOperationDateErrors} />
+          <Loading formState={modalOperationDateFormState} />
           <div className="formGroup">
-            <label htmlFor="email">Clinic Date</label>
-            <input id="email" type="email" onChange={onChangeText}
-              value={modalEmployee.email} />
-            <ErrorField errors={modalEmployeeErrors} fieldName="email" />
+            <label htmlFor="operationDate">Clinic Date</label>
+            <input id="operationDate" type="operationDate" onChange={onChangeText}
+              value={modalOperationDate.operationDate} />
+            <ErrorField errors={modalOperationDateErrors} fieldName="operationDate" />
           </div>
-
           <div className="formGroup">
-            <label htmlFor="firstName">First Name</label>
-            <input id="firstName" type="text" onChange={onChangeText}
-              value={modalEmployee.firstName} />
-            <ErrorField errors={modalEmployeeErrors} fieldName="firstName" />
+            <label htmlFor="notes">Notes</label>
+            <input id="notes" type="text" onChange={onChangeText}
+              value={modalOperationDate.notes} />
+            <ErrorField errors={modalOperationDateErrors} fieldName="notes" />
           </div>
         </form>
       </Modal>

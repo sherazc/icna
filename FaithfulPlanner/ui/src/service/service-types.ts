@@ -134,3 +134,12 @@ export type ModalConfig = {
     maxWidth?: string,
     modalType?: ModalType
 };
+
+export type OperationDateDto = {
+    id?: number;
+    companyId?: number,
+    operationDate?: string,
+    notes?: string
+};
+
+export const defaultOperationDateDto = (): OperationDateDto => ({});
