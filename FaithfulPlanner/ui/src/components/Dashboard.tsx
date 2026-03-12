@@ -9,9 +9,7 @@ import { ScreenHeader } from "./common/ScreenHeader"
 import { AppContext } from "../store/context";
 
 export default function Dashboard() {
-  const [{ 
-  // authUserToken, clinicApis 
-  }] = useContext(AppContext);
+  const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [modalOperationDate, setModalOperationDate] = useState<OperationDateDto>(defaultOperationDateDto());
   const [showOperationDateModal, setShowOperationDateModal] = useState<boolean>(false);
   const [modalOperationDateFormState, setModalOperationDateFormState] = useState<FormState>(FormState.FRESH);
@@ -23,8 +21,47 @@ export default function Dashboard() {
   };
 
   const onNewOperationDate = () => {
+    console.log(`New Operation Date`);
+    setModalOperationDateFormState(FormState.FRESH)
+    setModalOperationDate({ ...defaultOperationDateDto(), companyId: authUserToken.companyId });
+    setModalOperationDateErrors([])
+    setShowOperationDateModal(true);
+  };
 
-  }
+
+  const onModalOprationDateSave = (operationDate: UserProfileDto) => {
+      const save = async (groupId: number, employee: UserProfileDto) => {
+        setModalOprationDateFormState(FormState.IN_PROGRESS);
+        const submitErrors: ErrorDto[] = [];
+        setModalOprationDateErrors([]);
+        const saveOprationDateForm: UserProfileDto = { ...employee };
+  
+        submitErrors.push(...validateSaveOprationDateForm(saveOprationDateForm, confirmPassword));
+  
+        if (submitErrors.length < 1) {
+          try {
+            const savedOprationDate = await clinicApis.saveUserProfileOprationDateTypes(touchNumber(saveOprationDateForm.companyId), groupId, saveOprationDateForm);
+            console.log(savedOprationDate);
+            setModalOprationDateFormState(FormState.SUCCESSFUL);
+            setShowModalOprationDateModal(false);
+            setModalOprationDate(defaultUserProfileDto());
+            const employeesResponse = await clinicApis.getUserProfileOprationDateTypes(authUserToken.companyId, groupId);
+            setOprationDates(employeesResponse);
+            setConfirmPassword("");
+          } catch (error) {
+            const apiErrors: ErrorDto[] = toScErrorResponses(error);
+            submitErrors.push(...apiErrors);
+            submitErrors.push({ message: "Failed to save" });
+            setModalOprationDateFormState(FormState.FAILED);
+          }
+        } else {
+          setModalOprationDateFormState(FormState.FAILED);
+        }
+        setModalOprationDateErrors(submitErrors);
+      }
+  
+      save(touchNumber(employeeGroupId), operationDate);
+    };
 
   return (
     <div id="dashboard">
@@ -32,7 +69,7 @@ export default function Dashboard() {
       <ScreenHeader screenName="Dashboard">
         <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
         <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')"
-        >+ New Clinic Date</button>
+        onClick={onNewOperationDate}>+ New Clinic Date</button>
       </ScreenHeader>
 
       <div className="tableContainer">
@@ -202,14 +239,14 @@ export default function Dashboard() {
           <Loading formState={modalOperationDateFormState} />
           <div className="formGroup">
             <label htmlFor="operationDate">Clinic Date</label>
-            <input id="operationDate" type="operationDate" onChange={onChangeText}
-              value={modalOperationDate.operationDateString} />
+            <input id="operationDate" type="date" onChange={onChangeText}
+              value={modalOperationDate.operationDateString} placeholder="Clinic date"/>
             <ErrorField errors={modalOperationDateErrors} fieldName="operationDate" />
           </div>
           <div className="formGroup">
             <label htmlFor="notes">Notes</label>
             <input id="notes" type="text" onChange={onChangeText}
-              value={modalOperationDate.notes} />
+              value={modalOperationDate.notes} placeholder="Notes"/>
             <ErrorField errors={modalOperationDateErrors} fieldName="notes" />
           </div>
         </form>
