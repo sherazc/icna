@@ -1,4 +1,4 @@
-import type { EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, RegistrationDto, UserProfileDto } from "./service-types";
+import type { EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, OperationDateDto, RegistrationDto, UserProfileDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -133,3 +133,8 @@ export const validateEmployeeGroupsForm = (groups: EmployeeGroupTypesDto[]): Err
   }
   return errors;
 };
+
+export const validateSaveOperationDateForm = (operationDate: OperationDateDto): ErrorDto[] => {
+  const errors: ErrorDto[] = [];
+  return errors;
+}

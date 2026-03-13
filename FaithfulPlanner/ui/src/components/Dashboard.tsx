@@ -7,6 +7,7 @@ import { Loading } from "./common/Loading";
 import { Modal } from "./common/Modal";
 import { ScreenHeader } from "./common/ScreenHeader"
 import { AppContext } from "../store/context";
+import { validateSaveOperationDateForm } from "../service/errors-helpers";
 
 export default function Dashboard() {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
@@ -29,18 +30,18 @@ export default function Dashboard() {
   };
 
 
-  const onModalOprationDateSave = (operationDate: UserProfileDto) => {
-      const save = async (groupId: number, employee: UserProfileDto) => {
-        setModalOprationDateFormState(FormState.IN_PROGRESS);
+  const onModalOprationDateSave = (operationDate: OperationDateDto) => {
+      const save = async (groupId: number, operationDate: OperationDateDto) => {
+        setModalOperationDateFormState(FormState.IN_PROGRESS);
         const submitErrors: ErrorDto[] = [];
-        setModalOprationDateErrors([]);
-        const saveOprationDateForm: UserProfileDto = { ...employee };
+        setModalOperationDateErrors([]);
+        const saveOperationDateForm: OperationDateDto = { ...operationDate };
   
-        submitErrors.push(...validateSaveOprationDateForm(saveOprationDateForm, confirmPassword));
+        submitErrors.push(...validateSaveOperationDateForm(operationDate));
   
         if (submitErrors.length < 1) {
           try {
-            const savedOprationDate = await clinicApis.saveUserProfileOprationDateTypes(touchNumber(saveOprationDateForm.companyId), groupId, saveOprationDateForm);
+            const savedOprationDate = await clinicApis.saveUserProfileOprationDateTypes(touchNumber(saveOperationDateForm.companyId), groupId, saveOperationDateForm);
             console.log(savedOprationDate);
             setModalOprationDateFormState(FormState.SUCCESSFUL);
             setShowModalOprationDateModal(false);
