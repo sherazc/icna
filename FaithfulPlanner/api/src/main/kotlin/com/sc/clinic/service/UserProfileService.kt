@@ -24,7 +24,6 @@ class UserProfileService(
     val companyService: CompanyService,
     private val scheduleService: ScheduleService,
 ) {
-
     companion object {
         private val logger = LoggerFactory.getLogger(ScGlobalExceptionHandler::class.java)
     }

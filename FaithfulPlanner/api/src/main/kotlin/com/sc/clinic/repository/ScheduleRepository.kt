@@ -11,4 +11,8 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
     @Modifying
     @Query("delete from Schedule s where s.userProfile.id = :userProfileId")
     fun deleteUserSchedule(userProfileId: Long): Int
+
+    @Modifying
+    @Query("delete from Schedule s where s.operationDate.id = :operationDateId")
+    fun deleteOperationDateSchedule(operationDateId: Long): Int
 }
