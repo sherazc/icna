@@ -1,0 +1,24 @@
+meta {
+  name: /operation-date?operationDate={operationDate} find
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/company/1/operation-date?date-string=2026-03-14
+  body: json
+  auth: bearer
+}
+
+params:query {
+  date-string: 2026-03-14
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
