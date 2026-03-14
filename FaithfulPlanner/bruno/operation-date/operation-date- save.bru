@@ -1,0 +1,30 @@
+meta {
+  name: /operation-date/ save
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/api/company/1/operation-date
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  {
+      
+      "id": null,
+      "companyId": 1,
+      "operationDateString": "2026-03-14",
+      "notes": "My Operation Notes"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
