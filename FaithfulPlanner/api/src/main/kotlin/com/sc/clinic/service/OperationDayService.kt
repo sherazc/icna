@@ -6,6 +6,7 @@ import com.sc.clinic.exception.ScException
 import com.sc.clinic.exception.ScGlobalExceptionHandler
 import com.sc.clinic.repository.OperationDayRepository
 import com.sc.clinic.util.DateUtils
+import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -49,10 +50,11 @@ class OperationDayService(
             ?: listOf()
     }
 
+    @Transactional
     fun delete(companyId: Long, operationDayId: Long): Boolean {
         logger.info("Deleting Operation Date. OperationDayId = {}", operationDayId)
         val deletedSchedules = scheduleService.deleteOperationDaySchedule(operationDayId)
-        logger.info("Deleting Operation {} schedules of operationDayId {}", deletedSchedules, operationDayId)
+        logger.info("Deleted Operation {} schedules of operationDayId {}", deletedSchedules, operationDayId)
         operationRepository.deleteById(operationDayId)
         return true
     }

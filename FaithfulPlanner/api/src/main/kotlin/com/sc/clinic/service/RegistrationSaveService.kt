@@ -2,7 +2,6 @@ package com.sc.clinic.service
 
 import com.sc.clinic.dto.CompanyDto
 import com.sc.clinic.dto.RegistrationDto
-import com.sc.clinic.dto.UserProfileDto
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
