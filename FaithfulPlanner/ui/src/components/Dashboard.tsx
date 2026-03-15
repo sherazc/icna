@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { defaultOperationDateDto, FormState, ModalType, type ErrorDto, type OperationDateDto } from "../service/service-types";
+import { defaultOperationDayDto, FormState, ModalType, type ErrorDto, type OperationDayDto } from "../service/service-types";
 import { UnAuthRedirect } from "./auth/UnAuthRedirect"
 import { ErrorField } from "./common/ErrorField";
 import { ErrorForm } from "./common/ErrorForm";
@@ -7,41 +7,41 @@ import { Loading } from "./common/Loading";
 import { Modal } from "./common/Modal";
 import { ScreenHeader } from "./common/ScreenHeader"
 import { AppContext } from "../store/context";
-import { validateSaveOperationDateForm } from "../service/errors-helpers";
+import { validateSaveOperationDayForm } from "../service/errors-helpers";
 
 export default function Dashboard() {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
-  const [modalOperationDate, setModalOperationDate] = useState<OperationDateDto>(defaultOperationDateDto());
-  const [showOperationDateModal, setShowOperationDateModal] = useState<boolean>(false);
-  const [modalOperationDateFormState, setModalOperationDateFormState] = useState<FormState>(FormState.FRESH);
-  const [modalOperationDateErrors, setModalOperationDateErrors] = useState<ErrorDto[]>([]);
+  const [modalOperationDay, setModalOperationDay] = useState<OperationDayDto>(defaultOperationDayDto());
+  const [showOperationDayModal, setShowOperationDayModal] = useState<boolean>(false);
+  const [modalOperationDayFormState, setModalOperationDayFormState] = useState<FormState>(FormState.FRESH);
+  const [modalOperationDayErrors, setModalOperationDayErrors] = useState<ErrorDto[]>([]);
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    setModalOperationDate(prevData => ({ ...prevData, [id]: value }));
+    setModalOperationDay(prevData => ({ ...prevData, [id]: value }));
   };
 
-  const onNewOperationDate = () => {
+  const onNewOperationDay = () => {
     console.log(`New Operation Date`);
-    setModalOperationDateFormState(FormState.FRESH)
-    setModalOperationDate({ ...defaultOperationDateDto(), companyId: authUserToken.companyId });
-    setModalOperationDateErrors([])
-    setShowOperationDateModal(true);
+    setModalOperationDayFormState(FormState.FRESH)
+    setModalOperationDay({ ...defaultOperationDayDto(), companyId: authUserToken.companyId });
+    setModalOperationDayErrors([])
+    setShowOperationDayModal(true);
   };
 
 
-  const onModalOprationDateSave = (operationDate: OperationDateDto) => {
-      const save = async (groupId: number, operationDate: OperationDateDto) => {
-        setModalOperationDateFormState(FormState.IN_PROGRESS);
+  const onModalOprationDateSave = (operationDay: OperationDayDto) => {
+      const save = async (groupId: number, operationDay: OperationDayDto) => {
+        setModalOperationDayFormState(FormState.IN_PROGRESS);
         const submitErrors: ErrorDto[] = [];
-        setModalOperationDateErrors([]);
-        const saveOperationDateForm: OperationDateDto = { ...operationDate };
+        setModalOperationDayErrors([]);
+        const saveOperationDayForm: OperationDayDto = { ...operationDay };
   
-        submitErrors.push(...validateSaveOperationDateForm(operationDate));
+        submitErrors.push(...validateSaveOperationDayForm(operationDay));
   
         if (submitErrors.length < 1) {
           try {
-            const savedOprationDate = await clinicApis.saveUserProfileOprationDateTypes(touchNumber(saveOperationDateForm.companyId), groupId, saveOperationDateForm);
+            const savedOprationDate = await clinicApis.saveUserProfileOprationDateTypes(touchNumber(saveOperationDayForm.companyId), groupId, saveOperationDayForm);
             console.log(savedOprationDate);
             setModalOprationDateFormState(FormState.SUCCESSFUL);
             setShowModalOprationDateModal(false);
@@ -61,7 +61,7 @@ export default function Dashboard() {
         setModalOprationDateErrors(submitErrors);
       }
   
-      save(touchNumber(employeeGroupId), operationDate);
+      save(touchNumber(employeeGroupId), operationDay);
     };
 
   return (
@@ -70,7 +70,7 @@ export default function Dashboard() {
       <ScreenHeader screenName="Dashboard">
         <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
         <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')"
-        onClick={onNewOperationDate}>+ New Clinic Date</button>
+        onClick={onNewOperationDay}>+ New Clinic Date</button>
       </ScreenHeader>
 
       <div className="tableContainer">
@@ -229,26 +229,26 @@ export default function Dashboard() {
         </div>
       </div>
       <Modal config={{
-        title: modalOperationDate.id ? `Edit Clinic Date` : `Add New Clinic Date`,
+        title: modalOperationDay.id ? `Edit Clinic Date` : `Add New Clinic Date`,
         yesFunction: () => { console.log(new Date()) },
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"
-      }} show={showOperationDateModal} setShow={setShowOperationDateModal}>
+      }} show={showOperationDayModal} setShow={setShowOperationDayModal}>
         <form>
-          <ErrorForm formState={modalOperationDateFormState} errors={modalOperationDateErrors} />
-          <Loading formState={modalOperationDateFormState} />
+          <ErrorForm formState={modalOperationDayFormState} errors={modalOperationDayErrors} />
+          <Loading formState={modalOperationDayFormState} />
           <div className="formGroup">
-            <label htmlFor="operationDate">Clinic Date</label>
-            <input id="operationDate" type="date" onChange={onChangeText}
-                   value={modalOperationDate.serviceDateString} placeholder="Clinic date"/>
-            <ErrorField errors={modalOperationDateErrors} fieldName="operationDate" />
+            <label htmlFor="operationDay">Clinic Date</label>
+            <input id="operationDay" type="date" onChange={onChangeText}
+                   value={modalOperationDay.serviceDateString} placeholder="Clinic date"/>
+            <ErrorField errors={modalOperationDayErrors} fieldName="operationDay" />
           </div>
           <div className="formGroup">
             <label htmlFor="notes">Notes</label>
             <input id="notes" type="text" onChange={onChangeText}
-              value={modalOperationDate.notes} placeholder="Notes"/>
-            <ErrorField errors={modalOperationDateErrors} fieldName="notes" />
+              value={modalOperationDay.notes} placeholder="Notes"/>
+            <ErrorField errors={modalOperationDayErrors} fieldName="notes" />
           </div>
         </form>
       </Modal>

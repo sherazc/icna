@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service
 @Service
 class ScheduleService(private val scheduleRepository: ScheduleRepository) {
     fun deleteUserSchedule(userProfileId: Long): Int = scheduleRepository.deleteUserSchedule(userProfileId)
-    fun deleteOperationDateSchedule(operationDateId: Long): Int = scheduleRepository.deleteOperationDateSchedule(operationDateId)
+    fun deleteOperationDaySchedule(operationDayId: Long): Int = scheduleRepository.deleteOperationDaySchedule(operationDayId)
 }

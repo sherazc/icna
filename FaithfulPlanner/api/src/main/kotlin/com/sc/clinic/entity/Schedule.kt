@@ -1,8 +1,6 @@
 package com.sc.clinic.entity
 
 import jakarta.persistence.*
-import java.time.LocalTime
-import java.time.LocalDateTime
 
 @Entity
 @Table(name = "schedule")
@@ -13,7 +11,7 @@ data class Schedule(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "operation_date_id", nullable = false)
-    var operationDate: OperationDate,
+    var operationDay: OperationDay,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_profile_id", nullable = false)

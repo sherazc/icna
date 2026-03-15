@@ -1,11 +1,11 @@
 meta {
-  name: /operation-date save
+  name: /operation-day save
   type: http
   seq: 7
 }
 
 post {
-  url: {{base_url}}/api/company/1/operation-date
+  url: {{base_url}}/api/company/1/operation-day
   body: json
   auth: bearer
 }
@@ -19,7 +19,7 @@ body:json {
       
       "id": null,
       "companyId": 1,
-      "operationDateString": "2026-03-14",
+      "operationDayString": "2026-03-14",
       "notes": "My Operation Notes"
   }
 }

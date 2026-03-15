@@ -1,7 +1,7 @@
 package com.sc.clinic.controller
 
-import com.sc.clinic.dto.OperationDateDto
-import com.sc.clinic.service.OperationDateService
+import com.sc.clinic.dto.OperationDayDto
+import com.sc.clinic.service.OperationDayService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/api/company/{companyId}/operation-date")
+@RequestMapping("/api/company/{companyId}/operation-day")
 @RestController
-class OperationDateController(private val operationDateService: OperationDateService) {
+class OperationDayController(private val operationDayService: OperationDayService) {
     @PostMapping
     fun save(
         @PathVariable companyId: Long,
-        @RequestBody operationDateDto: OperationDateDto
-    ) = operationDateService.save(companyId,operationDateDto)
+        @RequestBody operationDayDto: OperationDayDto
+    ) = operationDayService.save(companyId,operationDayDto)
 
     @GetMapping
     fun getByDate(
         @PathVariable companyId: Long,
         @RequestParam(name = "date-string") dateString: String
-    ) = operationDateService.getByDate(companyId,dateString)
+    ) = operationDayService.getByDate(companyId,dateString)
 
-    @DeleteMapping("/{operationDateId}")
+    @DeleteMapping("/{operationDayId}")
     fun delete(
         @PathVariable companyId: Long,
-        @PathVariable operationDateId: Long
-    ) = operationDateService.delete(companyId,operationDateId)
+        @PathVariable operationDayId: Long
+    ) = operationDayService.delete(companyId,operationDayId)
 }

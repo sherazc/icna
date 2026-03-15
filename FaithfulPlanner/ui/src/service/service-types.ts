@@ -135,11 +135,11 @@ export type ModalConfig = {
     modalType?: ModalType
 };
 
-export type OperationDateDto = {
+export type OperationDayDto = {
     id?: number;
     companyId?: number,
     serviceDateString?: string,
     notes?: string
 };
 
-export const defaultOperationDateDto = (): OperationDateDto => ({});
+export const defaultOperationDayDto = (): OperationDayDto => ({});
