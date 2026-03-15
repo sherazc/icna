@@ -241,7 +241,7 @@ export default function Dashboard() {
           <div className="formGroup">
             <label htmlFor="operationDate">Clinic Date</label>
             <input id="operationDate" type="date" onChange={onChangeText}
-              value={modalOperationDate.operationDateString} placeholder="Clinic date"/>
+                   value={modalOperationDate.serviceDateString} placeholder="Clinic date"/>
             <ErrorField errors={modalOperationDateErrors} fieldName="operationDate" />
           </div>
           <div className="formGroup">

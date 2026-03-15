@@ -138,7 +138,7 @@ export type ModalConfig = {
 export type OperationDateDto = {
     id?: number;
     companyId?: number,
-    operationDateString?: string,
+    serviceDateString?: string,
     notes?: string
 };
 

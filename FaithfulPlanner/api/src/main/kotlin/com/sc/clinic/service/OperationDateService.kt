@@ -22,20 +22,20 @@ class OperationDateService(
     }
 
     fun save(companyId: Long, operationDateDto: OperationDateDto): OperationDateDto {
-        logger.debug("Saving OperationDate. CompanyId:${companyId}, OperationDate:${operationDateDto.operationDateString}")
+        logger.debug("Saving OperationDate. CompanyId:${companyId}, OperationDate:${operationDateDto.serviceDateString}")
 
-        val operationDateLocalDate: LocalDate = DateUtils.isoToDate(operationDateDto.operationDateString)
-            ?: throw ScException("Invalid operation date format: ${operationDateDto.operationDateString}")
+        val serviceDate: LocalDate = DateUtils.isoToDate(operationDateDto.serviceDateString)
+            ?: throw ScException("Invalid operation date format: ${operationDateDto.serviceDateString}")
 
         val operationDate: OperationDate = if (operationDateDto.id != null) {
             val foundOperationDate: OperationDate = operationRepository.findById(operationDateDto.id!!)
                 .orElseThrow { ScException("Failed to find Operation Date by Id: ${operationDateDto.id}") }
-            foundOperationDate.operationDate = operationDateLocalDate
+            foundOperationDate.serviceDate = serviceDate
             foundOperationDate.notes = operationDateDto.notes
             foundOperationDate
         } else {
             val company = companyService.findById(companyId)
-            OperationDate(null, company, operationDateLocalDate, operationDateDto.notes)
+            OperationDate(null, company, serviceDate, operationDateDto.notes)
         }
 
         val savedOperationDate = operationRepository.save(operationDate)

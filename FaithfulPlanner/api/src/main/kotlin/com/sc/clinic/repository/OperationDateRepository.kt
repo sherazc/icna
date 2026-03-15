@@ -15,10 +15,10 @@ interface OperationDateRepository : JpaRepository<OperationDate, Long> {
         select new com.sc.clinic.dto.OperationDateDto(od) 
         from OperationDate od 
         where od.company.id = :companyId
-        and od.operationDate = :operationDate """
+        and od.serviceDate = :serviceDate """
     )
     fun findByCompanyIdAndOperationDate(
-        companyId: Long, operationDate: LocalDate
+        companyId: Long, serviceDate: LocalDate
     ): List<OperationDateDto>
 }
 

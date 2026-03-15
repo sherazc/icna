@@ -3,10 +3,10 @@ create table operation_date
 (
     id                  bigserial    not null primary key,
     company_id          bigint       not null,
-    operation_date      date         not null,
+    service_date        date         not null,
     notes               text,
     constraint fk_operation_date_company foreign key (company_id) references company(id),
-    constraint uk_operation_date unique (company_id, operation_date)
+    constraint uk_operation_date unique (company_id, service_date)
 );
 
 -- Schedule
@@ -22,7 +22,7 @@ create table schedule
 );
 
 -- Sample operation dates for company 1 (next few weekends)
-INSERT INTO operation_date (id, company_id, operation_date, notes)
+INSERT INTO operation_date (id, company_id, service_date, notes)
 VALUES
     (1, 1, '2026-01-24', 'Saturday clinic'),
     (2, 1, '2026-01-25', 'Sunday clinic'),
@@ -53,7 +53,7 @@ SELECT setval(pg_get_serial_sequence('schedule', 'id'), (SELECT MAX(id) FROM sch
 
 -- Create indexes for better query performance
 CREATE INDEX idx_operation_date_company ON operation_date(company_id);
-CREATE INDEX idx_operation_date_date ON operation_date(operation_date);
+CREATE INDEX idx_operation_date_service_date ON operation_date(service_date);
 
 CREATE INDEX idx_schedule_operation_date ON schedule(operation_date_id);
 CREATE INDEX idx_schedule_user_profile ON schedule(user_profile_id);

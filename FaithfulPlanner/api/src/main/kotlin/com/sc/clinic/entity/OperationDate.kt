@@ -14,10 +14,9 @@ data class OperationDate(
     @JoinColumn(name = "company_id", nullable = false)
     var company: Company,
 
-    @Column(name = "operation_date", nullable = false)
-    var operationDate: LocalDate,
+    @Column(name = "service_date", nullable = false)
+    var serviceDate: LocalDate,
 
     @Column(name = "notes")
     var notes: String?
 )
-
