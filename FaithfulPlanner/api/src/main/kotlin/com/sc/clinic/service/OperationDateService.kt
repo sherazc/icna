@@ -28,7 +28,7 @@ class OperationDateService(
             ?: throw ScException("Invalid operation date format: ${operationDateDto.operationDateString}")
 
         val operationDate: OperationDate = if (operationDateDto.id != null) {
-            val foundOperationDate: OperationDate = operationRepository.findById(operationDateDto.id)
+            val foundOperationDate: OperationDate = operationRepository.findById(operationDateDto.id!!)
                 .orElseThrow { ScException("Failed to find Operation Date by Id: ${operationDateDto.id}") }
             foundOperationDate.operationDate = operationDateLocalDate
             foundOperationDate.notes = operationDateDto.notes
