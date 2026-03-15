@@ -26,6 +26,7 @@ export const clinicEndpoints = () => {
     epHasUsersInGroup: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}/has-users`,
     epOperationDaySearch: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day/search`,
     epOperationDay: (companyId: number, operationDayId: number) => `${baseUrl}/api/company/${companyId}/operation-day/${operationDayId}`,
+    epOperationDays: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day`,
   }
 }
 
@@ -133,13 +134,32 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       return callApiIntercept(request, interceptorCbs);
     },
     operationDaySave: (companyId: number, operationDayDto: OperationDayDto): Promise<OperationDayDto> => {
-      const endpoint = endpoints.epOperationDay(companyId);
+      const endpoint = endpoints.epOperationDays(companyId);
       const request: ApiRequest = {
         endpoint,
         method: "POST",
         payload: operationDayDto,
         headers: CONTENT_JSON_HEADER()
       };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    operationDayAll: (companyId: number): Promise<OperationDayDto[]> => {
+      const endpoint = endpoints.epOperationDays(companyId);
+      const request: ApiRequest = {endpoint};
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    operationDayDelete: (companyId: number, operationId: number): Promise<boolean> => {
+      const endpoint = endpoints.epOperationDay(companyId, operationId);
+      const request: ApiRequest = {endpoint, method: "DELETE"};
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    operationDayFind: (companyId: number, serviceDateString: string): Promise<OperationDayDto[]> => {
+      let endpoint = endpoints.epOperationDays(companyId);
+      endpoint = `${endpoint}?date-string=${serviceDateString}`
+      const request: ApiRequest = {endpoint};
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
