@@ -21,6 +21,9 @@ class OperationDayController(private val operationDayService: OperationDayServic
     ) = operationDayService.save(companyId,operationDayDto)
 
     @GetMapping
+    fun getByCompanyId(@PathVariable companyId: Long) = operationDayService.getByCompanyId(companyId)
+
+    @GetMapping("/search")
     fun getByDate(
         @PathVariable companyId: Long,
         @RequestParam(name = "date-string") dateString: String

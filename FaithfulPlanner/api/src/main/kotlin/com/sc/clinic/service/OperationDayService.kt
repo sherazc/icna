@@ -58,4 +58,7 @@ class OperationDayService(
         operationRepository.deleteById(operationDayId)
         return true
     }
+
+    fun getByCompanyId(companyId: Long): List<OperationDayDto> =
+        operationRepository.getByCompanyId(companyId)
 }

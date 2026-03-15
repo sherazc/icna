@@ -1,4 +1,4 @@
-import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, RegistrationDto, UserProfileDto} from "../service-types";
+import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OperationDayDto, RegistrationDto, UserProfileDto} from "../service-types";
 import {
   addHeadersInRequest,
   callApiIntercept,
@@ -24,6 +24,8 @@ export const clinicEndpoints = () => {
     epUserProfile: (companyId: number, userProfileId: number) => `${baseUrl}/api/company/${companyId}/user-profile/${userProfileId}`,
     epUserProfileEmployeeTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}`,
     epHasUsersInGroup: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}/has-users`,
+    epOperationDaySearch: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day/search`,
+    epOperationDay: (companyId: number, operationDayId: number) => `${baseUrl}/api/company/${companyId}/operation-day/${operationDayId}`,
   }
 }
 
@@ -129,7 +131,18 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       const request: ApiRequest = {endpoint, method: "DELETE"};
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
-    }
+    },
+    operationDaySave: (companyId: number, operationDayDto: OperationDayDto): Promise<OperationDayDto> => {
+      const endpoint = endpoints.epOperationDay(companyId);
+      const request: ApiRequest = {
+        endpoint,
+        method: "POST",
+        payload: operationDayDto,
+        headers: CONTENT_JSON_HEADER()
+      };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
   };
   return api;
 }
