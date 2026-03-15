@@ -2,16 +2,19 @@ package com.sc.clinic.service
 
 import com.sc.clinic.dto.OperationDateDto
 import com.sc.clinic.entity.OperationDate
+import com.sc.clinic.exception.ScException
 import com.sc.clinic.exception.ScGlobalExceptionHandler
 import com.sc.clinic.repository.OperationDateRepository
 import com.sc.clinic.util.DateUtils
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class OperationDateService(
     private val scheduleService: ScheduleService,
-    private val operationRepository: OperationDateRepository
+    private val operationRepository: OperationDateRepository,
+    private val companyService: CompanyService
 ) {
 
     companion object {
@@ -19,9 +22,25 @@ class OperationDateService(
     }
 
     fun save(companyId: Long, operationDateDto: OperationDateDto): OperationDateDto {
-        operationDateDto.id?.let { operationRepository.findById() }
-        println(companyId)
-        TODO()
+        logger.debug("Saving OperationDate. CompanyId:${companyId}, OperationDate:${operationDateDto.operationDateString}")
+
+        val operationDateLocalDate: LocalDate = DateUtils.isoToDate(operationDateDto.operationDateString)
+            ?: throw ScException("Invalid operation date format: ${operationDateDto.operationDateString}")
+
+        val operationDate: OperationDate = if (operationDateDto.id != null) {
+            val foundOperationDate: OperationDate = operationRepository.findById(operationDateDto.id)
+                .orElseThrow { ScException("Failed to find Operation Date by Id: ${operationDateDto.id}") }
+            foundOperationDate.operationDate = operationDateLocalDate
+            foundOperationDate.notes = operationDateDto.notes
+            foundOperationDate
+        } else {
+            val company = companyService.findById(companyId)
+            OperationDate(null, company, operationDateLocalDate, operationDateDto.notes)
+        }
+
+        val savedOperationDate = operationRepository.save(operationDate)
+        logger.debug("Successfully saved OperationDate. Id:${operationDate.id}")
+        return OperationDateDto(savedOperationDate)
     }
 
     fun getByDate(companyId: Long, dateString: String): List<OperationDateDto> {
