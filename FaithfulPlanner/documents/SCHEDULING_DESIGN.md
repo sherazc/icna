@@ -14,11 +14,11 @@ This document explains the database design for the clinic scheduling system that
 
 ## Database Tables
 
-### 1. Company Operation Dates (`company_operation_date`)
+### 1. Company Operation Dates (`company_operation_day`)
 Stores when the company/clinic is scheduled to be open.
 
 **Key Fields:**
-- `operation_date`: The date the company is open
+- `operation_day`: The date the company is open
 - `start_time` / `end_time`: Operating hours for that day
 - `status`: SCHEDULED, CONFIRMED, CANCELLED, COMPLETED (CompanyOperationStatus enum)
 - `company_id`: Links to the company
@@ -32,7 +32,7 @@ Stores when the company/clinic is scheduled to be open.
 Assigns employees (both providers and volunteers) to specific company operation dates.
 
 **Key Fields:**
-- `company_operation_date_id`: The operation date
+- `company_operation_day_id`: The operation date
 - `employee_id`: The assigned employee
 - `assignment_status`: ASSIGNED, CONFIRMED, DECLINED, CANCELLED
 - `start_time` / `end_time`: Shift hours
@@ -92,7 +92,7 @@ Jan 24 schedule:
 - Flexible scheduling without predefined patterns
 
 ### Efficiency
-- Simple two-table structure (company_operation_date + employee_schedule)
+- Simple two-table structure (company_operation_day + employee_schedule)
 - Easy to understand and maintain
 - Quick assignments without availability checks
 
@@ -143,8 +143,8 @@ FROM employee_schedule es
 JOIN employee e ON es.employee_id = e.id
 JOIN m2m_employee_employee_type meet ON e.id = meet.employee_id
 JOIN employee_type et ON meet.employee_type_id = et.id
-JOIN company_operation_date cod ON es.company_operation_date_id = cod.id
-WHERE cod.operation_date = '2026-01-24'
+JOIN company_operation_day cod ON es.company_operation_day_id = cod.id
+WHERE cod.operation_day = '2026-01-24'
   AND cod.company_id = 1
 ORDER BY et.employee_type_group, es.assignment_status, e.last_name;
 ```
@@ -157,16 +157,16 @@ SELECT cod.*,
        COUNT(DISTINCT CASE WHEN es.assignment_status = 'CONFIRMED' THEN es.id END) as confirmed_employees,
        COUNT(DISTINCT CASE WHEN et.employee_type_group = 'PROVIDER' THEN es.id END) as assigned_providers,
        COUNT(DISTINCT CASE WHEN et.employee_type_group = 'VOLUNTEER' THEN es.id END) as assigned_volunteers
-FROM company_operation_date cod
-LEFT JOIN employee_schedule es ON cod.id = es.company_operation_date_id
+FROM company_operation_day cod
+LEFT JOIN employee_schedule es ON cod.id = es.company_operation_day_id
 LEFT JOIN employee e ON es.employee_id = e.id
 LEFT JOIN m2m_employee_employee_type meet ON e.id = meet.employee_id
 LEFT JOIN employee_type et ON meet.employee_type_id = et.id
 WHERE cod.company_id = 1
-  AND cod.operation_date >= CURRENT_DATE
+  AND cod.operation_day >= CURRENT_DATE
   AND cod.status = 'SCHEDULED'
 GROUP BY cod.id
-ORDER BY cod.operation_date;
+ORDER BY cod.operation_day;
 ```
 
 ### Find all employees:

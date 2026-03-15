@@ -4,10 +4,10 @@
 
 ### 1. Company Operations
 ```
-company_operation_date
+company_operation_day
 ├── id (PK)
 ├── company_id (FK → company)
-├── operation_date
+├── operation_day
 ├── start_time
 ├── end_time
 ├── status (SCHEDULED, CONFIRMED, CANCELLED, COMPLETED)
@@ -20,7 +20,7 @@ company_operation_date
 ```
 employee_schedule
 ├── id (PK)
-├── company_operation_date_id (FK → company_operation_date)
+├── company_operation_day_id (FK → company_operation_day)
 ├── employee_id (FK → employee)
 ├── assignment_status (ASSIGNED, CONFIRMED, DECLINED, CANCELLED)
 ├── start_time
@@ -58,7 +58,7 @@ employee_type
 │                        SCHEDULING LAYER                           │
 └──────────────────────────────────────────────────────────────────┘
 
-company_operation_date (when company is open)
+company_operation_day (when company is open)
     ↓
     └─→ employee_schedule (who is assigned)
             ↓
@@ -72,11 +72,11 @@ company_operation_date (when company is open)
 ```
 Step 1: CREATE OPERATION DATE
     Admin creates: "Jan 24, 2026 (Saturday), 9am-5pm"
-    → INSERT into company_operation_date (status = 'SCHEDULED')
+    → INSERT into company_operation_day (status = 'SCHEDULED')
 
 Step 2: ASSIGN EMPLOYEES
     Admin assigns employees directly to the operation date:
-    → INSERT into employee_schedule (employee_id, company_operation_date_id, status = 'ASSIGNED')
+    → INSERT into employee_schedule (employee_id, company_operation_day_id, status = 'ASSIGNED')
 
 Step 3: EMPLOYEES CONFIRM
     Employees confirm or decline:
@@ -120,7 +120,7 @@ Step 5: CONFIRM
 
 **Final Schedule:**
 ```
-clinic_operation_date: Jan 24, 2026, 9am-5pm
+clinic_operation_day: Jan 24, 2026, 9am-5pm
 
 clinic_schedule_provider:
   - Dr. Smith (9am-5pm) - CONFIRMED

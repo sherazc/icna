@@ -10,7 +10,7 @@ data class Schedule(
     var id: Long?,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "operation_date_id", nullable = false)
+    @JoinColumn(name = "operation_day_id", nullable = false)
     var operationDay: OperationDay,
 
     @ManyToOne(fetch = FetchType.LAZY)
