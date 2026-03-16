@@ -8,6 +8,7 @@ import { Modal } from "./common/Modal";
 import { ScreenHeader } from "./common/ScreenHeader"
 import { AppContext } from "../store/context";
 import { validateSaveOperationDayForm } from "../service/errors-helpers";
+import { touchNumber } from "../service/utilities";
 
 export default function Dashboard() {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
@@ -41,14 +42,11 @@ export default function Dashboard() {
   
         if (submitErrors.length < 1) {
           try {
-            const savedOprationDate = await clinicApis.saveUserProfileOprationDateTypes(touchNumber(saveOperationDayForm.companyId), groupId, saveOperationDayForm);
-            console.log(savedOprationDate);
-            setModalOprationDateFormState(FormState.SUCCESSFUL);
-            setShowModalOprationDateModal(false);
-            setModalOprationDate(defaultUserProfileDto());
-            const employeesResponse = await clinicApis.getUserProfileOprationDateTypes(authUserToken.companyId, groupId);
-            setOprationDates(employeesResponse);
-            setConfirmPassword("");
+            const savedOperationDate = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
+            console.log(savedOperationDate);
+            setModalOperationDayFormState(FormState.SUCCESSFUL);
+            setShowOperationDayModal(false);
+            setModalOperationDay(defaultOperationDayDto());
           } catch (error) {
             const apiErrors: ErrorDto[] = toScErrorResponses(error);
             submitErrors.push(...apiErrors);
