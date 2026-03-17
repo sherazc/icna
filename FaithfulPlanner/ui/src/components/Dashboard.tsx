@@ -7,7 +7,7 @@ import { Loading } from "./common/Loading";
 import { Modal } from "./common/Modal";
 import { ScreenHeader } from "./common/ScreenHeader"
 import { AppContext } from "../store/context";
-import { validateSaveOperationDayForm } from "../service/errors-helpers";
+import { toScErrorResponses, validateSaveOperationDayForm } from "../service/errors-helpers";
 import { touchNumber } from "../service/utilities";
 
 export default function Dashboard() {
@@ -30,36 +30,33 @@ export default function Dashboard() {
     setShowOperationDayModal(true);
   };
 
-
-  const onModalOprationDateSave = (operationDay: OperationDayDto) => {
-      const save = async (groupId: number, operationDay: OperationDayDto) => {
+  const onModalOperationDateSave = (operationDay: OperationDayDto) => {
+      const save = async (operationDay: OperationDayDto) => {
         setModalOperationDayFormState(FormState.IN_PROGRESS);
         const submitErrors: ErrorDto[] = [];
         setModalOperationDayErrors([]);
         const saveOperationDayForm: OperationDayDto = { ...operationDay };
-  
-        submitErrors.push(...validateSaveOperationDayForm(operationDay));
+        submitErrors.push(...validateSaveOperationDayForm(saveOperationDayForm));
   
         if (submitErrors.length < 1) {
           try {
-            const savedOperationDate = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
-            console.log(savedOperationDate);
+            const savedOperationDay = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
+            console.log(savedOperationDay);
             setModalOperationDayFormState(FormState.SUCCESSFUL);
             setShowOperationDayModal(false);
             setModalOperationDay(defaultOperationDayDto());
           } catch (error) {
             const apiErrors: ErrorDto[] = toScErrorResponses(error);
-            submitErrors.push(...apiErrors);
             submitErrors.push({ message: "Failed to save" });
-            setModalOprationDateFormState(FormState.FAILED);
+            submitErrors.push(...apiErrors);
+            setModalOperationDayFormState(FormState.FAILED);
           }
         } else {
-          setModalOprationDateFormState(FormState.FAILED);
+          setModalOperationDayFormState(FormState.FAILED);
         }
-        setModalOprationDateErrors(submitErrors);
+        setModalOperationDayErrors(submitErrors);
       }
-  
-      save(touchNumber(employeeGroupId), operationDay);
+      save(operationDay);
     };
 
   return (
@@ -228,7 +225,7 @@ export default function Dashboard() {
       </div>
       <Modal config={{
         title: modalOperationDay.id ? `Edit Clinic Date` : `Add New Clinic Date`,
-        yesFunction: () => { console.log(new Date()) },
+        yesFunction: () => onModalOperationDateSave(modalOperationDay),
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"
@@ -237,10 +234,10 @@ export default function Dashboard() {
           <ErrorForm formState={modalOperationDayFormState} errors={modalOperationDayErrors} />
           <Loading formState={modalOperationDayFormState} />
           <div className="formGroup">
-            <label htmlFor="operationDay">Clinic Date</label>
-            <input id="operationDay" type="date" onChange={onChangeText}
+            <label htmlFor="serviceDateString">Clinic Date</label>
+            <input id="serviceDateString" type="date" onChange={onChangeText}
                    value={modalOperationDay.serviceDateString} placeholder="Clinic date"/>
-            <ErrorField errors={modalOperationDayErrors} fieldName="operationDay" />
+            <ErrorField errors={modalOperationDayErrors} fieldName="serviceDateString" />
           </div>
           <div className="formGroup">
             <label htmlFor="notes">Notes</label>

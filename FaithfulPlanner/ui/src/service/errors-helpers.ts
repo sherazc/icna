@@ -101,7 +101,7 @@ export const toScErrorResponses = (error: unknown, fallbackError?: string): Erro
   const canTypeCast = (errorObject as any[]).every(item =>
     typeof item === 'object' &&
     item !== null &&
-    (typeof (item as any).field === 'string' || (item as any).field === undefined) &&
+    (typeof (item as any).field === 'string' || (item as any).field === undefined || (item as any).field === null) &&
     (typeof (item as any).message === 'string' || (item as any).message === undefined) &&
     (typeof (item as any).message === 'string' || typeof (item as any).field === 'string')
   );
@@ -136,5 +136,6 @@ export const validateEmployeeGroupsForm = (groups: EmployeeGroupTypesDto[]): Err
 
 export const validateSaveOperationDayForm = (operationDay: OperationDayDto): ErrorDto[] => {
   const errors: ErrorDto[] = [];
+  console.log(operationDay)
   return errors;
 }

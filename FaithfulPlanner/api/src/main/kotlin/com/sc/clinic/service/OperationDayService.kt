@@ -28,6 +28,10 @@ class OperationDayService(
         val serviceDate: LocalDate = DateUtils.isoToDate(operationDayDto.serviceDateString)
             ?: throw ScException("Invalid operation date format: ${operationDayDto.serviceDateString}")
 
+        if (operationRepository.findByCompanyIdAndOperationDay(companyId, serviceDate).isNotEmpty()) {
+            throw ScException("Operation date already exists ${DateUtils.isoToUs(operationDayDto.serviceDateString)}")
+        }
+
         val operationDay: OperationDay = if (operationDayDto.id != null) {
             val foundOperationDay: OperationDay = operationRepository.findById(operationDayDto.id!!)
                 .orElseThrow { ScException("Failed to find Operation Date by Id: ${operationDayDto.id}") }
