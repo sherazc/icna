@@ -2,9 +2,11 @@ package com.sc.clinic.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-open class OpDayDetailEmployeeGroupDto(
+class OpDayDetailEmployeeGroupDto(
     @param:JsonProperty("id")
-    val id: Long,
+    var id: Long = 0,
     @param:JsonProperty("groupName")
-    val groupName: String
+    var groupName: String = "",
+    @param:JsonProperty("users")
+    var users: List<OpDayDetailUserProfileDto> = mutableListOf()
 )
