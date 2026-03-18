@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 open class OpDayDetailDto(
     @param:JsonProperty("id")
-    var id: Long,
+    var id: Long = 0,
     @param:JsonProperty("companyId")
-    var companyId: Long,
+    var companyId: Long = 0,
     @param:JsonProperty("serviceDateString")
-    var serviceDateString: String,
+    var serviceDateString: String = "",
     @param:JsonProperty("notes")
-    var notes: String?,
+    var notes: String? = "",
     var opDayDetailEmployeeGroups: List<OpDayDetailEmployeeGroupDto> = mutableListOf()
 ) {
 }

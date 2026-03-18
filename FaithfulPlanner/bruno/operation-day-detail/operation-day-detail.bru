@@ -1,11 +1,11 @@
 meta {
-  name: /operation-day/{operationId}
+  name: /operation-day-detail
   type: http
-  seq: 2
+  seq: 5
 }
 
-delete {
-  url: {{base_url}}/api/company/1/operation-day/1
+get {
+  url: {{base_url}}/api/company/1/operation-day-detail
   body: json
   auth: bearer
 }
