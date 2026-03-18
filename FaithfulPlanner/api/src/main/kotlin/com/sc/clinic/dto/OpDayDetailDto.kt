@@ -11,6 +11,6 @@ open class OpDayDetailDto(
     var serviceDateString: String = "",
     @param:JsonProperty("notes")
     var notes: String? = "",
-    var opDayDetailEmployeeGroups: List<OpDayDetailEmployeeGroupDto> = mutableListOf()
+    var opDayDetailEmployeeGroups: MutableList<OpDayDetailEmployeeGroupDto> = mutableListOf()
 ) {
 }

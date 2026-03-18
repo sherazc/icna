@@ -8,5 +8,5 @@ class OpDayDetailEmployeeGroupDto(
     @param:JsonProperty("groupName")
     var groupName: String = "",
     @param:JsonProperty("users")
-    var users: List<OpDayDetailUserProfileDto> = mutableListOf()
+    var users: MutableList<OpDayDetailUserProfileDto> = mutableListOf()
 )
