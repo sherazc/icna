@@ -23,7 +23,8 @@ interface OperationDayRepository : JpaRepository<OperationDay, Long> {
         """
         select new com.sc.clinic.dto.OperationDayDto(od) 
         from OperationDay od 
-        where od.company.id = :companyId"""
+        where od.company.id = :companyId
+        order by od.serviceDate"""
     )
     fun getByCompanyId(companyId: Long): List<OperationDayDto>
 }

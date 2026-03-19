@@ -8,7 +8,6 @@ import com.sc.clinic.dto.OpDayDetailUserProfileDto
 import com.sc.clinic.dto.OpDayEmployeeTypeDto
 import com.sc.clinic.repository.OperationDayRepository
 import org.springframework.stereotype.Service
-import java.sql.Types
 
 @Service
 class OpDayDetailService(
@@ -25,7 +24,6 @@ class OpDayDetailService(
                 populateGroups(companyId, groups, odd.opDayDetailEmployeeGroups)
                 odd
             }
-
         return operationDayDetails
     }
 
@@ -51,7 +49,6 @@ class OpDayDetailService(
                     up.phoneNumber ?: ""
                 )
                 populateType(up.employeeTypesDto, oddUser.type)
-
                 oddUsers.add(oddUser)
             }
     }
