@@ -16,5 +16,5 @@ class OpDayDetailUserProfileDto (
     @param:JsonProperty("phoneNumber")
     var phoneNumber: String = "",
     @param:JsonProperty("types")
-    var type: List<OpDayEmployeeTypeDto> = mutableListOf()
+    var type: MutableList<OpDayEmployeeTypeDto> = mutableListOf()
 )
