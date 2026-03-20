@@ -7,6 +7,9 @@ import com.sc.clinic.dto.OpDayDetailEmployeeGroupDto
 import com.sc.clinic.dto.OpDayDetailUserProfileDto
 import com.sc.clinic.dto.OpDayEmployeeTypeDto
 import com.sc.clinic.repository.OperationDayRepository
+import com.sc.clinic.repository.OperationDaySpecification
+import com.sc.clinic.util.DateUtils
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,7 +18,15 @@ class OpDayDetailService(
     private val employeeGroupService: EmployeeGroupService,
     private val userProfileService: UserProfileService
 ) {
-    fun getAll(companyId: Long): List<OpDayDetailDto> {
+    fun find(companyId: Long, before: String?, after: String?): List<OpDayDetailDto> {
+        val beforeDate = DateUtils.isoToDate(before)
+        val afterDate = DateUtils.isoToDate(after)
+        val specification = Specification.where(OperationDaySpecification.before(beforeDate))
+            .and(OperationDaySpecification.after(afterDate))
+
+        val g2 = operationDayRepository.findAll(specification)
+        println(g2)
+
         val groups = employeeGroupService.getGroupsDto(companyId);
 
         val operationDayDetails = operationDayRepository.getByCompanyId(companyId)

@@ -3,12 +3,13 @@ package com.sc.clinic.repository
 import com.sc.clinic.dto.OperationDayDto
 import com.sc.clinic.entity.OperationDay
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
 
 @Repository
-interface OperationDayRepository : JpaRepository<OperationDay, Long> {
+interface OperationDayRepository : JpaRepository<OperationDay, Long>, JpaSpecificationExecutor<OperationDay> {
 
     @Query(
         """
