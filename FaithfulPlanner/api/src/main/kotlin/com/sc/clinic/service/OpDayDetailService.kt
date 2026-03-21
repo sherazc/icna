@@ -21,7 +21,8 @@ class OpDayDetailService(
     fun find(companyId: Long, before: String?, after: String?): List<OpDayDetailDto> {
         val beforeDate = DateUtils.isoToDate(before)
         val afterDate = DateUtils.isoToDate(after)
-        val specification = Specification.where(OperationDaySpecification.before(beforeDate))
+        val specification = Specification.where(OperationDaySpecification.ofCompany(companyId))
+            .and(OperationDaySpecification.before(beforeDate))
             .and(OperationDaySpecification.after(afterDate))
 
         val g2 = operationDayRepository.findAll(specification)
