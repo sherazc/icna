@@ -121,6 +121,11 @@ export type EmployeeTypeDto = {
     typeName: string;
 }
 
+export const defaultEmployeeTypeDto = (): EmployeeTypeDto => ({
+    id: 0,
+    typeName: ""
+});
+
 export enum ModalType { DEFAULT, INFORMATION, WARNING, ERROR };
 
 export type ModalConfig = {
@@ -143,3 +148,49 @@ export type OperationDayDto = {
 };
 
 export const defaultOperationDayDto = (): OperationDayDto => ({});
+
+export type OpDayDetailDto = {
+    id?: number;
+    companyId?: number,
+    serviceDateString?: string,
+    notes?: string,
+    opDayDetailEmployeeGroups: OpDayDetailEmployeeGroupDto[],
+};
+
+export const defaultOpDayDetailDto = ():OpDayDetailDto => ({
+    id:0,
+    companyId: 0,
+    notes: "",
+    serviceDateString:"",
+    opDayDetailEmployeeGroups:[]
+});
+
+export type OpDayDetailEmployeeGroupDto = {
+    id:number,
+    groupName:string,
+    users: OpDayDetailUserProfileDto[],
+};
+
+export const defaultOpDayDetailEmployeeGroupDto = (): OpDayDetailEmployeeGroupDto => ({
+    id: 0,
+    groupName: "",
+    users: []
+});
+
+export type OpDayDetailUserProfileDto = {
+    id: number,
+    email: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string,
+    type: EmployeeTypeDto[]
+};
+
+export const defaultOpDayDetailUserProfileDto = ():OpDayDetailUserProfileDto => ({
+    id: 0,
+    email: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    type: [],
+});

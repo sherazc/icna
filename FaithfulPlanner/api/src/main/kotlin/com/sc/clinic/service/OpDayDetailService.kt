@@ -5,7 +5,6 @@ import com.sc.clinic.dto.EmployeeTypeDto
 import com.sc.clinic.dto.OpDayDetailDto
 import com.sc.clinic.dto.OpDayDetailEmployeeGroupDto
 import com.sc.clinic.dto.OpDayDetailUserProfileDto
-import com.sc.clinic.dto.OpDayEmployeeTypeDto
 import com.sc.clinic.dto.OperationDayDto
 import com.sc.clinic.repository.OperationDayRepository
 import com.sc.clinic.repository.OperationDaySpecification
@@ -32,7 +31,7 @@ class OpDayDetailService(
             .map { OperationDayDto(it) }
             .map { od ->
                 val odd = OpDayDetailDto(od.id ?: 0, od.companyId, od.serviceDateString, od.notes)
-                populateGroups(companyId, groups, odd.opDayDetailEmployeeGroups)
+                populateGroups(companyId, groups, odd.groups)
                 odd
             }
         return operationDayDetails
@@ -64,7 +63,7 @@ class OpDayDetailService(
             }
     }
 
-    private fun populateType(types: List<EmployeeTypeDto>, oddTypes: MutableList<OpDayEmployeeTypeDto>) {
-        types.forEach { oddTypes.add(OpDayEmployeeTypeDto(it.id ?: 0, it.typeName)) }
+    private fun populateType(types: List<EmployeeTypeDto>, oddTypes: MutableList<EmployeeTypeDto>) {
+        types.forEach { oddTypes.add(EmployeeTypeDto(it.id ?: 0, it.typeName)) }
     }
 }

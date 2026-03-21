@@ -5,13 +5,14 @@ meta {
 }
 
 get {
-  url: {{base_url}}/api/company/1/operation-day-detail?after=2026-02-25
+  url: {{base_url}}/api/company/1/operation-day-detail?after=2026-02-25&before=2026-04-01
   body: json
   auth: bearer
 }
 
 params:query {
   after: 2026-02-25
+  before: 2026-04-01
 }
 
 auth:bearer {
