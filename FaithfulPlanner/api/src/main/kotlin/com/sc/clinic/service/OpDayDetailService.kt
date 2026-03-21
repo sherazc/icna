@@ -6,6 +6,7 @@ import com.sc.clinic.dto.OpDayDetailDto
 import com.sc.clinic.dto.OpDayDetailEmployeeGroupDto
 import com.sc.clinic.dto.OpDayDetailUserProfileDto
 import com.sc.clinic.dto.OpDayEmployeeTypeDto
+import com.sc.clinic.dto.OperationDayDto
 import com.sc.clinic.repository.OperationDayRepository
 import com.sc.clinic.repository.OperationDaySpecification
 import com.sc.clinic.util.DateUtils
@@ -21,16 +22,14 @@ class OpDayDetailService(
     fun find(companyId: Long, before: String?, after: String?): List<OpDayDetailDto> {
         val beforeDate = DateUtils.isoToDate(before)
         val afterDate = DateUtils.isoToDate(after)
+
         val specification = Specification.where(OperationDaySpecification.ofCompany(companyId))
             .and(OperationDaySpecification.before(beforeDate))
             .and(OperationDaySpecification.after(afterDate))
 
-        val g2 = operationDayRepository.findAll(specification)
-        println(g2)
-
         val groups = employeeGroupService.getGroupsDto(companyId);
-
-        val operationDayDetails = operationDayRepository.getByCompanyId(companyId)
+        val operationDayDetails = operationDayRepository.findAll(specification)
+            .map { OperationDayDto(it) }
             .map { od ->
                 val odd = OpDayDetailDto(od.id ?: 0, od.companyId, od.serviceDateString, od.notes)
                 populateGroups(companyId, groups, odd.opDayDetailEmployeeGroups)
