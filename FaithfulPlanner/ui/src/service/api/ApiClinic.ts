@@ -1,4 +1,4 @@
-import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OperationDayDto, RegistrationDto, UserProfileDto} from "../service-types";
+import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, RegistrationDto, UserProfileDto} from "../service-types";
 import {
   addHeadersInRequest,
   callApiIntercept,
@@ -27,6 +27,8 @@ export const clinicEndpoints = () => {
     epOperationDaySearch: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day/search`,
     epOperationDay: (companyId: number, operationDayId: number) => `${baseUrl}/api/company/${companyId}/operation-day/${operationDayId}`,
     epOperationDays: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day`,
+    epOpDayDetail: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day-detail`,
+    
   }
 }
 
@@ -159,6 +161,15 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     operationDayFind: (companyId: number, serviceDateString: string): Promise<OperationDayDto[]> => {
       let endpoint = endpoints.epOperationDays(companyId);
       endpoint = `${endpoint}?date-string=${serviceDateString}`
+      const request: ApiRequest = {endpoint};
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    opDayDetailFind: (companyId: number, beforeDateIso?: string, afterDateIso?: string): Promise<OpDayDetailDto[]> => {
+      let endpoint = endpoints.epOpDayDetail(companyId);
+
+
+      endpoint = `${endpoint}`
       const request: ApiRequest = {endpoint};
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
