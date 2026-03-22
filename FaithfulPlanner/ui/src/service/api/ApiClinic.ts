@@ -167,9 +167,17 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     },
     opDayDetailFind: (companyId: number, beforeDateIso?: string, afterDateIso?: string): Promise<OpDayDetailDto[]> => {
       let endpoint = endpoints.epOpDayDetail(companyId);
-
-
-      endpoint = `${endpoint}`
+      const params = new URLSearchParams();
+      
+      if (afterDateIso) {
+        params.append('after', afterDateIso);
+      }
+      if (beforeDateIso) {
+        params.append('before', beforeDateIso);
+      }
+      
+      const queryString = params.toString();
+      endpoint = queryString ? `${endpoint}?${queryString}` : endpoint;
       const request: ApiRequest = {endpoint};
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
