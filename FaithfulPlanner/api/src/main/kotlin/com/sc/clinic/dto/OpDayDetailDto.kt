@@ -15,7 +15,7 @@ open class OpDayDetailDto(
     var groups: MutableList<OpDayDetailEmployeeGroupDto> = mutableListOf()
 ) {
     // Getters are used to deserialize JSON/Jackson
-    fun getServiceDateFormated(): String {
+    fun getServiceDateFormatted(): String {
         return DateUtils.isoToMonthDayYear(serviceDateString)
     }
 
