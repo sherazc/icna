@@ -31,7 +31,7 @@ class OpDayDetailService(
             .map { OperationDayDto(it) }
             .map { od ->
                 val odd = OpDayDetailDto(od.id ?: 0, od.companyId, od.serviceDateString, od.notes)
-                populateGroups(companyId, groups, odd.groups)
+                populateGroups(companyId, groups, odd)
                 odd
             }
         return operationDayDetails
@@ -39,17 +39,20 @@ class OpDayDetailService(
 
     private fun populateGroups(
         companyId: Long, groups: List<EmployeeGroupDto>,
-        oddGroups: MutableList<OpDayDetailEmployeeGroupDto>
+        odd: OpDayDetailDto
     ) {
         groups.forEach { g ->
             val oddGroup = OpDayDetailEmployeeGroupDto(g.id ?: 0, g.groupName)
-            populateEmployee(companyId, oddGroup.id, oddGroup.users)
-            oddGroups.add(oddGroup)
+            populateEmployee(companyId, oddGroup.id, odd.id, oddGroup.users)
+            odd.groups.add(oddGroup)
         }
     }
 
-    private fun populateEmployee(companyId: Long, groupId: Long, oddUsers: MutableList<OpDayDetailUserProfileDto>) {
-        userProfileService.findUserProfiles(companyId, groupId)
+    private fun populateEmployee(
+        companyId: Long, groupId: Long, operationDayId: Long,
+        oddUsers: MutableList<OpDayDetailUserProfileDto>
+    ) {
+        userProfileService.findGroupScheduledUsers(companyId, groupId, operationDayId)
             .forEach { up ->
                 val oddUser = OpDayDetailUserProfileDto(
                     up.id ?: 0,

@@ -114,6 +114,14 @@ class UserProfileService(
                 u
             }
 
+    fun findGroupScheduledUsers(companyId: Long, groupId: Long, operationDayId: Long) =
+        userProfileRepository.findGroupScheduledUsers(companyId, groupId, operationDayId)
+            .map { UserProfileDto(it) }
+            .map { u ->
+                u.usersPassword = null
+                u
+            }
+
     fun hasUserProfiles(companyId: Long, groupId: Long) =
         userProfileRepository.hasByCompanyIdAndEmployeeGroupId(companyId, groupId)
 
