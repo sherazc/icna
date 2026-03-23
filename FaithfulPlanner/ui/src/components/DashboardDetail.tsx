@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../store/context";
-import type { OpDayDetailDto } from "../service/service-types";
+import type { OpDayDetailDto, OpDayDetailUserProfileDto } from "../service/service-types";
 import { touchNumber } from "../service/utilities";
 
 interface Props { }
@@ -20,7 +20,6 @@ export const DashboardDetail: React.FC<Props> = () => {
   useEffect(() => {
     loadData(touchNumber(authUserToken.companyId));
   }, [authUserToken]);
-
 
   return (<>
     <div className="tableContainer">
@@ -53,11 +52,12 @@ export const DashboardDetail: React.FC<Props> = () => {
                 
                 {opDayDetail.groups && opDayDetail.groups.map((group) => (
                 <td key={group.id}>
-                  {group.id}
                   {group.users.length}
-                  
-                  <small className="smallText">(Dr. Johnson, Dr. Chen, Dr. Williams, Dr. Martinez)</small>
-
+                  {group.users.length > 0 && 
+                  <small className="smallText">(
+                    {group.users.map((u => `${u.firstName} ${u.lastName}`)).join(", ") }
+                  )</small>
+                  }
                 </td>
                 ))}
                 <td><span className="badge badgeSuccess">Scheduled</span></td>
