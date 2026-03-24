@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
-import { defaultOperationDayDto, FormState, ModalType, type ErrorDto, type OperationDayDto } from "../service/service-types";
-import { UnAuthRedirect } from "./auth/UnAuthRedirect"
-import { ErrorField } from "./common/ErrorField";
-import { ErrorForm } from "./common/ErrorForm";
-import { Loading } from "./common/Loading";
-import { Modal } from "./common/Modal";
-import { ScreenHeader } from "./common/ScreenHeader"
-import { AppContext } from "../store/context";
-import { toScErrorResponses, validateSaveOperationDayForm } from "../service/errors-helpers";
-import { touchNumber } from "../service/utilities";
+import { defaultOperationDayDto, FormState, ModalType, type ErrorDto, type OperationDayDto } from "../../service/service-types";
+import { UnAuthRedirect } from "../auth/UnAuthRedirect"
+import { ErrorField } from "../common/ErrorField";
+import { ErrorForm } from "../common/ErrorForm";
+import { Loading } from "../common/Loading";
+import { Modal } from "../common/Modal";
+import { ScreenHeader } from "../common/ScreenHeader"
+import { AppContext } from "../../store/context";
+import { toScErrorResponses, validateSaveOperationDayForm } from "../../service/errors-helpers";
+import { touchNumber } from "../../service/utilities";
 import { DashboardDetail } from "./DashboardDetail";
 
 export default function Dashboard() {
