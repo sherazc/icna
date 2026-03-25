@@ -67,5 +67,17 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         order by u.firstName, u.lastName""")
     fun findGroupScheduledUsers(companyId: Long, groupId: Long, operationDayId: Long): List<UserProfile>
 
+
+    @Query(
+        """
+        select u from UserProfile u
+        join u.employeeGroup eg
+        join Schedule s on s.userProfile.id = u.id
+        where u.company.id = :companyId 
+        and eg.id = :groupId
+        and s.operationDay.id != :operationDayId
+        order by u.firstName, u.lastName""")
+    fun findGroupNonScheduledUsers(companyId: Long, groupId: Long, operationDayId: Long): List<UserProfile>
+
 }
 

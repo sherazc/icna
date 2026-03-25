@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../store/context";
-import type { OpDayDetailDto, OpDayDetailEmployeeGroupDto } from "../../service/service-types";
+import type { OpDayDetailDto } from "../../service/service-types";
 import { touchNumber } from "../../service/utilities";
 import { AssignedUsers } from "./AssignedUsers";
 

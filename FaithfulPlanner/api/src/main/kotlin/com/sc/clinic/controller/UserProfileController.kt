@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -21,8 +22,8 @@ class UserProfileController(val userProfileService: UserProfileService) {
 
     @DeleteMapping("/{userProfileId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
-    fun deleteUser(@PathVariable companyId: Long, @PathVariable userProfileId: Long)
-        = userProfileService.deleteUser(userProfileId)
+    fun deleteUser(@PathVariable companyId: Long, @PathVariable userProfileId: Long) =
+        userProfileService.deleteUser(userProfileId)
 
     @GetMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
@@ -31,8 +32,8 @@ class UserProfileController(val userProfileService: UserProfileService) {
 
     @GetMapping("/group/{groupId}/has-users")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun hasUserProfiles(@PathVariable companyId: Long, @PathVariable groupId: Long)
-        = userProfileService.hasUserProfiles(companyId, groupId)
+    fun hasUserProfiles(@PathVariable companyId: Long, @PathVariable groupId: Long) =
+        userProfileService.hasUserProfiles(companyId, groupId)
 
     @PostMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
@@ -42,4 +43,13 @@ class UserProfileController(val userProfileService: UserProfileService) {
         @RequestBody userEmployeeTypes: UserProfileDto
     ): UserProfileDto =
         userProfileService.saveUserEmployee(companyId, groupId, userEmployeeTypes)
+
+    @GetMapping("/group/{groupId}/operation-day/{operationId}")
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun findGroupScheduledUsers(
+        @PathVariable companyId: Long,
+        @PathVariable groupId: Long,
+        @PathVariable operationId: Long,
+        @RequestParam(name = "scheduled", required = true) scheduled: Boolean
+    ) = userProfileService.findGroupScheduledUsers(companyId, groupId, operationId, scheduled)
 }

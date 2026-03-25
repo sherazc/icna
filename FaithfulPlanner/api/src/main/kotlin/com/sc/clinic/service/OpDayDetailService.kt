@@ -52,7 +52,7 @@ class OpDayDetailService(
         companyId: Long, groupId: Long, operationDayId: Long,
         oddUsers: MutableList<OpDayDetailUserProfileDto>
     ) {
-        userProfileService.findGroupScheduledUsers(companyId, groupId, operationDayId)
+        userProfileService.findGroupScheduledUsers(companyId, groupId, operationDayId, true)
             .forEach { up ->
                 val oddUser = OpDayDetailUserProfileDto(
                     up.id ?: 0,

@@ -5,7 +5,7 @@ interface Props {
   group: OpDayDetailEmployeeGroupDto
 }
 
-export const AssignedUsers: React.FC<Props> = ({ companyId, group }) => {
+export const AssignedUsers: React.FC<Props> = ({ group }) => {
   return (
     <div className="detailSection">
       <h4 className="detailSectionTitle">Assigned {group.groupName}</h4>
@@ -15,10 +15,10 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, group }) => {
       </div>
       <div className="mt-15 searchWrapper">
         <div className="searchInputContainer">
-          <input type="text" id="provider-search" placeholder="Search and add providers..." className="searchInput" />
+          <input type="text" id="provider-search" placeholder="Search and add..." className="searchInput" />
           <div id="provider-dropdown" className="searchDropdown"></div>
         </div>
-        <button type="button" className="dropdownToggleBtn" data-onclick="toggleAllProviders()" title="Show all providers">▼</button>
+        <button type="button" className="dropdownToggleBtn" data-onclick="toggleAllProviders()" title="Show all">▼</button>
       </div>
       <div>
         <h5 className="cardStatLabel mt-15 mb-1fullWidth">Assigned List</h5>
