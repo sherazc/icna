@@ -13,20 +13,23 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
     @Query(
         """
         select u from UserProfile u
-        where lower(u.email) = lower(:email) and u.company.id = :companyId""")
+        where lower(u.email) = lower(:email) and u.company.id = :companyId"""
+    )
     fun findByCompanyIdAndEmail(companyId: Long, email: String): List<UserProfile>
 
     @Query(
         """
         select up.userRoles from UserProfile up
-        where up.company.id = :companyId and lower(up.email) = lower(:email)""")
+        where up.company.id = :companyId and lower(up.email) = lower(:email)"""
+    )
     fun findRolesByCompanyAndEmail(companyId: Long, email: String): List<UserRole>
 
     @Query(
         """
         select new com.sc.clinic.dto.UserProfileDto(u) 
         from UserProfile u
-        where u.company.id = :companyId """)
+        where u.company.id = :companyId """
+    )
     fun findByCompanyId(companyId: Long): List<UserProfileDto>
 
     @Query(
@@ -35,7 +38,8 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         join u.employeeGroup eg
         where u.company.id = :companyId 
         and eg.id = :groupId
-        order by u.firstName, u.lastName""")
+        order by u.firstName, u.lastName"""
+    )
     fun findByCompanyIdAndEmployeeGroupId(companyId: Long, groupId: Long): List<UserProfile>
 
 
@@ -45,27 +49,35 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         from UserProfile u 
         join u.employeeGroup eg
         where u.company.id = :companyId 
-        and eg.id = :groupId""")
+        and eg.id = :groupId"""
+    )
     fun hasByCompanyIdAndEmployeeGroupId(companyId: Long, groupId: Long): Boolean
 
     @Query(
         """
         select u from UserProfile u 
         join u.employeeTypes et
-        where et.id = :typeId""")
+        where et.id = :typeId"""
+    )
     fun findByEmployeeType(typeId: Long): List<UserProfile>
 
 
     @Query(
         """
-        select u from UserProfile u
+    select u from UserProfile u
     join u.employeeGroup eg
-    join Schedule s on s.userProfile.id = u.id
+    left join Schedule s on s.userProfile.id = u.id and s.operationDay.id = :operationDayId
     where u.company.id = :companyId
     and eg.id = :groupId
-    and (:scheduled = true and s.operationDay.id = :operationDayId
-         or :scheduled = false and s.operationDay.id != :operationDayId)
-    order by u.firstName, u.lastName""")
-    fun findGroupScheduledUsers(companyId: Long, groupId: Long, operationDayId: Long, scheduled: Boolean): List<UserProfile>
+    and (:scheduled = true and s.id is not null
+         or :scheduled = false and s.id is null)
+    order by u.firstName, u.lastName"""
+    )
+    fun findGroupScheduledUsers(
+        companyId: Long,
+        groupId: Long,
+        operationDayId: Long,
+        scheduled: Boolean
+    ): List<UserProfile>
 }
 
