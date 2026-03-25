@@ -9,7 +9,7 @@ interface Props { }
 export const DashboardDetail: React.FC<Props> = () => {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
-  const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(0);
+  const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
 
   const loadData = async (companyId: number) => {
     const afterDateString = "2025-01-01";
@@ -17,6 +17,12 @@ export const DashboardDetail: React.FC<Props> = () => {
 
     const opDayDetailsResponse = await clinicApis.opDayDetailFind(companyId, beforeDateString, afterDateString);
     setOpDayDetails(opDayDetailsResponse)
+  }
+
+  const getSelectedDetail = (index: number): OpDayDetailDto | undefined => {
+    if (index > -1 && index < opDayDetails.length) {
+      return opDayDetails[index];
+    }
   }
 
   useEffect(() => {
@@ -36,17 +42,17 @@ export const DashboardDetail: React.FC<Props> = () => {
               <tr>
                 <th>Clinic Date</th>
 
-                {opDayDetails[0].groups && opDayDetails[0].groups.map((group) => (<>
-                  <th>{`${group.groupName} Assigned`}</th>
-                </>))}
+                {opDayDetails[0].groups && opDayDetails[0].groups.map((group) => (
+                  <th key={group.id}>{`${group.groupName} Assigned`}</th>
+                ))}
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
 
-              {opDayDetails.map((opDayDetail) => (
-                <tr key={opDayDetail.id} data-onclick="selectRow(this, 'Nov 30, 2025')">
+              {opDayDetails.map((opDayDetail, index) => (
+                <tr key={opDayDetail.id} onClick={() => setOpDayDetailSelected(index)}>
                   <td>
                     {opDayDetail.serviceDateDayOfWeek}
                     <br />
@@ -82,18 +88,18 @@ export const DashboardDetail: React.FC<Props> = () => {
     {/* <!-- Day Details --> */}
     <div className="card clinicDayDetails">
       <div className="flex flex-start gap-1fullWidth">
-        <h3 id="selected-clinic-date" className="m-fullWidth">Day Details</h3>
+        <h3 id="selected-clinic-date" className="m-fullWidth">
+          Day Details: {getSelectedDetail(opDayDetailSelected)?.serviceDateDayOfWeek} {getSelectedDetail(opDayDetailSelected)?.serviceDateFormatted}
+        </h3>
         <span id="selected-clinic-status" className="badge badgeSuccess hidden"></span>
       </div>
 
-
       <div className="detailsGrid">
-        {opDayDetailSelected > -1 && opDayDetailSelected < opDayDetails.length
-          && opDayDetails[opDayDetailSelected].groups.map((g, index) =>
-            <AssignedUsers
-              key={index}
-              companyId={touchNumber(opDayDetails[opDayDetailSelected].companyId)}
-              group={g} />)}
+        {getSelectedDetail(opDayDetailSelected)?.groups.map(g =>
+          <AssignedUsers
+            key={g.id}
+            companyId={touchNumber(opDayDetails[opDayDetailSelected].companyId)}
+            group={g} />)}
       </div>
     </div>
   </>);
