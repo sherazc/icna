@@ -120,13 +120,8 @@ class UserProfileService(
         operationDayId: Long,
         scheduled: Boolean
     ): List<UserProfileDto> {
-        val users = if (scheduled) {
-            userProfileRepository.findGroupScheduledUsers(companyId, groupId, operationDayId)
-        } else {
-            userProfileRepository.findGroupNonScheduledUsers(companyId, groupId, operationDayId)
-        }
-
-        return users.map { UserProfileDto(it) }
+        return userProfileRepository.findGroupScheduledUsers(companyId, groupId, operationDayId, scheduled)
+            .map { UserProfileDto(it) }
             .map { u ->
                 u.usersPassword = null
                 u
