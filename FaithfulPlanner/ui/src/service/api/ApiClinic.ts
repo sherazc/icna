@@ -1,4 +1,4 @@
-import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, RegistrationDto, UserProfileDto} from "../service-types";
+import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, RegistrationDto, UserProfileDto } from "../service-types";
 import {
   addHeadersInRequest,
   callApiIntercept,
@@ -24,11 +24,13 @@ export const clinicEndpoints = () => {
     epUserProfile: (companyId: number, userProfileId: number) => `${baseUrl}/api/company/${companyId}/user-profile/${userProfileId}`,
     epUserProfileEmployeeTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}`,
     epHasUsersInGroup: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}/has-users`,
+    epUsersScheduled: (companyId: number, groupId: number, operationDayId: number, scheduled: boolean) =>
+      `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}/operation-day/${operationDayId}?scheduled=${scheduled}`,
     epOperationDaySearch: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day/search`,
     epOperationDay: (companyId: number, operationDayId: number) => `${baseUrl}/api/company/${companyId}/operation-day/${operationDayId}`,
     epOperationDays: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day`,
     epOpDayDetail: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day-detail`,
-    
+
   }
 }
 
@@ -115,11 +117,11 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     },
     saveUserProfileEmployeeTypes: (companyId: number, groupId: number, user: UserProfileDto): Promise<UserProfileDto> => {
       const endpoint = endpoints.epUserProfileEmployeeTypes(companyId, groupId);
-      const request: ApiRequest = { 
+      const request: ApiRequest = {
         endpoint, method: "POST",
         payload: user,
         headers: CONTENT_JSON_HEADER()
-       };
+      };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
@@ -131,7 +133,7 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     },
     deleteUserProfile: (companyId: number, userProfileId: number): Promise<string> => {
       const endpoint = endpoints.epUserProfile(companyId, userProfileId);
-      const request: ApiRequest = {endpoint, method: "DELETE"};
+      const request: ApiRequest = { endpoint, method: "DELETE" };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
@@ -148,37 +150,43 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     },
     operationDayAll: (companyId: number): Promise<OperationDayDto[]> => {
       const endpoint = endpoints.epOperationDays(companyId);
-      const request: ApiRequest = {endpoint};
+      const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     operationDayDelete: (companyId: number, operationId: number): Promise<boolean> => {
       const endpoint = endpoints.epOperationDay(companyId, operationId);
-      const request: ApiRequest = {endpoint, method: "DELETE"};
+      const request: ApiRequest = { endpoint, method: "DELETE" };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     operationDayFind: (companyId: number, serviceDateString: string): Promise<OperationDayDto[]> => {
       let endpoint = endpoints.epOperationDays(companyId);
       endpoint = `${endpoint}?date-string=${serviceDateString}`
-      const request: ApiRequest = {endpoint};
+      const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     opDayDetailFind: (companyId: number, beforeDateIso?: string, afterDateIso?: string): Promise<OpDayDetailDto[]> => {
       let endpoint = endpoints.epOpDayDetail(companyId);
       const params = new URLSearchParams();
-      
+
       if (afterDateIso) {
         params.append('after', afterDateIso);
       }
       if (beforeDateIso) {
         params.append('before', beforeDateIso);
       }
-      
+
       const queryString = params.toString();
       endpoint = queryString ? `${endpoint}?${queryString}` : endpoint;
-      const request: ApiRequest = {endpoint};
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    usersScheduled: (companyId: number, groupId: number, operationDayId: number, scheduled: boolean): Promise<UserProfileDto[]> => {
+      const endpoint = endpoints.epUsersScheduled(companyId, groupId, operationDayId, scheduled);
+      const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },

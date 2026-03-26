@@ -1,11 +1,32 @@
-import type { OpDayDetailEmployeeGroupDto } from "../../service/service-types";
+import { useContext, useState } from "react";
+import type { OpDayDetailEmployeeGroupDto, UserProfileDto } from "../../service/service-types";
+import { AppContext } from "../../store/context";
 
 interface Props {
   companyId: number,
-  group: OpDayDetailEmployeeGroupDto
+  group: OpDayDetailEmployeeGroupDto,
+  operationDayId: number
 }
 
-export const AssignedUsers: React.FC<Props> = ({ group }) => {
+export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group }) => {
+  const [{ clinicApis }] = useContext(AppContext);
+  const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
+  const [unscheduledUsers, setUnscheduledUsers] = useState<UserProfileDto[]>([]);
+  const [filter, setFilter] = useState<string>("");
+
+  const onClickDropDown = async () => {
+    if (dropDownOpen) {
+      // Closing
+      setDropDownOpen(false);
+    } else {
+      // Opening
+      setDropDownOpen(true);
+      const unscheduledUsersResponse = await clinicApis.usersScheduled(companyId, group.id, operationDayId, false);
+      setUnscheduledUsers(unscheduledUsersResponse);
+    }
+  };
+
+
   return (
     <div className="detailSection">
       <h4 className="detailSectionTitle">Assigned {group.groupName}</h4>
@@ -16,9 +37,12 @@ export const AssignedUsers: React.FC<Props> = ({ group }) => {
       <div className="mt-15 searchWrapper">
         <div className="searchInputContainer">
           <input type="text" id="provider-search" placeholder="Search and add..." className="searchInput" />
-          <div id="provider-dropdown" className="searchDropdown"></div>
+          <div id="provider-dropdown" className={`searchDropdown ${dropDownOpen ? "show": "" }`}>test</div>
         </div>
-        <button type="button" className="dropdownToggleBtn" data-onclick="toggleAllProviders()" title="Show all">▼</button>
+        <button type="button" className="dropdownToggleBtn" 
+        data-onclick="toggleAllProviders()"  
+        onClick={onClickDropDown}
+        title="Show all">▼</button>
       </div>
       <div>
         <h5 className="cardStatLabel mt-15 mb-1fullWidth">Assigned List</h5>

@@ -99,6 +99,7 @@ export const DashboardDetail: React.FC<Props> = () => {
           <AssignedUsers
             key={g.id}
             companyId={touchNumber(opDayDetails[opDayDetailSelected].companyId)}
+            operationDayId={touchNumber(opDayDetails[opDayDetailSelected].id)}
             group={g} />)}
       </div>
     </div>
