@@ -42,14 +42,19 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
         console.log(error);
         setUnscheduledUsersState(FormState.FAILED);
       }
-
     }
   };
 
-  const getFilteredUnscheduledUsers = (users: UserProfileDto[], f: string): UserProfileDto[] => users.filter(u =>
-    touchString(u.firstName).toLowerCase().indexOf(f.toLowerCase()) > -1
-    || touchString(u.lastName).toLowerCase().indexOf(f.toLowerCase()) > -1);
+  const getFilteredUnscheduledUsers = (users: UserProfileDto[], f: string): UserProfileDto[] => users.filter(u => {
+    const first = touchString(u.firstName).toLowerCase();
+    const last = touchString(u.lastName).toLowerCase();
+    const full = `${first} ${last}`;
+    const filterSmall = f.toLowerCase();
 
+    return first.indexOf(filterSmall) > -1
+      || last.indexOf(filterSmall) > -1
+      || full.indexOf(filterSmall) > -1
+  });
 
   const populateDropDown = (users: UserProfileDto[], f: string) => {
     if (unscheduledUsersState === FormState.FAILED) {
@@ -61,23 +66,23 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
     }
     const filteredUsers = getFilteredUnscheduledUsers(users, f);
     if (unscheduledUsersState === FormState.SUCCESSFUL && filteredUsers.length > 0) {
-
       return filteredUsers.map(u => (
         <div key={u.id} className="searchDropdownItem">
           <div className="dropdownItemInfo">
             <div className="dropdownItemName">{u.firstName} {u.lastName}</div>
-            <div className="dropdownItemRole">{u.employeeTypes.map(t => t.typeName).join(", ") }</div>
+            <div className="dropdownItemRole">{u.employeeTypes.map(t => t.typeName).join(", ")}</div>
           </div>
           <button type="button" className="dropdownItemAddBtn" data-onclick="event.stopPropagation();">Add</button>
         </div>
       ));
+    } else {
+      return <div className="p-12 text-secondary text-center">No results found</div>;
     }
   };
 
   useEffect(() => {
     resetDropDown()
-  }, [operationDayId])
-
+  }, [operationDayId]);
 
   return (
     <div className="detailSection">
@@ -88,9 +93,9 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
       </div>
       <div className="mt-15 searchWrapper">
         <div className="searchInputContainer">
-          <input type="text" id="provider-search"  placeholder="Search and add..." className="searchInput" 
+          <input type="text" id="provider-search" placeholder="Search and add..." className="searchInput"
             value={filter}
-            // onClick={(e: React.ChangeEvent<HTMLInputElement>) => }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter(e.target.value)}
           />
           <div id="provider-dropdown" className={`searchDropdown ${dropDownOpen ? "show" : ""}`}>
             {populateDropDown(unscheduledUsers, filter)}
