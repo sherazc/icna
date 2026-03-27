@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FormState, type OpDayDetailEmployeeGroupDto, type UserProfileDto } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import { touchString } from "../../service/utilities";
@@ -11,6 +11,7 @@ interface Props {
 
 export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group }) => {
   const [{ clinicApis }] = useContext(AppContext);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
   const [unscheduledUsers, setUnscheduledUsers] = useState<UserProfileDto[]>([]);
   const [filter, setFilter] = useState<string>("");
@@ -30,6 +31,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
     } else {
       // Opening
       setDropDownOpen(true);
+      inputRef.current?.focus();
       if (unscheduledUsersState === FormState.SUCCESSFUL || unscheduledUsersState === FormState.FAILED) {
         return;
       }
@@ -94,8 +96,10 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
       <div className="mt-15 searchWrapper">
         <div className="searchInputContainer">
           <input type="text" id="provider-search" placeholder="Search and add..." className="searchInput"
+            ref={inputRef}
             value={filter}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter(e.target.value)}
+            onBlur={() => setDropDownOpen(false)}
           />
           <div id="provider-dropdown" className={`searchDropdown ${dropDownOpen ? "show" : ""}`}>
             {populateDropDown(unscheduledUsers, filter)}
