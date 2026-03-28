@@ -15,8 +15,9 @@ export const DashboardDetail: React.FC<Props> = ({ newOperationDay }) => {
   const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
 
   const loadData = async (companyId: number) => {
-    const afterDateString = "2025-01-01";
-    const beforeDateString = "2027-01-01";
+    // Create filter for it.
+    const afterDateString = "2024-01-01";
+    const beforeDateString = "2028-01-01";
 
     const opDayDetailsResponse = await clinicApis.opDayDetailFind(companyId, beforeDateString, afterDateString);
     setOpDayDetails(opDayDetailsResponse)
@@ -36,17 +37,24 @@ export const DashboardDetail: React.FC<Props> = ({ newOperationDay }) => {
 
     const opDayDetailsCopy = [...opDayDetails];
     const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay);
+    const employeeGroups: EmployeeGroupDto[] = await clinicApis.getEmployeeGroups(companyId);
+    employeeGroups.forEach(eg => {
+      newOpDayDetails.groups.push({
+        id: touchNumber(eg.id),
+        groupName: eg.groupName,
+        users: []
+      })
+    });
+
+
     opDayDetailsCopy.push(newOpDayDetails);
     const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
     setOpDayDetails(opDayDetailsSorted);
-
-    const employeeGroups = await clinicApis.getEmployeeGroups(companyId);
-
   }
 
   useEffect(() => {
     if (newOperationDay) {
-
+      loadEmployeeGroups(touchNumber(authUserToken.companyId), newOperationDay);
     }
   }, [newOperationDay, authUserToken]);
 

@@ -19,7 +19,6 @@ export default function Dashboard() {
   const [modalOperationDayErrors, setModalOperationDayErrors] = useState<ErrorDto[]>([]);
   const [newOperationDay, setNewOperationDay] = useState<OperationDayDto>();
 
-
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setModalOperationDay(prevData => ({ ...prevData, [id]: value }));
