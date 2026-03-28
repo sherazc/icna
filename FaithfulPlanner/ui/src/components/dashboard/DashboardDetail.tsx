@@ -52,7 +52,7 @@ export const DashboardDetail: React.FC<Props> = () => {
             <tbody>
 
               {opDayDetails.map((opDayDetail, index) => (
-                <tr key={opDayDetail.id} onClick={() => setOpDayDetailSelected(index)}>
+                <tr key={opDayDetail.id} onClick={() => setOpDayDetailSelected(index)} className={opDayDetailSelected === index ? "selected" : ""}>
                   <td>
                     {opDayDetail.serviceDateDayOfWeek}
                     <br />
