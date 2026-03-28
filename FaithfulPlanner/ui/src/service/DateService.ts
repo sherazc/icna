@@ -634,3 +634,27 @@ export const isSameMonthDate = (d1Month?: number, d1Date?: number, d2Month?: num
 export const isValidJsDate = (date?: Date | null): boolean => {
     return date instanceof Date && !isNaN(date.getTime());
 }
+
+export const isoToMonthDayYear = (value?: string | null): string => {
+    if (!value || !REGX_DATE.test(value)) {
+        return "";
+    }
+    const date = isoDateToJsDate(value);
+    if (!date || isNaN(date.getTime())) {
+        return "";
+    }
+    return `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+};
+
+export const isoToDayOfWeek = (value?: string | null): string => {
+    if (!value || !REGX_DATE.test(value)) {
+        return "";
+    }
+    const date = isoDateToJsDate(value);
+    if (!date || isNaN(date.getTime())) {
+        return "";
+    }
+    const dayOfWeekIndex = date.getDay();
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return daysOfWeek[dayOfWeekIndex];
+};

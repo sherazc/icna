@@ -17,6 +17,8 @@ export default function Dashboard() {
   const [showOperationDayModal, setShowOperationDayModal] = useState<boolean>(false);
   const [modalOperationDayFormState, setModalOperationDayFormState] = useState<FormState>(FormState.FRESH);
   const [modalOperationDayErrors, setModalOperationDayErrors] = useState<ErrorDto[]>([]);
+  const [newOperationDay, setNewOperationDay] = useState<OperationDayDto>();
+
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -42,7 +44,7 @@ export default function Dashboard() {
         if (submitErrors.length < 1) {
           try {
             const savedOperationDay = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
-            console.log(savedOperationDay);
+            setNewOperationDay(savedOperationDay);
             setModalOperationDayFormState(FormState.SUCCESSFUL);
             setShowOperationDayModal(false);
             setModalOperationDay(defaultOperationDayDto());
@@ -68,7 +70,7 @@ export default function Dashboard() {
         <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')"
         onClick={onNewOperationDay}>+ New Clinic Date</button>
       </ScreenHeader>
-      <DashboardDetail />
+      <DashboardDetail newOperationDay={newOperationDay}/>
       <Modal config={{
         title: modalOperationDay.id ? `Edit Clinic Date` : `Add New Clinic Date`,
         yesFunction: () => onModalOperationDateSave(modalOperationDay),

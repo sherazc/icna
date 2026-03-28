@@ -9,6 +9,7 @@ import com.sc.clinic.dto.OperationDayDto
 import com.sc.clinic.repository.OperationDayRepository
 import com.sc.clinic.repository.OperationDaySpecification
 import com.sc.clinic.util.DateUtils
+import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 
@@ -27,7 +28,7 @@ class OpDayDetailService(
             .and(OperationDaySpecification.after(afterDate))
 
         val groups = employeeGroupService.getGroupsDto(companyId);
-        val operationDayDetails = operationDayRepository.findAll(specification)
+        val operationDayDetails = operationDayRepository.findAll(specification, Sort.by("serviceDate").ascending())
             .map { OperationDayDto(it) }
             .map { od ->
                 val odd = OpDayDetailDto(od.id ?: 0, od.companyId, od.serviceDateString, od.notes)
