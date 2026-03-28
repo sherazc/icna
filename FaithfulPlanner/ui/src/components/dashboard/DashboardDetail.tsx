@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../store/context";
-import type { OpDayDetailDto, OperationDayDto } from "../../service/service-types";
+import type { EmployeeGroupDto, OpDayDetailDto, OperationDayDto } from "../../service/service-types";
 import { touchNumber } from "../../service/utilities";
 import { AssignedUsers } from "./AssignedUsers";
 import { operationDayDtoToOpDayDetailDto } from "../../service/mapper-types";
 
-interface Props { 
+interface Props {
   newOperationDay?: OperationDayDto
 }
 
-export const DashboardDetail: React.FC<Props> = ({newOperationDay}) => {
+export const DashboardDetail: React.FC<Props> = ({ newOperationDay }) => {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
   const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
@@ -32,16 +32,23 @@ export const DashboardDetail: React.FC<Props> = ({newOperationDay}) => {
     loadData(touchNumber(authUserToken.companyId));
   }, [authUserToken]);
 
+  const loadEmployeeGroups = async (companyId: number, operationDay: OperationDayDto) => {
+
+    const opDayDetailsCopy = [...opDayDetails];
+    const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay);
+    opDayDetailsCopy.push(newOpDayDetails);
+    const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
+    setOpDayDetails(opDayDetailsSorted);
+
+    const employeeGroups = await clinicApis.getEmployeeGroups(companyId);
+
+  }
 
   useEffect(() => {
     if (newOperationDay) {
-      const opDayDetailsCopy = [...opDayDetails];
-      const newOpDayDetails = operationDayDtoToOpDayDetailDto(newOperationDay);
-      opDayDetailsCopy.push(newOpDayDetails);
-      const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
-      setOpDayDetails(opDayDetailsSorted);
+
     }
-  }, [newOperationDay]);
+  }, [newOperationDay, authUserToken]);
 
 
   return (<>
