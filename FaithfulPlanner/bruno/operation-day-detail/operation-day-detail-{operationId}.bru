@@ -1,0 +1,20 @@
+meta {
+  name: /operation-day-detail/{operationId}
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/company/1/operation-day-detail/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

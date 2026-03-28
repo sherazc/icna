@@ -30,15 +30,15 @@ export default function Dashboard() {
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
   const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
 
-  const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    setModalOperationDay(prevData => ({ ...prevData, [id]: value }));
-  };
-
   const getSelectedDetail = (index: number): OpDayDetailDto | undefined => {
     if (index > -1 && index < opDayDetails.length) {
       return opDayDetails[index];
     }
+  };
+
+  const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = event.target;
+    setModalOperationDay(prevData => ({ ...prevData, [id]: value }));
   };
 
   const onNewOperationDay = () => {

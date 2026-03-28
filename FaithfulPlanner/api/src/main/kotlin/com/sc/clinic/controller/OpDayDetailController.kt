@@ -2,6 +2,7 @@ package com.sc.clinic.controller
 
 import com.sc.clinic.dto.OpDayDetailDto
 import com.sc.clinic.service.OpDayDetailService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,4 +19,11 @@ class OpDayDetailController(private val opDayDetailService: OpDayDetailService) 
         @RequestParam(name = "before", required = false) before: String?,
         @RequestParam(name = "after", required = false) after: String?,
     ): List<OpDayDetailDto> = opDayDetailService.find(companyId, before, after)
+
+    @GetMapping("/{operationDayId}")
+    fun getOpDayDetail(
+        @PathVariable companyId: Long,
+        @PathVariable operationDayId: Long,
+    ): ResponseEntity<OpDayDetailDto> = opDayDetailService.getOpDayDetail(companyId, operationDayId)
+        ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
 }

@@ -12,6 +12,7 @@ import com.sc.clinic.util.DateUtils
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import kotlin.collections.map
 
 @Service
 class OpDayDetailService(
@@ -36,6 +37,26 @@ class OpDayDetailService(
                 odd
             }
         return operationDayDetails
+    }
+
+    fun getOpDayDetail(companyId: Long, operationDayId: Long): OpDayDetailDto? {
+        val operationDayOptional = operationDayRepository
+            .findById(operationDayId)
+            .map { OperationDayDto(it) }
+
+        return if (operationDayOptional.isEmpty) {
+            null
+        } else {
+            val groups = employeeGroupService.getGroupsDto(companyId);
+            val operationDay = operationDayOptional.get()
+            val odd = OpDayDetailDto(
+                operationDay.id ?: 0,
+                operationDay.companyId,
+                operationDay.serviceDateString,
+                operationDay.notes)
+            populateGroups(companyId, groups, odd)
+            odd
+        }
     }
 
     private fun populateGroups(
