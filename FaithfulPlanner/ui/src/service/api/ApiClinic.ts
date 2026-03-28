@@ -184,6 +184,13 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
+    opDayDetailGet: (companyId: number, operationDayId: number): Promise<OpDayDetailDto> => {
+      let endpoint = endpoints.epOpDayDetail(companyId);
+      endpoint = `${endpoint}/${operationDayId}`
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
     usersScheduled: (companyId: number, groupId: number, operationDayId: number, scheduled: boolean): Promise<UserProfileDto[]> => {
       const endpoint = endpoints.epUsersScheduled(companyId, groupId, operationDayId, scheduled);
       const request: ApiRequest = { endpoint };

@@ -22,19 +22,40 @@ import { AssignedUsers } from "./AssignedUsers";
 
 export default function Dashboard() {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
+
+  // Selected OpDayDetail index
+  const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
+  
+  // All OpDayDetail array
+  const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
+
+  // Newly created OperationDayDto. useEffect() is used to 
+  const [newOperationDay, setNewOperationDay] = useState<OperationDayDto>();
+  
+  // Create Modal
   const [modalOperationDay, setModalOperationDay] = useState<OperationDayDto>(defaultOperationDayDto());
   const [showOperationDayModal, setShowOperationDayModal] = useState<boolean>(false);
   const [modalOperationDayFormState, setModalOperationDayFormState] = useState<FormState>(FormState.FRESH);
   const [modalOperationDayErrors, setModalOperationDayErrors] = useState<ErrorDto[]>([]);
-  const [newOperationDay, setNewOperationDay] = useState<OperationDayDto>();
-  const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
-  const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
+  
+  
+  // Delete Modal
+  const [showOperationDayDeleteModal, setShowOperationDayDeleteModal] = useState<boolean>(false);
+
 
   const getSelectedDetail = (index: number): OpDayDetailDto | undefined => {
     if (index > -1 && index < opDayDetails.length) {
       return opDayDetails[index];
     }
   };
+
+  const onDeleteOperationDayDetail = (opDayDetail: OpDayDetailDto) => {
+
+  };
+
+  const deleteOperationDayDetail = async (companyId: number, groupId: number) => {
+    
+  }
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -87,7 +108,7 @@ export default function Dashboard() {
     setOpDayDetails(opDayDetailsResponse)
   };
 
-  const loadEmployeeGroups = async (companyId: number, operationDay: OperationDayDto) => {
+  const updateOpDayDetailsArrayWithOperationDayDetail = async (companyId: number, operationDay: OperationDayDto) => {
     const opDayDetailsCopy = [...opDayDetails];
     const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay);
     const employeeGroups: EmployeeGroupDto[] = await clinicApis.getEmployeeGroups(companyId);
@@ -110,7 +131,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (newOperationDay) {
-      loadEmployeeGroups(touchNumber(authUserToken.companyId), newOperationDay);
+      updateOpDayDetailsArrayWithOperationDayDetail(touchNumber(authUserToken.companyId), newOperationDay);
     }
   }, [newOperationDay, authUserToken]);
 
