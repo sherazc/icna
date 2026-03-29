@@ -1,3 +1,4 @@
+import { isoDateToJsDate } from "./DateService";
 import type { EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, OperationDayDto, RegistrationDto, UserProfileDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
@@ -136,6 +137,12 @@ export const validateEmployeeGroupsForm = (groups: EmployeeGroupTypesDto[]): Err
 
 export const validateSaveOperationDayForm = (operationDay: OperationDayDto): ErrorDto[] => {
   const errors: ErrorDto[] = [];
-  console.log(operationDay)
+  const serviceDate = isoDateToJsDate(operationDay.serviceDateString);
+  if (serviceDate) {
+    const today = new Date();
+    if (serviceDate.setHours(0, 0, 0, 0) < today.setHours(0, 0, 0, 0)) {
+      errors.push({message: "Operation date can not be in past."})
+    }
+  }
   return errors;
-}
+};

@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { FormState, type OpDayDetailEmployeeGroupDto, type UserProfileDto } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import { touchString } from "../../service/utilities";
+import "./AssignedUsers.css";
 
 interface Props {
   companyId: number,

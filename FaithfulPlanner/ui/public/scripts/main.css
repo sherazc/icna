@@ -358,32 +358,6 @@ body {
   margin-bottom: var(--spacing-30);
 }
 
-/* Clinic Day Details */
-.clinicDayDetails {
-  margin-bottom: var(--spacing-30);
-}
-
-.detailsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-20);
-  margin-top: var(--spacing-20);
-}
-
-.detailSection {
-  border: var(--border-width) solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  padding: var(--spacing-15);
-  background: var(--bg-secondary);
-}
-
-.detailSectionTitle {
-  margin: 0 0 var(--spacing-15) 0;
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-}
-
 .card {
   background: var(--bg-primary);
   padding: var(--spacing-20);

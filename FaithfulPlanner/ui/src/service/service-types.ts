@@ -147,7 +147,10 @@ export type OperationDayDto = {
     notes?: string
 };
 
-export const defaultOperationDayDto = (): OperationDayDto => ({});
+export const defaultOperationDayDto = (): OperationDayDto => ({
+    serviceDateString: "",
+    notes: ""
+});
 
 export type OpDayDetailDto = {
     id?: number;

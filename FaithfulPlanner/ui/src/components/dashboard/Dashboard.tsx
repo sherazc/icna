@@ -20,12 +20,14 @@ import { toScErrorResponses, validateSaveOperationDayForm } from "../../service/
 import { touchNumber } from "../../service/utilities";
 import { operationDayDtoToOpDayDetailDto } from "../../service/mapper-types";
 import { AssignedUsers } from "./AssignedUsers";
+import "./Dashboard.css"
 
 export default function Dashboard() {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
 
   // Selected OpDayDetail index
   const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
+  const [employeeGroups, setEmployeeGroups] = useState<EmployeeGroupDto[]>([]);
 
   // All OpDayDetail array
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
@@ -125,13 +127,16 @@ export default function Dashboard() {
     const beforeDateString = "2028-01-01";
 
     const opDayDetailsResponse = await clinicApis.opDayDetailFind(companyId, beforeDateString, afterDateString);
-    setOpDayDetails(opDayDetailsResponse)
+    setOpDayDetails(opDayDetailsResponse);
+
+    const employeeGroupsResponse: EmployeeGroupDto[] = await clinicApis.getEmployeeGroups(companyId);
+    setEmployeeGroups(employeeGroupsResponse);
   };
 
   const updateOpDayDetailsArrayWithOperationDayDetail = async (companyId: number, operationDay: OperationDayDto) => {
     const opDayDetailsCopy = [...opDayDetails];
     const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay);
-    const employeeGroups: EmployeeGroupDto[] = await clinicApis.getEmployeeGroups(companyId);
+    
     employeeGroups.forEach(eg => {
       newOpDayDetails.groups.push({
         id: touchNumber(eg.id),
@@ -159,9 +164,7 @@ export default function Dashboard() {
     <div id="dashboard">
       <UnAuthRedirect />
       <ScreenHeader screenName="Dashboard">
-        <button className="btn btnSecondary" data-onclick="switchScreen('org-selection')">Switch Organization</button>
-        <button className="btn btnPrimary" data-onclick="openModal('addClinicModal')"
-          onClick={onNewOperationDay}>+ New Clinic Date</button>
+        <button className="btn btnPrimary" onClick={onNewOperationDay}>+ New Date</button>
       </ScreenHeader>
       <div className="tableContainer">
         {opDayDetails.length < 1 && "No Data"}
@@ -171,7 +174,7 @@ export default function Dashboard() {
             <table>
               <thead>
                 <tr>
-                  <th>Clinic Date</th>
+                  <th>Operation Date</th>
                   {opDayDetails[0].groups && opDayDetails[0].groups.map((group) => (
                     <th key={group.id}>{`${group.groupName} Assigned`}</th>
                   ))}
@@ -211,12 +214,12 @@ export default function Dashboard() {
       </div>
 
       {/* <!-- Day Details --> */}
-      <div className="card clinicDayDetails">
+      <div className="card dashboardDayDetails">
         <div className="flex flex-start gap-1fullWidth">
-          <h3 id="selected-clinic-date" className="m-fullWidth">
+          <h3 className="m-fullWidth">
             Day Details: {getSelectedDetail(opDayDetailSelected)?.serviceDateDayOfWeek} {getSelectedDetail(opDayDetailSelected)?.serviceDateFormatted}
           </h3>
-          <span id="selected-clinic-status" className="badge badgeSuccess hidden"></span>
+          <span className="badge badgeSuccess hidden"></span>
         </div>
         <div className="detailsGrid">
           {getSelectedDetail(opDayDetailSelected)?.groups.map(g =>
@@ -247,7 +250,7 @@ export default function Dashboard() {
 
       {/* New and Edit Modal */}
       <Modal config={{
-        title: modalOperationDay.id ? `Edit Clinic Date` : `Add New Clinic Date`,
+        title: modalOperationDay.id ? `Edit Operation Date` : `Add New Operation Date`,
         yesFunction: () => onModalOperationDateSave(modalOperationDay),
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
@@ -257,9 +260,9 @@ export default function Dashboard() {
           <ErrorForm formState={modalOperationDayFormState} errors={modalOperationDayErrors} />
           <Loading formState={modalOperationDayFormState} />
           <div className="formGroup">
-            <label htmlFor="serviceDateString">Clinic Date</label>
+            <label htmlFor="serviceDateString">Operation Date</label>
             <input id="serviceDateString" type="date" onChange={onChangeText}
-              value={modalOperationDay.serviceDateString} placeholder="Clinic date" />
+              value={modalOperationDay.serviceDateString} placeholder="Operation date" />
             <ErrorField errors={modalOperationDayErrors} fieldName="serviceDateString" />
           </div>
           <div className="formGroup">

@@ -1,0 +1,10 @@
+.dashboardDayDetails {
+  margin-bottom: var(--spacing-30);
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-20);
+  margin-top: var(--spacing-20);
+}
