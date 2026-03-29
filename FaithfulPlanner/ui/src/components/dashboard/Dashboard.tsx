@@ -61,7 +61,21 @@ export default function Dashboard() {
   };
 
   const deleteOpDayDetail = async (companyId: number, operationDayId: number) => {
-
+    const submitErrors: ErrorDto[] = [];
+    setModalODeleteFormState(FormState.IN_PROGRESS);
+    try {
+      clinicApis.operationDayDelete(companyId, operationDayId);
+      setModalODeleteFormState(FormState.IN_PROGRESS);
+      const filteredOpDayDetails = opDayDetails.filter(o => o.id !== operationDayId);
+      setOpDayDetails(filteredOpDayDetails);
+      setModalDeleteShow(false);
+    } catch(error) {
+      const apiErrors: ErrorDto[] = toScErrorResponses(error);
+      submitErrors.push({ message: "Failed to save" });
+      submitErrors.push(...apiErrors);
+      setModalODeleteFormState(FormState.FAILED);
+    }
+    setModalDeleteErrors(submitErrors);
   }
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +84,6 @@ export default function Dashboard() {
   };
 
   const onNewOperationDay = () => {
-    console.log(`New Operation Date`);
     setModalOperationDayFormState(FormState.FRESH);
     setModalOperationDay({ ...defaultOperationDayDto(), companyId: authUserToken.companyId });
     setModalOperationDayErrors([])
@@ -227,7 +240,7 @@ export default function Dashboard() {
           <div>Are you sure you want to delete?</div>
           <div>{modalDeleteOpDayDetail.serviceDateDayOfWeek}, {modalDeleteOpDayDetail.serviceDateFormatted}</div>
           {modalDeleteOpDayDetail.groups.map(g => (
-            <div>{g.groupName} has {g.users.length} scheduled.</div>
+            <div key={g.id}>{g.groupName} has {g.users.length} scheduled.</div>
           ))}
         </div>
       </Modal>
