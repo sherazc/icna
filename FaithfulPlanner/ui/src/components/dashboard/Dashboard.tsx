@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
+  defaultOpDayDetailDto,
   defaultOperationDayDto,
   FormState,
   ModalType,
@@ -25,22 +26,25 @@ export default function Dashboard() {
 
   // Selected OpDayDetail index
   const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
-  
+
   // All OpDayDetail array
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
 
   // Newly created OperationDayDto. useEffect() is used to 
   const [newOperationDay, setNewOperationDay] = useState<OperationDayDto>();
-  
+
   // Create Modal
   const [modalOperationDay, setModalOperationDay] = useState<OperationDayDto>(defaultOperationDayDto());
   const [showOperationDayModal, setShowOperationDayModal] = useState<boolean>(false);
   const [modalOperationDayFormState, setModalOperationDayFormState] = useState<FormState>(FormState.FRESH);
   const [modalOperationDayErrors, setModalOperationDayErrors] = useState<ErrorDto[]>([]);
-  
-  
+
+
   // Delete Modal
-  const [showOperationDayDeleteModal, setShowOperationDayDeleteModal] = useState<boolean>(false);
+  const [modalDeleteOpDayDetail, setModalDeleteOpDayDetail] = useState<OpDayDetailDto>(defaultOpDayDetailDto());
+  const [modalDeleteShow, setModalDeleteShow] = useState<boolean>(false);
+  const [modalDeleteFormState, setModalODeleteFormState] = useState<FormState>(FormState.FRESH);
+  const [modalDeleteErrors, setModalDeleteErrors] = useState<ErrorDto[]>([]);
 
 
   const getSelectedDetail = (index: number): OpDayDetailDto | undefined => {
@@ -49,12 +53,15 @@ export default function Dashboard() {
     }
   };
 
-  const onDeleteOperationDayDetail = (opDayDetail: OpDayDetailDto) => {
-
+  const onDeleteOpDayDetail = (opDayDetail: OpDayDetailDto) => {
+    setModalDeleteOpDayDetail(opDayDetail)
+    setModalODeleteFormState(FormState.FRESH);
+    setModalDeleteErrors([]);
+    setModalDeleteShow(true);
   };
 
-  const deleteOperationDayDetail = async (companyId: number, groupId: number) => {
-    
+  const deleteOpDayDetail = async (companyId: number, operationDayId: number) => {
+
   }
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +71,7 @@ export default function Dashboard() {
 
   const onNewOperationDay = () => {
     console.log(`New Operation Date`);
-    setModalOperationDayFormState(FormState.FRESH)
+    setModalOperationDayFormState(FormState.FRESH);
     setModalOperationDay({ ...defaultOperationDayDto(), companyId: authUserToken.companyId });
     setModalOperationDayErrors([])
     setShowOperationDayModal(true);
@@ -163,7 +170,7 @@ export default function Dashboard() {
                 {opDayDetails.map((opDayDetail, index) => (
                   <tr key={opDayDetail.id} onClick={() => setOpDayDetailSelected(index)} className={opDayDetailSelected === index ? "selected" : ""}>
                     <td>
-                      {opDayDetail.serviceDateDayOfWeek}
+                      {opDayDetail.serviceDateDayOfWeek},
                       <br />
                       {opDayDetail.serviceDateFormatted}
                     </td>
@@ -180,7 +187,7 @@ export default function Dashboard() {
                     <td><span className="badge badgeSuccess">Scheduled</span></td>
                     <td>
                       <button className="actionBtn actionBtnEdit" data-onclick="event.stopPropagation(); openModal('editClinicModal')">Edit</button>
-                      <button className="actionBtn actionBtnDelete" data-onclick="event.stopPropagation()">Delete</button>
+                      <button className="actionBtn actionBtnDelete" onClick={() => onDeleteOpDayDetail(opDayDetail)}>Delete</button>
                     </td>
                   </tr>
                 ))}
@@ -208,6 +215,24 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <Modal config={{
+        title: "Delete Operation Day",
+        yesFunction: () => deleteOpDayDetail(touchNumber(modalDeleteOpDayDetail.companyId), touchNumber(modalDeleteOpDayDetail.id)),
+        modalType: ModalType.WARNING,
+        yesLabel: "Delete",
+        noLabel: "Cancel"
+      }} show={modalDeleteShow} setShow={setModalDeleteShow}>
+        <div>
+          <ErrorForm formState={modalDeleteFormState} errors={modalOperationDayErrors} />
+          <div>Are you sure you want to delete?</div>
+          <div>{modalDeleteOpDayDetail.serviceDateDayOfWeek}, {modalDeleteOpDayDetail.serviceDateFormatted}</div>
+          {modalDeleteOpDayDetail.groups.map(g => (
+            <div>{g.groupName} has {g.users.length} scheduled.</div>
+          ))}
+        </div>
+      </Modal>
+
+      {/* New and Edit Modal */}
       <Modal config={{
         title: modalOperationDay.id ? `Edit Clinic Date` : `Add New Clinic Date`,
         yesFunction: () => onModalOperationDateSave(modalOperationDay),
