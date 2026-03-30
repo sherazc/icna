@@ -18,7 +18,7 @@ import { ScreenHeader } from "../common/ScreenHeader"
 import { AppContext } from "../../store/context";
 import { toScErrorResponses, validateSaveOperationDayForm } from "../../service/errors-helpers";
 import { touchNumber } from "../../service/utilities";
-import { operationDayDtoToOpDayDetailDto } from "../../service/mapper-types";
+import { opDayDetailDtoToOperationDayDto, operationDayDtoToOpDayDetailDto } from "../../service/mapper-types";
 import { AssignedUsers } from "./AssignedUsers";
 import "./Dashboard.css"
 
@@ -32,22 +32,17 @@ export default function Dashboard() {
   // All OpDayDetail array
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
 
-  // Newly created OperationDayDto. useEffect() is used to 
-  const [newOperationDay, setNewOperationDay] = useState<OperationDayDto>();
-
   // Create Modal
   const [modalOperationDay, setModalOperationDay] = useState<OperationDayDto>(defaultOperationDayDto());
   const [showOperationDayModal, setShowOperationDayModal] = useState<boolean>(false);
   const [modalOperationDayFormState, setModalOperationDayFormState] = useState<FormState>(FormState.FRESH);
   const [modalOperationDayErrors, setModalOperationDayErrors] = useState<ErrorDto[]>([]);
 
-
   // Delete Modal
   const [modalDeleteOpDayDetail, setModalDeleteOpDayDetail] = useState<OpDayDetailDto>(defaultOpDayDetailDto());
   const [modalDeleteShow, setModalDeleteShow] = useState<boolean>(false);
   const [modalDeleteFormState, setModalODeleteFormState] = useState<FormState>(FormState.FRESH);
   const [modalDeleteErrors, setModalDeleteErrors] = useState<ErrorDto[]>([]);
-
 
   const getSelectedDetail = (index: number): OpDayDetailDto | undefined => {
     if (index > -1 && index < opDayDetails.length) {
@@ -85,10 +80,15 @@ export default function Dashboard() {
     setModalOperationDay(prevData => ({ ...prevData, [id]: value }));
   };
 
-  const onNewOperationDay = () => {
+  const onCreateEditOpDayDetail = (opDayDetail?: OpDayDetailDto) => {
+    if (opDayDetail) {
+      const operationDay = opDayDetailDtoToOperationDayDto(opDayDetail);
+      setModalOperationDay(operationDay);
+    } else {
+      setModalOperationDay({ ...defaultOperationDayDto(), companyId: authUserToken.companyId });
+    }
     setModalOperationDayFormState(FormState.FRESH);
-    setModalOperationDay({ ...defaultOperationDayDto(), companyId: authUserToken.companyId });
-    setModalOperationDayErrors([])
+    setModalOperationDayErrors([]);
     setShowOperationDayModal(true);
   };
 
@@ -103,7 +103,7 @@ export default function Dashboard() {
       if (submitErrors.length < 1) {
         try {
           const savedOperationDay = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
-          setNewOperationDay(savedOperationDay);
+          updateOpDayDetailsArrayWithOperationDayDetail(savedOperationDay);
           setModalOperationDayFormState(FormState.SUCCESSFUL);
           setShowOperationDayModal(false);
           setModalOperationDay(defaultOperationDayDto());
@@ -133,18 +133,9 @@ export default function Dashboard() {
     setEmployeeGroups(employeeGroupsResponse);
   };
 
-  const updateOpDayDetailsArrayWithOperationDayDetail = async (companyId: number, operationDay: OperationDayDto) => {
+  const updateOpDayDetailsArrayWithOperationDayDetail = async (operationDay: OperationDayDto) => {
     const opDayDetailsCopy = [...opDayDetails];
-    const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay);
-    
-    employeeGroups.forEach(eg => {
-      newOpDayDetails.groups.push({
-        id: touchNumber(eg.id),
-        groupName: eg.groupName,
-        users: []
-      })
-    });
-
+    const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay, employeeGroups);
     opDayDetailsCopy.push(newOpDayDetails);
     const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
     setOpDayDetails(opDayDetailsSorted);
@@ -154,17 +145,11 @@ export default function Dashboard() {
     loadOpDetails(touchNumber(authUserToken.companyId));
   }, [authUserToken]);
 
-  useEffect(() => {
-    if (newOperationDay) {
-      updateOpDayDetailsArrayWithOperationDayDetail(touchNumber(authUserToken.companyId), newOperationDay);
-    }
-  }, [newOperationDay, authUserToken]);
-
   return (
     <div id="dashboard">
       <UnAuthRedirect />
       <ScreenHeader screenName="Dashboard">
-        <button className="btn btnPrimary" onClick={onNewOperationDay}>+ New Date</button>
+        <button className="btn btnPrimary" onClick={() => onCreateEditOpDayDetail()}>+ New Date</button>
       </ScreenHeader>
       <div className="tableContainer">
         {opDayDetails.length < 1 && "No Data"}
@@ -178,7 +163,6 @@ export default function Dashboard() {
                   {opDayDetails[0].groups && opDayDetails[0].groups.map((group) => (
                     <th key={group.id}>{`${group.groupName} Assigned`}</th>
                   ))}
-                  <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -200,9 +184,8 @@ export default function Dashboard() {
                         }
                       </td>
                     ))}
-                    <td><span className="badge badgeSuccess">Scheduled</span></td>
                     <td>
-                      <button className="actionBtn actionBtnEdit" data-onclick="event.stopPropagation(); openModal('editClinicModal')">Edit</button>
+                      <button className="actionBtn actionBtnEdit" onClick={() => onCreateEditOpDayDetail(opDayDetail)}>Edit</button>
                       <button className="actionBtn actionBtnDelete" onClick={() => onDeleteOpDayDetail(opDayDetail)}>Delete</button>
                     </td>
                   </tr>
@@ -239,7 +222,7 @@ export default function Dashboard() {
         noLabel: "Cancel"
       }} show={modalDeleteShow} setShow={setModalDeleteShow}>
         <div>
-          <ErrorForm formState={modalDeleteFormState} errors={modalOperationDayErrors} />
+          <ErrorForm formState={modalDeleteFormState} errors={modalDeleteErrors} />
           <div>Are you sure you want to delete?</div>
           <div>{modalDeleteOpDayDetail.serviceDateDayOfWeek}, {modalDeleteOpDayDetail.serviceDateFormatted}</div>
           {modalDeleteOpDayDetail.groups.map(g => (

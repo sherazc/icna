@@ -1,5 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { FormState, type OpDayDetailEmployeeGroupDto, type UserProfileDto } from "../../service/service-types";
+import { 
+  FormState, 
+  type OpDayDetailEmployeeGroupDto, 
+  type UserProfileDto 
+} from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import { touchString } from "../../service/utilities";
 import "./AssignedUsers.css";
@@ -23,7 +27,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
     setUnscheduledUsers([]);
     setFilter("");
     setUnscheduledUsersState(FormState.FRESH);
-  }
+  };
 
   const onClickDropDown = async () => {
     if (dropDownOpen) {
@@ -134,4 +138,4 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
       </div>
     </div>
   );
-}
+};
