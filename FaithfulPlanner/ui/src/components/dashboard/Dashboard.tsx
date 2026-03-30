@@ -33,10 +33,10 @@ export default function Dashboard() {
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
 
   // Create Modal
-  const [modalOperationDay, setModalOperationDay] = useState<OperationDayDto>(defaultOperationDayDto());
-  const [showOperationDayModal, setShowOperationDayModal] = useState<boolean>(false);
-  const [modalOperationDayFormState, setModalOperationDayFormState] = useState<FormState>(FormState.FRESH);
-  const [modalOperationDayErrors, setModalOperationDayErrors] = useState<ErrorDto[]>([]);
+  const [modalOpDayDetail, setModalOpDayDetail] = useState<OpDayDetailDto>(defaultOpDayDetailDto());
+  const [showOpDayDetail, setShowOpDayDetail] = useState<boolean>(false);
+  const [modalOpDayDetailFormState, setModalOpDayDetailFormState] = useState<FormState>(FormState.FRESH);
+  const [modalOpDayDetailErrors, setModalOpDayDetailErrors] = useState<ErrorDto[]>([]);
 
   // Delete Modal
   const [modalDeleteOpDayDetail, setModalDeleteOpDayDetail] = useState<OpDayDetailDto>(defaultOpDayDetailDto());
@@ -66,59 +66,54 @@ export default function Dashboard() {
       const filteredOpDayDetails = opDayDetails.filter(o => o.id !== operationDayId);
       setOpDayDetails(filteredOpDayDetails);
       setModalDeleteShow(false);
-    } catch(error) {
+    } catch (error) {
       const apiErrors: ErrorDto[] = toScErrorResponses(error);
       submitErrors.push({ message: "Failed to save" });
       submitErrors.push(...apiErrors);
       setModalODeleteFormState(FormState.FAILED);
     }
     setModalDeleteErrors(submitErrors);
-  }
+  };
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    setModalOperationDay(prevData => ({ ...prevData, [id]: value }));
+    setModalOpDayDetail(prevData => ({ ...prevData, [id]: value }));
   };
 
   const onCreateEditOpDayDetail = (opDayDetail?: OpDayDetailDto) => {
     if (opDayDetail) {
-      const operationDay = opDayDetailDtoToOperationDayDto(opDayDetail);
-      setModalOperationDay(operationDay);
+      setModalOpDayDetail(opDayDetail);
     } else {
-      setModalOperationDay({ ...defaultOperationDayDto(), companyId: authUserToken.companyId });
+      setModalOpDayDetail({ ...defaultOpDayDetailDto(), companyId: authUserToken.companyId });
     }
-    setModalOperationDayFormState(FormState.FRESH);
-    setModalOperationDayErrors([]);
-    setShowOperationDayModal(true);
+    setModalOpDayDetailFormState(FormState.FRESH);
+    setModalOpDayDetailErrors([]);
+    setShowOpDayDetail(true);
   };
 
-  const onModalOperationDateSave = (operationDay: OperationDayDto) => {
-    const save = async (operationDay: OperationDayDto) => {
-      setModalOperationDayFormState(FormState.IN_PROGRESS);
-      const submitErrors: ErrorDto[] = [];
-      setModalOperationDayErrors([]);
-      const saveOperationDayForm: OperationDayDto = { ...operationDay };
-      submitErrors.push(...validateSaveOperationDayForm(saveOperationDayForm));
-
-      if (submitErrors.length < 1) {
-        try {
-          const savedOperationDay = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
-          updateOpDayDetailsArrayWithOperationDayDetail(savedOperationDay);
-          setModalOperationDayFormState(FormState.SUCCESSFUL);
-          setShowOperationDayModal(false);
-          setModalOperationDay(defaultOperationDayDto());
-        } catch (error) {
-          const apiErrors: ErrorDto[] = toScErrorResponses(error);
-          submitErrors.push({ message: "Failed to save" });
-          submitErrors.push(...apiErrors);
-          setModalOperationDayFormState(FormState.FAILED);
-        }
-      } else {
-        setModalOperationDayFormState(FormState.FAILED);
+  const onModalOperationDateSave = async (opDayDetail: OpDayDetailDto) => {
+    setModalOpDayDetailFormState(FormState.IN_PROGRESS);
+    const submitErrors: ErrorDto[] = [];
+    setModalOpDayDetailErrors([]);
+    const saveOperationDayForm: OperationDayDto = { ...opDayDetail };
+    submitErrors.push(...validateSaveOperationDayForm(saveOperationDayForm));
+    if (submitErrors.length < 1) {
+      try {
+        const savedOperationDay = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
+        updateOpDayDetailsArrayWithOperationDayDetail(savedOperationDay);
+        setModalOpDayDetailFormState(FormState.SUCCESSFUL);
+        setShowOpDayDetail(false);
+        setModalOpDayDetail(defaultOpDayDetailDto());
+      } catch (error) {
+        const apiErrors: ErrorDto[] = toScErrorResponses(error);
+        submitErrors.push({ message: "Failed to save" });
+        submitErrors.push(...apiErrors);
+        setModalOpDayDetailFormState(FormState.FAILED);
       }
-      setModalOperationDayErrors(submitErrors);
+    } else {
+      setModalOpDayDetailFormState(FormState.FAILED);
     }
-    save(operationDay);
+    setModalOpDayDetailErrors(submitErrors);
   };
 
   const loadOpDetails = async (companyId: number) => {
@@ -233,26 +228,26 @@ export default function Dashboard() {
 
       {/* New and Edit Modal */}
       <Modal config={{
-        title: modalOperationDay.id ? `Edit Operation Date` : `Add New Operation Date`,
-        yesFunction: () => onModalOperationDateSave(modalOperationDay),
+        title: modalOpDayDetail.id ? `Edit Operation Date` : `Add New Operation Date`,
+        yesFunction: () => onModalOperationDateSave(modalOpDayDetail),
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"
-      }} show={showOperationDayModal} setShow={setShowOperationDayModal}>
+      }} show={showOpDayDetail} setShow={setShowOpDayDetail}>
         <form>
-          <ErrorForm formState={modalOperationDayFormState} errors={modalOperationDayErrors} />
-          <Loading formState={modalOperationDayFormState} />
+          <ErrorForm formState={modalOpDayDetailFormState} errors={modalOpDayDetailErrors} />
+          <Loading formState={modalOpDayDetailFormState} />
           <div className="formGroup">
             <label htmlFor="serviceDateString">Operation Date</label>
             <input id="serviceDateString" type="date" onChange={onChangeText}
-              value={modalOperationDay.serviceDateString} placeholder="Operation date" />
-            <ErrorField errors={modalOperationDayErrors} fieldName="serviceDateString" />
+              value={modalOpDayDetail.serviceDateString} placeholder="Operation date" />
+            <ErrorField errors={modalOpDayDetailErrors} fieldName="serviceDateString" />
           </div>
           <div className="formGroup">
             <label htmlFor="notes">Notes</label>
             <input id="notes" type="text" onChange={onChangeText}
-              value={modalOperationDay.notes} placeholder="Notes" />
-            <ErrorField errors={modalOperationDayErrors} fieldName="notes" />
+              value={modalOpDayDetail.notes} placeholder="Notes" />
+            <ErrorField errors={modalOpDayDetailErrors} fieldName="notes" />
           </div>
         </form>
       </Modal>
