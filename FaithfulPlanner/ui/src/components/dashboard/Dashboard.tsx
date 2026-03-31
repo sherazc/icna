@@ -100,7 +100,14 @@ export default function Dashboard() {
     if (submitErrors.length < 1) {
       try {
         const savedOperationDay = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
+        
+
+
+        
         updateOpDayDetailsArrayWithOperationDayDetail(savedOperationDay);
+        
+
+
         setModalOpDayDetailFormState(FormState.SUCCESSFUL);
         setShowOpDayDetail(false);
         setModalOpDayDetail(defaultOpDayDetailDto());
@@ -116,6 +123,17 @@ export default function Dashboard() {
     setModalOpDayDetailErrors(submitErrors);
   };
 
+
+const updateOpDayDetailsArrayWithOperationDayDetail = async (operationDay: OperationDayDto) => {
+    const opDayDetailsCopy = [...opDayDetails];
+    const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay, employeeGroups);
+    opDayDetailsCopy.push(newOpDayDetails);
+    const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
+    setOpDayDetails(opDayDetailsSorted);
+  };
+
+
+
   const loadOpDetails = async (companyId: number) => {
     // Create filter for it.
     const afterDateString = "2024-01-01";
@@ -126,14 +144,6 @@ export default function Dashboard() {
 
     const employeeGroupsResponse: EmployeeGroupDto[] = await clinicApis.getEmployeeGroups(companyId);
     setEmployeeGroups(employeeGroupsResponse);
-  };
-
-  const updateOpDayDetailsArrayWithOperationDayDetail = async (operationDay: OperationDayDto) => {
-    const opDayDetailsCopy = [...opDayDetails];
-    const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay, employeeGroups);
-    opDayDetailsCopy.push(newOpDayDetails);
-    const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
-    setOpDayDetails(opDayDetailsSorted);
   };
 
   useEffect(() => {
