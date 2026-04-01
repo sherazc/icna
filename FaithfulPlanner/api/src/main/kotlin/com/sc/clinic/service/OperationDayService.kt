@@ -57,7 +57,7 @@ class OperationDayService(
     @Transactional
     fun delete(companyId: Long, operationDayId: Long): Boolean {
         logger.info("Deleting Operation Date. OperationDayId = {}", operationDayId)
-        val deletedSchedules = scheduleService.deleteOperationDaySchedule(operationDayId)
+        val deletedSchedules = scheduleService.deleteOperationDayAllSchedules(operationDayId)
         logger.info("Deleted Operation {} schedules of operationDayId {}", deletedSchedules, operationDayId)
         operationRepository.deleteById(operationDayId)
         return true

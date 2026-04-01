@@ -15,7 +15,6 @@ create table schedule
     id                      bigserial    not null primary key,
     operation_day_id       bigint       not null,
     user_profile_id         bigint       not null,
-    notes                   text,
     constraint fk_schedule_operation_day foreign key (operation_day_id) references operation_day(id),
     constraint fk_schedule_user_profile foreign key (user_profile_id) references user_profile(id),
     constraint uk_schedule unique (operation_day_id, user_profile_id)
@@ -34,20 +33,20 @@ SELECT setval(pg_get_serial_sequence('operation_day', 'id'), (SELECT MAX(id) FRO
 
 -- Sample schedule assignments
 -- Assign user_profile 10 (John Smith - Provider) to first Saturday
-INSERT INTO schedule (id, operation_day_id, user_profile_id, notes)
-VALUES (1, 1, 10, 'Lead provider for the day');
+INSERT INTO schedule (id, operation_day_id, user_profile_id)
+VALUES (1, 1, 10);
 
 -- Assign user_profile 11 (Sarah Johnson - Provider) to first Saturday
-INSERT INTO schedule (id, operation_day_id, user_profile_id, notes)
-VALUES (2, 1, 11, 'Supporting provider');
+INSERT INTO schedule (id, operation_day_id, user_profile_id)
+VALUES (2, 1, 11);
 
 -- Assign user_profile 15 (Jennifer Davis - Volunteer) to first Saturday
-INSERT INTO schedule (id, operation_day_id, user_profile_id, notes)
-VALUES (3, 1, 15, 'Reception duty');
+INSERT INTO schedule (id, operation_day_id, user_profile_id)
+VALUES (3, 1, 15);
 
 -- Assign user_profile 17 (Jessica Wilson - Volunteer) to first Saturday
-INSERT INTO schedule (id, operation_day_id, user_profile_id, notes)
-VALUES (4, 1, 17, 'Medical assistant');
+INSERT INTO schedule (id, operation_day_id, user_profile_id)
+VALUES (4, 1, 17);
 
 SELECT setval(pg_get_serial_sequence('schedule', 'id'), (SELECT MAX(id) FROM schedule));
 

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository
 interface ScheduleRepository : JpaRepository<Schedule, Long> {
     @Modifying
     @Query("delete from Schedule s where s.userProfile.id = :userProfileId")
-    fun deleteUserSchedule(userProfileId: Long): Int
+    fun deleteUserAllSchedules(userProfileId: Long): Int
 
     @Modifying
     @Query("delete from Schedule s where s.operationDay.id = :operationDayId")
-    fun deleteOperationDaySchedule(operationDayId: Long): Int
+    fun deleteOperationDayAllSchedules(operationDayId: Long): Int
 }

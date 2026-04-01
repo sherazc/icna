@@ -15,9 +15,6 @@ data class Schedule(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_profile_id", nullable = false)
-    var userProfile: UserProfile,
-
-    @Column(name = "notes")
-    var notes: String?
+    var userProfile: UserProfile
 )
 

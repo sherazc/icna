@@ -197,6 +197,20 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
+    scheduleUser: (companyId: number, operationDayId: number, userProfileId: number): Promise<boolean> => {
+      let endpoint = endpoints.epOperationDay(companyId, operationDayId);
+      endpoint = `${endpoint}/user-profile/${userProfileId}`
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    unscheduleUser: (companyId: number, operationDayId: number, userProfileId: number): Promise<boolean> => {
+      let endpoint = endpoints.epOperationDay(companyId, operationDayId);
+      endpoint = `${endpoint}/user-profile/${userProfileId}`
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
   };
   return api;
 }

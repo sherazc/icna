@@ -134,7 +134,7 @@ class UserProfileService(
     @Transactional
     fun deleteUser(userProfileId: Long): Boolean {
         logger.debug("Deleting user. {}", userProfileId)
-        val deleteCountSchedule = scheduleService.deleteUserSchedule(userProfileId)
+        val deleteCountSchedule = scheduleService.deleteUserAllSchedules(userProfileId)
         logger.info("Deleted schedules. UserProfileId={}, Deleted Count={}", userProfileId, deleteCountSchedule)
 
         userProfileRepository.findById(userProfileId).orElse(null)
