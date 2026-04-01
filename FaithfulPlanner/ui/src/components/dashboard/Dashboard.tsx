@@ -17,10 +17,11 @@ import { Modal } from "../common/Modal";
 import { ScreenHeader } from "../common/ScreenHeader"
 import { AppContext } from "../../store/context";
 import { toScErrorResponses, validateSaveOperationDayForm } from "../../service/errors-helpers";
-import { touchNumber } from "../../service/utilities";
+import { touchNumber, touchString } from "../../service/utilities";
 import { opDayDetailDtoToOperationDayDto, operationDayDtoToOpDayDetailDto } from "../../service/mapper-types";
 import { AssignedUsers } from "./AssignedUsers";
 import "./Dashboard.css"
+import { isoToDayOfWeek, isoToMonthDayYear } from "../../service/DateService";
 
 export default function Dashboard() {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
@@ -95,19 +96,33 @@ export default function Dashboard() {
     setModalOpDayDetailFormState(FormState.IN_PROGRESS);
     const submitErrors: ErrorDto[] = [];
     setModalOpDayDetailErrors([]);
-    const saveOperationDayForm: OperationDayDto = { ...opDayDetail };
-    submitErrors.push(...validateSaveOperationDayForm(saveOperationDayForm));
+
+    submitErrors.push(...validateSaveOperationDayForm(opDayDetail));
     if (submitErrors.length < 1) {
       try {
-        const savedOperationDay = await clinicApis.operationDaySave(touchNumber(saveOperationDayForm.companyId), saveOperationDayForm);
-        
+        const saveOperationDayDto = opDayDetailDtoToOperationDayDto(opDayDetail);
+        // if new then id should be undefined not zero
+        saveOperationDayDto.id = saveOperationDayDto.id === undefined || saveOperationDayDto.id < 1 ? undefined : saveOperationDayDto.id;
+        const savedOperationDay: OperationDayDto = await clinicApis.operationDaySave(touchNumber(opDayDetail.companyId), saveOperationDayDto);
 
-
-        
-        updateOpDayDetailsArrayWithOperationDayDetail(savedOperationDay);
-        
-
-
+        const opDayDetailsCopy = [...opDayDetails];
+        if (saveOperationDayDto.id) {
+          // replace / update
+          opDayDetailsCopy.map(op => {
+            if (op.id === savedOperationDay.id) {
+              op.serviceDateString = touchString(savedOperationDay.serviceDateString);
+              op.notes = savedOperationDay.notes;
+              op.serviceDateDayOfWeek = isoToDayOfWeek(touchString(savedOperationDay.serviceDateString));
+              op.serviceDateFormatted = isoToMonthDayYear(touchString(savedOperationDay.serviceDateString));
+            }
+          })
+        } else {
+          // push / new
+          const newOpDayDetails = operationDayDtoToOpDayDetailDto(savedOperationDay, employeeGroups);
+          opDayDetailsCopy.push(newOpDayDetails);
+        }
+        const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
+        setOpDayDetails(opDayDetailsSorted);
         setModalOpDayDetailFormState(FormState.SUCCESSFUL);
         setShowOpDayDetail(false);
         setModalOpDayDetail(defaultOpDayDetailDto());
@@ -122,17 +137,6 @@ export default function Dashboard() {
     }
     setModalOpDayDetailErrors(submitErrors);
   };
-
-
-const updateOpDayDetailsArrayWithOperationDayDetail = async (operationDay: OperationDayDto) => {
-    const opDayDetailsCopy = [...opDayDetails];
-    const newOpDayDetails = operationDayDtoToOpDayDetailDto(operationDay, employeeGroups);
-    opDayDetailsCopy.push(newOpDayDetails);
-    const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
-    setOpDayDetails(opDayDetailsSorted);
-  };
-
-
 
   const loadOpDetails = async (companyId: number) => {
     // Create filter for it.
