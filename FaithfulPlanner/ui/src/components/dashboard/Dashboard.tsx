@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
   defaultOpDayDetailDto,
-  defaultOperationDayDto,
   FormState,
   ModalType,
   type EmployeeGroupDto,
@@ -121,8 +120,7 @@ export default function Dashboard() {
           const newOpDayDetails = operationDayDtoToOpDayDetailDto(savedOperationDay, employeeGroups);
           opDayDetailsCopy.push(newOpDayDetails);
         }
-        const opDayDetailsSorted = opDayDetailsCopy.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
-        setOpDayDetails(opDayDetailsSorted);
+        sortAndSetOpDayDetails(opDayDetailsCopy);
         setModalOpDayDetailFormState(FormState.SUCCESSFUL);
         setShowOpDayDetail(false);
         setModalOpDayDetail(defaultOpDayDetailDto());
@@ -148,6 +146,20 @@ export default function Dashboard() {
 
     const employeeGroupsResponse: EmployeeGroupDto[] = await clinicApis.getEmployeeGroups(companyId);
     setEmployeeGroups(employeeGroupsResponse);
+  };
+
+  const sortAndSetOpDayDetails = (opDayDetailArray: OpDayDetailDto[]) => {
+    const opDayDetailsSorted = opDayDetailArray.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
+    setOpDayDetails(opDayDetailsSorted);
+  };
+
+  const reloadOpDayDetail = (companyId: number, operationDayId: number) => {
+    const reload = async () => {
+      const opDayDetail = await clinicApis.opDayDetailGet(companyId, operationDayId);
+      const opDayDetailsUpdated = opDayDetails.map(op => op.id === opDayDetail.id? opDayDetail : op);
+      setOpDayDetails(opDayDetailsUpdated);
+    };
+    reload();
   };
 
   useEffect(() => {

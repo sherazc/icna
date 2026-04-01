@@ -1,0 +1,20 @@
+meta {
+  name: /{operationDayId}/unschedule/user-profile/{userProfileId} Unschedule User
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/api/company/1/operation-day/1/unschedule/user-profile/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
