@@ -1,0 +1,29 @@
+meta {
+  name: /schedule
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/schedule
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  {
+    
+      "id": null,
+      "operationDayId": 1,
+      "userProfileId": 22
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

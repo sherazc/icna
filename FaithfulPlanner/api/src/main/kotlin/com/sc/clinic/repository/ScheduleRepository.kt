@@ -24,15 +24,7 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
     """, nativeQuery = true)
     fun scheduleUser(operationDayId: Long, userProfileId: Long): Int
 
-    fun scheduleUser2(operationDayId: Long, userProfileId: Long): Schedule {
-        val schedule = Schedule(
-            id = null,
-            operationDay = OperationDay(id = operationDayId),
-            userProfile = UserProfile(id = userProfileId)
-        )
-        return scheduleRepository.saveAndFlush(schedule)
-    }
+    fun existsByOperationDay_IdAndUserProfile_Id(operationDayId: Long, userProfileId: Long): Boolean
 
-    fun countByOperationDay_IdAndUserProfile_Id(operationDayId: Long, userProfileId: Long): Int
     fun deleteByOperationDay_IdAndUserProfile_Id(operationDayId: Long, userProfileId: Long): Int
 }
