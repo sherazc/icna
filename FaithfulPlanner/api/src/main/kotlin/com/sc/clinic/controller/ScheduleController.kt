@@ -11,10 +11,7 @@ class ScheduleController(private val scheduleService: ScheduleService) {
 
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
     @PostMapping
-    fun scheduleUser(@RequestBody schedule: ScheduleDto): Boolean {
-        scheduleService.scheduleUser(schedule)
-        return true
-    }
+    fun scheduleUser(@RequestBody schedule: ScheduleDto) = scheduleService.scheduleUser(schedule)
 
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
     @DeleteMapping("/{operationDayId}/user-profile/{userProfileId}")
