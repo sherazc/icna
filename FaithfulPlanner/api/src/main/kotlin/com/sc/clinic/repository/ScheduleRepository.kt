@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ScheduleRepository : JpaRepository<Schedule, Long> {
+
     @Modifying
     @Query("delete from Schedule s where s.userProfile.id = :userProfileId")
     fun deleteUserAllSchedules(userProfileId: Long): Int
@@ -15,4 +16,23 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
     @Modifying
     @Query("delete from Schedule s where s.operationDay.id = :operationDayId")
     fun deleteOperationDayAllSchedules(operationDayId: Long): Int
+
+    @Modifying
+    @Query("""
+        INSERT INTO schedule(id, operation_day_id, user_profile_id)
+        VALUES (null, :operationDayId, :userProfileId)
+    """, nativeQuery = true)
+    fun scheduleUser(operationDayId: Long, userProfileId: Long): Int
+
+    fun scheduleUser2(operationDayId: Long, userProfileId: Long): Schedule {
+        val schedule = Schedule(
+            id = null,
+            operationDay = OperationDay(id = operationDayId),
+            userProfile = UserProfile(id = userProfileId)
+        )
+        return scheduleRepository.saveAndFlush(schedule)
+    }
+
+    fun countByOperationDay_IdAndUserProfile_Id(operationDayId: Long, userProfileId: Long): Int
+    fun deleteByOperationDay_IdAndUserProfile_Id(operationDayId: Long, userProfileId: Long): Int
 }
