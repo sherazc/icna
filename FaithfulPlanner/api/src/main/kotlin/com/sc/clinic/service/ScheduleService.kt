@@ -21,11 +21,13 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository) {
 
     @Transactional
     fun scheduleUser(schedule: ScheduleDto): ScheduleDto {
-        val existingSchedules = scheduleRepository.findByOperationAndUser(schedule.operationDayId, schedule.userProfileId)
+        val existingSchedules =
+            scheduleRepository.findByOperationAndUser(schedule.operationDayId, schedule.userProfileId)
         if (existingSchedules.isEmpty()) {
             val createdRecordsCount = scheduleRepository.scheduleUser(schedule.operationDayId, schedule.userProfileId)
-            val createdRecords = scheduleRepository.findByOperationAndUser(schedule.operationDayId, schedule.userProfileId)
-            return if(createdRecordsCount > 0 && !createdRecords.isEmpty())
+            val createdRecords =
+                scheduleRepository.findByOperationAndUser(schedule.operationDayId, schedule.userProfileId)
+            return if (createdRecordsCount > 0 && !createdRecords.isEmpty())
                 createdRecords.get(0)
             else
                 throw ScException("Failed Schedule User. OperationDayId=${schedule.operationDayId}, UserProfileId=${schedule.userProfileId}")
@@ -33,5 +35,11 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository) {
             logger.warn("User already scheduled. OperationDayId=${schedule.operationDayId}, UserProfileId=${schedule.userProfileId}")
             return existingSchedules.get(0)
         }
+    }
+
+    @Transactional
+    fun unscheduleUser(operationDayId: Long, userProfileId: Long): Boolean {
+        val deletedRecordsCount = scheduleRepository.unscheduleUser(operationDayId, userProfileId)
+        return deletedRecordsCount > 0
     }
 }

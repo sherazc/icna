@@ -25,6 +25,14 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
     """, nativeQuery = true)
     fun scheduleUser(operationDayId: Long, userProfileId: Long): Int
 
+    @Modifying
+    @Query("""
+        DELETE FROM schedule
+        WHERE operation_day_id = :operationDayId 
+        AND user_profile_id = :userProfileId
+    """, nativeQuery = true)
+    fun unscheduleUser(operationDayId: Long, userProfileId: Long): Int
+
     @Query("""
         select 
         new com.sc.clinic.dto.ScheduleDto(s.id, s.operationDay.id, s.userProfile.id) 
@@ -32,6 +40,4 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
         where s.operationDay.id = :operationDayId
         and s.userProfile.id = :userProfileId""")
     fun findByOperationAndUser(operationDayId: Long, userProfileId: Long): List<ScheduleDto>
-
-    fun deleteByOperationDay_IdAndUserProfile_Id(operationDayId: Long, userProfileId: Long): Int
 }

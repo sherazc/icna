@@ -1,0 +1,20 @@
+meta {
+  name: /schedule/{operationDayId}/user-profile/{userProfileId} Unschedule User
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{base_url}}/api/schedule/1/user-profile/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
