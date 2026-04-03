@@ -162,19 +162,19 @@ export type OpDayDetailDto = {
     groups: OpDayDetailEmployeeGroupDto[],
 };
 
-export const defaultOpDayDetailDto = ():OpDayDetailDto => ({
-    id:0,
+export const defaultOpDayDetailDto = (): OpDayDetailDto => ({
+    id: 0,
     companyId: 0,
     notes: "",
-    serviceDateString:"",
+    serviceDateString: "",
     serviceDateFormatted: "",
     serviceDateDayOfWeek: "",
-    groups:[]
+    groups: []
 });
 
 export type OpDayDetailEmployeeGroupDto = {
-    id:number,
-    groupName:string,
+    id: number,
+    groupName: string,
     users: OpDayDetailUserProfileDto[],
 };
 
@@ -193,11 +193,22 @@ export type OpDayDetailUserProfileDto = {
     types: EmployeeTypeDto[]
 };
 
-export const defaultOpDayDetailUserProfileDto = ():OpDayDetailUserProfileDto => ({
+export const defaultOpDayDetailUserProfileDto = (): OpDayDetailUserProfileDto => ({
     id: 0,
     email: "",
     firstName: "",
     lastName: "",
     phoneNumber: "",
     types: [],
+});
+
+export type ScheduleDto = {
+    id?: number,
+    operationDayId: number,
+    userProfileId: number
+};
+
+export const defaultScheduleDto = (): ScheduleDto => ({
+    operationDayId: 0,
+    userProfileId: 0
 });

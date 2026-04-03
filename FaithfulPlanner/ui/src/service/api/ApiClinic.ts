@@ -1,4 +1,4 @@
-import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, RegistrationDto, UserProfileDto } from "../service-types";
+import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, RegistrationDto, ScheduleDto, UserProfileDto } from "../service-types";
 import {
   addHeadersInRequest,
   callApiIntercept,
@@ -30,7 +30,7 @@ export const clinicEndpoints = () => {
     epOperationDay: (companyId: number, operationDayId: number) => `${baseUrl}/api/company/${companyId}/operation-day/${operationDayId}`,
     epOperationDays: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day`,
     epOpDayDetail: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day-detail`,
-
+    epSchedule: () => `${baseUrl}/api/schedule`,
   }
 }
 
@@ -197,16 +197,20 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    scheduleUser: (companyId: number, operationDayId: number, userProfileId: number): Promise<boolean> => {
-      let endpoint = endpoints.epOperationDay(companyId, operationDayId);
-      endpoint = `${endpoint}/user-profile/${userProfileId}`
-      const request: ApiRequest = { endpoint };
+    scheduleUser: (schedule: ScheduleDto): Promise<ScheduleDto> => {
+      const endpoint = endpoints.epSchedule();
+      const request: ApiRequest = {
+        endpoint,
+        method: "POST",
+        payload: schedule,
+        headers: CONTENT_JSON_HEADER()
+      };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    unscheduleUser: (companyId: number, operationDayId: number, userProfileId: number): Promise<boolean> => {
-      let endpoint = endpoints.epOperationDay(companyId, operationDayId);
-      endpoint = `${endpoint}/user-profile/${userProfileId}`
+    unscheduleUser: (operationDayId: number, userProfileId: number): Promise<boolean> => {
+      let endpoint = endpoints.epSchedule();
+      endpoint = `${endpoint}/operation-day/${operationDayId}/user-profile/${userProfileId}`
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
