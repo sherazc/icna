@@ -7,13 +7,14 @@ import { touchNumber } from "../../service/utilities";
 import { toScErrorResponses, validateEmployeeGroupsForm } from "../../service/errors-helpers";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
+import { ActionNameEmployeeGroup } from "../../store/employeeGroupsReducer";
 
 interface Props { }
 
 let tempId = -1;
 export const EmployeeGroupSettings: React.FC<Props> = () => {
 
-  const [{ authUserToken, clinicApis }] = useContext(AppContext);
+  const [{ authUserToken, clinicApis }, dispatch] = useContext(AppContext);
   const [groups, setGroups] = useState<EmployeeGroupTypesDto[]>([]);
   const [modalShow, setModalShow] = useState<boolean>(false);
   const [modalConfig, setModalConfig] = useState<ModalConfig>({});
@@ -121,6 +122,10 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
       try {
         const savedGroups = await clinicApis.saveEmployeeGroupsTypes(authUserToken.companyId, groups);
         setGroups(savedGroups);
+        dispatch({
+          type: ActionNameEmployeeGroup.setEmployeeGroups,
+          payload: savedGroups
+        })
         setFormState(FormState.SUCCESSFUL);
       } catch (error) {
         const apiErrors: ErrorDto[] = toScErrorResponses(error);

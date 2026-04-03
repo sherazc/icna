@@ -1,10 +1,17 @@
 import React, {createContext, useReducer} from "react";
 import {type LoadingAction, loadingMessagesReducer} from "./loadingMessageReducer";
 import {type AuthUserAction, authUserReducer} from "./authUserReducer";
-import {type AuthUserTokenDto, type ClinicApisType, type Company, defaultAuthUserTokenDto} from "../service/service-types";
+import {
+    defaultAuthUserTokenDto, 
+    type AuthUserTokenDto, 
+    type ClinicApisType, 
+    type Company, 
+    type EmployeeGroupDto
+} from "../service/service-types";
 import { clinicApis } from "../service/api/ApiClinic";
 import { clinicApisReducer, type ClinicApisAction } from "./clinicApisReducer";
 import { companyReducer, type CompanyAction } from "./companyReducer";
+import { employeeGroupReducer, type EmployeeGroupAction } from "./employeeGroupsReducer";
 
 export type Action = {
     type: string;
@@ -24,6 +31,7 @@ type RootStateType = {
     authUserToken: AuthUserTokenDto;
     clinicApis: ClinicApisType;
     companies: Company[];
+    employeeGroups: EmployeeGroupDto[]
 }
 
 
@@ -31,7 +39,8 @@ const initialAppState: RootStateType = {
     loadingMessages: [],
     authUserToken: defaultAuthUserTokenDto(),
     clinicApis: clinicApis(),
-    companies: []
+    companies: [],
+    employeeGroups: []
 }
 
 const AppContext = createContext<[
@@ -42,14 +51,16 @@ const AppContext = createContext<[
     () => null
 ]);
 
-type RootAction = LoadingAction | AuthUserAction | ClinicApisAction | CompanyAction;
+type RootAction = LoadingAction | AuthUserAction | ClinicApisAction | CompanyAction | EmployeeGroupAction;
 
 // Combines all the reducers
-const mainReducer = ({loadingMessages, authUserToken, clinicApis, companies}: RootStateType, action: RootAction) => ({
+const mainReducer = ({loadingMessages, authUserToken, clinicApis, companies, employeeGroups}: RootStateType, action: RootAction) => ({
     loadingMessages: loadingMessagesReducer(loadingMessages, action as LoadingAction),
     authUserToken: authUserReducer(authUserToken, action as AuthUserAction),
     clinicApis: clinicApisReducer(clinicApis, action as ClinicApisAction),
-    companies: companyReducer(companies, action as CompanyAction)
+    companies: companyReducer(companies, action as CompanyAction),
+    employeeGroups: employeeGroupReducer(employeeGroups, action as EmployeeGroupAction),
+
 });
 
 interface Props {

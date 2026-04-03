@@ -1,17 +1,20 @@
-import { useContext, useEffect, useState } from "react";
-import type { EmployeeGroupDto } from "../service/service-types";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../store/context";
 import { isAuthenticated } from "../service/authentication-services";
+import { ActionNameEmployeeGroup } from "../store/employeeGroupsReducer";
 
 export const useEmployeeGroups = () => {
-  const [employeeGroups, setEmployeeGroups] = useState<EmployeeGroupDto[]>([]);
-  const [{ clinicApis, authUserToken }] = useContext(AppContext);
+  const [{ clinicApis, authUserToken, employeeGroups }, dispatch] = useContext(AppContext);
 
   useEffect(() => {
     const loadEmployeeGroups = async () => {
       if (isAuthenticated(true, authUserToken) && authUserToken.companyId) {
         const employeeGroupsResponse = await clinicApis.getEmployeeGroups(authUserToken.companyId);
-        setEmployeeGroups(employeeGroupsResponse);
+        dispatch({
+          type: ActionNameEmployeeGroup.setEmployeeGroups,
+          payload: employeeGroupsResponse
+        })
+
       }
     };
     loadEmployeeGroups();
