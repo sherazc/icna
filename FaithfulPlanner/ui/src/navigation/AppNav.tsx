@@ -67,6 +67,7 @@ export default function AppNav() {
             </Link>
           </li>
 */}
+          {employeeGroups.length > 0 && (
           <Authenticated>
             <li className="navItem">
               <Link to="/dashboard" className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
@@ -74,6 +75,7 @@ export default function AppNav() {
               </Link>
             </li>
           </Authenticated>
+          )}
           {/*
           <li className="navItem superAdminOnly">
             <Link to="/org-management" className={`navLink ${isActive("/org-management")}`} onClick={closeMobileMenu}>

@@ -201,7 +201,7 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
           ) : (
             <div className="empty-state-container">
               <p>No employee groups created yet</p>
-              <button className="btn btnPrimary">Create First Group</button>
+              <button className="btn btnPrimary" onClick={onAddGroup}>Create First Group</button>
             </div>
           )}
         </div>

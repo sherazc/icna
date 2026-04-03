@@ -21,13 +21,14 @@ import { opDayDetailDtoToOperationDayDto, operationDayDtoToOpDayDetailDto } from
 import { AssignedUsers } from "./AssignedUsers";
 import "./Dashboard.css"
 import { isoToDayOfWeek, isoToMonthDayYear } from "../../service/DateService";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
-  const [{ authUserToken, clinicApis }] = useContext(AppContext);
+  const navigate = useNavigate();
+  const [{ authUserToken, clinicApis, employeeGroups }] = useContext(AppContext);
 
   // Selected OpDayDetail index
   const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
-  const [employeeGroups, setEmployeeGroups] = useState<EmployeeGroupDto[]>([]);
 
   // All OpDayDetail array
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
@@ -143,9 +144,6 @@ export default function Dashboard() {
 
     const opDayDetailsResponse = await clinicApis.opDayDetailFind(companyId, beforeDateString, afterDateString);
     setOpDayDetails(opDayDetailsResponse);
-
-    const employeeGroupsResponse: EmployeeGroupDto[] = await clinicApis.getEmployeeGroups(companyId);
-    setEmployeeGroups(employeeGroupsResponse);
   };
 
   const sortAndSetOpDayDetails = (opDayDetailArray: OpDayDetailDto[]) => {
@@ -156,7 +154,7 @@ export default function Dashboard() {
   const reloadOpDayDetail = (companyId: number, operationDayId: number) => {
     const reload = async () => {
       const opDayDetail = await clinicApis.opDayDetailGet(companyId, operationDayId);
-      const opDayDetailsUpdated = opDayDetails.map(op => op.id === opDayDetail.id? opDayDetail : op);
+      const opDayDetailsUpdated = opDayDetails.map(op => op.id === opDayDetail.id ? opDayDetail : op);
       setOpDayDetails(opDayDetailsUpdated);
     };
     reload();
@@ -166,14 +164,33 @@ export default function Dashboard() {
     loadOpDetails(touchNumber(authUserToken.companyId));
   }, [authUserToken]);
 
+  useEffect(() => {
+    if (employeeGroups.length < 1) {
+      navigate("/settings");
+    }
+  }, [employeeGroups]);
+
   return (
     <div id="dashboard">
       <UnAuthRedirect />
       <ScreenHeader screenName="Dashboard">
-        <button className="btn btnPrimary" onClick={() => onCreateEditOpDayDetail()}>+ New Date</button>
+        {employeeGroups.length > 0 && (
+          <button className="btn btnPrimary" onClick={() => onCreateEditOpDayDetail()}>+ New Date</button>
+        )}
       </ScreenHeader>
       <div className="tableContainer">
-        {opDayDetails.length < 1 && "No Data"}
+        {employeeGroups.length < 1 && (
+          <div className="padding-20">
+            <div className="errorMessage">
+              No employee groups found. Navigate to settings page and create employee group.
+            </div>
+          </div>
+        )}
+        {employeeGroups.length > 0 && opDayDetails.length < 1 && (
+          <div className="padding-20">
+            There are operation dates found. Click New button to schedule a new operation data.
+          </div>
+        )}
         {opDayDetails.length > 0 &&
           // OpDayDetails grid table
           <div className="tableScroll">
@@ -222,24 +239,25 @@ export default function Dashboard() {
       </div>
 
       {/* <!-- Day Details --> */}
-      <div className="card dashboardDayDetails">
-        <div className="flex flex-start gap-1fullWidth">
-          <h3 className="m-fullWidth">
-            Day Details: {getSelectedDetail(opDayDetailSelected)?.serviceDateDayOfWeek} {getSelectedDetail(opDayDetailSelected)?.serviceDateFormatted}
-          </h3>
-          <span className="badge badgeSuccess hidden"></span>
+      {getSelectedDetail(opDayDetailSelected) && (
+        <div className="card dashboardDayDetails">
+          <div className="flex flex-start gap-1fullWidth">
+            <h3 className="m-fullWidth">
+              Day Details: {getSelectedDetail(opDayDetailSelected)?.serviceDateDayOfWeek} {getSelectedDetail(opDayDetailSelected)?.serviceDateFormatted}
+            </h3>
+            <span className="badge badgeSuccess hidden"></span>
+          </div>
+          <div className="detailsGrid">
+            {getSelectedDetail(opDayDetailSelected)?.groups.map(g =>
+              <AssignedUsers
+                key={g.id}
+                companyId={touchNumber(opDayDetails[opDayDetailSelected].companyId)}
+                operationDayId={touchNumber(opDayDetails[opDayDetailSelected].id)}
+                group={g}
+                reloadOpDayDetail={reloadOpDayDetail} />)}
+          </div>
         </div>
-        <div className="detailsGrid">
-          {getSelectedDetail(opDayDetailSelected)?.groups.map(g =>
-            <AssignedUsers
-              key={g.id}
-              companyId={touchNumber(opDayDetails[opDayDetailSelected].companyId)}
-              operationDayId={touchNumber(opDayDetails[opDayDetailSelected].id)}
-              group={g} 
-              reloadOpDayDetail={reloadOpDayDetail}/>)}
-        </div>
-      </div>
-
+      )}
       <Modal config={{
         title: "Delete Operation Day",
         yesFunction: () => deleteOpDayDetail(touchNumber(modalDeleteOpDayDetail.companyId), touchNumber(modalDeleteOpDayDetail.id)),

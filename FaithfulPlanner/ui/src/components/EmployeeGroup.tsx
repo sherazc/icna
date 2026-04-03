@@ -208,6 +208,13 @@ export const EmployeeGroup: React.FC<Props> = () => {
         <button className="btn btnPrimary" onClick={onNewEmployee}>+ New {employeeGroupTypes.groupName}</button>
       </ScreenHeader>
       <div className="tableContainer">
+
+        {employees.length < 1 && (
+          <div className="padding-20">
+            No {employeeGroupTypes.groupName} found. Click <a href="#" onClick={onNewEmployee}>New {employeeGroupTypes.groupName}</a>.
+          </div>
+        )}
+        {employees.length > 0 && (
         <div className="tableScroll">
           <table>
             <thead>
@@ -220,10 +227,12 @@ export const EmployeeGroup: React.FC<Props> = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.length > 0 && employees.map(employee => createEmployeeRow(employee))}
+              {employees.map(employee => createEmployeeRow(employee))}
             </tbody>
           </table>
         </div>
+      )}
+
       </div>
       <Modal config={{
         title: `Delete ${employeeGroupTypes.groupName}`,
