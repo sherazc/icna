@@ -144,7 +144,6 @@ export const EmployeeGroup: React.FC<Props> = () => {
       <td>{employee.email}</td>
       <td>{employee.phoneNumber}</td>
       <td>
-        <span className="badge badgeSuccess">Scheduled</span>
         <button className="actionBtn actionBtnEdit" onClick={() => onEditModalEmployee(employee)}>Edit</button>
         <button className="actionBtn actionBtnDelete" onClick={() => onDeleteEmployee(employee)}>Delete</button>
       </td>

@@ -140,7 +140,7 @@ export const validateSaveOperationDayForm = (operationDay: OperationDayDto): Err
   const serviceDate = isoDateToJsDate(operationDay.serviceDateString);
   if (serviceDate) {
     const today = new Date();
-    if (serviceDate.setHours(0, 0, 0, 0) < today.setHours(0, 0, 0, 0)) {
+    if (!operationDay.id && serviceDate.setHours(0, 0, 0, 0) < today.setHours(0, 0, 0, 0)) {
       errors.push({message: "Operation date can not be in past."})
     }
   }

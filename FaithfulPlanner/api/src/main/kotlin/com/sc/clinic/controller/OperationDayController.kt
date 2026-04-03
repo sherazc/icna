@@ -40,30 +40,4 @@ class OperationDayController(private val operationDayService: OperationDayServic
         @PathVariable companyId: Long,
         @PathVariable operationDayId: Long
     ) = operationDayService.delete(companyId,operationDayId)
-
-    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
-    @GetMapping("/{operationDayId}/schedule/user-profile/{userProfileId}")
-    fun addUser(
-        @PathVariable companyId: Long,
-        @PathVariable operationDayId: Long,
-        @PathVariable userProfileId: Long) {
-        println(companyId)
-        println(operationDayId)
-        println(userProfileId)
-        TODO()
-    }
-
-    // Could have done it in delete mapping.
-    // But action(schedule/unschedule) in the endpoint seems better to me.
-    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
-    @GetMapping("/{operationDayId}/unschedule/user-profile/{userProfileId}")
-    fun removeUser(
-        @PathVariable companyId: Long,
-        @PathVariable operationDayId: Long,
-        @PathVariable userProfileId: Long) {
-        println(companyId)
-        println(operationDayId)
-        println(userProfileId)
-        TODO()
-    }
 }
