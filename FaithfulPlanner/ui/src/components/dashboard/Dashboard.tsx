@@ -184,6 +184,7 @@ export default function Dashboard() {
                   {opDayDetails[0].groups && opDayDetails[0].groups.map((group) => (
                     <th key={group.id}>{`${group.groupName} Assigned`}</th>
                   ))}
+                  <th>Notes</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -205,6 +206,9 @@ export default function Dashboard() {
                         }
                       </td>
                     ))}
+                    <td>
+                      {opDayDetail.notes}
+                    </td>
                     <td>
                       <button className="actionBtn actionBtnEdit" onClick={() => onCreateEditOpDayDetail(opDayDetail)}>Edit</button>
                       <button className="actionBtn actionBtnDelete" onClick={() => onDeleteOpDayDetail(opDayDetail)}>Delete</button>
@@ -231,7 +235,8 @@ export default function Dashboard() {
               key={g.id}
               companyId={touchNumber(opDayDetails[opDayDetailSelected].companyId)}
               operationDayId={touchNumber(opDayDetails[opDayDetailSelected].id)}
-              group={g} />)}
+              group={g} 
+              reloadOpDayDetail={reloadOpDayDetail}/>)}
         </div>
       </div>
 

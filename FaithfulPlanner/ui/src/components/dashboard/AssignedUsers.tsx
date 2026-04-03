@@ -2,19 +2,21 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { 
   FormState, 
   type OpDayDetailEmployeeGroupDto, 
+  type ScheduleDto, 
   type UserProfileDto 
 } from "../../service/service-types";
 import { AppContext } from "../../store/context";
-import { touchString } from "../../service/utilities";
+import { touchNumber, touchString } from "../../service/utilities";
 import "./AssignedUsers.css";
 
 interface Props {
   companyId: number,
   group: OpDayDetailEmployeeGroupDto,
-  operationDayId: number
+  operationDayId: number,
+  reloadOpDayDetail: (companyId: number, operationDayId: number) => void
 }
 
-export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group }) => {
+export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group, reloadOpDayDetail}) => {
   const [{ clinicApis }] = useContext(AppContext);
   const inputRef = useRef<HTMLInputElement>(null);
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
@@ -79,7 +81,8 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
             <div className="dropdownItemName">{u.firstName} {u.lastName}</div>
             <div className="dropdownItemRole">{u.employeeTypes.map(t => t.typeName).join(", ")}</div>
           </div>
-          <button type="button" className="dropdownItemAddBtn" data-onclick="event.stopPropagation();">Add</button>
+          <button type="button" className="dropdownItemAddBtn"
+          onClick={() => onScheduleUser(companyId, operationDayId, touchNumber(u.id))}>Add</button>
         </div>
       ));
     } else {
@@ -87,8 +90,23 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
     }
   };
 
+  const onScheduleUser = async (companyId: number, operationDayId: number, userProfileId: number) => {
+    const schedule:ScheduleDto = {operationDayId, userProfileId};
+    await clinicApis.scheduleUser(schedule);
+    await reloadOpDayDetail(companyId, operationDayId);
+    resetDropDown();
+    setDropDownOpen(false);
+  }
+
+  const onUnscheduleUser = async (companyId: number, operationDayId: number, userProfileId: number) => {
+    await clinicApis.unscheduleUser(operationDayId, userProfileId);
+    await reloadOpDayDetail(companyId, operationDayId);
+    resetDropDown();
+    setDropDownOpen(false);
+  }
+
   useEffect(() => {
-    resetDropDown()
+    resetDropDown();
   }, [operationDayId]);
 
   return (
@@ -104,7 +122,8 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
             ref={inputRef}
             value={filter}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter(e.target.value)}
-            onBlur={() => setDropDownOpen(false)}
+            // Because of this Add button does not work. Find another solution.
+            // onBlur={() => setDropDownOpen(false)}
           />
           <div id="provider-dropdown" className={`searchDropdown ${dropDownOpen ? "show" : ""}`}>
             {populateDropDown(unscheduledUsers, filter)}
@@ -131,7 +150,8 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
                   {u.types.map(t => t.typeName).join(", ")}
                 </span>
               </div>
-              <button type="button" className="personRemoveBtn" title="Remove">✕</button>
+              <button type="button" className="personRemoveBtn" title="Remove"
+              onClick={() => onUnscheduleUser(companyId, operationDayId, u.id)}>✕</button>
             </li>
           ))}
         </ul>

@@ -211,7 +211,7 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     unscheduleUser: (operationDayId: number, userProfileId: number): Promise<boolean> => {
       let endpoint = endpoints.epSchedule();
       endpoint = `${endpoint}/operation-day/${operationDayId}/user-profile/${userProfileId}`
-      const request: ApiRequest = { endpoint };
+      const request: ApiRequest = { endpoint, method: "DELETE" };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
