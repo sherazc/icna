@@ -3,7 +3,6 @@ import {
   defaultOpDayDetailDto,
   FormState,
   ModalType,
-  type EmployeeGroupDto,
   type ErrorDto,
   type OpDayDetailDto,
   type OperationDayDto
