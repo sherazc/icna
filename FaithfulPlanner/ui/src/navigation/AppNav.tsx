@@ -115,7 +115,7 @@ export default function AppNav() {
           </li>
           */}
 
-          <Authenticated shouldHaveRoles={["ADMIN"]}>
+          <Authenticated>
             <li className="navItem">
               <Link to="/settings" className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
                 Settings

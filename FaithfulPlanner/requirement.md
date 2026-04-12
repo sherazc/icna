@@ -8,3 +8,12 @@ ReactJS app where I am using UI design to create components
 
 Backend spring boot application
 /Users/sheraz/dev/icna/FaithfulPlanner/api
+
+TODO:
+
+User Profile update
+Organization Detail update
+Password update
+Send email framework
+
+Theme settings
