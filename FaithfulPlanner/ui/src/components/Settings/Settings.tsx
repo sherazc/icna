@@ -5,7 +5,6 @@ import { CompanyDetails } from "./CompanyDetails";
 import { EmployeeGroupSettings } from "./EmployeeGroupSettings";
 import { MyPassword } from "./MyPassword";
 import { MyProfile } from "./MyProfile";
-import { MyTypes } from "./MyTypes";
 import { Theme } from "./Theme";
 
 export default function Settings() {
@@ -30,7 +29,6 @@ export default function Settings() {
       <div className="cardsGrid">
         <MyProfile />
         <MyPassword />
-        <MyTypes />
       </div>
     </div>
   );

@@ -16,13 +16,15 @@ auth:bearer {
 
 body:json {
   {
-      "active": true,
-      "companyName": "{{testCompanyName}}"
+    "id": 1,
+    "active": true,
+    "companyName": "{{testCompanyName}}",
+    "themeName": "default"
   }
 }
 
 script:pre-request {
-  bru.setVar("testCompanyName", "Test Company Name " + (new Date().getTime()));
+  bru.setVar("testCompanyName", "Al-Shifa Health Clinic " + (new Date().getTime()));
   
 }
 

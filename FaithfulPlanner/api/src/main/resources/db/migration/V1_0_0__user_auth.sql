@@ -2,6 +2,7 @@ create table company
 (
     id                        bigserial    not null,
     company_name              varchar(255) not null,
+    theme_name                varchar(255),
     active                    boolean,
     primary key (id),
     constraint uk_company_name unique (company_name)

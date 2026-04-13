@@ -12,17 +12,20 @@ put {
 
 body:json {
   {
-      "company": {
-          "active": true,
-          "companyName": "{{testCompanyName}}"
-      },
-      "userProfile": {
-          "email": "{{testEmail}}",
-          "usersPassword": "{{testPassword}}",
-          "firstName": "FirstName",
-          "lastName": "LastName",
-          "phoneNumber": "123-456-7890"
-      }
+    "company": {
+      "active": true,
+      "companyName": "{{testCompanyName}}",
+      "themeName": "default"
+    },
+    "userProfile": {
+      "email": "{{testEmail}}",
+      "usersPassword": "{{testPassword}}",
+      "firstName": "FirstName",
+      "lastName": "LastName",
+      "phoneNumber": "123-456-7890",
+      "employeeGroupId": null,
+      "employeeTypes": []
+    }
   }
 }
 

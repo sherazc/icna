@@ -1,0 +1,117 @@
+/* FaithfulPlanner Theme: Dark Teal Theme */
+/* Dark mode with vibrant teal/cyan accents */
+/* Modern, energetic, and healthcare-focused - ideal for progressive clinics */
+
+:root {
+    /* Primary Color Palette - Teal/Cyan (adapted for dark mode) */
+    --primary: #14b8a6;
+    --primary-dark: #0d9488;
+    --primary-light: #2dd4bf;
+    --primary-ultra-light: #134e4a;
+
+    /* Semantic Colors - Dark adapted */
+    --success: #10b981;
+    --success-light: #064e3b;
+    --warning: #f59e0b;
+    --warning-light: #78350f;
+    --error: #f87171;
+    --error-light: #7f1d1d;
+    --info: #14b8a6;
+    --info-light: #134e4a;
+
+    /* Neutral Colors - Dark palette */
+    --gray-50: #0f172a;
+    --gray-100: #1a1f2e;
+    --gray-200: #252d3d;
+    --gray-300: #3a434f;
+    --gray-400: #5a6370;
+    --gray-500: #8b9ca3;
+    --gray-600: #cbd5e1;
+    --gray-700: #e2e8f0;
+    --gray-800: #f1f5f9;
+    --gray-900: #f8fafc;
+
+    /* Background Colors - Dark mode */
+    --bg-primary: #0d1117;
+    --bg-secondary: #1a1f2e;
+    --bg-tertiary: #252d3d;
+    --bg-hover: #134e4a;
+
+    /* Text Colors - Light text on dark */
+    --text-primary: #f0fdfa;
+    --text-secondary: #ccf7f5;
+    --text-tertiary: #99ede9;
+    --text-light: #5eead4;
+    --text-on-primary: #0d1117;
+
+    /* Border Colors & Styles */
+    --border-color: #2d3748;
+    --border-light: #1a1f2e;
+    --border-dark: #4a5568;
+    --border-width: 1px;
+    --border-radius-xs: 4px;
+    --border-radius-sm: 6px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 10px;
+    --border-radius-xl: 12px;
+    --border-radius-full: 50%;
+
+    /* Shadows - Dark mode optimized with teal tint */
+    --shadow-xs: 0 1px 2px rgba(20, 184, 166, 0.15);
+    --shadow-sm: 0 1px 2px rgba(20, 184, 166, 0.2);
+    --shadow-md: 0 2px 10px rgba(20, 184, 166, 0.25);
+    --shadow-lg: 0 10px 25px rgba(20, 184, 166, 0.3);
+    --shadow-xl: 0 10px 40px rgba(20, 184, 166, 0.35);
+
+    /* Typography */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-xs: 11px;
+    --font-size-sm: 12px;
+    --font-size-base: 14px;
+    --font-size-md: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 28px;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.4;
+    --line-height-normal: 1.6;
+    --line-height-relaxed: 1.8;
+
+    /* Spacing Scale */
+    --spacing-2: 2px;
+    --spacing-4: 4px;
+    --spacing-5: 5px;
+    --spacing-8: 8px;
+    --spacing-10: 10px;
+    --spacing-12: 12px;
+    --spacing-15: 15px;
+    --spacing-20: 20px;
+    --spacing-30: 30px;
+    --spacing-40: 40px;
+
+    /* Layout */
+    --sidebar-width: 250px;
+    --modal-max-width: 500px;
+    --header-height: 60px;
+    --button-height: 40px;
+    --input-height: 40px;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Z-index Scale */
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-modal-backdrop: 400;
+    --z-modal: 500;
+    --z-notification: 600;
+}

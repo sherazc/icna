@@ -12,6 +12,9 @@ data class Company(
     @Column(name = "company_name", nullable = false)
     var companyName: String,
 
+    @Column(name = "theme_name", nullable = true)
+    var themeName: String?,
+
     @Column(name = "active")
     var active: Boolean?
 )
