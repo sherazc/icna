@@ -25,7 +25,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
     }
 
     fun getOrCreateCompanyEntity(companyDto: CompanyDto): Company = updateEntityWithDto(companyDto)
-        ?: Company(companyDto.id, companyDto.companyName, companyDto.themeName, companyDto.active)
+        ?: Company(companyDto.id, companyDto.companyName, companyDto.uiThemeId, companyDto.active)
 
     fun getCompany(companyId: Long?): Company {
         return companyId

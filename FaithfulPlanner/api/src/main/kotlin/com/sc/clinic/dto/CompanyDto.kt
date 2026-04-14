@@ -10,12 +10,11 @@ data class CompanyDto(
     @field:Size(min = 3, max = 250, message = "Company name should be between 3 and 250 characters long")
     @param:JsonProperty("companyName")
     val companyName: String,
-    @param:JsonProperty("themeName")
-    val themeName: String?,
+    @param:JsonProperty("uiThemeId")
+    val uiThemeId: Long?,
     @param:JsonProperty("active")
     val active: Boolean?,
 ) {
     constructor(company: Company) : this(
-        company.id, company.companyName, company.themeName, company.active
-    )
+        company.id, company.companyName, company.uiThemeId, company.active)
 }

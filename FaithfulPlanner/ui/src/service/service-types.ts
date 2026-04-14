@@ -4,7 +4,7 @@ import { touchString } from "./utilities";
 export type Company = {
     id?: number,
     companyName: string,
-    themeName?: string,
+    uiThemeId?: number,
     active: boolean
 };
 
