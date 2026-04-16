@@ -39,6 +39,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
                 .map {
                     it.companyName = companyDto.companyName
                     it.active = companyDto.active
+                    it.uiThemeId = companyDto.uiThemeId
                     it
                 }
                 .orElse(null)

@@ -1,7 +1,7 @@
 meta {
   name: /registration
   type: http
-  seq: 3
+  seq: 1
 }
 
 put {
@@ -15,7 +15,7 @@ body:json {
     "company": {
       "active": true,
       "companyName": "{{testCompanyName}}",
-      "themeName": "default"
+      "uiThemeId": 10
     },
     "userProfile": {
       "email": "{{testEmail}}",
