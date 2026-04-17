@@ -12,7 +12,7 @@ open class UserProfileDto(
     @field:Email
     @field:NotBlank
     var email: String,
-    @param:JsonProperty("usersPassword")
+    @param:JsonProperty("userPassword")
     var userPassword: String?,
     @param:JsonProperty("companyId")
     var companyId: Long?,
@@ -27,17 +27,15 @@ open class UserProfileDto(
     @param:JsonProperty("employeeTypes")
     var employeeTypesDto: List<EmployeeTypeDto> = mutableListOf()
 ) {
-    constructor(userProfile: UserProfile): this(userProfile, true)
-
-    constructor(userProfile: UserProfile, loadRelatedEntities: Boolean): this(
+    constructor(userProfile: UserProfile): this(
         userProfile.id,
         userProfile.email,
         userProfile.userPassword,
-        if (loadRelatedEntities) userProfile.company.id else null,
+        userProfile.company.id,
         userProfile.firstName,
         userProfile.lastName,
         userProfile.phoneNumber,
-        if (loadRelatedEntities) userProfile.employeeGroup?.id else null,
-        if (loadRelatedEntities) userProfile.employeeTypes.map { EmployeeTypeDto(it) } else listOf(),
+        userProfile.employeeGroup?.id,
+        userProfile.employeeTypes.map { EmployeeTypeDto(it) }
     )
 }

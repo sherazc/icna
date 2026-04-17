@@ -63,12 +63,12 @@ export const validateSaveEmployeeForm = (employee: UserProfileDto, confirmPasswo
   }
 
   if (!employee.id) {
-    if (!employee.usersPassword || employee.usersPassword.length < 5) {
+    if (!employee.userPassword || employee.userPassword.length < 5) {
       addFieldError(errors, {
-        field: "usersPassword",
+        field: "userPassword",
         message: "Invalid password. Password must be 5 or more characters long.",
       });
-    } else if (employee.usersPassword && employee.usersPassword !== confirmPassword) {
+    } else if (employee.userPassword && employee.userPassword !== confirmPassword) {
       addFieldError(errors, {
         field: "confirmPassword",
         message: "Password and confirm password do not match.",

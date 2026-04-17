@@ -277,10 +277,10 @@ export const EmployeeGroup: React.FC<Props> = () => {
           {/* Password */}
           {!modalEmployee.id && <>
             <div className="formGroup">
-              <label htmlFor="usersPassword">Password</label>
-              <input id="usersPassword" type="password" onChange={onChangeText}
-                value={modalEmployee.usersPassword} />
-              <ErrorField errors={modalEmployeeErrors} fieldName="usersPassword" />
+              <label htmlFor="userPassword">Password</label>
+              <input id="userPassword" type="password" onChange={onChangeText}
+                value={modalEmployee.userPassword} />
+              <ErrorField errors={modalEmployeeErrors} fieldName="userPassword" />
             </div>
             <div className="formGroup">
               <label htmlFor="confirmPassword">Confirm Password</label>

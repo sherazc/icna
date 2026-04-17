@@ -30,7 +30,7 @@ export default function CompanyRegistration() {
     submitErrors.push(...validateCreatePassword(registrationPassword));
 
     if (submitErrors.length < 1) {
-      registrationForm.userProfile.usersPassword = registrationPassword.passwordField;
+      registrationForm.userProfile.userPassword = registrationPassword.passwordField;
       registrationForm.company.active = true;
       try {
         const savedRegistration = await clinicApis.saveRegistration(registrationForm);

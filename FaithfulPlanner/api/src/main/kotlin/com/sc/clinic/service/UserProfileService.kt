@@ -149,17 +149,12 @@ class UserProfileService(
         return true;
     }
 
-    fun getUser(userId: Long): UserProfileDto? = userProfileRepository.getDtoById(userId)
-
-    fun updateUserDto(user: UserProfileDto): UserProfileDto {
-        val userId: Long = user.id ?: throw ScBadRequestException("User id is null")
-        val userEntity = userProfileRepository.findById(userId)
-            .orElseThrow { throw ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to update. User not found") }
-
-        userEntity.firstName = user.firstName
-        userEntity.lastName = user.lastName
-        userEntity.phoneNumber = user.phoneNumber
-        userEntity.email = user.email
-        return UserProfileDto(userEntity, false)
+    fun getUser(userId: Long): UserProfileDto? {
+        val user = userProfileRepository.findById(userId).orElse(null)
+        return if (user == null) null else {
+            val userDto = UserProfileDto(user)
+            userDto.userPassword = null
+            userDto
+        }
     }
 }

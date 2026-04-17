@@ -72,7 +72,7 @@ export const defaultCompanyDto = (): CompanyDto => ({
 export type UserProfileDto = {
     id?: number,
     email: string,
-    usersPassword?: string,
+    userPassword?: string,
     companyId?: number
     firstName?: string,
     lastName?: string,
