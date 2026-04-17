@@ -11,8 +11,11 @@ import com.sc.clinic.repository.UserProfileRepository
 import com.sc.clinic.service.model.AuthRole
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class UserProfileService(
@@ -145,5 +148,19 @@ class UserProfileService(
                 userProfileRepository.delete(up)
             }
         return true;
+    }
+
+    fun getUser(userId: Long): UserProfileDto? = userProfileRepository.getDtoById(userId)
+
+    fun updateUserDto(user: UserProfileDto): UserProfileDto {
+        val userId: Long = user.id ?: throw ScBadRequestException("User id is null")
+        val userEntity = userProfileRepository.findById(userId)
+            .orElseThrow { throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found") }
+
+        userEntity.firstName = user.firstName
+        userEntity.lastName = user.lastName
+        userEntity.phoneNumber = user.phoneNumber
+        userEntity.email = user.email
+        return UserProfileDto(userEntity, false)
     }
 }

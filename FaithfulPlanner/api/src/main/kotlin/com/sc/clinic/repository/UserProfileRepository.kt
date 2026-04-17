@@ -79,5 +79,13 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         operationDayId: Long,
         scheduled: Boolean
     ): List<UserProfile>
+
+    @Query(
+        """
+    select new com.sc.clinic.dto.UserProfileDto(u, false) from UserProfile u
+    where u.id = :userId
+        """
+    )
+    fun getDtoById(userId: Long): UserProfileDto?
 }
 

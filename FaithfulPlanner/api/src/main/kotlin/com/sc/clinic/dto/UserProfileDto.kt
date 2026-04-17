@@ -27,15 +27,17 @@ open class UserProfileDto(
     @param:JsonProperty("employeeTypes")
     var employeeTypesDto: List<EmployeeTypeDto> = mutableListOf()
 ) {
-    constructor(userProfile: UserProfile): this(
+    constructor(userProfile: UserProfile): this(userProfile, true)
+
+    constructor(userProfile: UserProfile, loadRelatedEntities: Boolean): this(
         userProfile.id,
         userProfile.email,
         userProfile.userPassword,
-        userProfile.company.id,
+        if (loadRelatedEntities) userProfile.company.id else null,
         userProfile.firstName,
         userProfile.lastName,
         userProfile.phoneNumber,
-        userProfile.employeeGroup?.id,
-        userProfile.employeeTypes.map { EmployeeTypeDto(it) }
+        if (loadRelatedEntities) userProfile.employeeGroup?.id else null,
+        if (loadRelatedEntities) userProfile.employeeTypes.map { EmployeeTypeDto(it) } else listOf(),
     )
 }
