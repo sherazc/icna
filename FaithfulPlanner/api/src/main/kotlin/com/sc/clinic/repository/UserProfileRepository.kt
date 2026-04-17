@@ -82,9 +82,18 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
 
     @Query(
         """
-    select new com.sc.clinic.dto.UserProfileDto(u, false) from UserProfile u
-    where u.id = :userId
-        """
+    select new com.sc.clinic.dto.UserProfileDto(
+        u.id,
+        u.email,
+        u.userPassword,
+        u.company.id,
+        u.firstName, 
+        u.lastName, 
+        u.phoneNumber, 
+        u.employeeGroup.id,
+        emptyList()
+    ) from UserProfile u
+    where u.id = :userId """
     )
     fun getDtoById(userId: Long): UserProfileDto?
 }

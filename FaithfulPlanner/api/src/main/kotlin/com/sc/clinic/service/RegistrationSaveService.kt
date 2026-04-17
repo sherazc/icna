@@ -21,7 +21,7 @@ class RegistrationSaveService(
 
         // Build response
         val userProfile = userProfileService.saveRegistrationAdmin(companyEntity, registrationDto.userProfile)
-        userProfile.usersPassword = null
+        userProfile.userPassword = null
         return RegistrationDto(CompanyDto(companyEntity), userProfile)
     }
 

@@ -1,0 +1,39 @@
+meta {
+  name: /user-profile/{userId}
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{base_url}}/api/company/1/user-profile/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+script:post-response {
+  const response = res.getBody();
+  
+  test("Status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Contains Users", function () {
+      expect(response.length).to.be.greaterThan(0);
+  });
+  
+  test("No password returned", function () {
+    response.forEach(user => {
+      expect(user.userPassword).to.be.null;
+    });  
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

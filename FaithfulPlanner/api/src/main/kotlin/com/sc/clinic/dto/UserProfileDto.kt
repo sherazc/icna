@@ -13,7 +13,7 @@ open class UserProfileDto(
     @field:NotBlank
     var email: String,
     @param:JsonProperty("usersPassword")
-    var usersPassword: String?,
+    var userPassword: String?,
     @param:JsonProperty("companyId")
     var companyId: Long?,
     @param:JsonProperty("firstName")
