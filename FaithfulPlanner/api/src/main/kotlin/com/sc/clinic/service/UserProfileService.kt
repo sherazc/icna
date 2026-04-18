@@ -47,12 +47,10 @@ class UserProfileService(
         return UserProfileDto(savedUser)
     }
 
-    fun saveUserEmployee(
-        companyId: Long, groupId: Long, user: UserProfileDto
-    ): UserProfileDto {
+    fun saveUserEmployee(companyId: Long, user: UserProfileDto): UserProfileDto {
         validate(user)
         val company: Company = companyService.findById(companyId)
-        val group: EmployeeGroup? = employeeGroupService.getGroup(groupId)
+        val group: EmployeeGroup? = user.employeeGroupId?.let { employeeGroupService.getGroup(it) }
         val userProfileEntity = getOrCreateUserProfileEntity(company, group, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
@@ -77,7 +75,7 @@ class UserProfileService(
         group: EmployeeGroup?,
         userProfileDto: UserProfileDto
     ): UserProfile =
-        updateEntityWithDto(userProfileDto)
+        updateEntityWithDto(userProfileDto, group)
             ?: UserProfile(
                 null,
                 userProfileDto.email,
@@ -91,7 +89,7 @@ class UserProfileService(
                 mutableSetOf()
             )
 
-    private fun updateEntityWithDto(userProfileDto: UserProfileDto): UserProfile? {
+    private fun updateEntityWithDto(userProfileDto: UserProfileDto, group: EmployeeGroup?): UserProfile? {
         return userProfileDto.id?.let { id ->
             userProfileRepository.findById(id)
                 .map {
@@ -99,6 +97,7 @@ class UserProfileService(
                     it.firstName = userProfileDto.firstName
                     it.lastName = userProfileDto.lastName
                     it.phoneNumber = userProfileDto.phoneNumber
+                    it.employeeGroup = group
                     it
                 }
                 .orElse(null)

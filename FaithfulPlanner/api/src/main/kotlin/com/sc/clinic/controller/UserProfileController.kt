@@ -36,14 +36,13 @@ class UserProfileController(val userProfileService: UserProfileService) {
     fun hasUserProfiles(@PathVariable companyId: Long, @PathVariable groupId: Long) =
         userProfileService.hasUserProfiles(companyId, groupId)
 
-    @PostMapping("/group/{groupId}")
+    @PostMapping
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
     fun saveUserProfileEmployeeTypes(
         @PathVariable companyId: Long,
-        @PathVariable groupId: Long,
         @RequestBody userEmployeeTypes: UserProfileDto
     ): UserProfileDto =
-        userProfileService.saveUserEmployee(companyId, groupId, userEmployeeTypes)
+        userProfileService.saveUserEmployee(companyId, userEmployeeTypes)
 
     @GetMapping("/group/{groupId}/operation-day/{operationId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
@@ -58,10 +57,4 @@ class UserProfileController(val userProfileService: UserProfileService) {
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun getUser(@PathVariable companyId: Long, @PathVariable userId: Long): ResponseEntity<UserProfileDto> =
         userProfileService.getUser(userId) ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
-
-    @PostMapping
-    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun getUser(@RequestBody user: UserProfileDto): ResponseEntity<UserProfileDto> =
-        userProfileService.updateUserDto(user) ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
-
 }

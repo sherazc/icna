@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{base_url}}/api/company/1/user-profile/group/1
+  url: {{base_url}}/api/company/1/user-profile
   body: json
   auth: bearer
 }
@@ -20,9 +20,10 @@ body:json {
     "email": "david.jones@employee.local",
     "userPassword": null,
     "companyId": 1,
-    "firstName": "David",
-    "lastName": "Jones",
-    "phoneNumber": "(555) 123-4505",
+    "firstName": "David1",
+    "lastName": "Jones2",
+    "phoneNumber": "(555) 123-45052",
+    "employeeGroupId": 1,
     "employeeTypes": [
       {
         "id": 1,
