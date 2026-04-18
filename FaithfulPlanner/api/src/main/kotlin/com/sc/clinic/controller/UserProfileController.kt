@@ -26,6 +26,11 @@ class UserProfileController(val userProfileService: UserProfileService) {
     fun deleteUser(@PathVariable companyId: Long, @PathVariable userProfileId: Long) =
         userProfileService.deleteUser(userProfileId)
 
+    @GetMapping("/{userProfileId}")
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun getUser(@PathVariable companyId: Long, @PathVariable userProfileId: Long): ResponseEntity<UserProfileDto> =
+        userProfileService.getUser(userProfileId) ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
+
     @GetMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun getUserProfileEmployeeTypes(@PathVariable companyId: Long, @PathVariable groupId: Long) =
@@ -52,9 +57,4 @@ class UserProfileController(val userProfileService: UserProfileService) {
         @PathVariable operationId: Long,
         @RequestParam(name = "scheduled", required = true) scheduled: Boolean
     ) = userProfileService.findGroupScheduledUsers(companyId, groupId, operationId, scheduled)
-
-    @GetMapping("/{userId}")
-    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
-    fun getUser(@PathVariable companyId: Long, @PathVariable userId: Long): ResponseEntity<UserProfileDto> =
-        userProfileService.getUser(userId) ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
 }

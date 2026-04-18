@@ -11,10 +11,8 @@ import com.sc.clinic.repository.UserProfileRepository
 import com.sc.clinic.service.model.AuthRole
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
-import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 
 @Service
 class UserProfileService(
@@ -148,8 +146,8 @@ class UserProfileService(
         return true;
     }
 
-    fun getUser(userId: Long): UserProfileDto? {
-        val user = userProfileRepository.findById(userId).orElse(null)
+    fun getUser(userProfileId: Long): UserProfileDto? {
+        val user = userProfileRepository.findById(userProfileId).orElse(null)
         return if (user == null) null else {
             val userDto = UserProfileDto(user)
             userDto.userPassword = null

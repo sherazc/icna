@@ -16,19 +16,13 @@ export const clinicEndpoints = () => {
     epCompany: () => `${baseUrl}/api/company`,
     epLoginToken: () => `${baseUrl}/api/login/token`,
     epSaveRegistration: () => `${baseUrl}/api/registration`,
-    epGetEmployeeGroups: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group`,
-    epGetEmployeeGroup: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/employee-group/${groupId}`,
-    epEmployeeGroupTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/employee-group/${groupId}/types`,
-    epCountEmployeeGroups: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/count`,
-    epEmployeeGroupsTypes: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/types`,
-    epUserProfile: (companyId: number, userProfileId: number) => `${baseUrl}/api/company/${companyId}/user-profile/${userProfileId}`,
-    epUserProfileEmployeeTypes: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}`,
-    epHasUsersInGroup: (companyId: number, groupId: number) => `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}/has-users`,
+    epEmployeeGroup: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group`,
+    epUserProfile: (companyId: number) => `${baseUrl}/api/company/${companyId}/user-profile`,
     epUsersScheduled: (companyId: number, groupId: number, operationDayId: number, scheduled: boolean) =>
       `${baseUrl}/api/company/${companyId}/user-profile/group/${groupId}/operation-day/${operationDayId}?scheduled=${scheduled}`,
-    epOperationDaySearch: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day/search`,
-    epOperationDay: (companyId: number, operationDayId: number) => `${baseUrl}/api/company/${companyId}/operation-day/${operationDayId}`,
-    epOperationDays: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day`,
+    epOperationDay: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day`,
+    // TODO: Search Operation Date Controller is already created. Create the API method. Create date filter in Dashboard. 
+    // epOperationDaySearch: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day/search`,
     epOpDayDetail: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day-detail`,
     epSchedule: () => `${baseUrl}/api/schedule`,
   }
@@ -69,13 +63,14 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       return callApiIntercept(request, interceptorCbs);
     },
     getEmployeeGroupsTypes: (companyId: number): Promise<EmployeeGroupTypesDto[]> => {
-      const endpoint = endpoints.epEmployeeGroupsTypes(companyId);
+      // epEmployeeGroupsTypes: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group/types`,
+      const endpoint = `${endpoints.epEmployeeGroup(companyId)}/types`;
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     saveEmployeeGroupsTypes: (companyId: number, employeeGroupsTypes: EmployeeGroupTypesDto[]): Promise<EmployeeGroupTypesDto[]> => {
-      const endpoint = endpoints.epEmployeeGroupsTypes(companyId);
+      const endpoint = `${endpoints.epEmployeeGroup(companyId)}/types`;
       const request: ApiRequest = {
         endpoint,
         method: "POST",
@@ -86,37 +81,37 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       return callApiIntercept(request, interceptorCbs);
     },
     countEmployeeGroups: (companyId: number): Promise<number> => {
-      const endpoint = endpoints.epCountEmployeeGroups(companyId);
+      const endpoint = `${endpoints.epEmployeeGroup(companyId)}/count`;
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     getEmployeeGroups: (companyId: number): Promise<EmployeeGroupDto[]> => {
-      const endpoint = endpoints.epGetEmployeeGroups(companyId);
+      const endpoint = endpoints.epEmployeeGroup(companyId);
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     getEmployeeGroup: (companyId: number, groupId: number): Promise<EmployeeGroupDto> => {
-      const endpoint = endpoints.epGetEmployeeGroup(companyId, groupId);
+      const endpoint = `${endpoints.epEmployeeGroup(companyId)}/${groupId}`;
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     getEmployeeGroupTypes: (companyId: number, groupId: number): Promise<EmployeeGroupTypesDto> => {
-      const endpoint = endpoints.epEmployeeGroupTypes(companyId, groupId);
+      const endpoint = `${endpoints.epEmployeeGroup(companyId)}/${groupId}/types`;
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     getUserProfileEmployeeTypes: (companyId: number, groupId: number): Promise<UserProfileDto[]> => {
-      const endpoint = endpoints.epUserProfileEmployeeTypes(companyId, groupId);
+      const endpoint = `${endpoints.epUserProfile(companyId)}/group/${groupId}`;
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    saveUserProfileEmployeeTypes: (companyId: number, groupId: number, user: UserProfileDto): Promise<UserProfileDto> => {
-      const endpoint = endpoints.epUserProfileEmployeeTypes(companyId, groupId);
+    saveUserProfileEmployeeTypes: (companyId: number, user: UserProfileDto): Promise<UserProfileDto> => {
+      const endpoint = endpoints.epUserProfile(companyId);
       const request: ApiRequest = {
         endpoint, method: "POST",
         payload: user,
@@ -126,19 +121,25 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       return callApiIntercept(request, interceptorCbs);
     },
     hasUsersInGroup: (companyId: number, groupId: number): Promise<boolean> => {
-      const endpoint = endpoints.epHasUsersInGroup(companyId, groupId);
+      const endpoint = `${endpoints.epUserProfile(companyId)}/group/${groupId}/has-users`;
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    getUserProfile: (companyId: number, userProfileId: number): Promise<UserProfileDto> => {
+      const endpoint = `${endpoints.epUserProfile(companyId)}/${userProfileId}`;
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     deleteUserProfile: (companyId: number, userProfileId: number): Promise<string> => {
-      const endpoint = endpoints.epUserProfile(companyId, userProfileId);
+      const endpoint = `${endpoints.epUserProfile(companyId)}/${userProfileId}`;
       const request: ApiRequest = { endpoint, method: "DELETE" };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     operationDaySave: (companyId: number, operationDayDto: OperationDayDto): Promise<OperationDayDto> => {
-      const endpoint = endpoints.epOperationDays(companyId);
+      const endpoint = endpoints.epOperationDay(companyId);
       const request: ApiRequest = {
         endpoint,
         method: "POST",
@@ -149,19 +150,19 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       return callApiIntercept(request, interceptorCbs);
     },
     operationDayAll: (companyId: number): Promise<OperationDayDto[]> => {
-      const endpoint = endpoints.epOperationDays(companyId);
+      const endpoint = endpoints.epOperationDay(companyId);
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    operationDayDelete: (companyId: number, operationId: number): Promise<boolean> => {
-      const endpoint = endpoints.epOperationDay(companyId, operationId);
+    operationDayDelete: (companyId: number, operationDayId: number): Promise<boolean> => {
+      const endpoint = `${endpoints.epOperationDay(companyId)}/${operationDayId}`;
       const request: ApiRequest = { endpoint, method: "DELETE" };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
     operationDayFind: (companyId: number, serviceDateString: string): Promise<OperationDayDto[]> => {
-      let endpoint = endpoints.epOperationDays(companyId);
+      let endpoint = endpoints.epOperationDay(companyId);
       endpoint = `${endpoint}?date-string=${serviceDateString}`
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
