@@ -98,13 +98,13 @@ export const EmployeeGroup: React.FC<Props> = () => {
       setModalEmployeeFormState(FormState.IN_PROGRESS);
       const submitErrors: ErrorDto[] = [];
       setModalEmployeeErrors([]);
-      const saveEmployeeForm: UserProfileDto = { ...employee };
+      const saveEmployeeForm: UserProfileDto = { ...employee, employeeGroupId: touchNumber(employeeGroupId) };
 
       submitErrors.push(...validateSaveEmployeeForm(saveEmployeeForm, confirmPassword));
 
       if (submitErrors.length < 1) {
         try {
-          const savedEmployee = await clinicApis.saveUserProfileEmployeeTypes(touchNumber(saveEmployeeForm.companyId), groupId, saveEmployeeForm);
+          const savedEmployee = await clinicApis.saveUserProfileEmployeeTypes(touchNumber(saveEmployeeForm.companyId), saveEmployeeForm);
           console.log(savedEmployee);
           setModalEmployeeFormState(FormState.SUCCESSFUL);
           setShowModalEmployeeModal(false);
