@@ -204,7 +204,7 @@ export const UserProfileForm: React.FC<Props> = ({
 
       <div className="formActions">
         <button type="submit" className="btn btnPrimary">Save</button>
-        <button type="button" className="btn btnSecondary" onClick={onCancel}>Cancel</button>
+        {onCancel && <button type="button" className="btn btnSecondary" onClick={onCancel}>Cancel</button>}
       </div>
     </form>
   );
