@@ -1,12 +1,18 @@
 import "./UserProfileForm.css";
 import type React from "react";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../store/context";
 import { ErrorField } from "./ErrorField";
 import { ErrorForm } from "./ErrorForm";
 import { Loading } from "./Loading";
-import type { EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, FormState, UserProfileDto } from "../../service/service-types";
+import type { 
+  EmployeeGroupTypesDto, 
+  EmployeeTypeDto, 
+  ErrorDto, 
+  FormState, 
+  UserProfileDto 
+} from "../../service/service-types";
 import { FormState as FormStateEnum } from "../../service/service-types";
 import { touchNumber } from "../../service/utilities";
 import { toScErrorResponses, validateSaveEmployeeForm } from "../../service/errors-helpers";
@@ -15,19 +21,18 @@ interface Props {
   initialUserProfile: UserProfileDto;
   employeeGroupTypes?: EmployeeGroupTypesDto;
   showPasswordFields?: boolean;
-  // Callbacks
-  onSave?: (handler: () => Promise<void>) => void;
   onSaveSuccess?: (savedEmployee: UserProfileDto) => void;
   onSaveError?: (errors: ErrorDto[]) => void;
+  onCancel?: () => void;
 }
 
 export const UserProfileForm: React.FC<Props> = ({
   initialUserProfile,
   employeeGroupTypes,
   showPasswordFields = false,
-  onSave,
   onSaveSuccess,
   onSaveError,
+  onCancel,
 }) => {
   const { employeeGroupId } = useParams<{ employeeGroupId?: string }>();
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
@@ -35,7 +40,6 @@ export const UserProfileForm: React.FC<Props> = ({
   const [formState, setFormState] = useState<FormState>(FormStateEnum.FRESH);
   const [formErrors, setFormErrors] = useState<ErrorDto[]>([]);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const handleSaveRef = useRef<(() => Promise<void>) | null>(null);
 
   useEffect(() => {
     setUserProfile(initialUserProfile);
@@ -73,7 +77,7 @@ export const UserProfileForm: React.FC<Props> = ({
 
     const submitErrors: ErrorDto[] = [];
     setFormErrors([]);
-    
+
     try {
       setFormState(FormStateEnum.IN_PROGRESS);
       const saveEmployeeForm: UserProfileDto = {
@@ -116,10 +120,7 @@ export const UserProfileForm: React.FC<Props> = ({
     }
   };
 
-  useEffect(() => {
-    handleSaveRef.current = handleSave;
-    onSave?.(handleSave);
-  }, [handleSave, onSave]);
+
 
   const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
     types.map(t => {
@@ -200,6 +201,11 @@ export const UserProfileForm: React.FC<Props> = ({
         <ErrorField errors={formErrors} fieldName="phoneNumber" />
       </div>
       {employeeGroupTypes && userProfile.employeeTypes && buildColumns(employeeGroupTypes, userProfile.employeeTypes)}
+
+      <div className="formActions">
+        <button type="submit" className="btn btnPrimary">Save</button>
+        <button type="button" className="btn btnSecondary" onClick={onCancel}>Cancel</button>
+      </div>
     </form>
   );
 };
