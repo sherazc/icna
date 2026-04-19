@@ -1,6 +1,6 @@
 import "./UserProfileForm.css";
 import type React from "react";
-import { forwardRef, useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../store/context";
 import { ErrorField } from "./ErrorField";
@@ -16,23 +16,26 @@ interface Props {
   employeeGroupTypes?: EmployeeGroupTypesDto;
   showPasswordFields?: boolean;
   // Callbacks
+  onSave?: (handler: () => Promise<void>) => void;
   onSaveSuccess?: (savedEmployee: UserProfileDto) => void;
   onSaveError?: (errors: ErrorDto[]) => void;
 }
 
-export const UserProfileForm = forwardRef<HTMLFormElement, Props>(({
+export const UserProfileForm: React.FC<Props> = ({
   initialUserProfile,
   employeeGroupTypes,
   showPasswordFields = false,
+  onSave,
   onSaveSuccess,
   onSaveError,
-}, ref) => {
+}) => {
   const { employeeGroupId } = useParams<{ employeeGroupId?: string }>();
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [userProfile, setUserProfile] = useState<UserProfileDto>(initialUserProfile);
   const [formState, setFormState] = useState<FormState>(FormStateEnum.FRESH);
   const [formErrors, setFormErrors] = useState<ErrorDto[]>([]);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const handleSaveRef = useRef<(() => Promise<void>) | null>(null);
 
   useEffect(() => {
     setUserProfile(initialUserProfile);
@@ -113,6 +116,11 @@ export const UserProfileForm = forwardRef<HTMLFormElement, Props>(({
     }
   };
 
+  useEffect(() => {
+    handleSaveRef.current = handleSave;
+    onSave?.(handleSave);
+  }, [handleSave, onSave]);
+
   const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
     types.map(t => {
       const isSelected = selectedTypes.some(st => st.id === t.id);
@@ -146,7 +154,7 @@ export const UserProfileForm = forwardRef<HTMLFormElement, Props>(({
   };
 
   return (
-    <form ref={ref} onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+    <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
       <ErrorForm formState={formState} errors={formErrors} />
       <Loading formState={formState} />
 
@@ -194,6 +202,4 @@ export const UserProfileForm = forwardRef<HTMLFormElement, Props>(({
       {employeeGroupTypes && userProfile.employeeTypes && buildColumns(employeeGroupTypes, userProfile.employeeTypes)}
     </form>
   );
-});
-
-UserProfileForm.displayName = "UserProfileForm";
+};

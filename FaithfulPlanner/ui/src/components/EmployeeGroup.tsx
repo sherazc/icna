@@ -2,7 +2,7 @@ import type React from "react";
 
 import { useParams } from "react-router-dom";
 import { ScreenHeader } from "./common/ScreenHeader";
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef as useRefHook } from "react";
 import { AppContext } from "../store/context";
 import {
   defaultEmployeeGroupTypeDto,
@@ -36,7 +36,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
   // Save Employee Modal Form
   const [modalEmployee, setModalEmployee] = useState<UserProfileDto>(defaultUserProfileDto());
   const [showModalEmployeeModal, setShowModalEmployeeModal] = useState<boolean>(false);
-  const formRef = useRef<HTMLFormElement>(null);
+  const saveHandlerRef = useRefHook<(() => Promise<void>) | null>(null);
 
   const [modalEmployeeDeleteState, setModalEmployeeDeleteFormState] = useState<FormState>(FormState.FRESH);
   const [modalEmployeeDeleteErrors, setModalEmployeeDeleteErrors] = useState<ErrorDto[]>([]);
@@ -168,16 +168,16 @@ export const EmployeeGroup: React.FC<Props> = () => {
 
       <Modal config={{
         title: modalEmployee.id ? `Edit ${employeeGroupTypes.groupName}` : `New ${employeeGroupTypes.groupName}`,
-        yesFunction: () => formRef.current?.requestSubmit(),
+        yesFunction: () => saveHandlerRef.current?.(),
         modalType: ModalType.DEFAULT,
         yesLabel: "Save",
         noLabel: "Cancel"
       }} show={showModalEmployeeModal} setShow={setShowModalEmployeeModal}>
         <UserProfileForm
-          ref={formRef}
           initialUserProfile={modalEmployee}
           employeeGroupTypes={employeeGroupTypes}
           showPasswordFields={!modalEmployee.id}
+          onSave={(handler) => { saveHandlerRef.current = handler; }}
           onSaveSuccess={handleSaveSuccess}
         />
       </Modal>
