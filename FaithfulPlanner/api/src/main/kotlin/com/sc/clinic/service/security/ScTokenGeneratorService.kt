@@ -40,6 +40,7 @@ class ScTokenGeneratorService(
             .subject(authentication.name)
             .claim("roles", roles)
             .claim("companyId", user.getCompanyId())
+            .claim("userProfileId", user.getUserProfileId())
             .build()
 
         val encoderParameters = JwtEncoderParameters.from(

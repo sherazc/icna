@@ -1,9 +1,13 @@
 package com.sc.clinic.controller
 
 import com.sc.clinic.dto.UserProfileDto
+import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.service.UserProfileService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -45,9 +49,26 @@ class UserProfileController(val userProfileService: UserProfileService) {
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
     fun saveUserProfileEmployeeTypes(
         @PathVariable companyId: Long,
-        @RequestBody userEmployeeTypes: UserProfileDto
-    ): UserProfileDto =
-        userProfileService.saveUserEmployee(companyId, userEmployeeTypes)
+        @RequestBody userEmployeeTypes: UserProfileDto,
+        @AuthenticationPrincipal jwt: Jwt,
+        authentication: Authentication
+    ): UserProfileDto {
+
+//        val currentUser = authentication.principal as UserProfileUserDetails
+//
+//        val userId = currentUser.getUserProfileId()
+//        val userEmail = currentUser.username  // This is the email
+//        val userCompanyId = currentUser.getCompanyId()
+//        val roles = authentication.authorities.map { it.authority }
+        // Extract information from JWT claims
+        val userEmail = jwt.subject
+        val userCompanyId = jwt.getClaimAsString("companyId")?.toLong()
+        val roles = authentication.authorities.map { it.authority }
+
+
+        return userProfileService.saveUserEmployee(companyId, userEmployeeTypes)
+    }
+
 
     @GetMapping("/group/{groupId}/operation-day/{operationId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
