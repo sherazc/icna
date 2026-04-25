@@ -4,6 +4,7 @@ import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.service.UserProfileService
 import com.sc.clinic.service.model.JwtClaim
+import com.sc.clinic.service.security.PermissionValidator
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/company/{companyId}/user-profile")
-class UserProfileController(val userProfileService: UserProfileService) {
+class UserProfileController(val userProfileService: UserProfileService,
+                            private val permissionValidator: PermissionValidator
+) {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
@@ -47,7 +50,11 @@ class UserProfileController(val userProfileService: UserProfileService) {
         userProfileService.hasUserProfiles(companyId, groupId)
 
     /**
-     * This endpoint is used to update existing UserProfile
+     * This endpoint create or edit UserProfile to existing organization.
+     *
+     * Admin should be able to use it.
+     *
+     * Basic user should be able to update itself.
      */
     @PostMapping
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
@@ -59,6 +66,9 @@ class UserProfileController(val userProfileService: UserProfileService) {
         val userEmail = jwt.subject
         val userCompanyId = jwt.getClaimAsString(JwtClaim.companyId.value)?.toLong()
         val userProfileId = jwt.getClaimAsString(JwtClaim.userProfileId.value)?.toLong()
+        val roles = jwt.getClaimAsStringList(JwtClaim.roles.value)
+
+        permissionValidator.validateSelfOrHasRoles(userProfileId)
 
         return userProfileService.saveUserEmployee(companyId, userEmployeeTypes)
     }
