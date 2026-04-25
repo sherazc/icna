@@ -21,6 +21,7 @@ import { AssignedUsers } from "./AssignedUsers";
 import "./Dashboard.css"
 import { isoToDayOfWeek, isoToMonthDayYear } from "../../service/DateService";
 import { useNavigate } from "react-router-dom";
+import { Authenticated } from "../auth/Authenticated";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -173,9 +174,11 @@ export default function Dashboard() {
     <div id="dashboard">
       <UnAuthRedirect />
       <ScreenHeader screenName="Dashboard">
-        {employeeGroups.length > 0 && (
-          <button className="btn btnPrimary" onClick={() => onCreateEditOpDayDetail()}>+ New Date</button>
-        )}
+        <Authenticated shouldHaveRoles={["ADMIN"]}>
+          {employeeGroups.length > 0 && (
+            <button className="btn btnPrimary" onClick={() => onCreateEditOpDayDetail()}>+ New Date</button>
+          )}
+        </Authenticated>
       </ScreenHeader>
       <div className="tableContainer">
         {employeeGroups.length < 1 && (
@@ -201,7 +204,9 @@ export default function Dashboard() {
                     <th key={group.id}>{`${group.groupName} Assigned`}</th>
                   ))}
                   <th>Notes</th>
-                  <th>Actions</th>
+                  <Authenticated shouldHaveRoles={["ADMIN"]}>
+                    <th>Actions</th>
+                  </Authenticated>
                 </tr>
               </thead>
               <tbody>
@@ -225,10 +230,12 @@ export default function Dashboard() {
                     <td>
                       {opDayDetail.notes}
                     </td>
-                    <td>
-                      <button className="actionBtn actionBtnEdit" onClick={() => onCreateEditOpDayDetail(opDayDetail)}>Edit</button>
-                      <button className="actionBtn actionBtnDelete" onClick={() => onDeleteOpDayDetail(opDayDetail)}>Delete</button>
-                    </td>
+                    <Authenticated shouldHaveRoles={["ADMIN"]}>
+                      <td>
+                        <button className="actionBtn actionBtnEdit" onClick={() => onCreateEditOpDayDetail(opDayDetail)}>Edit</button>
+                        <button className="actionBtn actionBtnDelete" onClick={() => onDeleteOpDayDetail(opDayDetail)}>Delete</button>
+                      </td>
+                    </Authenticated>
                   </tr>
                 ))}
               </tbody>

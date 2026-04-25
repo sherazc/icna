@@ -20,6 +20,7 @@ import { toScErrorResponses } from "../service/errors-helpers";
 import { ErrorForm } from "./common/ErrorForm";
 import { Loading } from "./common/Loading";
 import { UserProfileForm } from "./common/UserProfileForm";
+import { Authenticated } from "./auth/Authenticated";
 
 interface Props { }
 
@@ -110,10 +111,12 @@ export const EmployeeGroup: React.FC<Props> = () => {
       <td>{employee.employeeTypes.length > 0 && createEmployeeTypes(employee.employeeTypes)}</td>
       <td>{employee.email}</td>
       <td>{employee.phoneNumber}</td>
-      <td>
-        <button className="actionBtn actionBtnEdit" onClick={() => onEditModalEmployee(employee)}>Edit</button>
-        <button className="actionBtn actionBtnDelete" onClick={() => onDeleteEmployee(employee)}>Delete</button>
-      </td>
+      <Authenticated shouldHaveRoles={["ADMIN"]}>
+        <td>
+          <button className="actionBtn actionBtnEdit" onClick={() => onEditModalEmployee(employee)}>Edit</button>
+          <button className="actionBtn actionBtnDelete" onClick={() => onDeleteEmployee(employee)}>Delete</button>
+        </td>
+      </Authenticated>
     </tr>
   );
 
@@ -121,7 +124,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
     <div>
       <UnAuthRedirect />
       <ScreenHeader screenName={employeeGroupTypes.groupName}>
-        <button className="btn btnPrimary" onClick={onNewEmployee}>+ New {employeeGroupTypes.groupName}</button>
+        <Authenticated shouldHaveRoles={["ADMIN"]}>
+          <button className="btn btnPrimary" onClick={onNewEmployee}>+ New {employeeGroupTypes.groupName}</button>
+        </Authenticated>
       </ScreenHeader>
       <div className="tableContainer">
 
@@ -139,7 +144,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
                 <th>Type</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Actions</th>
+                <Authenticated shouldHaveRoles={["ADMIN"]}>
+                  <th>Actions</th>
+                </Authenticated>
               </tr>
             </thead>
             <tbody>

@@ -15,7 +15,10 @@ class PermissionValidator {
             return true
         }
 
-        return shouldHaveRoles?.all { role -> selfRoles?.contains(role) ?: false } ?: false
+        val shouldHaveRolesTemp = shouldHaveRoles ?: listOf()
+        val selfRolesTemp = selfRoles ?: listOf()
+
+        return shouldHaveRolesTemp.all { role -> selfRolesTemp.contains(role) }
     }
 
     fun validateSelfOrHasRoles(
@@ -25,7 +28,7 @@ class PermissionValidator {
         shouldHaveRoles: List<String>?) {
         val valid = isSelfOrHasRoles(selfUserProfileId, selfRoles, modifyUserProfileId, shouldHaveRoles)
         if (!valid) {
-            throw ScException("Authentication failed. You can modify your own user.")
+            throw ScException("Authentication failed. You should be admin or can modify your own user.")
         }
     }
 }
