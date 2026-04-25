@@ -4,6 +4,7 @@ import com.sc.clinic.dto.AuthUserTokenDto
 import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.exception.ScException
 import com.sc.clinic.service.CompanyService
+import com.sc.clinic.service.model.JwtClaim
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm
 import org.springframework.security.oauth2.jwt.JwsHeader
@@ -38,9 +39,9 @@ class ScTokenGeneratorService(
             .issuedAt(now)
             .expiresAt(expiresAt)
             .subject(authentication.name)
-            .claim("roles", roles)
-            .claim("companyId", user.getCompanyId())
-            .claim("userProfileId", user.getUserProfileId())
+            .claim(JwtClaim.roles.value, roles)
+            .claim(JwtClaim.companyId.value, user.getCompanyId())
+            .claim(JwtClaim.userProfileId.value, user.getUserProfileId())
             .build()
 
         val encoderParameters = JwtEncoderParameters.from(

@@ -3,6 +3,7 @@ package com.sc.clinic.controller
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.service.UserProfileService
+import com.sc.clinic.service.model.JwtClaim
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
@@ -45,26 +46,19 @@ class UserProfileController(val userProfileService: UserProfileService) {
     fun hasUserProfiles(@PathVariable companyId: Long, @PathVariable groupId: Long) =
         userProfileService.hasUserProfiles(companyId, groupId)
 
+    /**
+     * This endpoint is used to update existing UserProfile
+     */
     @PostMapping
-    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun saveUserProfileEmployeeTypes(
         @PathVariable companyId: Long,
         @RequestBody userEmployeeTypes: UserProfileDto,
-        @AuthenticationPrincipal jwt: Jwt,
-        authentication: Authentication
+        @AuthenticationPrincipal jwt: Jwt
     ): UserProfileDto {
-
-//        val currentUser = authentication.principal as UserProfileUserDetails
-//
-//        val userId = currentUser.getUserProfileId()
-//        val userEmail = currentUser.username  // This is the email
-//        val userCompanyId = currentUser.getCompanyId()
-//        val roles = authentication.authorities.map { it.authority }
-        // Extract information from JWT claims
         val userEmail = jwt.subject
-        val userCompanyId = jwt.getClaimAsString("companyId")?.toLong()
-        val roles = authentication.authorities.map { it.authority }
-
+        val userCompanyId = jwt.getClaimAsString(JwtClaim.companyId.value)?.toLong()
+        val userProfileId = jwt.getClaimAsString(JwtClaim.userProfileId.value)?.toLong()
 
         return userProfileService.saveUserEmployee(companyId, userEmployeeTypes)
     }
