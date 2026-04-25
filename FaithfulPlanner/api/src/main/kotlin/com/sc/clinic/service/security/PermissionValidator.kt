@@ -19,13 +19,13 @@ class PermissionValidator {
     }
 
     fun validateSelfOrHasRoles(
-        selfUserProfileId: Long,
-        selfRoles: List<String>,
+        selfUserProfileId: Long?,
+        selfRoles: List<String>?,
         modifyUserProfileId: Long?,
-        shouldHaveRoles: List<String>) {
+        shouldHaveRoles: List<String>?) {
         val valid = isSelfOrHasRoles(selfUserProfileId, selfRoles, modifyUserProfileId, shouldHaveRoles)
         if (!valid) {
-            throw ScException("Authentication Failed")
+            throw ScException("Authentication failed. You can modify your own user.")
         }
     }
 }

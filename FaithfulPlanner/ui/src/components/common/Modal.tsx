@@ -14,7 +14,7 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
     modalType: config.modalType || ModalType.DEFAULT,
     title: config.title || '',
     yesFunction: config.yesFunction || undefined,
-    yesLabel: config.yesLabel || "Ok",
+    yesLabel: config.yesLabel || "",
     noFunction: config.noFunction || undefined,
     noLabel: config.noLabel || "",
     closeFunction: config.closeFunction || undefined,
@@ -79,10 +79,13 @@ export const Modal: React.FC<Props> = ({ children, config, show, setShow }) => {
         <div className="text-secondary">
           {children}
         </div>
+
+        {(modalConfig.yesLabel || modalConfig.noLabel) && (
         <div className="modalActions">
           {modalConfig.noLabel && <button className="btn btnSecondary" onClick={handleNo}>{modalConfig.noLabel}</button>}
-          <button className="btn btnPrimary" onClick={handleYes}>{modalConfig.yesLabel}</button>
+          {modalConfig.yesLabel && <button className="btn btnPrimary" onClick={handleYes}>{modalConfig.yesLabel}</button>}
         </div>
+        )}
       </div>
     </div>
   );

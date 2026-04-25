@@ -3,6 +3,7 @@ package com.sc.clinic.controller
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.service.UserProfileService
+import com.sc.clinic.service.model.AuthRole
 import com.sc.clinic.service.model.JwtClaim
 import com.sc.clinic.service.security.PermissionValidator
 import org.springframework.http.ResponseEntity
@@ -68,7 +69,7 @@ class UserProfileController(val userProfileService: UserProfileService,
         val userProfileId = jwt.getClaimAsString(JwtClaim.userProfileId.value)?.toLong()
         val roles = jwt.getClaimAsStringList(JwtClaim.roles.value)
 
-        permissionValidator.validateSelfOrHasRoles(userProfileId)
+        permissionValidator.validateSelfOrHasRoles(userProfileId, roles, userEmployeeTypes.id, listOf(AuthRole.ADMIN.name))
 
         return userProfileService.saveUserEmployee(companyId, userEmployeeTypes)
     }
