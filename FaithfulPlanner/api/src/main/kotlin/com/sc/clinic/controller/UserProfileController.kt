@@ -1,5 +1,6 @@
 package com.sc.clinic.controller
 
+import com.sc.clinic.dto.PasswordUpdateDto
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.service.UserProfileService
@@ -64,16 +65,17 @@ class UserProfileController(val userProfileService: UserProfileService,
         @RequestBody userEmployeeTypes: UserProfileDto,
         @AuthenticationPrincipal jwt: Jwt
     ): UserProfileDto {
-        val userEmail = jwt.subject
-        val userCompanyId = jwt.getClaimAsString(JwtClaim.companyId.value)?.toLong()
         val userProfileId = jwt.getClaimAsString(JwtClaim.userProfileId.value)?.toLong()
         val roles = jwt.getClaimAsStringList(JwtClaim.roles.value)
 
-        permissionValidator.validateSelfOrHasRoles(userProfileId, roles, userEmployeeTypes.id, listOf(AuthRole.ADMIN.name))
+        permissionValidator.validateSelfOrHasRoles(
+            userProfileId,
+            roles,
+            userEmployeeTypes.id,
+            listOf(AuthRole.ADMIN.name))
 
         return userProfileService.saveUserEmployee(companyId, userEmployeeTypes)
     }
-
 
     @GetMapping("/group/{groupId}/operation-day/{operationId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
@@ -83,4 +85,23 @@ class UserProfileController(val userProfileService: UserProfileService,
         @PathVariable operationId: Long,
         @RequestParam(name = "scheduled", required = true) scheduled: Boolean
     ) = userProfileService.findGroupScheduledUsers(companyId, groupId, operationId, scheduled)
+
+
+    @GetMapping("/password-update")
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun passwordUpdate(
+        @PathVariable companyId: Long,
+        @RequestBody passwordUpdateDto: PasswordUpdateDto,
+        @AuthenticationPrincipal jwt: Jwt
+    ): Boolean {
+        val userProfileId = jwt.getClaimAsString(JwtClaim.userProfileId.value)?.toLong()
+        val roles = jwt.getClaimAsStringList(JwtClaim.roles.value)
+
+        permissionValidator.validateSelfOrHasRoles(
+            userProfileId,
+            roles,
+            passwordUpdateDto.userProfileId,
+            listOf(AuthRole.MASTER.name))
+        return userProfileService.passwordUpdate(passwordUpdateDto)
+    }
 }

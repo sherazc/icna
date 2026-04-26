@@ -1,5 +1,6 @@
 package com.sc.clinic.service
 
+import com.sc.clinic.dto.PasswordUpdateDto
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.EmployeeGroup
@@ -9,10 +10,19 @@ import com.sc.clinic.exception.ScException
 import com.sc.clinic.exception.ScGlobalExceptionHandler
 import com.sc.clinic.repository.UserProfileRepository
 import com.sc.clinic.service.model.AuthRole
+import com.sc.clinic.service.security.PasswordValidator
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+
+/**
+ * Refactor this class. I think create a userprofile info class and update userprofile
+ *
+ * Or
+ *
+ * Pull out only the Registration service.
+ */
 
 @Service
 class UserProfileService(
@@ -21,8 +31,9 @@ class UserProfileService(
     private val passwordEncoder: PasswordEncoder,
     private val employeeTypeService: EmployeeTypeService,
     private val employeeGroupService: EmployeeGroupService,
-    val companyService: CompanyService,
+    private val companyService: CompanyService,
     private val scheduleService: ScheduleService,
+    private val passwordValidator: PasswordValidator,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(ScGlobalExceptionHandler::class.java)
@@ -153,5 +164,20 @@ class UserProfileService(
             userDto.userPassword = null
             userDto
         }
+    }
+
+    fun passwordUpdate(passwordUpdateDto: PasswordUpdateDto): Boolean {
+        passwordValidator.isValid(passwordUpdateDto.newPassword)
+        val userProfile = userProfileRepository.findById(passwordUpdateDto.userProfileId)
+            .orElseThrow { ScException("Can not update password. User not found.") }
+        val currentPasswordMatches = passwordEncoder.matches(passwordUpdateDto.currentPassword, userProfile.userPassword)
+        if (!currentPasswordMatches) {
+            throw ScException("currentPassword", "Can not update password. Invalid current password.")
+        }
+
+        val encodedNewPassword = passwordEncoder.encode(passwordUpdateDto.newPassword)
+        userProfile.userPassword = encodedNewPassword
+        val savedUserProfile = userProfileRepository.save(userProfile)
+        return savedUserProfile.userPassword == encodedNewPassword
     }
 }

@@ -213,3 +213,9 @@ export const defaultScheduleDto = (): ScheduleDto => ({
     operationDayId: 0,
     userProfileId: 0
 });
+
+export type PasswordUpdateDto = {
+    userProfileId: number;
+    currentPassword?: string;
+    newPassword: string;
+};
