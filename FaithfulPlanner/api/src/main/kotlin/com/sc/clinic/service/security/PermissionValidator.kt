@@ -28,7 +28,7 @@ class PermissionValidator {
         shouldHaveRoles: List<String>?) {
         val valid = isSelfOrHasRoles(selfUserProfileId, selfRoles, modifyUserProfileId, shouldHaveRoles)
         if (!valid) {
-            throw ScException("Authentication failed. You should be admin or can modify your own user.")
+            throw ScException("Authentication failed. You can modify your own user or should be an admin.")
         }
     }
 }

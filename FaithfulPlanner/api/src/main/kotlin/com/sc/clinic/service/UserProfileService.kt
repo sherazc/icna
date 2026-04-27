@@ -167,7 +167,7 @@ class UserProfileService(
     }
 
     fun passwordUpdate(passwordUpdateDto: PasswordUpdateDto): Boolean {
-        passwordValidator.isValid(passwordUpdateDto.newPassword)
+        passwordValidator.validatePassword(passwordUpdateDto.newPassword)
         val userProfile = userProfileRepository.findById(passwordUpdateDto.userProfileId)
             .orElseThrow { ScException("Can not update password. User not found.") }
         val currentPasswordMatches = passwordEncoder.matches(passwordUpdateDto.currentPassword, userProfile.userPassword)

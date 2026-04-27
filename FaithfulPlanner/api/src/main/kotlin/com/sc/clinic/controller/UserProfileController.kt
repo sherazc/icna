@@ -87,7 +87,7 @@ class UserProfileController(val userProfileService: UserProfileService,
     ) = userProfileService.findGroupScheduledUsers(companyId, groupId, operationId, scheduled)
 
 
-    @GetMapping("/password-update")
+    @PostMapping("/password-update")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun passwordUpdate(
         @PathVariable companyId: Long,
