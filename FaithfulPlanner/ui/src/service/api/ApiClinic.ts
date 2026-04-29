@@ -1,4 +1,4 @@
-import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, RegistrationDto, ScheduleDto, UserProfileDto } from "../service-types";
+import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, PasswordUpdateDto, RegistrationDto, ScheduleDto, UserProfileDto } from "../service-types";
 import {
   addHeadersInRequest,
   callApiIntercept,
@@ -135,6 +135,17 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     deleteUserProfile: (companyId: number, userProfileId: number): Promise<string> => {
       const endpoint = `${endpoints.epUserProfile(companyId)}/${userProfileId}`;
       const request: ApiRequest = { endpoint, method: "DELETE" };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    passwordUpdate: (companyId: number, passwordUpdateDto: PasswordUpdateDto): Promise<boolean> => {
+      const endpoint = `${endpoints.epUserProfile(companyId)}/password-update`;
+      const request: ApiRequest = {
+        endpoint,
+        method: "POST",
+        payload: passwordUpdateDto,
+        headers: CONTENT_JSON_HEADER()
+      };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },

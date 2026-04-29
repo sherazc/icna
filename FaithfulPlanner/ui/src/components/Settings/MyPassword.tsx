@@ -1,19 +1,27 @@
+import { useContext, useEffect } from "react";
+import { AppContext } from "../../store/context";
 
 export const MyPassword = () => {
+  const [{ authUserToken, clinicApis }] = useContext(AppContext);
+
+  useEffect(() => {
+
+  }, [authUserToken]);
+
   return (
     <div className="card">
       <h3>My Password</h3>
       <div className="formGroup">
         <label htmlFor="firstName">Current Password</label>
         <input id="firstName" type="text"
-          // onChange={onChangeText}
-          // value={modalEmployee.firstName}
+        // onChange={onChangeText}
+        // value={modalEmployee.firstName}
         />
         {/* <ErrorField errors={modalEmployeeErrors} fieldName="firstName" /> */}
       </div>
       <div className="formGroup">
         <label htmlFor="lastName">New Password</label>
-        <input id="lastName" type="text" 
+        <input id="lastName" type="text"
         // onChange={onChangeText}
         //  value={modalEmployee.lastName} 
         />
@@ -21,7 +29,7 @@ export const MyPassword = () => {
       </div>
       <div className="formGroup">
         <label htmlFor="phoneNumber">Confirm Password</label>
-        <input id="phoneNumber" type="text" 
+        <input id="phoneNumber" type="text"
         // onChange={onChangeText}
         // value={modalEmployee.phoneNumber} 
         />
