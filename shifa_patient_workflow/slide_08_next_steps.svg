@@ -1,0 +1,58 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#388e3c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2e7d32;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="3" dy="3" stdDeviation="5" flood-color="#00000055"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="url(#grad)"/>
+
+  <!-- Main Title -->
+  <text x="640" y="120" font-size="56" text-anchor="middle" font-weight="bold" fill="white">Let's Transform</text>
+  <text x="640" y="190" font-size="56" text-anchor="middle" font-weight="bold" fill="white">Patient Scheduling</text>
+
+  <!-- Subtitle -->
+  <text x="640" y="270" font-size="32" text-anchor="middle" fill="#c8e6c9">Together, we can build a system that serves our patients</text>
+  <text x="640" y="310" font-size="32" text-anchor="middle" fill="#c8e6c9">and honors our volunteers</text>
+
+  <!-- Call to Action Box -->
+  <rect x="200" y="370" width="880" height="220" fill="white" stroke="#ffffff" stroke-width="3" rx="12" filter="url(#shadow)"/>
+  
+  <text x="640" y="415" font-size="24" text-anchor="middle" font-weight="bold" fill="#2e7d32">Next Steps</text>
+
+  <!-- Step 1 -->
+  <rect x="240" y="445" width="240" height="120" fill="#f1f8e9" stroke="#2e7d32" stroke-width="1" rx="8"/>
+  <circle cx="280" cy="470" r="20" fill="#2e7d32"/>
+  <text x="280" y="479" font-size="18" text-anchor="middle" fill="white" font-weight="bold">1</text>
+  <text x="380" y="465" font-size="14" font-weight="bold" fill="#2e7d32">Approve Proposal</text>
+  <text x="380" y="485" font-size="12" fill="#616161">Review roadmap &amp;</text>
+  <text x="380" y="503" font-size="12" fill="#616161">confirm budget</text>
+  <text x="380" y="521" font-size="12" fill="#616161">(~$1,200 total)</text>
+
+  <!-- Step 2 -->
+  <rect x="520" y="445" width="240" height="120" fill="#f1f8e9" stroke="#2e7d32" stroke-width="1" rx="8"/>
+  <circle cx="560" cy="470" r="20" fill="#2e7d32"/>
+  <text x="560" y="479" font-size="18" text-anchor="middle" fill="white" font-weight="bold">2</text>
+  <text x="660" y="465" font-size="14" font-weight="bold" fill="#2e7d32">Assemble Team</text>
+  <text x="660" y="485" font-size="12" fill="#616161">Identify project leads,</text>
+  <text x="660" y="503" font-size="12" fill="#616161">volunteers, developers</text>
+  <text x="660" y="521" font-size="12" fill="#616161">to build system</text>
+
+  <!-- Step 3 -->
+  <rect x="800" y="445" width="240" height="120" fill="#f1f8e9" stroke="#2e7d32" stroke-width="1" rx="8"/>
+  <circle cx="840" cy="470" r="20" fill="#2e7d32"/>
+  <text x="840" y="479" font-size="18" text-anchor="middle" fill="white" font-weight="bold">3</text>
+  <text x="940" y="465" font-size="14" font-weight="bold" fill="#2e7d32">Launch Pilot</text>
+  <text x="940" y="485" font-size="12" fill="#616161">Begin 6-week</text>
+  <text x="940" y="503" font-size="12" fill="#616161">implementation with</text>
+  <text x="940" y="521" font-size="12" fill="#616161">controlled testing</text>
+
+  <!-- Bottom CTA -->
+  <rect x="280" y="600" width="720" height="60" fill="#ffeb3b" stroke="#f57f17" stroke-width="2" rx="8"/>
+  <text x="640" y="640" font-size="22" text-anchor="middle" font-weight="bold" fill="#f57f17">Questions? Ready to move forward? Let's discuss!</text>
+</svg>

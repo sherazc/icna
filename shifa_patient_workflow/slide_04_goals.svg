@@ -1,0 +1,48 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="4" flood-color="#00000044"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="#f5f5f5"/>
+
+  <!-- Header -->
+  <rect width="1280" height="100" fill="#2e7d32"/>
+  <text x="640" y="65" font-size="48" text-anchor="middle" font-weight="bold" fill="white">Our Goals</text>
+
+  <!-- Goal 1 -->
+  <rect x="80" y="140" width="520" height="520" fill="white" stroke="#2e7d32" stroke-width="2" rx="12" filter="url(#shadow)"/>
+  <circle cx="340" cy="200" r="50" fill="#2e7d32"/>
+  <text x="340" y="215" font-size="40" text-anchor="middle" fill="white">🎯</text>
+  <text x="340" y="280" font-size="20" text-anchor="middle" font-weight="bold" fill="#2e7d32">Standardize Intake Process</text>
+  <rect x="100" y="310" width="480" height="310" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1" rx="8"/>
+  <text x="340" y="345" font-size="14" text-anchor="middle" fill="#212121">✓ Replace scattered emails with centralized system</text>
+  <text x="340" y="375" font-size="14" text-anchor="middle" fill="#212121">✓ Consistent, structured data collection</text>
+  <text x="340" y="405" font-size="14" text-anchor="middle" fill="#212121">✓ Single intake form (digital or volunteer-assisted)</text>
+  <text x="340" y="435" font-size="14" text-anchor="middle" fill="#212121">✓ Automatic data validation &amp; de-duplication</text>
+  <text x="340" y="465" font-size="14" text-anchor="middle" fill="#212121">✓ Audit trail for compliance</text>
+  <text x="340" y="495" font-size="14" text-anchor="middle" fill="#212121">✓ Real-time visibility for all staff</text>
+  <text x="340" y="525" font-size="14" text-anchor="middle" fill="#212121">✓ Seamless EMR integration</text>
+  <text x="340" y="555" font-size="14" text-anchor="middle" fill="#212121">✓ Ready for future AI/automation</text>
+
+  <!-- Goal 2 -->
+  <rect x="640" y="140" width="520" height="520" fill="white" stroke="#1565c0" stroke-width="2" rx="12" filter="url(#shadow)"/>
+  <circle cx="900" cy="200" r="50" fill="#1565c0"/>
+  <text x="900" y="215" font-size="40" text-anchor="middle" fill="white">⚡</text>
+  <text x="900" y="280" font-size="20" text-anchor="middle" font-weight="bold" fill="#1565c0">Improve Efficiency</text>
+  <rect x="660" y="310" width="480" height="310" fill="#e3f2fd" stroke="#1565c0" stroke-width="1" rx="8"/>
+  <text x="900" y="345" font-size="14" text-anchor="middle" fill="#212121">✓ Reduce volunteer manual workload by ~70%</text>
+  <text x="900" y="375" font-size="14" text-anchor="middle" fill="#212121">✓ Automate appointment confirmation</text>
+  <text x="900" y="405" font-size="14" text-anchor="middle" fill="#212121">✓ SMS reminders 24-48 hrs before</text>
+  <text x="900" y="435" font-size="14" text-anchor="middle" fill="#212121">✓ Auto-tag urgency &amp; specialty</text>
+  <text x="900" y="465" font-size="14" text-anchor="middle" fill="#212121">✓ No-show reduction via automated cancellation</text>
+  <text x="900" y="495" font-size="14" text-anchor="middle" fill="#212121">✓ Better provider visibility on patient demand</text>
+  <text x="900" y="525" font-size="14" text-anchor="middle" fill="#212121">✓ Faster appointment confirmations</text>
+  <text x="900" y="555" font-size="14" text-anchor="middle" fill="#212121">✓ Improved clinic capacity utilization</text>
+
+  <!-- Bottom banner -->
+  <rect x="60" y="690" width="1160" height="20" fill="#c8e6c9"/>
+  <text x="640" y="706" font-size="13" text-anchor="middle" fill="#1b5e20" font-weight="bold">Primary Goal: Seek pleasure of Allah SWT · Use Jamaat's talent and resources · Scale clinic operations</text>
+</svg>

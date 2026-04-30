@@ -1,0 +1,70 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="4" flood-color="#00000044"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="#f5f5f5"/>
+
+  <!-- Header -->
+  <rect width="1280" height="100" fill="#1565c0"/>
+  <text x="640" y="65" font-size="48" text-anchor="middle" font-weight="bold" fill="white">Expected Benefits</text>
+
+  <!-- Benefits Grid -->
+  
+  <!-- Benefit 1: Efficiency -->
+  <rect x="60" y="140" width="560" height="150" fill="white" stroke="#1565c0" stroke-width="2" rx="10" filter="url(#shadow)"/>
+  <circle cx="115" cy="175" r="35" fill="#1565c0"/>
+  <text x="115" y="185" font-size="32" text-anchor="middle" fill="white">⚡</text>
+  <text x="220" y="165" font-size="20" font-weight="bold" fill="#1565c0">70% Reduction in Manual Work</text>
+  <text x="220" y="195" font-size="14" fill="#616161">Automated email checking, data entry, confirmation calls</text>
+  <text x="220" y="220" font-size="14" fill="#616161">Volunteers freed up for patient care &amp; clinical support</text>
+  <text x="220" y="245" font-size="14" fill="#2e7d32" font-weight="bold">Impact: Faster scheduling, better care</text>
+
+  <!-- Benefit 2: Accuracy -->
+  <rect x="660" y="140" width="560" height="150" fill="white" stroke="#2e7d32" stroke-width="2" rx="10" filter="url(#shadow)"/>
+  <circle cx="715" cy="175" r="35" fill="#2e7d32"/>
+  <text x="715" y="185" font-size="32" text-anchor="middle" fill="white">✓</text>
+  <text x="820" y="165" font-size="20" font-weight="bold" fill="#2e7d32">90% Reduction in Data Entry Errors</text>
+  <text x="820" y="195" font-size="14" fill="#616161">Centralized system eliminates duplicate requests &amp; missed emails</text>
+  <text x="820" y="220" font-size="14" fill="#616161">Automated validation &amp; de-duplication rules</text>
+  <text x="820" y="245" font-size="14" fill="#1565c0" font-weight="bold">Impact: Clean EMR data, better compliance</text>
+
+  <!-- Benefit 3: Patient Experience -->
+  <rect x="60" y="320" width="560" height="150" fill="white" stroke="#f57c00" stroke-width="2" rx="10" filter="url(#shadow)"/>
+  <circle cx="115" cy="355" r="35" fill="#f57c00"/>
+  <text x="115" y="365" font-size="32" text-anchor="middle" fill="white">😊</text>
+  <text x="220" y="345" font-size="20" font-weight="bold" fill="#f57c00">Faster Appointments</text>
+  <text x="220" y="375" font-size="14" fill="#616161">SMS reminders 24-48 hrs before reduce no-shows by 40-50%</text>
+  <text x="220" y="400" font-size="14" fill="#616161">Automated "Reply C to cancel" moves patients to waitlist</text>
+  <text x="220" y="425" font-size="14" fill="#d32f2f" font-weight="bold">Impact: Better attendance, higher capacity</text>
+
+  <!-- Benefit 4: Scalability -->
+  <rect x="660" y="320" width="560" height="150" fill="white" stroke="#7b1fa2" stroke-width="2" rx="10" filter="url(#shadow)"/>
+  <circle cx="715" cy="355" r="35" fill="#7b1fa2"/>
+  <text x="715" y="365" font-size="32" text-anchor="middle" fill="white">🚀</text>
+  <text x="820" y="345" font-size="20" font-weight="bold" fill="#7b1fa2">Ready to Scale</text>
+  <text x="820" y="375" font-size="14" fill="#616161">Can handle 100+ patients/week without proportional workload increase</text>
+  <text x="820" y="400" font-size="14" fill="#616161">Foundation for future AI expansion, specialty workflows</text>
+  <text x="820" y="425" font-size="14" fill="#1565c0" font-weight="bold">Impact: Clinic growth without volunteer burnout</text>
+
+  <!-- Benefit 5: Cost Savings -->
+  <rect x="60" y="500" width="560" height="150" fill="white" stroke="#2e7d32" stroke-width="2" rx="10" filter="url(#shadow)"/>
+  <circle cx="115" cy="535" r="35" fill="#2e7d32"/>
+  <text x="115" y="545" font-size="32" text-anchor="middle" fill="white">💰</text>
+  <text x="220" y="525" font-size="20" font-weight="bold" fill="#2e7d32">Minimal Cost ($50-200/month)</text>
+  <text x="220" y="555" font-size="14" fill="#616161">Light AI solution (Tidio + Zapier) is 90% cheaper than premium options</text>
+  <text x="220" y="580" font-size="14" fill="#616161">ROI: Within months as volunteer time is saved</text>
+  <text x="220" y="605" font-size="14" fill="#f57c00" font-weight="bold">Impact: Sustainable, affordable innovation</text>
+
+  <!-- Benefit 6: Jamaat Impact -->
+  <rect x="660" y="500" width="560" height="150" fill="white" stroke="#1565c0" stroke-width="2" rx="10" filter="url(#shadow)"/>
+  <circle cx="715" cy="535" r="35" fill="#1565c0"/>
+  <text x="715" y="545" font-size="32" text-anchor="middle" fill="white">🤝</text>
+  <text x="820" y="525" font-size="20" font-weight="bold" fill="#1565c0">Volunteer Satisfaction</text>
+  <text x="820" y="555" font-size="14" fill="#616161">Reduced burnout &amp; repetitive tasks means higher retention</text>
+  <text x="820" y="580" font-size="14" fill="#616161">Volunteers focus on meaningful patient interactions</text>
+  <text x="820" y="605" font-size="14" fill="#2e7d32" font-weight="bold">Impact: Stronger community, aligned with our mission</text>
+</svg>

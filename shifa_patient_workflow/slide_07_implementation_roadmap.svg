@@ -1,0 +1,92 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="4" flood-color="#00000044"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1565c0" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="#f5f5f5"/>
+
+  <!-- Header -->
+  <rect width="1280" height="100" fill="#388e3c"/>
+  <text x="640" y="65" font-size="48" text-anchor="middle" font-weight="bold" fill="white">Implementation Roadmap</text>
+
+  <!-- Timeline -->
+  <!-- Phase 1 -->
+  <rect x="60" y="140" width="260" height="520" fill="white" stroke="#388e3c" stroke-width="2.5" rx="10" filter="url(#shadow)"/>
+  <rect x="60" y="140" width="260" height="60" fill="#c8e6c9"/>
+  <text x="190" y="160" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b5e20">Phase 1: Foundation</text>
+  <text x="190" y="182" font-size="12" text-anchor="middle" fill="#388e3c">Weeks 1-2</text>
+
+  <text x="80" y="230" font-size="13" font-weight="bold" fill="#388e3c">📋 Tasks:</text>
+  <text x="85" y="255" font-size="12" fill="#212121">• Evaluate tools</text>
+  <text x="85" y="275" font-size="12" fill="#212121">• Set up Google Sheet</text>
+  <text x="85" y="295" font-size="12" fill="#212121">• Create intake form</text>
+  <text x="85" y="315" font-size="12" fill="#212121">• Design workflow</text>
+  <text x="85" y="335" font-size="12" fill="#212121">• Train volunteers</text>
+  <text x="85" y="370" font-size="12" font-weight="bold" fill="#2e7d32">✓ Deliverable:</text>
+  <text x="85" y="390" font-size="11" fill="#388e3c">Centralized Google Sheet</text>
+  <text x="85" y="408" font-size="11" fill="#388e3c">intake system ready</text>
+
+  <!-- Arrow -->
+  <line x1="320" y1="400" x2="400" y2="400" stroke="#1565c0" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Phase 2 -->
+  <rect x="420" y="140" width="260" height="520" fill="white" stroke="#1565c0" stroke-width="2.5" rx="10" filter="url(#shadow)"/>
+  <rect x="420" y="140" width="260" height="60" fill="#bbdefb"/>
+  <text x="550" y="160" font-size="16" text-anchor="middle" font-weight="bold" fill="#0d47a1">Phase 2: Automation</text>
+  <text x="550" y="182" font-size="12" text-anchor="middle" fill="#1565c0">Weeks 3-4</text>
+
+  <text x="440" y="230" font-size="13" font-weight="bold" fill="#1565c0">🤖 Tasks:</text>
+  <text x="445" y="255" font-size="12" fill="#212121">• Set up Tidio/Crisp</text>
+  <text x="445" y="275" font-size="12" fill="#212121">• Configure Zapier</text>
+  <text x="445" y="295" font-size="12" fill="#212121">• Build chatbot flow</text>
+  <text x="445" y="315" font-size="12" fill="#212121">• Test Google Sheet</text>
+  <text x="445" y="335" font-size="12" fill="#212121">• QA automation</text>
+  <text x="445" y="370" font-size="12" font-weight="bold" fill="#2e7d32">✓ Deliverable:</text>
+  <text x="445" y="390" font-size="11" fill="#1565c0">Conversational chatbot</text>
+  <text x="445" y="408" font-size="11" fill="#1565c0">integrated with Sheet</text>
+
+  <!-- Arrow -->
+  <line x1="680" y1="400" x2="760" y2="400" stroke="#1565c0" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Phase 3 -->
+  <rect x="780" y="140" width="260" height="520" fill="white" stroke="#f57c00" stroke-width="2.5" rx="10" filter="url(#shadow)"/>
+  <rect x="780" y="140" width="260" height="60" fill="#ffe0b2"/>
+  <text x="910" y="160" font-size="16" text-anchor="middle" font-weight="bold" fill="#e65100">Phase 3: Smart Features</text>
+  <text x="910" y="182" font-size="12" text-anchor="middle" fill="#f57c00">Weeks 5-6</text>
+
+  <text x="800" y="230" font-size="13" font-weight="bold" fill="#f57c00">✨ Tasks:</text>
+  <text x="805" y="255" font-size="12" fill="#212121">• Add SMS reminders</text>
+  <text x="805" y="275" font-size="12" fill="#212121">• Build auto-tagging logic</text>
+  <text x="805" y="295" font-size="12" fill="#212121">• Waitlist management</text>
+  <text x="805" y="315" font-size="12" fill="#212121">• Athena EMR prep</text>
+  <text x="805" y="335" font-size="12" fill="#212121">• Pilot testing</text>
+  <text x="800" y="370" font-size="12" font-weight="bold" fill="#2e7d32">✓ Deliverable:</text>
+  <text x="800" y="390" font-size="11" fill="#f57c00">Full workflow ready</text>
+  <text x="800" y="408" font-size="11" fill="#f57c00">for clinic launch</text>
+
+  <!-- Arrow -->
+  <line x1="1040" y1="400" x2="1120" y2="400" stroke="#1565c0" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Phase 4 -->
+  <rect x="1140" y="140" width="100" height="520" fill="white" stroke="#2e7d32" stroke-width="2.5" rx="10" filter="url(#shadow)"/>
+  <rect x="1140" y="140" width="100" height="60" fill="#c8e6c9"/>
+  <text x="1190" y="165" font-size="12" text-anchor="middle" font-weight="bold" fill="#1b5e20">Phase 4:</text>
+  <text x="1190" y="182" font-size="12" text-anchor="middle" fill="#1b5e20">Launch</text>
+
+  <text x="1190" y="250" font-size="11" text-anchor="middle" fill="#212121">• Go live</text>
+  <text x="1190" y="275" font-size="11" text-anchor="middle" fill="#212121">• Monitor</text>
+  <text x="1190" y="300" font-size="11" text-anchor="middle" fill="#212121">• Gather feedback</text>
+  <text x="1190" y="350" font-size="10" text-anchor="middle" fill="#2e7d32" font-weight="bold">Ongoing:</text>
+  <text x="1190" y="375" font-size="10" text-anchor="middle" fill="#2e7d32">Support &amp;</text>
+  <text x="1190" y="395" font-size="10" text-anchor="middle" fill="#2e7d32">optimization</text>
+
+  <!-- Bottom timeline summary -->
+  <rect x="60" y="685" width="1160" height="25" fill="#e8f5e9" stroke="#388e3c" stroke-width="1" rx="4"/>
+  <text x="640" y="703" font-size="13" text-anchor="middle" fill="#1b5e20" font-weight="bold">6-Week Implementation • Low Risk • Iterative Improvements • Ready to Scale</text>
+</svg>

@@ -1,0 +1,60 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="4" flood-color="#00000044"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="#f5f5f5"/>
+
+  <!-- Header -->
+  <rect width="1280" height="100" fill="#c62828"/>
+  <text x="640" y="65" font-size="48" text-anchor="middle" font-weight="bold" fill="white">The Problem: Manual Scheduling Chaos</text>
+
+  <!-- Issue 1 -->
+  <rect x="60" y="140" width="360" height="520" fill="white" stroke="#c62828" stroke-width="2" rx="12" filter="url(#shadow)"/>
+  <circle cx="250" cy="180" r="40" fill="#c62828"/>
+  <text x="250" y="190" font-size="36" text-anchor="middle" fill="white">1</text>
+  <text x="250" y="240" font-size="20" text-anchor="middle" font-weight="bold" fill="#212121">No Centralized System</text>
+  <text x="250" y="280" font-size="14" text-anchor="middle" fill="#616161">• Scattered emails across multiple inboxes</text>
+  <text x="250" y="310" font-size="14" text-anchor="middle" fill="#616161">• Requests managed in Excel spreadsheets</text>
+  <text x="250" y="340" font-size="14" text-anchor="middle" fill="#616161">• No single source of truth</text>
+  <text x="250" y="370" font-size="14" text-anchor="middle" fill="#616161">• Impossible to track appointment status</text>
+  <text x="250" y="400" font-size="14" text-anchor="middle" fill="#616161">• No audit trail</text>
+  <rect x="80" y="440" width="340" height="60" fill="#ffebee" stroke="#c62828" stroke-width="1" rx="8"/>
+  <text x="250" y="465" font-size="13" text-anchor="middle" font-weight="bold" fill="#b71c1c">Impact: Lost appointments, frustrated patients</text>
+  <text x="250" y="490" font-size="12" text-anchor="middle" fill="#c62828">Reduced clinic capacity utilization</text>
+
+  <!-- Issue 2 -->
+  <rect x="460" y="140" width="360" height="520" fill="white" stroke="#f57c00" stroke-width="2" rx="12" filter="url(#shadow)"/>
+  <circle cx="640" cy="180" r="40" fill="#f57c00"/>
+  <text x="640" y="190" font-size="36" text-anchor="middle" fill="white">2</text>
+  <text x="640" y="240" font-size="20" text-anchor="middle" font-weight="bold" fill="#212121">Manual Data Entry Errors</text>
+  <text x="640" y="280" font-size="14" text-anchor="middle" fill="#616161">• Volunteer transcription errors</text>
+  <text x="640" y="310" font-size="14" text-anchor="middle" fill="#616161">• Duplicate appointment requests</text>
+  <text x="640" y="340" font-size="14" text-anchor="middle" fill="#616161">• Missed emails</text>
+  <text x="640" y="370" font-size="14" text-anchor="middle" fill="#616161">• Inconsistent data formatting</text>
+  <text x="640" y="400" font-size="14" text-anchor="middle" fill="#616161">• EMR data quality issues</text>
+  <rect x="480" y="440" width="340" height="60" fill="#fff3e0" stroke="#f57c00" stroke-width="1" rx="8"/>
+  <text x="640" y="465" font-size="13" text-anchor="middle" font-weight="bold" fill="#e65100">Impact: Inaccurate records, EMR corruption</text>
+  <text x="640" y="490" font-size="12" text-anchor="middle" fill="#f57c00">Patient safety &amp; compliance risks</text>
+
+  <!-- Issue 3 -->
+  <rect x="860" y="140" width="360" height="520" fill="white" stroke="#f44336" stroke-width="2" rx="12" filter="url(#shadow)"/>
+  <circle cx="1040" cy="180" r="40" fill="#f44336"/>
+  <text x="1040" y="190" font-size="36" text-anchor="middle" fill="white">3</text>
+  <text x="1040" y="240" font-size="20" text-anchor="middle" font-weight="bold" fill="#212121">Volunteer Burnout</text>
+  <text x="1040" y="280" font-size="14" text-anchor="middle" fill="#616161">• Tedious manual checking of emails</text>
+  <text x="1040" y="310" font-size="14" text-anchor="middle" fill="#616161">• Manual phone confirmation calls</text>
+  <text x="1040" y="340" font-size="14" text-anchor="middle" fill="#616161">• Time-consuming data entry</text>
+  <text x="1040" y="370" font-size="14" text-anchor="middle" fill="#616161">• Unpredictable provider schedules</text>
+  <text x="1040" y="400" font-size="14" text-anchor="middle" fill="#616161">• No workflow efficiency</text>
+  <rect x="880" y="440" width="340" height="60" fill="#ffebee" stroke="#f44336" stroke-width="1" rx="8"/>
+  <text x="1040" y="465" font-size="13" text-anchor="middle" font-weight="bold" fill="#c62828">Impact: High turnover, quality issues</text>
+  <text x="1040" y="490" font-size="12" text-anchor="middle" fill="#f44336">Reduced clinic scaling potential</text>
+
+  <!-- Bottom note -->
+  <rect x="60" y="690" width="1160" height="20" fill="#fce4ec" stroke="#c62828" stroke-width="1"/>
+  <text x="640" y="706" font-size="13" text-anchor="middle" fill="#c62828" font-weight="bold">Result: Unpredictable schedules, appointment delays, frustrated patients &amp; volunteers</text>
+</svg>

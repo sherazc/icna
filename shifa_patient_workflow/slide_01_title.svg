@@ -1,0 +1,21 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1976d2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1565c0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="url(#grad1)"/>
+
+  <!-- Title -->
+  <text x="640" y="200" font-size="64" text-anchor="middle" font-weight="bold" fill="white">Patient Scheduling System</text>
+  <text x="640" y="280" font-size="48" text-anchor="middle" fill="white">Modernization Initiative</text>
+
+  <!-- Subtitle -->
+  <text x="640" y="380" font-size="32" text-anchor="middle" fill="#e3f2fd">Shifa Clinic — Building a Centralized, Automated Platform</text>
+
+  <!-- Footer -->
+  <text x="640" y="680" font-size="20" text-anchor="middle" fill="#b3e5fc">Presented by: ABRAR CHAUDHRY, MD | Medical Director</text>
+</svg>

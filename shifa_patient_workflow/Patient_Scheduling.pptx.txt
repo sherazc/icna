@@ -1,0 +1,124 @@
+Patient Scheduling at Shifa Clinic
+ABRAR CHAUDHRY, MD
+MEDICAL DIRECTOR SHIFA CLINIC
+
+Current Workflow
+Patient calls Shifa Clinic Phone: 770-300-0067 requests an appointment.
+They are asked to email their request to shifaappointmentduluth@icnarelief.org
+Volunteer checks email request and logs them in excel manually
+Provider confirms availability 1-2 weeks in advance
+1-2 days before scheduled appointment, a volunteer calls the patient for availability and confirms their appointment.
+Once confirmed, patient’s info is placed in Athena EMR for that specific provider. 
+
+
+Shifa Clinic Days, Locations, Hours & Census
+Shifa Clinic Duluth. Every Thursday and Saturday 10am to 2pm
+    Address: 3650 Savannah Pl Dr, Duluth, GA 30096
+Shifa Clinic Decatur. Every Sunday 10am to 2pm
+   Address: 4773 Memorial Dr, Decatur, GA 30032
+Total Census per week ~35-50 patients
+    Thursday and Sunday 8-12 patients
+    Saturdays 20-30 patients
+
+
+Clinics/Specialties: 
+Primary Care Clinic
+Cardiology Clinic
+Neurology Clinic
+Orthopedics Clinic
+Women’s Clinic
+Pain Clinic
+Psychiatry Clinic
+Rheumatology Clinic
+In-house Ultrasound
+In-house Transthoracic Echocardiogram.
+
+Issues/Problems: 
+Unpredictable and inconsistent provider schedules
+Provider confirmation 1-2 weeks prior to the clinic day
+Availability once a month on random days.
+Last minute availability changes/cancelations
+Emails gets missed, accessed by multiple volunteers
+
+Issues/Problems: 
+Manual data entry errors
+Missed/Duplicate email requests
+Appointment cancelation calls/emails
+Due to above mentioned issues, we cannot directly schedule appointments in Athena EMR
+Currently we have no centralized system
+
+
+Goal: To seek pleasure of Allah SWT
+Use our Jamaat’s talent and resources
+Create an inhouse system 
+Standardize and Centralize intake request process
+Improve scheduling efficiency
+Reduce volunteer workload
+
+
+
+Proposed/Requested Solutions:
+AI voice agent conversation that logs patient’s appointment request in “database.” Natural language processing, understanding if patient needs appointment for PCP vs neurology.
+Chatbot conversation that logs patient’s appointment request in “database.”
+AI Agents, Portals and other solutions are not available for free.
+Google Forms, defined fields, filled out by patients or volunteers.
+Any other proposed solutions by you?
+
+
+AI-Powered "Request-Only" Portals 
+Asynchronous Booking: Patients use a conversational AI (like Voiceoc or Interactly.ai) to submit their symptoms and preferred times. The AI does not book a slot; instead, it creates a "request" or "case" in your dashboard for staff to approve once provider availability is confirmed.
+Clinical Triage: Systems like Fabric Health or Clearstep can perform AI triage during the request phase. 
+
+
+AI Medical Receptionists (Phone-to-Waitlist) 
+24/7 Intake: AI agents (e.g., Assort Health or Retell AI) can answer calls, gather patient demographics, reason for appointment, and manually "push" that data into your “database.”
+
+
+Add “Light AI” Without Paying for Platforms
+Use: Free Chatbot Intake
+Tidio (free tier) 
+Crisp.chat 
+Landbot (low cost) 
+Embed on a simple webpage:
+“Request an Appointment” 
+Conversational flow: 
+“What brings you in?” 
+“Which clinic do you need?” 
+Then send responses → Google Sheet
+
+
+Apply “AI-like” logic 
+In your Google Sheet, add logic columns:
+If “chest pain” → flag = urgent 
+If “headache + neuro” → neurology queue 
+If “routine checkup” → PCP 
+Use simple formulas OR 
+Zapier / Make (free tiers)
+
+
+Solve No-Shows + Cancellations
+Fix with:
+Automated SMS reminders (24–48 hrs before) 
+Include: 
+“Reply C to cancel” 
+Then:
+Automatically move patient → waitlist 
+Offer slot to next patient
+
+
+Suggested Final Workflow 
+Patient: 
+Fills form OR chatbot OR calls (volunteer fills form) 
+Data: 
+Goes → Google Sheet (central database) 
+System: 
+Auto-tags urgency + specialty 
+Staff: 
+Reviews queue 
+Providers: 
+Submit availability 
+Staff: 
+Releases slots → SMS blast to matched patients 
+Patient: 
+Confirms → THEN enters into Athena
+
