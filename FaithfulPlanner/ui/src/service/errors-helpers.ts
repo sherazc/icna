@@ -80,6 +80,13 @@ export const validateSaveEmployeeForm = (employee: UserProfileDto, confirmPasswo
 };
 
 
+export const validatePasswordUpdateForm = (): ErrorDto[] => {
+  const errors: ErrorDto[] = [];
+  
+  return errors;
+};
+
+
 export const toScErrorResponses = (error: unknown, fallbackError?: string): ErrorDto[] => {
   if (!error && fallbackError) return [{ message: fallbackError }];
   if (!error && !fallbackError) return [];

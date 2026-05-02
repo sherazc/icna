@@ -219,3 +219,9 @@ export type PasswordUpdateDto = {
     currentPassword?: string;
     newPassword: string;
 };
+
+export const defaultPasswordUpdateDto = (): PasswordUpdateDto => ({
+    userProfileId: 0,
+    currentPassword: "",
+    newPassword: ""
+});

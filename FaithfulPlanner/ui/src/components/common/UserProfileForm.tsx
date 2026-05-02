@@ -6,14 +6,13 @@ import { AppContext } from "../../store/context";
 import { ErrorField } from "./ErrorField";
 import { ErrorForm } from "./ErrorForm";
 import { Loading } from "./Loading";
-import type { 
-  EmployeeGroupTypesDto, 
-  EmployeeTypeDto, 
-  ErrorDto, 
-  FormState, 
-  UserProfileDto 
+import { 
+  FormState,
+  type EmployeeGroupTypesDto, 
+  type EmployeeTypeDto, 
+  type ErrorDto, 
+  type UserProfileDto 
 } from "../../service/service-types";
-import { FormState as FormStateEnum } from "../../service/service-types";
 import { touchNumber } from "../../service/utilities";
 import { toScErrorResponses, validateSaveEmployeeForm } from "../../service/errors-helpers";
 
@@ -37,7 +36,7 @@ export const UserProfileForm: React.FC<Props> = ({
   const { employeeGroupId } = useParams<{ employeeGroupId?: string }>();
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [userProfile, setUserProfile] = useState<UserProfileDto>(initialUserProfile);
-  const [formState, setFormState] = useState<FormState>(FormStateEnum.FRESH);
+  const [formState, setFormState] = useState<FormState>(FormState.FRESH);
   const [formErrors, setFormErrors] = useState<ErrorDto[]>([]);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
@@ -79,7 +78,7 @@ export const UserProfileForm: React.FC<Props> = ({
     setFormErrors([]);
 
     try {
-      setFormState(FormStateEnum.IN_PROGRESS);
+      setFormState(FormState.IN_PROGRESS);
       const saveEmployeeForm: UserProfileDto = {
         ...userProfile,
         employeeGroupId: touchNumber(employeeGroupId),
@@ -94,7 +93,7 @@ export const UserProfileForm: React.FC<Props> = ({
             saveEmployeeForm
           );
           console.log(savedEmployee);
-          setFormState(FormStateEnum.SUCCESSFUL);
+          setFormState(FormState.SUCCESSFUL);
           setFormErrors([]);
           setConfirmPassword("");
           onSaveSuccess?.(savedEmployee);
@@ -102,19 +101,19 @@ export const UserProfileForm: React.FC<Props> = ({
           const apiErrors: ErrorDto[] = toScErrorResponses(error);
           submitErrors.push(...apiErrors);
           submitErrors.push({ message: "Failed to save" });
-          setFormState(FormStateEnum.FAILED);
+          setFormState(FormState.FAILED);
           setFormErrors(submitErrors);
           onSaveError?.(submitErrors);
         }
       } else {
-        setFormState(FormStateEnum.FAILED);
+        setFormState(FormState.FAILED);
         setFormErrors(submitErrors);
         onSaveError?.(submitErrors);
       }
     } catch (error) {
       const apiErrors: ErrorDto[] = toScErrorResponses(error);
       submitErrors.push(...apiErrors);
-      setFormState(FormStateEnum.FAILED);
+      setFormState(FormState.FAILED);
       setFormErrors(submitErrors);
       onSaveError?.(submitErrors);
     }
