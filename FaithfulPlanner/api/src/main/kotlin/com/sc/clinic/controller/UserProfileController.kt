@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController
 class UserProfileController(val userProfileService: UserProfileService,
                             private val permissionValidator: PermissionValidator
 ) {
-
     @GetMapping
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun getAllUserProfiles(@PathVariable companyId: Long) = userProfileService.getAllActive(companyId)

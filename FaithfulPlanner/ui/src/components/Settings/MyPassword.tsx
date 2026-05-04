@@ -8,6 +8,7 @@ import {
 } from "../../service/service-types";
 import { ErrorField } from "../common/ErrorField";
 import { Loading } from "../common/Loading";
+import { validatePasswordUpdateForm } from "../../service/errors-helpers";
 
 export const MyPassword = () => {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
@@ -31,13 +32,15 @@ export const MyPassword = () => {
     setFormErrors([]);
     const errors: ErrorDto[] = [];
     setFormState(FormState.IN_PROGRESS);
-    // TODO start from here
-    errors.push(validatePasswordUpdateForm(passwordDto, confirmPassword));
+    errors.push(...validatePasswordUpdateForm(passwordDto, confirmPassword));
 
     if (errors.length < 1) {
-        console.log("");
+      console.log("Making API call");
+      setFormState(FormState.SUCCESSFUL);
+    } else {
+      setFormState(FormState.FAILED);
+      setFormErrors(errors);
     }
-    
   };
 
   return (
@@ -45,33 +48,33 @@ export const MyPassword = () => {
       <h3>My Password</h3>
       <Loading formState={formState} />
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-      <div className="formGroup">
-        <label htmlFor="currentPassword">Current Password</label>
-        <input id="currentPassword" type="text"
-          onChange={onChangeText}
-          value={passwordDto.currentPassword}
-        />
-        <ErrorField errors={formErrors} fieldName="currentPassword" />
-      </div>
-      <div className="formGroup">
-        <label htmlFor="newPassword">New Password</label>
-        <input id="newPassword" type="text"
-          onChange={onChangeText}
-          value={passwordDto.newPassword}
-        />
-        <ErrorField errors={formErrors} fieldName="newPassword" />
-      </div>
-      <div className="formGroup">
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input id="confirmPassword" type="password" onChange={(event) => setConfirmPassword(event.target.value)}
-          value={confirmPassword} />
-        <ErrorField errors={formErrors} fieldName="confirmPassword" />
-      </div>
+        <div className="formGroup">
+          <label htmlFor="currentPassword">Current Password</label>
+          <input id="currentPassword" type="text"
+            onChange={onChangeText}
+            value={passwordDto.currentPassword}
+          />
+          <ErrorField errors={formErrors} fieldName="currentPassword" />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="newPassword">New Password</label>
+          <input id="newPassword" type="text"
+            onChange={onChangeText}
+            value={passwordDto.newPassword}
+          />
+          <ErrorField errors={formErrors} fieldName="userPassword" />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input id="confirmPassword" type="text" onChange={(event) => setConfirmPassword(event.target.value)}
+            value={confirmPassword} />
+          <ErrorField errors={formErrors} fieldName="confirmPassword" />
+        </div>
 
-      <div>
-        <button type="submit" className="btn btnPrimary fullWidth marginTop15">Save</button>
-      </div>
-    </form>
+        <div>
+          <button type="submit" className="btn btnPrimary fullWidth marginTop15">Save</button>
+        </div>
+      </form>
     </div>
   )
 }

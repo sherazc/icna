@@ -1,5 +1,5 @@
 import { isoDateToJsDate } from "./DateService";
-import type { EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, OperationDayDto, RegistrationDto, UserProfileDto } from "./service-types";
+import type { EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, OperationDayDto, PasswordUpdateDto, RegistrationDto, UserProfileDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -63,29 +63,34 @@ export const validateSaveEmployeeForm = (employee: UserProfileDto, confirmPasswo
   }
 
   if (!employee.id) {
-    if (!employee.userPassword || employee.userPassword.length < 5) {
-      addFieldError(errors, {
-        field: "userPassword",
-        message: "Invalid password. Password must be 5 or more characters long.",
-      });
-    } else if (employee.userPassword && employee.userPassword !== confirmPassword) {
-      addFieldError(errors, {
-        field: "confirmPassword",
-        message: "Password and confirm password do not match.",
-      });
-    }
+    errors.push(...validatePassword(employee.userPassword, confirmPassword));
+  }
+  return errors;
+};
+
+export const validatePasswordUpdateForm = (passwordDto: PasswordUpdateDto, confirmPassword?: string): ErrorDto[] => {
+  const errors: ErrorDto[] = [];
+  errors.push(...validatePassword(passwordDto.newPassword, confirmPassword));
+  return errors;
+};
+
+const validatePassword = (userPassword?: string, confirmPassword?: string): ErrorDto[] => {
+  const errors: ErrorDto[] = [];
+
+  if (!userPassword || userPassword.length < 5) {
+    addFieldError(errors, {
+      field: "userPassword",
+      message: "Invalid password. Password must be 5 or more characters long.",
+    });
+  } else if (userPassword && userPassword !== confirmPassword) {
+    addFieldError(errors, {
+      field: "confirmPassword",
+      message: "Password and confirm password do not match.",
+    });
   }
 
   return errors;
 };
-
-
-export const validatePasswordUpdateForm = (): ErrorDto[] => {
-  const errors: ErrorDto[] = [];
-  
-  return errors;
-};
-
 
 export const toScErrorResponses = (error: unknown, fallbackError?: string): ErrorDto[] => {
   if (!error && fallbackError) return [{ message: fallbackError }];
@@ -132,12 +137,12 @@ export const validateEmployeeGroupsForm = (groups: EmployeeGroupTypesDto[]): Err
 
   const emptyGroupNameIndex = groups.findIndex(g => !g.groupName || g.groupName.length < 1);
   if (emptyGroupNameIndex > -1) {
-    errors.push({message: "Employee group name can not be empty."})
+    errors.push({ message: "Employee group name can not be empty." })
   }
 
   const emptyTypeNameIndex = types.findIndex(t => !t.typeName || t.typeName.length < 1);
   if (emptyTypeNameIndex > -1) {
-    errors.push({message: "Employee type name can not be empty."})
+    errors.push({ message: "Employee type name can not be empty." })
   }
   return errors;
 };
@@ -148,7 +153,7 @@ export const validateSaveOperationDayForm = (operationDay: OperationDayDto): Err
   if (serviceDate) {
     const today = new Date();
     if (!operationDay.id && serviceDate.setHours(0, 0, 0, 0) < today.setHours(0, 0, 0, 0)) {
-      errors.push({message: "Operation date can not be in past."})
+      errors.push({ message: "Operation date can not be in past." })
     }
   }
   return errors;
