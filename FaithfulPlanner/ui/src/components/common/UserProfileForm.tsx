@@ -161,7 +161,7 @@ export const UserProfileForm: React.FC<Props> = ({
       <div className="formGroup">
         <label htmlFor="email">Email</label>
         <input id="email" type="email" onChange={onChangeText}
-          value={userProfile.email} />
+          value={userProfile.email ?? ""} />
         <ErrorField errors={formErrors} fieldName="email" />
       </div>
 
@@ -170,13 +170,13 @@ export const UserProfileForm: React.FC<Props> = ({
         <div className="formGroup">
           <label htmlFor="userPassword">Password</label>
           <input id="userPassword" type="password" onChange={onChangeText}
-            value={userProfile.userPassword} />
+            value={userProfile.userPassword ?? ""} />
           <ErrorField errors={formErrors} fieldName="userPassword" />
         </div>
         <div className="formGroup">
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input id="confirmPassword" type="password" onChange={(event) => setConfirmPassword(event.target.value)}
-            value={confirmPassword} />
+            value={confirmPassword ?? ""} />
           <ErrorField errors={formErrors} fieldName="confirmPassword" />
         </div>
       </>}
@@ -184,19 +184,19 @@ export const UserProfileForm: React.FC<Props> = ({
       <div className="formGroup">
         <label htmlFor="firstName">First Name</label>
         <input id="firstName" type="text" onChange={onChangeText}
-          value={userProfile.firstName} />
+          value={userProfile.firstName ?? ""} />
         <ErrorField errors={formErrors} fieldName="firstName" />
       </div>
       <div className="formGroup">
         <label htmlFor="lastName">Last Name</label>
         <input id="lastName" type="text" onChange={onChangeText}
-          value={userProfile.lastName} />
+          value={userProfile.lastName ?? ""} />
         <ErrorField errors={formErrors} fieldName="lastName" />
       </div>
       <div className="formGroup">
         <label htmlFor="phoneNumber">Phone Number</label>
         <input id="phoneNumber" type="text" onChange={onChangeText}
-          value={userProfile.phoneNumber} />
+          value={userProfile.phoneNumber ?? ""} />
         <ErrorField errors={formErrors} fieldName="phoneNumber" />
       </div>
       {employeeGroupTypes && userProfile.employeeTypes && buildColumns(employeeGroupTypes, userProfile.employeeTypes)}

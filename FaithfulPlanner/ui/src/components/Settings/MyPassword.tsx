@@ -8,7 +8,8 @@ import {
 } from "../../service/service-types";
 import { ErrorField } from "../common/ErrorField";
 import { Loading } from "../common/Loading";
-import { validatePasswordUpdateForm } from "../../service/errors-helpers";
+import { toScErrorResponses, validatePasswordUpdateForm } from "../../service/errors-helpers";
+import { ErrorForm } from "../common/ErrorForm";
 
 export const MyPassword = () => {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
@@ -35,17 +36,29 @@ export const MyPassword = () => {
     errors.push(...validatePasswordUpdateForm(passwordDto, confirmPassword));
 
     if (errors.length < 1) {
-      console.log("Making API call");
-      setFormState(FormState.SUCCESSFUL);
+      try {
+        await clinicApis.passwordUpdate(authUserToken.companyId, passwordDto)
+        setPasswordDto(defaultPasswordUpdateDto());
+        setFormState(FormState.SUCCESSFUL);
+
+      } catch (error) {
+        const apiErrors: ErrorDto[] = toScErrorResponses(error);
+        errors.push(...apiErrors);
+        errors.push({ message: "Failed to update password" });
+        setFormState(FormState.FAILED);
+      }
+      
     } else {
       setFormState(FormState.FAILED);
-      setFormErrors(errors);
     }
+    setFormErrors(errors);
   };
 
   return (
     <div className="card">
       <h3>My Password</h3>
+      {formState === FormState.SUCCESSFUL && "Successfully updated password"}
+      <ErrorForm formState={formState} errors={formErrors} />
       <Loading formState={formState} />
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
         <div className="formGroup">

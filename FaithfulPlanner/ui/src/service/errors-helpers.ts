@@ -70,6 +70,14 @@ export const validateSaveEmployeeForm = (employee: UserProfileDto, confirmPasswo
 
 export const validatePasswordUpdateForm = (passwordDto: PasswordUpdateDto, confirmPassword?: string): ErrorDto[] => {
   const errors: ErrorDto[] = [];
+
+  if (!passwordDto.currentPassword) {
+    addFieldError(errors, {
+      field: "currentPassword",
+      message: "Enter current password.",
+    });
+  }
+
   errors.push(...validatePassword(passwordDto.newPassword, confirmPassword));
   return errors;
 };
