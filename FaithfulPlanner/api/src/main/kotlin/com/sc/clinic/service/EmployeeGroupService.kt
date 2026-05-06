@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service
 class EmployeeGroupService(
     val employeeGroupRepository: EmployeeGroupRepository,
     val employeeTypeService: EmployeeTypeService,
-    private val companyService: CompanyService,
-    private val userProfileService: UserProfileService
+    private val companyService: CompanyService
 ) {
     fun countGroups(companyId: Long) = employeeGroupRepository.countByCompanyId(companyId)
 
@@ -91,16 +90,5 @@ class EmployeeGroupService(
         if (!groupAndTypeFound) {
             employeeTypeService.deleteType(existingTypeId)
         }
-    }
-
-    fun switchGroup(userProfileId: Long, employeeGroupId: Long): UserProfileDto {
-        val userProfile = userProfileService.getUser(userProfileId) ?: throw ScException("User not found")
-        val group = getGroup(employeeGroupId) ?: throw ScException("Employee group not found")
-        userProfile.employeeTypes = mutableSetOf()
-        userProfile.employeeGroup = group
-        val savedUserProfile = userProfileService.saveUser(userProfile)
-        val savedUserProfileDto = UserProfileDto(savedUserProfile)
-        savedUserProfileDto.userPassword = null
-        return savedUserProfileDto
     }
 }
