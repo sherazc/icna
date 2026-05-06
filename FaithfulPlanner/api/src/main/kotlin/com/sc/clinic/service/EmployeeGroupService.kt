@@ -1,9 +1,11 @@
 package com.sc.clinic.service
 
 import com.sc.clinic.dto.EmployeeGroupTypesDto
+import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.EmployeeGroup
 import com.sc.clinic.entity.EmployeeType
+import com.sc.clinic.exception.ScException
 import com.sc.clinic.repository.EmployeeGroupRepository
 import org.springframework.stereotype.Service
 
@@ -11,7 +13,8 @@ import org.springframework.stereotype.Service
 class EmployeeGroupService(
     val employeeGroupRepository: EmployeeGroupRepository,
     val employeeTypeService: EmployeeTypeService,
-    private val companyService: CompanyService
+    private val companyService: CompanyService,
+    private val userProfileService: UserProfileService
 ) {
     fun countGroups(companyId: Long) = employeeGroupRepository.countByCompanyId(companyId)
 
@@ -88,5 +91,16 @@ class EmployeeGroupService(
         if (!groupAndTypeFound) {
             employeeTypeService.deleteType(existingTypeId)
         }
+    }
+
+    fun switchGroup(userProfileId: Long, employeeGroupId: Long): UserProfileDto {
+        val userProfile = userProfileService.getUser(userProfileId) ?: throw ScException("User not found")
+        val group = getGroup(employeeGroupId) ?: throw ScException("Employee group not found")
+        userProfile.employeeTypes = mutableSetOf()
+        userProfile.employeeGroup = group
+        val savedUserProfile = userProfileService.saveUser(userProfile)
+        val savedUserProfileDto = UserProfileDto(savedUserProfile)
+        savedUserProfileDto.userPassword = null
+        return savedUserProfileDto
     }
 }

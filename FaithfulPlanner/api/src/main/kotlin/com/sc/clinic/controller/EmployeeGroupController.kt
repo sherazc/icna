@@ -1,6 +1,7 @@
 package com.sc.clinic.controller
 
 import com.sc.clinic.dto.EmployeeGroupTypesDto
+import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.service.EmployeeGroupService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RequestMapping("/api/company/{companyId}/employee-group")
@@ -38,6 +40,14 @@ class EmployeeGroupController(
 
     @PostMapping("/types")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
-    fun save(@PathVariable companyId: Long, @RequestBody employeeGroupsTypes: List<EmployeeGroupTypesDto>)
-        = employeeGroupService.save(companyId, employeeGroupsTypes)
+    fun save(@PathVariable companyId: Long, @RequestBody employeeGroupsTypes: List<EmployeeGroupTypesDto>) =
+        employeeGroupService.save(companyId, employeeGroupsTypes)
+
+    @PostMapping("/switch-group")
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
+    fun switchGroup(
+        @PathVariable companyId: Long,
+        @RequestParam(required = true) userProfileId: Long,
+        @RequestParam(required = true) employeeGroupId: Long
+    ): UserProfileDto = employeeGroupService.switchGroup(userProfileId, employeeGroupId)
 }

@@ -52,7 +52,7 @@ class UserProfileService(
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
         employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
-        val savedUser = userProfileRepository.save(userProfileEntity)
+        val savedUser = saveUser(userProfileEntity)
         return UserProfileDto(savedUser)
     }
 
@@ -63,7 +63,7 @@ class UserProfileService(
         val userProfileEntity = getOrCreateUserProfileEntity(company, group, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
-        val savedUser = userProfileRepository.save(userProfileEntity)
+        val savedUser = saveUser(userProfileEntity)
         return UserProfileDto(savedUser)
     }
 
@@ -147,24 +147,26 @@ class UserProfileService(
         val deleteCountSchedule = scheduleService.deleteUserAllSchedules(userProfileId)
         logger.info("Deleted schedules. UserProfileId={}, Deleted Count={}", userProfileId, deleteCountSchedule)
 
-        userProfileRepository.findById(userProfileId).orElse(null)
+        getUser(userProfileId)
             ?.let { up ->
                 up.employeeTypes = mutableSetOf()
                 up.userRoles = mutableSetOf()
-                userProfileRepository.save(up)
+                saveUser(up)
                 userProfileRepository.delete(up)
             }
         return true;
     }
 
-    fun getUser(userProfileId: Long): UserProfileDto? {
-        val user = userProfileRepository.findById(userProfileId).orElse(null)
+    fun getUserDto(userProfileId: Long): UserProfileDto? {
+        val user = getUser(userProfileId)
         return if (user == null) null else {
             val userDto = UserProfileDto(user)
             userDto.userPassword = null
             userDto
         }
     }
+
+    fun getUser(userProfileId: Long): UserProfile? = userProfileRepository.findById(userProfileId).orElse(null)
 
     fun passwordUpdate(passwordUpdateDto: PasswordUpdateDto): Boolean {
         passwordValidator.validatePassword(passwordUpdateDto.newPassword)
@@ -177,7 +179,9 @@ class UserProfileService(
 
         val encodedNewPassword = passwordEncoder.encode(passwordUpdateDto.newPassword)
         userProfile.userPassword = encodedNewPassword
-        val savedUserProfile = userProfileRepository.save(userProfile)
+        val savedUserProfile = saveUser(userProfile)
         return savedUserProfile.userPassword == encodedNewPassword
     }
+
+    fun saveUser(userProfileEntity: UserProfile): UserProfile = userProfileRepository.save(userProfileEntity)
 }

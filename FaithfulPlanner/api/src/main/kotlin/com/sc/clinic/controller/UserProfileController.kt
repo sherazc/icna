@@ -2,14 +2,12 @@ package com.sc.clinic.controller
 
 import com.sc.clinic.dto.PasswordUpdateDto
 import com.sc.clinic.dto.UserProfileDto
-import com.sc.clinic.dto.UserProfileUserDetails
 import com.sc.clinic.service.UserProfileService
 import com.sc.clinic.service.model.AuthRole
 import com.sc.clinic.service.model.JwtClaim
 import com.sc.clinic.service.security.PermissionValidator
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -38,7 +36,7 @@ class UserProfileController(val userProfileService: UserProfileService,
     @GetMapping("/{userProfileId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun getUser(@PathVariable companyId: Long, @PathVariable userProfileId: Long): ResponseEntity<UserProfileDto> =
-        userProfileService.getUser(userProfileId) ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
+        userProfileService.getUserDto(userProfileId) ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
 
     @GetMapping("/group/{groupId}")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
