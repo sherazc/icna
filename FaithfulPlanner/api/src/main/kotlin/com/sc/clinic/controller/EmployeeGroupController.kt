@@ -45,7 +45,7 @@ class EmployeeGroupController(
     fun save(@PathVariable companyId: Long, @RequestBody employeeGroupsTypes: List<EmployeeGroupTypesDto>) =
         employeeGroupService.save(companyId, employeeGroupsTypes)
 
-    @PostMapping("/switch-group")
+    @GetMapping("/switch-group")
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun switchGroup(
         @PathVariable companyId: Long,
