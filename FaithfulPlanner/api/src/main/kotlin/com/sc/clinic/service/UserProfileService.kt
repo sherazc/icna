@@ -185,9 +185,9 @@ class UserProfileService(
 
     fun saveUser(userProfileEntity: UserProfile): UserProfile = userProfileRepository.save(userProfileEntity)
 
-    fun switchGroup(userProfileId: Long, employeeGroupId: Long): UserProfileDto {
+    fun switchGroup(groupId: Long?, userProfileId: Long): UserProfileDto {
         val userProfile = getUser(userProfileId) ?: throw ScException("User not found")
-        val group = employeeGroupService.getGroup(employeeGroupId) ?: throw ScException("Employee group not found")
+        val group: EmployeeGroup? = groupId ?.let{ employeeGroupService.getGroup(groupId) }
         userProfile.employeeTypes = mutableSetOf()
         userProfile.employeeGroup = group
         val savedUserProfile = saveUser(userProfile)

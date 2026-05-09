@@ -1,4 +1,5 @@
 import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, PasswordUpdateDto, RegistrationDto, ScheduleDto, UserProfileDto } from "../service-types";
+import { touchString } from "../utilities";
 import {
   addHeadersInRequest,
   callApiIntercept,
@@ -100,6 +101,17 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     },
     getEmployeeGroupTypes: (companyId: number, groupId: number): Promise<EmployeeGroupTypesDto> => {
       const endpoint = `${endpoints.epEmployeeGroup(companyId)}/${groupId}/types`;
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    switchGroup: (companyId: number, userProfileId: number, groupId?: number): Promise<UserProfileDto> => {
+      const params = new URLSearchParams();
+      if (groupId) {
+        params.append('groupId', touchString(groupId));
+      }
+      params.append('userProfileId', touchString(userProfileId));
+      const endpoint = `${endpoints.epEmployeeGroup(companyId)}/switch-group?${params.toString()}`;
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);

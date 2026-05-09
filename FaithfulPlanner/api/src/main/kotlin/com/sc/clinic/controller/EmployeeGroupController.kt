@@ -49,7 +49,7 @@ class EmployeeGroupController(
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun switchGroup(
         @PathVariable companyId: Long,
+        @RequestParam(required = false) groupId: Long?,
         @RequestParam(required = true) userProfileId: Long,
-        @RequestParam(required = true) employeeGroupId: Long
-    ): UserProfileDto = userProfileService.switchGroup(userProfileId, employeeGroupId)
+    ): UserProfileDto = userProfileService.switchGroup(groupId, userProfileId)
 }

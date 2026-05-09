@@ -21,6 +21,7 @@ import { ErrorForm } from "./common/ErrorForm";
 import { Loading } from "./common/Loading";
 import { UserProfileForm } from "./common/UserProfileForm";
 import { Authenticated } from "./auth/Authenticated";
+import { SwitchGroup } from "./common/SwitchGroup";
 
 interface Props { }
 
@@ -38,6 +39,10 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [modalEmployee, setModalEmployee] = useState<UserProfileDto>(defaultUserProfileDto());
   const [showModalEmployeeModal, setShowModalEmployeeModal] = useState<boolean>(false);
 
+  // Switch Group Modal Form
+  const [showSwitchGroupModal, setShowSwitchGroupModal] = useState<boolean>(false);
+
+
   const [modalEmployeeDeleteState, setModalEmployeeDeleteFormState] = useState<FormState>(FormState.FRESH);
   const [modalEmployeeDeleteErrors, setModalEmployeeDeleteErrors] = useState<ErrorDto[]>([]);
 
@@ -49,16 +54,20 @@ export const EmployeeGroup: React.FC<Props> = () => {
   };
 
   const onNewEmployee = () => {
-    console.log(`New employee`);
     setModalEmployee({ ...defaultUserProfileDto(), companyId: authUserToken.companyId });
     setShowModalEmployeeModal(true);
   };
 
   const onEditModalEmployee = (employee: UserProfileDto) => {
-    console.log(`Edit employee ${employee.id}`, employee);
     setModalEmployee(employee);
     setShowModalEmployeeModal(true);
   };
+
+  const onSwitchGroup = (employee: UserProfileDto) => {
+    // setModalEmployee(employee);
+    setShowSwitchGroupModal(true);
+  };
+
 
   const onDeleteEmployee = (employee: UserProfileDto) => {
     console.log(`Delete employee ${employee.id}`);
@@ -114,6 +123,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
       <Authenticated shouldHaveRoles={["ADMIN"]}>
         <td>
           <button className="actionBtn actionBtnEdit" onClick={() => onEditModalEmployee(employee)}>Edit</button>
+          <button className="actionBtn actionBtnEdit" onClick={() => onSwitchGroup(employee)}>Switch Group</button>
           <button className="actionBtn actionBtnDelete" onClick={() => onDeleteEmployee(employee)}>Delete</button>
         </td>
       </Authenticated>
@@ -183,6 +193,22 @@ export const EmployeeGroup: React.FC<Props> = () => {
           onSaveSuccess={handleSaveSuccess}
           onCancel={() => setShowModalEmployeeModal(false)}
         />
+      </Modal>
+
+      <Modal config={{
+        title: "Switch Group",
+        modalType: ModalType.DEFAULT
+      }} show={showSwitchGroupModal} setShow={setShowSwitchGroupModal}>
+        <SwitchGroup/>
+        {/*         
+        <UserProfileForm
+          initialUserProfile={modalEmployee}
+          employeeGroupTypes={employeeGroupTypes}
+          showPasswordFields={!modalEmployee.id}
+          onSaveSuccess={handleSaveSuccess}
+          onCancel={() => setShowModalEmployeeModal(false)}
+        />
+         */}
       </Modal>
     </div>
   );
