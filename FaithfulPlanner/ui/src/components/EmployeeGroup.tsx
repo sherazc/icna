@@ -40,6 +40,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [showModalEmployeeModal, setShowModalEmployeeModal] = useState<boolean>(false);
 
   // Switch Group Modal Form
+  const [switchGroupModalEmployee, setSwitchGroupModalEmployee] = useState<UserProfileDto>(defaultUserProfileDto());
   const [showSwitchGroupModal, setShowSwitchGroupModal] = useState<boolean>(false);
 
 
@@ -64,10 +65,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
   };
 
   const onSwitchGroup = (employee: UserProfileDto) => {
-    // setModalEmployee(employee);
+    setSwitchGroupModalEmployee(employee);
     setShowSwitchGroupModal(true);
   };
-
 
   const onDeleteEmployee = (employee: UserProfileDto) => {
     console.log(`Delete employee ${employee.id}`);
@@ -78,7 +78,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const handleSaveSuccess = async (savedEmployee: UserProfileDto) => {
     console.log(savedEmployee);
     setShowModalEmployeeModal(false);
+    setShowSwitchGroupModal(false);
     setModalEmployee(defaultUserProfileDto());
+    setSwitchGroupModalEmployee(defaultUserProfileDto());
     const employeesResponse = await clinicApis.getUserProfileEmployeeTypes(
       authUserToken.companyId,
       touchNumber(employeeGroupId)
@@ -199,16 +201,11 @@ export const EmployeeGroup: React.FC<Props> = () => {
         title: "Switch Group",
         modalType: ModalType.DEFAULT
       }} show={showSwitchGroupModal} setShow={setShowSwitchGroupModal}>
-        <SwitchGroup/>
-        {/*         
-        <UserProfileForm
-          initialUserProfile={modalEmployee}
-          employeeGroupTypes={employeeGroupTypes}
-          showPasswordFields={!modalEmployee.id}
+        <SwitchGroup
+          userProfile={switchGroupModalEmployee}
           onSaveSuccess={handleSaveSuccess}
-          onCancel={() => setShowModalEmployeeModal(false)}
+          onCancel={() => setShowSwitchGroupModal(false)}
         />
-         */}
       </Modal>
     </div>
   );
