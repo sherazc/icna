@@ -40,7 +40,7 @@ export const MyPassword = () => {
         await clinicApis.passwordUpdate(authUserToken.companyId, passwordDto)
         setPasswordDto(defaultPasswordUpdateDto());
         setFormState(FormState.SUCCESSFUL);
-
+        setConfirmPassword("");
       } catch (error) {
         const apiErrors: ErrorDto[] = toScErrorResponses(error);
         errors.push(...apiErrors);

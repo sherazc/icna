@@ -33,7 +33,6 @@ export const UserProfileForm: React.FC<Props> = ({
   onSaveError,
   onCancel,
 }) => {
-  const { employeeGroupId } = useParams<{ employeeGroupId?: string }>();
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [userProfile, setUserProfile] = useState<UserProfileDto>(initialUserProfile);
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);

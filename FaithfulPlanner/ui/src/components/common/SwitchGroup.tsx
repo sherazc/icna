@@ -1,3 +1,4 @@
+import "./SwitchGroup.css"
 import type React from "react";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../store/context";
@@ -62,9 +63,11 @@ export const SwitchGroup: React.FC<Props> = ({
 
       {userProfile.employeeTypes.length > 0 &&
         <div>
-          <strong>Warning: </strong>
-          If you switch group, then it will remove all {userProfile.firstName}'s employee types.
-          <ul>
+          <div className="warning-section">
+            <strong>Warning: </strong>
+            If you switch group, then it will remove all {userProfile.firstName}'s employee types.
+          </div>
+          <ul className="employee-types-list">
             {userProfile.employeeTypes.map(et => (
               <li key={et.id}>{et.typeName}</li>
             ))}
