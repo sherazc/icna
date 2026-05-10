@@ -1,7 +1,6 @@
 import "./UserProfileForm.css";
 import type React from "react";
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
 import { AppContext } from "../../store/context";
 import { ErrorField } from "./ErrorField";
 import { ErrorForm } from "./ErrorForm";
