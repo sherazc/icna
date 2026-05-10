@@ -202,7 +202,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
         modalType: ModalType.DEFAULT
       }} show={showSwitchGroupModal} setShow={setShowSwitchGroupModal}>
         <SwitchGroup
-          userProfile={switchGroupModalEmployee}
+          initialUserProfile={switchGroupModalEmployee}
           onSaveSuccess={handleSaveSuccess}
           onCancel={() => setShowSwitchGroupModal(false)}
         />
