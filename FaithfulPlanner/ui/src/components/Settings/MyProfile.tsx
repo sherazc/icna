@@ -3,8 +3,13 @@ import { defaultEmployeeGroupTypeDto, defaultUserProfileDto, type EmployeeGroupT
 import { AppContext } from "../../store/context";
 import { UserProfileForm } from "../common/UserProfileForm";
 
-export const MyProfile = () => {
-  const [{ authUserToken, clinicApis }] = useContext(AppContext);
+interface Props {
+  initialUserProfile: UserProfileDto;
+  onSaveSuccess?: (savedEmployee: UserProfileDto) => void;
+}
+
+export const MyProfile: React.FC<Props> = ({ initialUserProfile, onSaveSuccess }) => {
+  const [{ clinicApis }] = useContext(AppContext);
   const [userProfile, setUserProfile] = useState<UserProfileDto>(defaultUserProfileDto());
   const [employeeGroupTypes, setEmployeeGroupTypes] = useState<EmployeeGroupTypesDto>(defaultEmployeeGroupTypeDto());
 
@@ -14,19 +19,15 @@ export const MyProfile = () => {
   };
 
   useEffect(() => {
-    const loadData = async () => {
-      const userProfileResponse = await clinicApis.getUserProfile(authUserToken.companyId, authUserToken.userProfileId)
-      setUserProfile(userProfileResponse);
-    };
-
-    if (authUserToken.companyId && authUserToken.userProfileId) {
-      loadData();
+    if (initialUserProfile) {
+      setUserProfile(initialUserProfile);
     }
-  }, [authUserToken]);
+  }, [initialUserProfile]);
+
 
 
   useEffect(() => {
-    if(userProfile && userProfile.companyId && userProfile.employeeGroupId) {
+    if (userProfile && userProfile.companyId && userProfile.employeeGroupId) {
       loadEmployeeGroups(userProfile.companyId, userProfile.employeeGroupId);
     }
   }, [userProfile]);
@@ -38,7 +39,10 @@ export const MyProfile = () => {
       <UserProfileForm
         initialUserProfile={userProfile}
         showPasswordFields={false}
-        onSaveSuccess={(savedEmployee) => setUserProfile(savedEmployee)}
+        onSaveSuccess={(savedUser) => {
+          setUserProfile(savedUser);
+          onSaveSuccess?.(savedUser);
+        }}
         employeeGroupTypes={employeeGroupTypes}
       />
     </div>

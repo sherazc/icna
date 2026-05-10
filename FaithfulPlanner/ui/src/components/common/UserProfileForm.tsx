@@ -81,7 +81,7 @@ export const UserProfileForm: React.FC<Props> = ({
       setFormState(FormState.IN_PROGRESS);
       const saveEmployeeForm: UserProfileDto = {
         ...userProfile,
-        employeeGroupId: touchNumber(employeeGroupId),
+        // employeeGroupId: touchNumber(employeeGroupId),
       };
 
       submitErrors.push(...validateSaveEmployeeForm(saveEmployeeForm, confirmPassword));

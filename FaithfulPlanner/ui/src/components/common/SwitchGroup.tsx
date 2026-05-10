@@ -1,27 +1,28 @@
 import type React from "react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../store/context";
 import { touchNumber } from "../../service/utilities";
-import { FormState, type ErrorDto, type UserProfileDto } from "../../service/service-types";
+import { defaultUserProfileDto, FormState, type ErrorDto, type UserProfileDto } from "../../service/service-types";
 import { ErrorForm } from "./ErrorForm";
 import { Loading } from "./Loading";
 import { toScErrorResponses } from "../../service/errors-helpers";
 
 interface Props {
-  userProfile: UserProfileDto;
+  initialUserProfile: UserProfileDto;
   onSaveSuccess?: (savedEmployee: UserProfileDto) => void;
   onCancel?: () => void;
 }
 
 export const SwitchGroup: React.FC<Props> = ({
+  initialUserProfile,
   onSaveSuccess,
-  onCancel,
-  userProfile
+  onCancel
 }) => {
   const [{ employeeGroups, clinicApis }] = useContext(AppContext);
   const [selectedGroupId, setSelectedGroupId] = useState<number>();
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
   const [formErrors, setFormErrors] = useState<ErrorDto[]>([]);
+  const [userProfile, setUserProfile] = useState<UserProfileDto>(defaultUserProfileDto());
 
   const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
@@ -29,12 +30,16 @@ export const SwitchGroup: React.FC<Props> = ({
   };
 
   const handleSave = async () => {
+    setFormState(FormState.IN_PROGRESS)
     const companyId: number = touchNumber(userProfile.companyId)
     const userId: number = touchNumber(userProfile.id);
+    setFormErrors([]);
 
     try {
       const savedUser = await clinicApis.switchGroup(companyId, userId, selectedGroupId);
       onSaveSuccess?.(savedUser);
+      setUserProfile(savedUser);
+      setFormState(FormState.SUCCESSFUL);
     } catch (error) {
       const apiErrors: ErrorDto[] = toScErrorResponses(error);
       setFormState(FormState.FAILED);
@@ -42,10 +47,18 @@ export const SwitchGroup: React.FC<Props> = ({
     }
   };
 
+  useEffect(() => {
+    if (initialUserProfile) {
+      setFormState(FormState.FRESH);
+      setUserProfile(initialUserProfile);
+    }
+  }, [initialUserProfile]);
+
   return (
     <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
       <ErrorForm formState={formState} errors={formErrors} />
       <Loading formState={formState} />
+      {formState === FormState.SUCCESSFUL && "Saved!"}
 
       {userProfile.employeeTypes.length > 0 &&
         <div>
@@ -64,9 +77,9 @@ export const SwitchGroup: React.FC<Props> = ({
         <select id="groupId" onChange={onChangeSelect} required>
           <option value="">Select Group</option>
           {employeeGroups
-            .filter(g => g.id !== userProfile.employeeGroupId)
+            // .filter(g => g.id !== userProfile.employeeGroupId)
             .map((group) => (
-              <option key={group.id} value={group.id}>{group.groupName}</option>
+              <option key={group.id} value={group.id} selected={group.id === userProfile.employeeGroupId}>{group.groupName}</option>
             ))}
         </select>
       </div>
