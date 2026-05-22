@@ -53,6 +53,7 @@ class UserProfileService(
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
         employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
         val savedUser = saveUser(userProfileEntity)
+        savedUser.userPassword = null
         return UserProfileDto(savedUser)
     }
 
@@ -64,6 +65,7 @@ class UserProfileService(
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
         val savedUser = saveUser(userProfileEntity)
+        savedUser.userPassword = null
         return UserProfileDto(savedUser)
     }
 
