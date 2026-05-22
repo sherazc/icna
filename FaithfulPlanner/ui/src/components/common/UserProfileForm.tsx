@@ -14,6 +14,7 @@ import {
 } from "../../service/service-types";
 import { touchNumber } from "../../service/utilities";
 import { toScErrorResponses, validateSaveEmployeeForm } from "../../service/errors-helpers";
+import { useParams } from "react-router-dom";
 
 interface Props {
   initialUserProfile: UserProfileDto;
@@ -32,6 +33,7 @@ export const UserProfileForm: React.FC<Props> = ({
   onSaveError,
   onCancel,
 }) => {
+  const { employeeGroupId } = useParams<{ employeeGroupId?: string }>();
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
   const [userProfile, setUserProfile] = useState<UserProfileDto>(initialUserProfile);
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
@@ -79,8 +81,12 @@ export const UserProfileForm: React.FC<Props> = ({
       setFormState(FormState.IN_PROGRESS);
       const saveEmployeeForm: UserProfileDto = {
         ...userProfile,
-        // employeeGroupId: touchNumber(employeeGroupId),
       };
+
+      // Set group from the URL if new user do not have group ID
+      if (!saveEmployeeForm.employeeGroupId && employeeGroupId) {
+        saveEmployeeForm.employeeGroupId = touchNumber(employeeGroupId);
+      }
 
       submitErrors.push(...validateSaveEmployeeForm(saveEmployeeForm, confirmPassword));
 
