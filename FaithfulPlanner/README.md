@@ -17,11 +17,34 @@ Provides the backend API of application.
 It is spring boot application, configured to use kotlin and java. Kotlin is the preferred language.
 File structure is a standard spring boot application
 
-### /api/src/main/resources/db/migration
-Flyway migration scripts
+- `/api/src/main/resources/db/migration`: Flyway migration scripts
+- `api/src/main/resources/static`: Public static files. This is where ReactJS UI built compiled files will be copied
+- `/api/src/main/kotlin/com/sc/clinic/configuration`: Configurations
+- `/api/src/main/kotlin/com/sc/clinic/controller`: Restful controllers
+- `/api/src/main/kotlin/com/sc/clinic/dto`: DTOs
+- `/api/src/main/kotlin/com/sc/clinic/entity`: Entities
+- `/api/src/main/kotlin/com/sc/clinic/exception`: Exceptions
+- `/api/src/main/kotlin/com/sc/clinic/repository`: Repositories
+- `/api/src/main/kotlin/com/sc/clinic/service`: Services
+- `/api/src/main/kotlin/com/sc/clinic/util`: Utilities
+
 
 ## /ui
 React JS application. 
+
+- `ui/src/__tests__`: Unit Tests
+- `ui/src/assets`: 
+- `ui/src/components`: ReactJS Components
+- `ui/src/hook`: ReactJS Hooks
+- `ui/src/layouts`: Application layout
+- `ui/src/navigation`: Left rail navigation
+- `ui/src/routes`: react-router-dom's Path to Component mapping
+- `ui/src/service`: UI Services. I have tried to keep UI components clean from business logic code.
+- `ui/src/store`: Application State. Created using ReactJS's createContext, and useReducer.
+- `ui/src/App.css`: 
+- `ui/src/App.tsx`: Wraps application with Application State's <AppProvider> and react-router-dom's <BrowserRouter> 
+- `ui/src/index.css`: 
+- `ui/src/main.tsx`: 
 
 ## /bruno
 Uses bruno for end to end testing.
