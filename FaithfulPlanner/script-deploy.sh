@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-./build.sh
+./script-build.sh
 cd infrastructure
 ./step1_deploy.sh
 cd ..

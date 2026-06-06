@@ -1,19 +1,2 @@
-Initial HTML/JS/CSS UI design for my app
-/Users/sheraz/dev/icna/FaithfulPlanner/FaithfulPlanner_UI_Design/index.html
+# Requirement
 
-
-ReactJS app where I am using UI design to create components
-/Users/sheraz/dev/icna/FaithfulPlanner/ui
-
-
-Backend spring boot application
-/Users/sheraz/dev/icna/FaithfulPlanner/api
-
-TODO:
-
-User Profile update
-Organization Detail update
-Password update
-Send email framework
-
-Theme settings
