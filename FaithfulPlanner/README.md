@@ -23,10 +23,6 @@ Flyway migration scripts
 ## /ui
 React JS application. 
 
-## /script-build.sh
-Builds both /api and /ui. Copies built /ui in /api/src/main/resources/static.
-Uses Gradle to build final /api/build/libs/api-#.#.jar application.
-
 ## /bruno
 Uses bruno for end to end testing.
 
@@ -39,4 +35,15 @@ Uploads built application on the server. It should be executed on developer/depl
 ### infrastructure/clinic/step2_install.sh
 Install application on the servers. It should be executed on the server
 
+## /script-build.sh
+Builds both /api and /ui. Copies built /ui in /api/src/main/resources/static.
+Uses Gradle to build /api/build/libs/api-#.#.jar executable jar.
+
+## /script-postgres-container.sh
+Link to /infrastructure/clinic/script-postgres-container.sh
+
+Used to create postgres db docker container for local testing and server app installation.
+
+## /script-deploy.sh
+Builds and deploys application on the server. Calls ./script-build.sh and ./infrastructure/step1_deploy.sh
 
