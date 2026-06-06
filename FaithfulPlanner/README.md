@@ -70,3 +70,8 @@ Used to create postgres db docker container for local testing and server app ins
 ## /script-deploy.sh
 Builds and deploys application on the server. Calls ./script-build.sh and ./infrastructure/step1_deploy.sh
 
+## /documents
+Application design
+
+## /FaithfulPlanner_UI_Design
+AI generated UI design
