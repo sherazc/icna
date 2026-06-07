@@ -1,8 +1,6 @@
 # Faithful Planner
 
-Faithful Planner manage scheduling for organizations or events that do not have a predefined operation dates.
-
-It can be used for weekend clinics, weekend schools, conventions, volunteers management an event and many more...
+Faithful Planner manages, scheduling for organizations or events that do not have a predefined or regular operation dates. It can be used for weekend clinics, weekend schools, conventions, volunteer events and many more...
 
 These features makes it a diverse scheduling service.
 - Register an organization or an event.
@@ -13,8 +11,7 @@ These features makes it a diverse scheduling service.
 - Operation date could be assigned with the employee types needed to operate the day. 
 
 ## /api
-Provides the backend API of application. 
-It is spring boot application, configured to use kotlin and java. Kotlin is the preferred language.
+Backend API Application. Standard spring boot application, configured to use kotlin and java. Kotlin is the preferred language.
 File structure is a standard spring boot application
 
 - `/api/src/main/resources/db/migration`: Flyway migration scripts
@@ -30,7 +27,7 @@ File structure is a standard spring boot application
 
 
 ## /ui
-React JS application. 
+Frontend UI. React JS, Typescript application. 
 
 - `ui/src/__tests__`: Unit Tests
 - `ui/src/assets`: 
