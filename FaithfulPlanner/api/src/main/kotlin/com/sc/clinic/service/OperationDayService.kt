@@ -15,7 +15,8 @@ import java.time.LocalDate
 class OperationDayService(
     private val scheduleService: ScheduleService,
     private val operationRepository: OperationDayRepository,
-    private val companyService: CompanyService
+    private val companyService: CompanyService,
+    private val employeeTypeService: EmployeeTypeService
 ) {
 
     companion object {
@@ -44,6 +45,8 @@ class OperationDayService(
             val company = companyService.findById(companyId)
             OperationDay(null, company, serviceDate, operationDayDto.notes)
         }
+
+        operationDay.employeeTypes = employeeTypeService.employeeTypesByDto(operationDayDto.employeeTypes)
 
         val savedOperationDay = operationRepository.save(operationDay)
         logger.debug("Successfully saved OperationDay. Id:${operationDay.id}")

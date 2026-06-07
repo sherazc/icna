@@ -51,7 +51,7 @@ class UserProfileService(
         val userProfileEntity = getOrCreateUserProfileEntity(company, null, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
         userRoleService.addRole(userProfileEntity, AuthRole.ADMIN)
-        employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
+        userProfileEntity.employeeTypes = employeeTypeService.employeeTypesByDto(user.employeeTypesDto)
         val savedUser = saveUser(userProfileEntity)
         return UserProfileDto(savedUser)
     }
@@ -62,7 +62,7 @@ class UserProfileService(
         val group: EmployeeGroup? = user.employeeGroupId?.let { employeeGroupService.getGroup(it) }
         val userProfileEntity = getOrCreateUserProfileEntity(company, group, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
-        employeeTypeService.updateEmployeeTypes(userProfileEntity, user.employeeTypesDto)
+        userProfileEntity.employeeTypes = employeeTypeService.employeeTypesByDto(user.employeeTypesDto)
         val savedUser = saveUser(userProfileEntity)
         savedUser.userPassword = null
         return UserProfileDto(savedUser)

@@ -20,12 +20,11 @@ class EmployeeTypeService(
     fun findDtoByEmployeeGroupId(employeeGroupId: Long) =
         findByEmployeeGroupId(employeeGroupId).map { EmployeeTypeDto(it) }
 
-    fun updateEmployeeTypes(userProfileEntity: UserProfile, userEmployeeTypes: List<EmployeeTypeDto>) {
-        val employeeTypeIds = userEmployeeTypes
+    fun employeeTypesByDto(employeeTypes: List<EmployeeTypeDto>): MutableSet<EmployeeType> {
+        val employeeTypeIds = employeeTypes
             .filter { it.id != null }
             .map { it.id!! }
-        val employeeTypes = employeeTypeRepository.findAllById(employeeTypeIds).toMutableSet()
-        userProfileEntity.employeeTypes = employeeTypes
+        return employeeTypeRepository.findAllById(employeeTypeIds).toMutableSet()
     }
 
     fun deleteType(typeId: Long?) {
