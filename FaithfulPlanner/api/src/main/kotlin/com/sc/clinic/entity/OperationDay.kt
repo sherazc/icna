@@ -18,5 +18,13 @@ data class OperationDay(
     var serviceDate: LocalDate,
 
     @Column(name = "notes")
-    var notes: String?
+    var notes: String?,
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "m2m_operation_day_employee_type",
+        joinColumns = [JoinColumn(name = "operation_day_id")],
+        inverseJoinColumns = [JoinColumn(name = "employee_type_id")]
+    )
+    var employeeTypes: MutableSet<EmployeeType> = mutableSetOf()
 )
