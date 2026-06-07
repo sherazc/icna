@@ -12,7 +12,8 @@ open class OpDayDetailDto(
     var serviceDateString: String = "",
     @param:JsonProperty("notes")
     var notes: String? = "",
-    var groups: MutableList<OpDayDetailEmployeeGroupDto> = mutableListOf()
+    var groups: MutableList<OpDayDetailEmployeeGroupDto> = mutableListOf(),
+    var employeeTypes: List<EmployeeTypeDto> = mutableListOf()
 ) {
     // Getters are used to deserialize JSON/Jackson
     fun getServiceDateFormatted(): String {
