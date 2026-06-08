@@ -55,6 +55,7 @@ class OpDayDetailService(
                 operationDay.companyId,
                 operationDay.serviceDateString,
                 operationDay.notes)
+            odd.employeeTypes = operationDay.employeeTypes
             populateGroups(companyId, groups, odd)
             odd
         }
