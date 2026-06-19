@@ -78,6 +78,37 @@ export default function Dashboard() {
     setModalDeleteErrors(submitErrors);
   };
 
+  const buildColumns = (groupTypes: EmployeeGroupTypesDto) => {
+    const middle = Math.ceil(groupTypes.employeeTypes.length / 2);
+    const column1 = groupTypes.employeeTypes.slice(0, middle);
+    const column2 = groupTypes.employeeTypes.slice(middle);
+
+    return (
+      <div className="columnsContainer">
+        <div className="column">
+          {column1.map(t => (
+            <div key={t.id} className="columnItem">
+              <label className="checkboxLabel">
+                <input type="checkbox" id={`type-${t.id}`} />
+                <span>{t.typeName}</span>
+              </label>
+            </div>
+          ))}
+        </div>
+        <div className="column">
+          {column2.map(t => (
+            <div key={t.id} className="columnItem">
+              <label className="checkboxLabel">
+                <input type="checkbox" id={`type-${t.id}`} />
+                <span>{t.typeName}</span>
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setModalOpDayDetail(prevData => ({ ...prevData, [id]: value }));
@@ -316,6 +347,12 @@ export default function Dashboard() {
               value={modalOpDayDetail.notes} placeholder="Notes" />
             <ErrorField errors={modalOpDayDetailErrors} fieldName="notes" />
           </div>
+          {allGroupTypes.map(groupType => (
+            <div key={groupType.id}>
+              <h4>{groupType.groupName}</h4>
+              {buildColumns(groupType)}
+            </div>
+          ))}
         </form>
       </Modal>
     </div>
