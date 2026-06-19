@@ -3,6 +3,7 @@ import {
   defaultOpDayDetailDto,
   FormState,
   ModalType,
+  type EmployeeGroupTypesDto,
   type ErrorDto,
   type OpDayDetailDto,
   type OperationDayDto
@@ -38,6 +39,7 @@ export default function Dashboard() {
   const [showOpDayDetail, setShowOpDayDetail] = useState<boolean>(false);
   const [modalOpDayDetailFormState, setModalOpDayDetailFormState] = useState<FormState>(FormState.FRESH);
   const [modalOpDayDetailErrors, setModalOpDayDetailErrors] = useState<ErrorDto[]>([]);
+  const [allGroupTypes, setAllGroupTypes] = useState<EmployeeGroupTypesDto[]>([]);
 
   // Delete Modal
   const [modalDeleteOpDayDetail, setModalDeleteOpDayDetail] = useState<OpDayDetailDto>(defaultOpDayDetailDto());
@@ -87,7 +89,16 @@ export default function Dashboard() {
     } else {
       setModalOpDayDetail({ ...defaultOpDayDetailDto(), companyId: authUserToken.companyId });
     }
-    setModalOpDayDetailFormState(FormState.FRESH);
+    if (allGroupTypes.length < 1) {
+      // Loading All Employee Group time for the first time
+      setModalOpDayDetailFormState(FormState.IN_PROGRESS);
+      clinicApis.getEmployeeGroupsTypes(authUserToken.companyId).then(gTypes => {
+        setAllGroupTypes(gTypes)
+        setModalOpDayDetailFormState(FormState.FRESH);
+      });
+    } else {
+      setModalOpDayDetailFormState(FormState.FRESH);
+    }
     setModalOpDayDetailErrors([]);
     setShowOpDayDetail(true);
   };
