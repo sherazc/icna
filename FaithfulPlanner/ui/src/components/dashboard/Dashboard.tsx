@@ -255,7 +255,7 @@ export default function Dashboard() {
         }
       </div>
 
-      {/* <!-- Day Details --> */}
+      {/* Day Details */}
       {getSelectedDetail(opDayDetailSelected) && (
         <div className="card dashboardDayDetails">
           <div className="flex flex-start gap-1fullWidth">
@@ -275,6 +275,7 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+      {/* Delete Modal */}
       <Modal config={{
         title: "Delete Operation Day",
         yesFunction: () => deleteOpDayDetail(touchNumber(modalDeleteOpDayDetail.companyId), touchNumber(modalDeleteOpDayDetail.id)),
