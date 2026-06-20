@@ -4,6 +4,7 @@ import {
   FormState,
   ModalType,
   type EmployeeGroupTypesDto,
+  type EmployeeTypeDto,
   type ErrorDto,
   type OpDayDetailDto,
   type OperationDayDto
@@ -78,6 +79,9 @@ export default function Dashboard() {
     setModalDeleteErrors(submitErrors);
   };
 
+  const isEmployeeTypeSelected = (selectedEmployeeTypes: EmployeeTypeDto[], employeeType: EmployeeTypeDto): boolean => 
+     selectedEmployeeTypes.findIndex(t => t.id === employeeType.id) > -1;
+
   const buildColumns = (groupTypes: EmployeeGroupTypesDto) => {
     const middle = Math.ceil(groupTypes.employeeTypes.length / 2);
     const column1 = groupTypes.employeeTypes.slice(0, middle);
@@ -89,7 +93,7 @@ export default function Dashboard() {
           {column1.map(t => (
             <div key={t.id} className="columnItem">
               <label className="checkboxLabel">
-                <input type="checkbox" id={`type-${t.id}`} />
+                <input type="checkbox" id={`type-${t.id}`}  checked={isEmployeeTypeSelected(modalOpDayDetail.employeeTypes, t)}/>
                 <span>{t.typeName}</span>
               </label>
             </div>
@@ -99,7 +103,7 @@ export default function Dashboard() {
           {column2.map(t => (
             <div key={t.id} className="columnItem">
               <label className="checkboxLabel">
-                <input type="checkbox" id={`type-${t.id}`} />
+                <input type="checkbox" id={`type-${t.id}`} checked={isEmployeeTypeSelected(modalOpDayDetail.employeeTypes, t)}/>
                 <span>{t.typeName}</span>
               </label>
             </div>
