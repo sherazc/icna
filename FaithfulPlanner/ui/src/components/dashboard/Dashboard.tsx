@@ -79,13 +79,25 @@ export default function Dashboard() {
     setModalDeleteErrors(submitErrors);
   };
 
-  const isEmployeeTypeSelected = (selectedEmployeeTypes: EmployeeTypeDto[], employeeType: EmployeeTypeDto): boolean => 
-     selectedEmployeeTypes.findIndex(t => t.id === employeeType.id) > -1;
+  const isEmployeeTypeSelected = (selectedEmployeeTypes: EmployeeTypeDto[], employeeType: EmployeeTypeDto): boolean =>
+    selectedEmployeeTypes.findIndex(t => t.id === employeeType.id) > -1;
 
-  const buildColumns = (groupTypes: EmployeeGroupTypesDto) => {
-    const middle = Math.ceil(groupTypes.employeeTypes.length / 2);
-    const column1 = groupTypes.employeeTypes.slice(0, middle);
-    const column2 = groupTypes.employeeTypes.slice(middle);
+
+  const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
+    types.map(t => (
+      <div key={t.id} className="columnItem">
+        <label className="checkboxLabel">
+          <input type="checkbox" id={`type-${t.id}`} checked={isEmployeeTypeSelected(selectedTypes, t)} />
+          <span>{t.typeName}</span>
+        </label>
+      </div>
+    ))
+  )
+
+  const buildColumns = (types: EmployeeGroupTypesDto, selectedTypes: EmployeeTypeDto[]) => {
+    const middle = Math.ceil(types.employeeTypes.length / 2);
+    const column1 = types.employeeTypes.slice(0, middle);
+    const column2 = types.employeeTypes.slice(middle);
 
     return (
       <div className="columnsContainer">
@@ -93,7 +105,7 @@ export default function Dashboard() {
           {column1.map(t => (
             <div key={t.id} className="columnItem">
               <label className="checkboxLabel">
-                <input type="checkbox" id={`type-${t.id}`}  checked={isEmployeeTypeSelected(modalOpDayDetail.employeeTypes, t)}/>
+                <input type="checkbox" id={`type-${t.id}`} checked={isEmployeeTypeSelected(selectedTypes, t)} />
                 <span>{t.typeName}</span>
               </label>
             </div>
@@ -103,7 +115,7 @@ export default function Dashboard() {
           {column2.map(t => (
             <div key={t.id} className="columnItem">
               <label className="checkboxLabel">
-                <input type="checkbox" id={`type-${t.id}`} checked={isEmployeeTypeSelected(modalOpDayDetail.employeeTypes, t)}/>
+                <input type="checkbox" id={`type-${t.id}`} checked={isEmployeeTypeSelected(selectedTypes, t)} />
                 <span>{t.typeName}</span>
               </label>
             </div>
@@ -354,7 +366,7 @@ export default function Dashboard() {
           {allGroupTypes.map(groupType => (
             <div key={groupType.id}>
               <h4>{groupType.groupName}</h4>
-              {buildColumns(groupType)}
+              {buildColumns(groupType, modalOpDayDetail.employeeTypes)}
             </div>
           ))}
         </form>
