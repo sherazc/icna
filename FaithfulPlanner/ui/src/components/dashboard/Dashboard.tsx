@@ -101,26 +101,8 @@ export default function Dashboard() {
 
     return (
       <div className="columnsContainer">
-        <div className="column">
-          {column1.map(t => (
-            <div key={t.id} className="columnItem">
-              <label className="checkboxLabel">
-                <input type="checkbox" id={`type-${t.id}`} checked={isEmployeeTypeSelected(selectedTypes, t)} />
-                <span>{t.typeName}</span>
-              </label>
-            </div>
-          ))}
-        </div>
-        <div className="column">
-          {column2.map(t => (
-            <div key={t.id} className="columnItem">
-              <label className="checkboxLabel">
-                <input type="checkbox" id={`type-${t.id}`} checked={isEmployeeTypeSelected(selectedTypes, t)} />
-                <span>{t.typeName}</span>
-              </label>
-            </div>
-          ))}
-        </div>
+        <div className="column">{buildColumn(column1, selectedTypes)}</div>
+        <div className="column">{buildColumn(column2, selectedTypes)}</div>
       </div>
     );
   };
