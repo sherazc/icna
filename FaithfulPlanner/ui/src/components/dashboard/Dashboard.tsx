@@ -86,7 +86,7 @@ export default function Dashboard() {
   const onEmployeeTypeChange = (employeeType: EmployeeTypeDto, isChecked: boolean) => {
 
     setModalOpDayDetail(previousOpDayDetail => {
-      const currentTypes = [...previousOpDayDetail.employeeTypes];
+      const currentTypes = [...previousOpDayDetail.requiredEmployeeTypes];
       if (isChecked) {
         // Add type if not already present
         if (!currentTypes.some(t => t.id === employeeType.id)) {
@@ -96,10 +96,10 @@ export default function Dashboard() {
         // Remove type if unchecked
         return {
           ...previousOpDayDetail,
-          employeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
+          requiredEmployeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
         };
       }
-      return { ...previousOpDayDetail, employeeTypes: currentTypes };
+      return { ...previousOpDayDetail, requiredEmployeeTypes: currentTypes };
     });
   };
 
@@ -178,8 +178,8 @@ export default function Dashboard() {
               op.notes = savedOperationDay.notes;
               op.serviceDateDayOfWeek = isoToDayOfWeek(touchString(savedOperationDay.serviceDateString));
               op.serviceDateFormatted = isoToMonthDayYear(touchString(savedOperationDay.serviceDateString));
-              if (savedOperationDay.employeeTypes) {
-                op.employeeTypes = [...savedOperationDay.employeeTypes];
+              if (savedOperationDay.requiredEmployeeTypes) {
+                op.requiredEmployeeTypes = [...savedOperationDay.requiredEmployeeTypes];
               }
             }
           })
@@ -375,7 +375,7 @@ export default function Dashboard() {
           {allGroupTypes.map(groupType => (
             <div key={groupType.id}>
               <h4>{groupType.groupName}</h4>
-              {buildColumns(groupType, modalOpDayDetail.employeeTypes)}
+              {buildColumns(groupType, modalOpDayDetail.requiredEmployeeTypes)}
             </div>
           ))}
         </form>

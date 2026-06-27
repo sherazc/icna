@@ -146,13 +146,13 @@ export type OperationDayDto = {
     companyId?: number,
     serviceDateString?: string,
     notes?: string,
-    employeeTypes: EmployeeTypeDto[]
+    requiredEmployeeTypes: EmployeeTypeDto[]
 };
 
 export const defaultOperationDayDto = (): OperationDayDto => ({
     serviceDateString: "",
     notes: "",
-    employeeTypes: []
+    requiredEmployeeTypes: []
 });
 
 export type OpDayDetailDto = OperationDayDto & {
@@ -169,7 +169,7 @@ export const defaultOpDayDetailDto = (): OpDayDetailDto => ({
     serviceDateFormatted: "",
     serviceDateDayOfWeek: "",
     groups: [],
-    employeeTypes: [],
+    requiredEmployeeTypes: [],
 });
 
 export type OpDayDetailEmployeeGroupDto = {
