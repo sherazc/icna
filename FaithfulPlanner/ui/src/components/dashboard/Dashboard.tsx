@@ -84,48 +84,34 @@ export default function Dashboard() {
 
 
   const onEmployeeTypeChange = (employeeType: EmployeeTypeDto, isChecked: boolean) => {
-    // console.log(employeeType);
-    // console.log(isChecked);
-    // console.log(modalOpDayDetail);
 
     setModalOpDayDetail(previousOpDayDetail => {
       const currentTypes = [...previousOpDayDetail.employeeTypes];
       if (isChecked) {
-        console.log("checked");
+        // Add type if not already present
+        if (!currentTypes.some(t => t.id === employeeType.id)) {
+          currentTypes.push(employeeType);
+        }
       } else {
-        console.log("Not checked");
+        // Remove type if unchecked
+        return {
+          ...previousOpDayDetail,
+          employeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
+        };
       }
-      return {...previousOpDayDetail, employeeTypes: currentTypes};
+      return { ...previousOpDayDetail, employeeTypes: currentTypes };
     });
-
-
-      // setUserProfile(prevData => {
-      //   const currentTypes = [...prevData.employeeTypes];
-      //   if (isChecked) {
-      //     // Add type if not already present
-      //     if (!currentTypes.some(t => t.id === employeeType.id)) {
-      //       currentTypes.push(employeeType);
-      //     }
-      //   } else {
-      //     // Remove type if unchecked
-      //     return {
-      //       ...prevData,
-      //       employeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
-      //     };
-      //   }
-      //   return { ...prevData, employeeTypes: currentTypes };
-      // });
-    };
+  };
 
   const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
     types.map(t => (
       <div key={t.id} className="columnItem">
         <label className="checkboxLabel">
-          <input 
-            type="checkbox" 
-            id={`type-${t.id}`} 
-            checked={isEmployeeTypeSelected(selectedTypes, t)} 
-            onChange={(e) => onEmployeeTypeChange?.(t, e.target.checked)}/>
+          <input
+            type="checkbox"
+            id={`type-${t.id}`}
+            checked={isEmployeeTypeSelected(selectedTypes, t)}
+            onChange={(e) => onEmployeeTypeChange?.(t, e.target.checked)} />
           <span>{t.typeName}</span>
         </label>
       </div>
