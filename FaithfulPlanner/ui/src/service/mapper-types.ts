@@ -30,5 +30,8 @@ export const opDayDetailDtoToOperationDayDto = (opDayDetail: OpDayDetailDto): Op
   operationDay.companyId = opDayDetail.companyId
   operationDay.notes = opDayDetail.notes
   operationDay.serviceDateString = touchString(opDayDetail.serviceDateString)
+  if (opDayDetail.employeeTypes) {
+    operationDay.employeeTypes = [...opDayDetail.employeeTypes];
+  }
   return operationDay;
 };
