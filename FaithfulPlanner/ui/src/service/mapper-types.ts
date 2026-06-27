@@ -13,6 +13,9 @@ export const operationDayDtoToOpDayDetailDto = (operationDay: OperationDayDto, e
   opDayDetail.serviceDateString = touchString(operationDay.serviceDateString)
   opDayDetail.serviceDateFormatted = isoToMonthDayYear(opDayDetail.serviceDateString);
   opDayDetail.serviceDateDayOfWeek = isoToDayOfWeek(opDayDetail.serviceDateString);
+  if (operationDay.employeeTypes) {
+    opDayDetail.employeeTypes = [...operationDay.employeeTypes];
+  }
 
   employeeGroups.forEach(eg => {
     opDayDetail.groups.push({
