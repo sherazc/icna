@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.sc.clinic.util.DateUtils
 
 open class OpDayDetailDto(
-    @param:JsonProperty("id")
-    var id: Long = 0,
-    @param:JsonProperty("companyId")
-    var companyId: Long = 0,
-    @param:JsonProperty("serviceDateString")
-    var serviceDateString: String = "",
-    @param:JsonProperty("notes")
-    var notes: String? = "",
+    @JsonProperty("id")
+    id: Long? = 0,
+    @JsonProperty("companyId")
+    companyId: Long = 0,
+    @JsonProperty("serviceDateString")
+    serviceDateString: String = "",
+    @JsonProperty("notes")
+    notes: String? = "",
     var groups: MutableList<OpDayDetailEmployeeGroupDto> = mutableListOf(),
-    var employeeTypes: List<EmployeeTypeDto> = mutableListOf()
-) {
+    employeeTypes: List<EmployeeTypeDto> = mutableListOf()
+) : OperationDayDto(id, companyId, serviceDateString, notes, employeeTypes) {
     // Getters are used to deserialize JSON/Jackson
     fun getServiceDateFormatted(): String {
         return DateUtils.isoToMonthDayYear(serviceDateString)

@@ -214,7 +214,7 @@ export default function Dashboard() {
   };
 
   const sortAndSetOpDayDetails = (opDayDetailArray: OpDayDetailDto[]) => {
-    const opDayDetailsSorted = opDayDetailArray.sort((a, b) => a.serviceDateString.localeCompare(b.serviceDateString));
+    const opDayDetailsSorted = opDayDetailArray.sort((a, b) => (a.serviceDateString ?? "").localeCompare(b.serviceDateString ?? ""));
     setOpDayDetails(opDayDetailsSorted);
   };
 

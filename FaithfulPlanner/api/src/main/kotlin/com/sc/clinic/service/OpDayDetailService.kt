@@ -67,7 +67,7 @@ class OpDayDetailService(
     ) {
         groups.forEach { g ->
             val oddGroup = OpDayDetailEmployeeGroupDto(g.id ?: 0, g.groupName)
-            populateEmployee(companyId, oddGroup.id, odd.id, oddGroup.users)
+            populateEmployee(companyId, oddGroup.id, odd.id ?: 0, oddGroup.users)
             odd.groups.add(oddGroup)
         }
     }

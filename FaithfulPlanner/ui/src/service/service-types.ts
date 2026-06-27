@@ -155,15 +155,10 @@ export const defaultOperationDayDto = (): OperationDayDto => ({
     employeeTypes: []
 });
 
-export type OpDayDetailDto = {
-    id?: number;
-    companyId?: number,
-    serviceDateString: string,
+export type OpDayDetailDto = OperationDayDto & {
     serviceDateFormatted: string,
     serviceDateDayOfWeek: string,
-    notes?: string,
     groups: OpDayDetailEmployeeGroupDto[],
-    employeeTypes: EmployeeTypeDto[]
 };
 
 export const defaultOpDayDetailDto = (): OpDayDetailDto => ({
