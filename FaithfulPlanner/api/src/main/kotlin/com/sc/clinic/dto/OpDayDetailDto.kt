@@ -12,9 +12,9 @@ open class OpDayDetailDto(
     serviceDateString: String = "",
     @JsonProperty("notes")
     notes: String? = "",
-    var groups: MutableList<OpDayDetailEmployeeGroupDto> = mutableListOf(),
-    employeeTypes: List<EmployeeTypeDto> = mutableListOf()
-) : OperationDayDto(id, companyId, serviceDateString, notes, employeeTypes) {
+    requiredEmployeeTypes: List<EmployeeTypeDto> = mutableListOf(),
+    var groups: MutableList<OpDayDetailEmployeeGroupDto> = mutableListOf()
+) : OperationDayDto(id, companyId, serviceDateString, notes, requiredEmployeeTypes) {
     // Getters are used to deserialize JSON/Jackson
     fun getServiceDateFormatted(): String {
         return DateUtils.isoToMonthDayYear(serviceDateString)

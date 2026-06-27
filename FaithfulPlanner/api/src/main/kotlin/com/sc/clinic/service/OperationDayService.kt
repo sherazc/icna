@@ -46,7 +46,7 @@ class OperationDayService(
             OperationDay(null, company, serviceDate, operationDayDto.notes)
         }
 
-        operationDay.employeeTypes = employeeTypeService.employeeTypesByDto(operationDayDto.employeeTypes)
+        operationDay.employeeTypes = employeeTypeService.employeeTypesByDto(operationDayDto.requiredEmployeeTypes)
 
         val savedOperationDay = operationRepository.save(operationDay)
         logger.debug("Successfully saved OperationDay. Id:${operationDay.id}")
