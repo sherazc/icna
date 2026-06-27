@@ -266,9 +266,9 @@ export default function Dashboard() {
             <table>
               <thead>
                 <tr>
-                  <th>Operation Date</th>
+                  <th>Date</th>
                   {opDayDetails[0].groups && opDayDetails[0].groups.map((group) => (
-                    <th key={group.id}>{`${group.groupName} Assigned`}</th>
+                    <th key={group.id}>{`${group.groupName}`}</th>
                   ))}
                   <th>Notes</th>
                   <Authenticated shouldHaveRoles={["ADMIN"]}>

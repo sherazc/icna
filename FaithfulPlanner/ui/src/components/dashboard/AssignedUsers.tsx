@@ -111,7 +111,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
 
   return (
     <div className="detailSection">
-      <h4 className="detailSectionTitle">Assigned {group.groupName}</h4>
+      <h4 className="detailSectionTitle">{group.groupName}</h4>
       <div className="cardStat">
         <span className="cardStatLabel">Total Assigned</span>
         <span className="cardStatValue" id="detail-providers-count">{group.users.length}</span>
@@ -135,7 +135,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
           title="Show all">▼</button>
       </div>
       <div>
-        <h5 className="cardStatLabel mt-15 mb-1fullWidth">Assigned List</h5>
+        <h5 className="cardStatLabel mt-15 mb-1fullWidth">Assigned</h5>
         <ul className="personList" id="detail-providers-list">
           {group.users.length < 1 && (
             <li className="personItem">
