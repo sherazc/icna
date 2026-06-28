@@ -119,7 +119,9 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const createEmployeeRow = (employee: UserProfileDto): React.JSX.Element => (
     <tr key={employee.id}>
       <td>{employee.firstName} {employee.lastName}</td>
-      <td>{employee.employeeTypes.length > 0 && createEmployeeTypes(employee.employeeTypes)}</td>
+      <td style={{maxWidth: 250}}>
+        {employee.employeeTypes.length > 0 && createEmployeeTypes(employee.employeeTypes)}
+      </td>
       <td>{employee.email}</td>
       <td>{employee.phoneNumber}</td>
       <Authenticated shouldHaveRoles={["ADMIN"]}>
