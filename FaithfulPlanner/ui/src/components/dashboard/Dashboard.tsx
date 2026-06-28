@@ -267,6 +267,7 @@ export default function Dashboard() {
               <thead>
                 <tr>
                   <th>Date</th>
+                  <th>Type</th>
                   {opDayDetails[0].groups && opDayDetails[0].groups.map((group) => (
                     <th key={group.id}>{`${group.groupName}`}</th>
                   ))}
@@ -284,13 +285,20 @@ export default function Dashboard() {
                       <br />
                       {opDayDetail.serviceDateFormatted}
                     </td>
+                    <td>
+                      <small className="smallText">
+                      {opDayDetail.requiredEmployeeTypes && opDayDetail.requiredEmployeeTypes.map(et => (
+                        <>{et.typeName}<br/></>
+                      ))}
+                      </small>
+                    </td>
                     {opDayDetail.groups && opDayDetail.groups.map((group) => (
                       <td key={group.id}>
                         {group.users.length}
                         {group.users.length > 0 &&
-                          <small className="smallText">(
-                            {group.users.map((u => `${u.firstName} ${u.lastName}`)).join(", ")}
-                            )</small>
+                          <small className="smallText">
+                            {group.users.map(u => (<>{u.firstName} {u.lastName}<br/></>))}
+                            </small>
                         }
                       </td>
                     ))}
