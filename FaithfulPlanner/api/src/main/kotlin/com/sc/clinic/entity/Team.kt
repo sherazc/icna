@@ -10,17 +10,12 @@ data class Team(
     var id: Long?,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "operation_day_id", nullable = false)
-    var operationDay: OperationDay,
+    @JoinColumn(name = "company_id", nullable = false)
+    var company: Company,
 
     @Column(name = "team_name", nullable = false)
     var teamName: String,
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "m2m_team_employee_type",
-        joinColumns = [JoinColumn(name = "team_id")],
-        inverseJoinColumns = [JoinColumn(name = "employee_type_id")]
-    )
-    var employeeTypes: MutableSet<EmployeeType> = mutableSetOf()
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+    var employeeTypes: MutableSet<TeamEmployeeType> = mutableSetOf()
 )
