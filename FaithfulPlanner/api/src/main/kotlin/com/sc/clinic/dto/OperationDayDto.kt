@@ -13,13 +13,13 @@ open class OperationDayDto (
     var serviceDateString: String,
     @param:JsonProperty("notes")
     var notes: String?,
-    var requiredEmployeeTypes: List<EmployeeTypeDto> = mutableListOf()
+    var requiredTeams: List<TeamDto> = mutableListOf()
 ){
     constructor(operationDay: OperationDay):this (
         operationDay.id,
         operationDay.company.id!!,
         DateUtils.dateToIso(operationDay.serviceDate),
         operationDay.notes,
-        operationDay.employeeTypes.map { EmployeeTypeDto(it) }
+        operationDay.requiredTeams.map { TeamDto(it) }
     )
 }
