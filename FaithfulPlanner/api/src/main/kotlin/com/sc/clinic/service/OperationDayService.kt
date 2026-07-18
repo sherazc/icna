@@ -46,7 +46,8 @@ class OperationDayService(
             OperationDay(null, company, serviceDate, operationDayDto.notes)
         }
 
-        operationDay.employeeTypes = employeeTypeService.employeeTypesByDto(operationDayDto.requiredEmployeeTypes)
+        // Make relation between operation day and teams
+        // operationDay.employeeTypes = employeeTypeService.employeeTypesByDto(operationDayDto.requiredEmployeeTypes)
 
         val savedOperationDay = operationRepository.save(operationDay)
         logger.debug("Successfully saved OperationDay. Id:${operationDay.id}")

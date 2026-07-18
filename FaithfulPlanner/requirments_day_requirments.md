@@ -6,6 +6,10 @@
 
 ## API
 
+✅ get all teams by company id
+
+save or update team
+
 ## UI
 
 # Limiting
