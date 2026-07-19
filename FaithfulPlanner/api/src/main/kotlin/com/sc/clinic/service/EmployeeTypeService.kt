@@ -29,7 +29,7 @@ class EmployeeTypeService(
 
     fun deleteType(typeId: Long?) {
         typeId?.let {
-            detachEmployeeType(typeId)
+            detachEmployeeTypeFromUser(typeId)
             employeeTypeRepository.deleteById(typeId)
         }
     }
@@ -39,7 +39,7 @@ class EmployeeTypeService(
             group.id?.let { employeeTypeRepository.findByEmployeeGroupId(it).toMutableList() } ?: mutableListOf()
 
         for (type in employeeTypes) {
-            val id: Long? = type.id?.let { id -> if (id < 1) null else id }
+            val id: Long? = type.id?.let { id -> if (id < 1) null else id } // Negative id in UI means that user added a new EmployeeType that do not exist in DB
 
             val updatedType: EmployeeType = existingTypes.firstOrNull { et -> et.id?.equals(type.id) == true }
                 ?.let { et ->
@@ -66,7 +66,7 @@ class EmployeeTypeService(
     /**
      * This method should have been in UserProfileService. But because of cyclic dependency problem moved it in here.
      */
-    fun detachEmployeeType(typeId: Long) {
+    fun detachEmployeeTypeFromUser(typeId: Long) {
         findByEmployeeType(typeId).forEach { u ->
             u.employeeTypes.firstOrNull { et -> et.id == typeId }.let { et2 ->
                 u.employeeTypes.remove(et2)

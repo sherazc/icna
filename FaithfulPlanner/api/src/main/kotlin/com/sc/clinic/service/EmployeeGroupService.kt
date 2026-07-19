@@ -84,7 +84,7 @@ class EmployeeGroupService(
     ) {
 
         val groupAndTypeFound = newEmployeeGroupsTypes.any { gts ->
-            gts.employeeTypes.any { ts -> gts.id?.equals(existingGroupId) == true && ts.id?.equals(existingTypeId) == true }
+            gts.employeeTypes.any { ts -> gts.id == existingGroupId && ts.id == existingTypeId }
         }
 
         if (!groupAndTypeFound) {
