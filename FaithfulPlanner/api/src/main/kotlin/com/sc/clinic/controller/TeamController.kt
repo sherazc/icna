@@ -18,7 +18,7 @@ class TeamController(
     fun getAllTeams(@PathVariable companyId: Long): List<TeamDto> = teamService.getAllTeamDtoList(companyId)
 
     @PostMapping
-    fun saveTeam(@PathVariable companyId: Long, @RequestBody teams: List<TeamDto>): TeamDto =
+    fun saveTeam(@PathVariable companyId: Long, @RequestBody teams: List<TeamDto>): List<TeamDto> =
         teamService.saveTeam(companyId, teams)
 
 }

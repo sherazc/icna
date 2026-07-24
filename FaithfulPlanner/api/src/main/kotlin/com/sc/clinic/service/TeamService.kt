@@ -3,6 +3,7 @@ package com.sc.clinic.service
 import com.sc.clinic.dto.TeamDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.Team
+import com.sc.clinic.entity.TeamEmployeeType
 import com.sc.clinic.repository.TeamRepository
 import org.springframework.stereotype.Service
 
@@ -14,9 +15,11 @@ class TeamService(
 ) {
     fun getAllTeams(companyId: Long): List<Team> = teamRepository.findByCompanyId(companyId)
 
-    fun getAllTeamDtoList(companyId: Long): List<TeamDto> = getAllTeams(companyId).map { TeamDto(it) }
+    fun getAllTeamDtoList(companyId: Long): List<TeamDto> =
+        getAllTeams(companyId).map { t -> TeamDto(t, t.employeeTypes.sortedBy { et -> et.employeeType.typeName }) }
+            .sortedBy { t -> t.teamName }
 
-    fun saveTeam(companyId: Long, teamDtoList: List<TeamDto>): TeamDto {
+    fun saveTeam(companyId: Long, teamDtoList: List<TeamDto>): List<TeamDto> {
         val existingTeams = teamRepository.findByCompanyId(companyId)
 
         // Delete Team - That user deleted
@@ -31,19 +34,21 @@ class TeamService(
         // Delete Team Employee Type - That user deleted
         existingTeams.forEach { team ->
             team.employeeTypes.forEach { et ->
-                teamEmployeeTypeService.deleteIfNotExists(team.id, et.id, teamDtoList)}
+                teamEmployeeTypeService.deleteIfNotExists(team.id, et.id, teamDtoList)
+            }
         }
 
         // Save Team and its employee types
         val company = companyService.findById(companyId)
-        teamDtoList.map { teamDto ->
-            val team:Team = getOrCreateTeam(teamDto, company)
+        return teamDtoList.map { teamDto ->
+            val team: Team = getOrCreateTeam(teamDto, company)
             teamRepository.save(team)
+            val teamEmployeeTypes: List<TeamEmployeeType> =
+                teamDto.employeeTypes.map { teamEmployeeTypeService.save(team, it) }
 
-        }
-
-
-        TODO("Not yet implemented - Make it like EmployeeGroupService.save()")
+            TeamDto(team, teamEmployeeTypes)
+            // TeamDto(team, teamEmployeeTypes.sortedBy { it.employeeType.typeName })
+        }// .sortedBy { it.teamName }
     }
 
     private fun getOrCreateTeam(teamDto: TeamDto, company: Company): Team {

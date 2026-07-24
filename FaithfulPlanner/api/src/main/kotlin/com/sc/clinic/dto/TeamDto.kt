@@ -2,6 +2,7 @@ package com.sc.clinic.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.sc.clinic.entity.Team
+import com.sc.clinic.entity.TeamEmployeeType
 
 data class TeamDto(
     @param:JsonProperty("id")
@@ -15,5 +16,11 @@ data class TeamDto(
         team.id,
         team.teamName,
         team.employeeTypes.map { TeamEmployeeTypeDto(it) }
+    )
+
+    constructor(team: Team, employeeTypes: List<TeamEmployeeType>) : this(
+        team.id,
+        team.teamName,
+        employeeTypes.map { TeamEmployeeTypeDto(it) }
     )
 }

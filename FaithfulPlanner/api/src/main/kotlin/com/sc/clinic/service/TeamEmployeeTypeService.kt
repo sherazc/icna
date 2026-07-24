@@ -1,6 +1,9 @@
 package com.sc.clinic.service
 
 import com.sc.clinic.dto.TeamDto
+import com.sc.clinic.dto.TeamEmployeeTypeDto
+import com.sc.clinic.entity.Team
+import com.sc.clinic.entity.TeamEmployeeType
 import com.sc.clinic.repository.TeamEmployeeTypeRepository
 import org.springframework.stereotype.Service
 
@@ -19,5 +22,11 @@ class TeamEmployeeTypeService(
         if (!employeeTypeFound) {
             teamEmployeeTypeRepository.deleteByTeamIdAndEmployeeTypeId(teamId, employeeTypeId)
         }
+    }
+
+    fun save(team: Team, teamEmployeeTypeDto: TeamEmployeeTypeDto): TeamEmployeeType {
+
+
+        TODO("Not yet implemented")
     }
 }
