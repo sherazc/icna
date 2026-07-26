@@ -44,7 +44,7 @@ class TeamService(
             val team: Team = getOrCreateTeam(teamDto, company)
             teamRepository.save(team)
             val teamEmployeeTypes: List<TeamEmployeeType> =
-                teamDto.employeeTypes.map { teamEmployeeTypeService.save(team, it) }
+                teamDto.employeeTypes.mapNotNull { teamEmployeeTypeService.save(team, it) }
 
             TeamDto(team, teamEmployeeTypes)
             // TeamDto(team, teamEmployeeTypes.sortedBy { it.employeeType.typeName })
@@ -52,8 +52,9 @@ class TeamService(
     }
 
     private fun getOrCreateTeam(teamDto: TeamDto, company: Company): Team {
-        return if ((teamDto.id ?: 0) > 0) {
-            teamRepository.findById(teamDto.id)
+        val teamId: Long? = teamDto.id
+        return if (teamId != null && teamId > 0) {
+            teamRepository.findById(teamId)
                 .orElse(Team(null, company, teamDto.teamName, mutableSetOf()))
         } else {
             Team(null, company, teamDto.teamName, mutableSetOf())

@@ -7,4 +7,6 @@ interface TeamEmployeeTypeRepository: JpaRepository<TeamEmployeeType, Long> {
     fun deleteByTeamId(teamId: Long): Long // Returns Long instead of Int because JPA returns Long
 
     fun deleteByTeamIdAndEmployeeTypeId(teamId: Long, employeeTypeId: Long): Long
+
+    fun findByTeamIdAndEmployeeTypeId(teamId: Long, employeeTypeId: Long): TeamEmployeeType?
 }

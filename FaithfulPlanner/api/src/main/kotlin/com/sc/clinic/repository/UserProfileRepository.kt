@@ -59,7 +59,7 @@ interface UserProfileRepository : JpaRepository<UserProfile, Long> {
         join u.employeeTypes et
         where et.id = :typeId"""
     )
-    fun findByEmployeeType(typeId: Long): List<UserProfile>
+    fun findUsersByEmployeeType(typeId: Long): List<UserProfile>
 
 
     @Query(

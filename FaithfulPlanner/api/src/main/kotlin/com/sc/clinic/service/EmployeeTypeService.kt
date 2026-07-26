@@ -61,17 +61,21 @@ class EmployeeTypeService(
     /**
      * This method should have been in UserProfileService. But because of cyclic dependency problem moved it in here.
      */
-    fun findByEmployeeType(typeId: Long): List<UserProfile> = userProfileRepository.findByEmployeeType(typeId)
+    fun findUsersByEmployeeType(typeId: Long): List<UserProfile> = userProfileRepository.findUsersByEmployeeType(typeId)
 
     /**
      * This method should have been in UserProfileService. But because of cyclic dependency problem moved it in here.
      */
     fun detachEmployeeTypeFromUser(typeId: Long) {
-        findByEmployeeType(typeId).forEach { u ->
+        findUsersByEmployeeType(typeId).forEach { u ->
             u.employeeTypes.firstOrNull { et -> et.id == typeId }.let { et2 ->
                 u.employeeTypes.remove(et2)
                 userProfileRepository.save(u)
             }
         }
     }
+
+    fun findById(employeeTypeId: Long): EmployeeType? =
+        employeeTypeRepository.findById(employeeTypeId).orElse(null)
+
 }
