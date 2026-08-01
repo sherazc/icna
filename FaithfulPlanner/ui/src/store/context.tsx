@@ -2,16 +2,17 @@ import React, {createContext, useReducer} from "react";
 import {type LoadingAction, loadingMessagesReducer} from "./loadingMessageReducer";
 import {type AuthUserAction, authUserReducer} from "./authUserReducer";
 import {
-    defaultAuthUserTokenDto, 
-    type AuthUserTokenDto, 
-    type ClinicApisType, 
-    type Company, 
+    type AuthUserTokenDto,
+    type ClinicApisType,
+    type Company,
     type EmployeeGroupDto
 } from "../service/service-types";
-import { clinicApis } from "../service/api/ApiClinic";
+import { clinicApis, createAuthHeader } from "../service/api/ApiClinic";
 import { clinicApisReducer, type ClinicApisAction } from "./clinicApisReducer";
 import { companyReducer, type CompanyAction } from "./companyReducer";
 import { employeeGroupReducer, type EmployeeGroupAction } from "./employeeGroupsReducer";
+import { loadAuthUserToken } from "../service/token-storage";
+import { isValidAuthUserToken } from "../service/authentication-services";
 
 export type Action = {
     type: string;
@@ -35,10 +36,14 @@ type RootStateType = {
 }
 
 
+const persistedAuthUserToken = loadAuthUserToken();
+
 const initialAppState: RootStateType = {
     loadingMessages: [],
-    authUserToken: defaultAuthUserTokenDto(),
-    clinicApis: clinicApis(),
+    authUserToken: persistedAuthUserToken,
+    clinicApis: isValidAuthUserToken(persistedAuthUserToken)
+        ? clinicApis(createAuthHeader(persistedAuthUserToken))
+        : clinicApis(),
     companies: [],
     employeeGroups: []
 }

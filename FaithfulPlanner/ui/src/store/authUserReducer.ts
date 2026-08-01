@@ -1,4 +1,5 @@
 import {type AuthUserTokenDto, defaultAuthUserTokenDto} from "../service/service-types";
+import {saveAuthUserToken, clearAuthUserToken} from "../service/token-storage";
 
 export enum ActionNameAuthUser {
     authUserLogin = "AUTH_USER_LOGIN",
@@ -14,9 +15,13 @@ export type AuthUserAction = {
 
 export const authUserReducer = (authUser: AuthUserTokenDto, action: AuthUserAction): AuthUserTokenDto => {
     switch (action.type) {
-        case ActionNameAuthUser.authUserLogin:
-            return action.payload ? action.payload : defaultAuthUserTokenDto();
+        case ActionNameAuthUser.authUserLogin: {
+            const authUserTokenDto = action.payload ? action.payload : defaultAuthUserTokenDto();
+            saveAuthUserToken(authUserTokenDto);
+            return authUserTokenDto;
+        }
         case ActionNameAuthUser.authUserLogout:
+            clearAuthUserToken();
             return defaultAuthUserTokenDto();
         default:
             return authUser;
