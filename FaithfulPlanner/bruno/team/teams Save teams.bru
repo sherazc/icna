@@ -17,16 +17,32 @@ auth:bearer {
 body:json {
   [
     {
-      "id": 1,
+      "id": 36,
       "teamName": "Team1",
       "employeeTypes": [
         {
-          "id": 1,
-          "requiredCount": 10,
+          "id": 4,
           "employeeType": {
             "id": 3,
             "typeName": "Cardiologist"
-          }
+          },
+          "requiredCount": 10
+        },
+        {
+          "id": 2,
+          "employeeType": {
+            "id": 7,
+            "typeName": "Dentist"
+          },
+          "requiredCount": 5
+        },
+        {
+          "id": 3,
+          "employeeType": {
+            "id": 4,
+            "typeName": "Dermatologist"
+          },
+          "requiredCount": 10
         }
       ]
     }

@@ -5,6 +5,7 @@ import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.Team
 import com.sc.clinic.entity.TeamEmployeeType
 import com.sc.clinic.repository.TeamRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,6 +23,7 @@ class TeamService(
         }
             .sortedBy { t -> t.teamName }
 
+    @Transactional
     fun saveTeam(companyId: Long, teamDtoList: List<TeamDto>): List<TeamDto> {
         val existingTeams = teamRepository.findByCompanyId(companyId)
 
@@ -29,8 +31,8 @@ class TeamService(
         existingTeams.forEach { existingTeam ->
             val noneExists = teamDtoList.none { tDto -> existingTeam.id == tDto.id }
             if (noneExists) {
-                teamEmployeeTypeService.deleteByTeamId(existingTeam.id)
-                existingTeam.id?.let { teamRepository.deleteById(it) }
+                teamEmployeeTypeService.deleteByTeamId(existingTeam.id) // Delete Team's Employee Types
+                existingTeam.id?.let { teamRepository.deleteById(it) } // Delete Team
             }
         }
 
@@ -58,6 +60,10 @@ class TeamService(
         val teamId: Long? = teamDto.id
         return if (teamId != null && teamId > 0) {
             teamRepository.findById(teamId)
+                .map { team ->
+                    team.employeeTypes = mutableSetOf()
+                    team
+                }
                 .orElse(Team(null, company, teamDto.teamName, mutableSetOf()))
         } else {
             Team(null, company, teamDto.teamName, mutableSetOf())
