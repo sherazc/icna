@@ -10,4 +10,5 @@ class AuthUserTokenDto(
     val issuedAtUtc: LocalDateTime,
     val expiresAtUtc: LocalDateTime,
     val roles: List<String>,
-    val token: String)
+    val token: String,
+    val refreshToken: String)

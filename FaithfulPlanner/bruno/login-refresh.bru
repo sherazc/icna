@@ -1,0 +1,16 @@
+meta {
+  name: /login/refresh
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{base_url}}/api/login/refresh
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

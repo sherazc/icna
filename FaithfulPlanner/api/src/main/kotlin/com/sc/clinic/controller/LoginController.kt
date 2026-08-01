@@ -1,10 +1,14 @@
 package com.sc.clinic.controller
 
 import com.sc.clinic.dto.AuthUserTokenDto
+import com.sc.clinic.dto.RefreshTokenRequestDto
 import com.sc.clinic.service.security.ScTokenGeneratorService
+import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -16,4 +20,8 @@ class LoginController (private val scTokenGeneratorService: ScTokenGeneratorServ
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     fun token(authentication: Authentication): AuthUserTokenDto
         = scTokenGeneratorService.generateToken(authentication)
+
+    @PostMapping("/refresh")
+    fun refresh(@Valid @RequestBody request: RefreshTokenRequestDto): AuthUserTokenDto
+        = scTokenGeneratorService.refreshToken(request.refreshToken)
 }
