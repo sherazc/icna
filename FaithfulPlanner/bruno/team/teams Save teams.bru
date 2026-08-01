@@ -1,0 +1,39 @@
+meta {
+  name: /teams Save teams
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/company/1/teams
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  [
+    {
+      "id": 1,
+      "teamName": "Team1",
+      "employeeTypes": [
+        {
+          "id": 1,
+          "requiredCount": 10,
+          "employeeType": {
+            "id": 3,
+            "typeName": "Cardiologist"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

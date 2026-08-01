@@ -4,12 +4,12 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "user_role")
-data class UserRole(
+class UserRole(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
 
     @Column(name = "role_name", nullable = false)
-    val roleName: String
+    var roleName: String
 )
 

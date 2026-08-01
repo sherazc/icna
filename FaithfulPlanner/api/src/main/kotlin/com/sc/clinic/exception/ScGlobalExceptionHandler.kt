@@ -73,6 +73,6 @@ class ScGlobalExceptionHandler {
     fun handleScException(exception: Exception): ResponseEntity<List<ErrorDto>> {
         logger.error("Exception", exception)
         return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(listOf(ErrorDto(exception.message, null)))
+            .body(listOf(ErrorDto(exception.message ?: exception.toString(), null)))
     }
 }

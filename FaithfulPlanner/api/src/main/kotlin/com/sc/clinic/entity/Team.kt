@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "team")
-data class Team(
+class Team(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,

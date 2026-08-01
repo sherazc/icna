@@ -16,7 +16,10 @@ class TeamService(
     fun getAllTeams(companyId: Long): List<Team> = teamRepository.findByCompanyId(companyId)
 
     fun getAllTeamDtoList(companyId: Long): List<TeamDto> =
-        getAllTeams(companyId).map { t -> TeamDto(t, t.employeeTypes.sortedBy { et -> et.employeeType.typeName }) }
+        getAllTeams(companyId).map { t ->
+            val employeeTypes = t.employeeTypes.toList() // snapshot before sorting
+            TeamDto(t, employeeTypes.sortedBy { et -> et.employeeType.typeName })
+        }
             .sortedBy { t -> t.teamName }
 
     fun saveTeam(companyId: Long, teamDtoList: List<TeamDto>): List<TeamDto> {
@@ -27,7 +30,7 @@ class TeamService(
             val noneExists = teamDtoList.none { tDto -> existingTeam.id == tDto.id }
             if (noneExists) {
                 teamEmployeeTypeService.deleteByTeamId(existingTeam.id)
-                teamRepository.deleteById(existingTeam.id)
+                existingTeam.id?.let { teamRepository.deleteById(it) }
             }
         }
 

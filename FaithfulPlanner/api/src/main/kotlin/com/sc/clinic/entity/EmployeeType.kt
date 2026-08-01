@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "employee_type")
-data class EmployeeType(
+class EmployeeType(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,

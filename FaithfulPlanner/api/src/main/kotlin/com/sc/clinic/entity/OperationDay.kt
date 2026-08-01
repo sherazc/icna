@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 @Entity
 @Table(name = "operation_day")
-data class OperationDay(
+class OperationDay(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
