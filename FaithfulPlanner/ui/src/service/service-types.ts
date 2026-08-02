@@ -29,6 +29,7 @@ export type AuthUserTokenDto = {
     expiresAtUtc: string;
     roles: AuthRole[];
     token: string;
+    refreshToken: string;
 };
 
 export type AuthRole = 'BASIC_USER' // Users who register for the event
@@ -44,7 +45,8 @@ export const defaultAuthUserTokenDto = (): AuthUserTokenDto => ({
     issuedAtUtc: "",
     expiresAtUtc: "",
     roles: [],
-    token: ""
+    token: "",
+    refreshToken: ""
 });
 
 export type ClinicApisType = ReturnType<typeof clinicApis>;

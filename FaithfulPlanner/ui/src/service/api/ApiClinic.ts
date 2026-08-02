@@ -16,6 +16,7 @@ export const clinicEndpoints = () => {
   return {
     epCompany: () => `${baseUrl}/api/company`,
     epLoginToken: () => `${baseUrl}/api/login/token`,
+    epLoginRefresh: () => `${baseUrl}/api/login/refresh`,
     epSaveRegistration: () => `${baseUrl}/api/registration`,
     epEmployeeGroup: (companyId: number) => `${baseUrl}/api/company/${companyId}/employee-group`,
     epUserProfile: (companyId: number) => `${baseUrl}/api/company/${companyId}/user-profile`,
@@ -40,7 +41,7 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
     },
     login: (loginRequest: LoginRequest): Promise<AuthUserTokenDto> => {
       const endpoint = endpoints.epLoginToken();
-      const request: ApiRequest = { endpoint };
+      const request: ApiRequest = { endpoint, skipAuthRetry: true };
 
       const encodedUserPassword =
         btoa(`${loginRequest.companyId}/${loginRequest.email}:${loginRequest.userPassword}`);
@@ -50,6 +51,17 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       // addHeadersInRequest(request, commonHeaders);
       addHeadersInRequest(request, authenticationHeaders);
 
+      return callApiIntercept(request, interceptorCbs);
+    },
+    refreshToken: (refreshToken: string): Promise<AuthUserTokenDto> => {
+      const endpoint = endpoints.epLoginRefresh();
+      const request: ApiRequest = {
+        endpoint,
+        method: "POST",
+        payload: { refreshToken },
+        headers: CONTENT_JSON_HEADER(),
+        skipAuthRetry: true
+      };
       return callApiIntercept(request, interceptorCbs);
     },
     saveRegistration: (registrationDto: RegistrationDto): Promise<RegistrationDto> => {
