@@ -4,10 +4,22 @@ meta {
   seq: 9
 }
 
-get {
+post {
   url: {{base_url}}/api/login/refresh
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "refreshToken": "{{refreshToken}}"
+  }
+}
+
+script:post-response {
+  const jwt = res.getBody();
+  bru.setVar("jwt", jwt.token);
+  bru.setVar("refreshToken", jwt.refreshToken);
 }
 
 settings {

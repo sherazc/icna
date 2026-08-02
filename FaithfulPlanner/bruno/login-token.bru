@@ -19,6 +19,7 @@ script:post-response {
   const jwt = res.getBody();
   console.log(`jwt = ${jwt}`);
   bru.setVar("jwt", jwt.token);
+  bru.setVar("refreshToken", jwt.refreshToken);
   
   
   test("Status code is 200", function () {
@@ -31,6 +32,10 @@ script:post-response {
   
   test("Token is a string", function () {
       expect(jwt.token).to.be.a('string');
+  });
+  
+  test("RefreshToken is present", function () {
+      expect(jwt.refreshToken).to.not.be.null;
   });
   
   test("Check Roles", function () {
