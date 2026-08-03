@@ -226,9 +226,15 @@ class LoginController(private val scTokenGeneratorService: ScTokenGeneratorServi
   both login and refresh:
   ```kotlin
   class AuthUserTokenDto(
-      val userProfileId: Long, val companyId: Long, val companyName: String,
-      val subject: String, val issuedAtUtc: LocalDateTime, val expiresAtUtc: LocalDateTime,
-      val roles: List<String>, val token: String, val refreshToken: String)
+      val userProfileId: Long, 
+      val companyId: Long, 
+      val companyName: String,
+      val subject: String, 
+      val issuedAtUtc: LocalDateTime, 
+      val expiresAtUtc: LocalDateTime,
+      val roles: List<String>, 
+      val token: String, 
+      val refreshToken: String)
   ```
 - **`RefreshTokenRequestDto`** (`dto/RefreshTokenRequestDto.kt`) — the
   refresh request body, just `refreshToken: String` with `@field:NotBlank`.
@@ -319,9 +325,15 @@ header-bearing instance is current — no per-call token lookup needed.
 
 ```ts
 export type AuthUserTokenDto = {
-    userProfileId: number; companyId: number; companyName: string;
-    subject: string; issuedAtUtc: string; expiresAtUtc: string;
-    roles: AuthRole[]; token: string; refreshToken: string;
+    userProfileId: number; 
+    companyId: number; 
+    companyName: string;
+    subject: string; 
+    issuedAtUtc: string; 
+    expiresAtUtc: string;
+    roles: AuthRole[]; 
+    token: string; 
+    refreshToken: string;
 };
 export type AuthRole = 'BASIC_USER' | 'ADMIN' | 'MASTER';
 ```
@@ -335,14 +347,20 @@ object that flows through login, refresh, `AppContext`, and `localStorage`.
 
 ```ts
 login: (loginRequest: LoginRequest): Promise<AuthUserTokenDto> => {
-  const request: ApiRequest = { endpoint: epLoginToken(), skipAuthRetry: true };
+  const request: ApiRequest = { 
+    endpoint: epLoginToken(), 
+    skipAuthRetry: true 
+    };
   addHeadersInRequest(request, [["Authorization", `Basic ${btoa(\`${companyId}/${email}:${password}\`)}\`]]);
   return callApiIntercept(request, interceptorCbs);
 },
 refreshToken: (refreshToken: string): Promise<AuthUserTokenDto> => {
   const request: ApiRequest = {
-    endpoint: epLoginRefresh(), method: "POST",
-    payload: { refreshToken }, headers: CONTENT_JSON_HEADER(), skipAuthRetry: true
+    endpoint: epLoginRefresh(), 
+    method: "POST",
+    payload: { refreshToken }, 
+    headers: CONTENT_JSON_HEADER(), 
+    skipAuthRetry: true
   };
   return callApiIntercept(request, interceptorCbs);
 },
