@@ -285,11 +285,22 @@ create table refresh_token (
   design — presenting one twice fails on the second attempt with "revoked."
 - **TTL**: access JWT 1hr (hardcoded, `ScTokenGeneratorService`); refresh
   token 14 days (`REFRESH_TOKEN_TTL_DAYS` constant, same file).
-- **Not yet implemented**: a scheduled cleanup job to purge expired/old-revoked
-  rows from `refresh_token` (planned as a `@Scheduled` job — see the
-  discussion in this project's history for the intended design: purge
-  expired rows immediately, keep revoked rows ~7 days for replay-detection
-  auditing before deleting).
+- **Cleanup**: `service/security/RefreshTokenCleanupService.kt` runs a daily
+  `@Scheduled(cron = "0 0 3 * * *")` job (`@EnableScheduling` turned on in
+  `Application.java`) that deletes every row where `expiresAt` is in the past
+  **or** `revokedAt` is non-null:
+  ```kotlin
+  @Query("delete from RefreshToken rt where rt.expiresAt < :expiredBefore or rt.revokedAt is not null")
+  fun deleteExpiredOrRevoked(expiredBefore: LocalDateTime): Int
+  ```
+  `revokedAt` is treated purely as a flag here (non-null = no longer valid,
+  safe to delete), not as a retention timestamp — there's no code anywhere in
+  this app that reads *how long ago* a token was revoked, so keeping revoked
+  rows around for some grace period would only add an unused column of
+  complexity. If a future system adds real security-incident tooling (e.g.
+  alerting on replayed-revoked-token attempts), that's the point to
+  reconsider a short retention window before deleting revoked rows — not
+  before.
 
 ---
 
@@ -625,6 +636,10 @@ Reusable, stack-independent pieces from this implementation:
 - **Single-flight promise de-duping around token refresh** — worth carrying
   into any system using rotating refresh tokens, not just this one; without
   it, concurrent requests will intermittently and confusingly log users out.
+- **Daily `@Scheduled` purge of expired/revoked refresh tokens** (§1.10) — a
+  one-line JPQL delete plus a cron trigger, no extra infrastructure. Budget
+  for this from day one on a new system rather than retrofitting it once the
+  table's already grown unbounded.
 
 Things to explicitly re-decide, not blindly copy, on the next system:
 
@@ -640,9 +655,6 @@ Things to explicitly re-decide, not blindly copy, on the next system:
   should be scoped to actual known origins once there's a real deployment
   domain (especially once mobile clients might use custom schemes /
   different origin rules).
-- **Refresh token cleanup job** — not yet built here (§1.10); budget for it
-  from the start next time rather than retrofitting, since the table grows
-  unboundedly otherwise.
 - **`localStorage`-vs-`HttpOnly`-cookie tradeoff (§2.6)** — was decided here
   in favor of `localStorage` specifically because a React Native client was
   already planned. If a future system is web-only with no mobile client
