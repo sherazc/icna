@@ -231,12 +231,24 @@ export default function Dashboard() {
     loadOpDetails(touchNumber(authUserToken.companyId));
   }, [authUserToken]);
 
+  /**
+   * This is put in place for the new Company that have no employee group.
+   * 
+   * The application navigates user to /settings so that user can create employee group.
+   * 
+   * Employee groups are loaded asynchronously. This effect is triggered before employee groups are loaded.
+   * 
+   * Because of that on page refresh and after login UI is navigating to /settings even though there are employee groups in the company.
+   * 
+   * Possible fix: Add some type of loading flag on employee groups. Trigger this effect when employee groups are loaded employee groups are being loaded. 
+   */
+  /*
   useEffect(() => {
     if (employeeGroups.length < 1) {
       navigate("/settings");
     }
   }, [employeeGroups]);
-
+  */
   return (
     <div id="dashboard">
       <UnAuthRedirect />
