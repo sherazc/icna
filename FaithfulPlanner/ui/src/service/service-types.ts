@@ -148,13 +148,13 @@ export type OperationDayDto = {
     companyId?: number,
     serviceDateString?: string,
     notes?: string,
-    requiredEmployeeTypes: EmployeeTypeDto[]
+    requiredTeams: OperationDayTeamDto[];
 };
 
 export const defaultOperationDayDto = (): OperationDayDto => ({
     serviceDateString: "",
     notes: "",
-    requiredEmployeeTypes: []
+    requiredTeams: []
 });
 
 export type OpDayDetailDto = OperationDayDto & {
@@ -226,3 +226,22 @@ export const defaultPasswordUpdateDto = (): PasswordUpdateDto => ({
     currentPassword: "",
     newPassword: ""
 });
+
+export type TeamEmployeeTypeDto = {
+    id?: number;
+    employeeType: EmployeeTypeDto;
+    requiredCount: number;
+};
+
+export type TeamDto = {
+    id?: number;
+    teamName: string;
+    employeeTypes: TeamEmployeeTypeDto[];
+};
+
+export type OperationDayTeamDto = {
+    id?: number;
+    team: TeamDto;
+    requiredCount: number;
+};
+
