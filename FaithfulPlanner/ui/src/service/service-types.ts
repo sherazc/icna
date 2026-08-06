@@ -171,7 +171,8 @@ export const defaultOpDayDetailDto = (): OpDayDetailDto => ({
     serviceDateFormatted: "",
     serviceDateDayOfWeek: "",
     groups: [],
-    requiredEmployeeTypes: [],
+    // requiredEmployeeTypes: [],
+    requiredTeams: []
 });
 
 export type OpDayDetailEmployeeGroupDto = {

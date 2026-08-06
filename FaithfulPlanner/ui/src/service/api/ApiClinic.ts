@@ -1,4 +1,16 @@
-import type { AuthUserTokenDto, Company, EmployeeGroupDto, EmployeeGroupTypesDto, LoginRequest, OpDayDetailDto, OperationDayDto, PasswordUpdateDto, RegistrationDto, ScheduleDto, UserProfileDto } from "../service-types";
+import type { 
+  AuthUserTokenDto, 
+  Company, 
+  EmployeeGroupDto, 
+  EmployeeGroupTypesDto, 
+  LoginRequest, 
+  OpDayDetailDto, 
+  OperationDayDto, 
+  PasswordUpdateDto, 
+  RegistrationDto, 
+  ScheduleDto, 
+  UserProfileDto 
+} from "../service-types";
 import { touchString } from "../utilities";
 import {
   addHeadersInRequest,

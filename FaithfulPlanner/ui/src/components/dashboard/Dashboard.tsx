@@ -4,7 +4,7 @@ import {
   FormState,
   ModalType,
   type EmployeeGroupTypesDto,
-  type EmployeeTypeDto,
+  // type EmployeeTypeDto,
   type ErrorDto,
   type OpDayDetailDto,
   type OperationDayDto
@@ -22,11 +22,11 @@ import { opDayDetailDtoToOperationDayDto, operationDayDtoToOpDayDetailDto } from
 import { AssignedUsers } from "./AssignedUsers";
 import "./Dashboard.css"
 import { isoToDayOfWeek, isoToMonthDayYear } from "../../service/DateService";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Authenticated } from "../auth/Authenticated";
 
 export default function Dashboard() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [{ authUserToken, clinicApis, employeeGroups }] = useContext(AppContext);
 
   // Selected OpDayDetail index
@@ -79,30 +79,36 @@ export default function Dashboard() {
     setModalDeleteErrors(submitErrors);
   };
 
-  const isEmployeeTypeSelected = (selectedEmployeeTypes: EmployeeTypeDto[], employeeType: EmployeeTypeDto): boolean =>
-    selectedEmployeeTypes.findIndex(t => t.id === employeeType.id) > -1;
+  // const isEmployeeTypeSelected = (selectedEmployeeTypes: EmployeeTypeDto[], employeeType: EmployeeTypeDto): boolean =>
+  //   selectedEmployeeTypes.findIndex(t => t.id === employeeType.id) > -1;
 
-
-  const onEmployeeTypeChange = (employeeType: EmployeeTypeDto, isChecked: boolean) => {
+/*
+  const onEmployeeTypeChange = (
+    // employeeType: EmployeeTypeDto, 
+    isChecked: boolean) => {
 
     setModalOpDayDetail(previousOpDayDetail => {
-      const currentTypes = [...previousOpDayDetail.requiredEmployeeTypes];
+      // const currentTypes = [...previousOpDayDetail.requiredEmployeeTypes];
       if (isChecked) {
         // Add type if not already present
-        if (!currentTypes.some(t => t.id === employeeType.id)) {
-          currentTypes.push(employeeType);
-        }
+        // if (!currentTypes.some(t => t.id === employeeType.id)) {
+        //   currentTypes.push(employeeType);
+        // }
       } else {
         // Remove type if unchecked
         return {
           ...previousOpDayDetail,
-          requiredEmployeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
+          // requiredEmployeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
         };
       }
-      return { ...previousOpDayDetail, requiredEmployeeTypes: currentTypes };
+      return { ...previousOpDayDetail, 
+        // requiredEmployeeTypes: currentTypes 
+      };
     });
   };
+*/
 
+  /*
   const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
     types.map(t => (
       <div key={t.id} className="columnItem">
@@ -130,7 +136,7 @@ export default function Dashboard() {
       </div>
     );
   };
-
+*/
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setModalOpDayDetail(prevData => ({ ...prevData, [id]: value }));
@@ -178,9 +184,9 @@ export default function Dashboard() {
               op.notes = savedOperationDay.notes;
               op.serviceDateDayOfWeek = isoToDayOfWeek(touchString(savedOperationDay.serviceDateString));
               op.serviceDateFormatted = isoToMonthDayYear(touchString(savedOperationDay.serviceDateString));
-              if (savedOperationDay.requiredEmployeeTypes) {
-                op.requiredEmployeeTypes = [...savedOperationDay.requiredEmployeeTypes];
-              }
+              // if (savedOperationDay.requiredEmployeeTypes) {
+              //   op.requiredEmployeeTypes = [...savedOperationDay.requiredEmployeeTypes];
+              // }
             }
           })
         } else {
@@ -299,9 +305,11 @@ export default function Dashboard() {
                     </td>
                     <td>
                       <small className="smallText">
-                      {opDayDetail.requiredEmployeeTypes && opDayDetail.requiredEmployeeTypes.map(et => (
-                        <>{et.typeName}<br/></>
-                      ))}
+                      {/*                       
+                        {opDayDetail.requiredEmployeeTypes && opDayDetail.requiredEmployeeTypes.map(et => (
+                          <>{et.typeName}<br/></>
+                        ))}
+                      */}
                       </small>
                     </td>
                     {opDayDetail.groups && opDayDetail.groups.map((group) => (
@@ -395,7 +403,10 @@ export default function Dashboard() {
           {allGroupTypes.map(groupType => (
             <div key={groupType.id}>
               <h4>{groupType.groupName}</h4>
+              {/*
+              
               {buildColumns(groupType, modalOpDayDetail.requiredEmployeeTypes)}
+              */}
             </div>
           ))}
         </form>
