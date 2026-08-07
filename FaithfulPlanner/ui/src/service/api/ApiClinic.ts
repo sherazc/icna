@@ -9,6 +9,7 @@ import type {
   PasswordUpdateDto, 
   RegistrationDto, 
   ScheduleDto, 
+  TeamDto, 
   UserProfileDto 
 } from "../service-types";
 import { touchString } from "../utilities";
@@ -39,6 +40,7 @@ export const clinicEndpoints = () => {
     // epOperationDaySearch: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day/search`,
     epOpDayDetail: (companyId: number) => `${baseUrl}/api/company/${companyId}/operation-day-detail`,
     epSchedule: () => `${baseUrl}/api/schedule`,
+    epTeams: (companyId: number) => `${baseUrl}/api/company/${companyId}/teams`,
   }
 }
 
@@ -263,6 +265,24 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
+    teamsGet: (companyId: number): Promise<TeamDto[]> => {
+      const endpoint = endpoints.epTeams(companyId);
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    teamsSave: (companyId: number, teams: TeamDto[]): Promise<TeamDto[]> => {
+      const endpoint = endpoints.epTeams(companyId);
+      const request: ApiRequest = {
+        endpoint,
+        method: "POST",
+        payload: teams,
+        headers: CONTENT_JSON_HEADER()
+      };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+
   };
   return api;
 }

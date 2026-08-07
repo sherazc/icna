@@ -207,7 +207,7 @@ export const EmployeeGroupSettings: React.FC<Props> = () => {
         </div>
         <Loading formState={formState}/>
         <div className="settings-footer">
-          <button className="btn btnPrimary btn-lg" onClick={() => onSave()}>Save All Changes</button>
+          <button className="btn btnPrimary btn-lg" onClick={() => onSave()}>Save All Employee Groups</button>
         </div>
       </div>
 

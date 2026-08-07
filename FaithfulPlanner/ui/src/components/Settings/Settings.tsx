@@ -10,6 +10,7 @@ import { MyProfile } from "./MyProfile";
 import { Theme } from "./Theme";
 import { AppContext } from "../../store/context";
 import { defaultUserProfileDto, type UserProfileDto } from "../../service/service-types";
+import { TeamSettings } from "./TeamSettings";
 
 export default function Settings() {
   const [{ authUserToken, clinicApis }] = useContext(AppContext);
@@ -46,6 +47,12 @@ export default function Settings() {
           <EmployeeGroupSettings />
         </div>
       </Authenticated>
+
+      {/* <Authenticated shouldHaveRoles={["ADMIN", "BASIC_USER"]}> */}
+        <div className="cardsGrid">
+          <TeamSettings />
+        </div>
+      {/* </Authenticated> */}
 
       <div className="cardsGrid">
         <MyProfile initialUserProfile={userProfile} onSaveSuccess={onSuccessfulSaveUser}/>
