@@ -27,6 +27,13 @@ class TeamService(
     fun saveTeam(companyId: Long, teamDtoList: List<TeamDto>): List<TeamDto> {
         val existingTeams = teamRepository.findByCompanyId(companyId)
 
+        // Delete Team Employee Type - That user deleted
+        existingTeams.forEach { team ->
+            team.teamEmployeeTypes.forEach { et ->
+                teamEmployeeTypeService.deleteIfNotExists(team.id, et.employeeType.id, teamDtoList)
+            }
+        }
+
         // Delete Team - That user deleted
         existingTeams.forEach { existingTeam ->
             val noneExists = teamDtoList.none { tDto -> existingTeam.id == tDto.id }
@@ -36,12 +43,7 @@ class TeamService(
             }
         }
 
-        // Delete Team Employee Type - That user deleted
-        existingTeams.forEach { team ->
-            team.teamEmployeeTypes.forEach { et ->
-                teamEmployeeTypeService.deleteIfNotExists(team.id, et.employeeType.id, teamDtoList)
-            }
-        }
+
 
         // Save Team and its employee types
         val company = companyService.findById(companyId)
