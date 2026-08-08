@@ -11,6 +11,7 @@ import { AppContext } from "../../store/context";
 import "./TeamSettings.css";
 import { touchString } from "../../service/utilities";
 import { ErrorForm } from "../common/ErrorForm";
+import { Loading } from "../common/Loading";
 
 interface Props { }
 
@@ -63,6 +64,13 @@ export const TeamSettings: React.FC<Props> = () => {
     setTeams(allTeams);
   };
 
+  const createTeamCard = (team: TeamDto) => (
+    <div>{team.teamName}</div>
+  );
+
+  const onSave = async () => {
+    console.log("saving", new Date());
+  };
 
   return (
     <>
@@ -71,19 +79,17 @@ export const TeamSettings: React.FC<Props> = () => {
           <h2>Teams</h2>
           <button className="btn btnPrimary btn-sm" onClick={onAddTeam}>+ Add Team</button>
         </div>
-        <ErrorForm
-        // formState={formState} errors={errors} 
-        />
-        {/* <Loading formState={formState} /> */}
+        <ErrorForm formState={formState} errors={errors} />
+        <Loading formState={formState} />
 
         <div className="groups-container">
-      
+          {teams && teams.length > 0 ? (teams.map(team => createTeamCard(team))) : (
+            <div>No Teams</div>
+          )}
         </div>
-        {/* <Loading formState={formState}/> */}
+        <Loading formState={formState}/>
         <div className="settings-footer">
-          <button className="btn btnPrimary btn-lg"
-          //onClick={() => onSave()}
-          >Save All Teams</button>
+          <button className="btn btnPrimary btn-lg"onClick={() => onSave()}>Save All Teams</button>
         </div>
       </div>
       
