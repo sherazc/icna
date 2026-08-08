@@ -47,6 +47,7 @@ class TeamService(
         val company = companyService.findById(companyId)
         return teamDtoList.map { teamDto ->
             val team: Team = getOrCreateTeam(teamDto, company)
+            team.teamName = teamDto.teamName
             teamRepository.save(team)
             val teamEmployeeTypes: List<TeamEmployeeType> =
                 teamDto.employeeTypes.mapNotNull { teamEmployeeTypeService.save(team, it) }

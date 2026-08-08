@@ -240,9 +240,19 @@ export type TeamDto = {
     employeeTypes: TeamEmployeeTypeDto[];
 };
 
+export const defaultTeamDto = ():TeamDto => ({
+    employeeTypes:[],
+    teamName: ""
+});
+
 export type OperationDayTeamDto = {
     id?: number;
     team: TeamDto;
     requiredCount: number;
 };
+
+export type SelectOption = {
+    key: string;
+    value: string;
+}
 
