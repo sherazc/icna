@@ -3,9 +3,11 @@ import {
   defaultTeamDto,
   FormState,
   type EmployeeGroupTypesDto,
+  type EmployeeTypeDto,
   type ErrorDto,
   type SelectOption,
-  type TeamDto
+  type TeamDto,
+  type TeamEmployeeTypeDto
 } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import "./TeamSettings.css";
@@ -64,8 +66,18 @@ export const TeamSettings: React.FC<Props> = () => {
     setTeams(allTeams);
   };
 
+  const createTeamEmployeeTypeCard = (teamEmployeeType: TeamEmployeeTypeDto) => (
+    <div>{teamEmployeeType.requiredCount}</div>
+  );
+
   const createTeamCard = (team: TeamDto) => (
-    <div>{team.teamName}</div>
+    <div>
+      <div>{team.teamName}</div>
+      {team.teamEmployeeTypes && team.teamEmployeeTypes.length > 0 ?
+        (team.teamEmployeeTypes.map(employeeType => createTeamEmployeeTypeCard(employeeType))) : (
+          <div>No Team Employee types</div>
+        )}
+    </div>
   );
 
   const onSave = async () => {
@@ -83,16 +95,17 @@ export const TeamSettings: React.FC<Props> = () => {
         <Loading formState={formState} />
 
         <div className="groups-container">
-          {teams && teams.length > 0 ? (teams.map(team => createTeamCard(team))) : (
-            <div>No Teams</div>
-          )}
+          {teams && teams.length > 0 ?
+            (teams.map(team => createTeamCard(team))) : (
+              <div>No Teams</div>
+            )}
         </div>
-        <Loading formState={formState}/>
+        <Loading formState={formState} />
         <div className="settings-footer">
-          <button className="btn btnPrimary btn-lg"onClick={() => onSave()}>Save All Teams</button>
+          <button className="btn btnPrimary btn-lg" onClick={() => onSave()}>Save All Teams</button>
         </div>
       </div>
-      
+
     </>
   );
 }

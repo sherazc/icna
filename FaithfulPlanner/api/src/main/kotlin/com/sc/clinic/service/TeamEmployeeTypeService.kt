@@ -19,7 +19,7 @@ class TeamEmployeeTypeService(
         if (teamId == null || employeeTypeId == null) return
 
         val employeeTypeFound = teamDtoList.any { teamDto ->
-            teamDto.employeeTypes.any { et -> teamId == teamDto.id && et.id == employeeTypeId }
+            teamDto.teamEmployeeTypes.any { et -> teamId == teamDto.id && et.id == employeeTypeId }
         }
 
         if (!employeeTypeFound) {

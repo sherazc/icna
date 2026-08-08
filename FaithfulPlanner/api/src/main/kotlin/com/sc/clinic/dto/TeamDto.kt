@@ -9,13 +9,13 @@ data class TeamDto(
     var id: Long?,
     @param:JsonProperty("teamName")
     var teamName: String,
-    @param:JsonProperty("employeeTypes")
-    var employeeTypes: List<TeamEmployeeTypeDto> = mutableListOf()
+    @param:JsonProperty("teamEmployeeTypes")
+    var teamEmployeeTypes: List<TeamEmployeeTypeDto> = mutableListOf()
 ) {
     constructor(team: Team) : this(
         team.id,
         team.teamName,
-        team.employeeTypes.map { TeamEmployeeTypeDto(it) }
+        team.teamEmployeeTypes.map { TeamEmployeeTypeDto(it) }
     )
 
     constructor(team: Team, employeeTypes: List<TeamEmployeeType>) : this(

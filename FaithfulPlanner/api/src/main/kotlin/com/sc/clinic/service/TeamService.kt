@@ -18,7 +18,7 @@ class TeamService(
 
     fun getAllTeamDtoList(companyId: Long): List<TeamDto> =
         getAllTeams(companyId).map { t ->
-            val employeeTypes = t.employeeTypes.toList() // snapshot before sorting
+            val employeeTypes = t.teamEmployeeTypes.toList() // snapshot before sorting
             TeamDto(t, employeeTypes.sortedBy { et -> et.employeeType.typeName })
         }
             .sortedBy { t -> t.teamName }
@@ -38,8 +38,8 @@ class TeamService(
 
         // Delete Team Employee Type - That user deleted
         existingTeams.forEach { team ->
-            team.employeeTypes.forEach { et ->
-                teamEmployeeTypeService.deleteIfNotExists(team.id, et.id, teamDtoList)
+            team.teamEmployeeTypes.forEach { et ->
+                teamEmployeeTypeService.deleteIfNotExists(team.id, et.employeeType.id, teamDtoList)
             }
         }
 
@@ -50,7 +50,7 @@ class TeamService(
             team.teamName = teamDto.teamName
             teamRepository.save(team)
             val teamEmployeeTypes: List<TeamEmployeeType> =
-                teamDto.employeeTypes.mapNotNull { teamEmployeeTypeService.save(team, it) }
+                teamDto.teamEmployeeTypes.mapNotNull { teamEmployeeTypeService.save(team, it) }
 
             TeamDto(team, teamEmployeeTypes)
             // TeamDto(team, teamEmployeeTypes.sortedBy { it.employeeType.typeName })
@@ -62,7 +62,7 @@ class TeamService(
         return if (teamId != null && teamId > 0) {
             teamRepository.findById(teamId)
                 .map { team ->
-                    team.employeeTypes = mutableSetOf()
+                    team.teamEmployeeTypes = mutableSetOf()
                     team
                 }
                 .orElse(Team(null, company, teamDto.teamName, mutableSetOf()))

@@ -237,11 +237,11 @@ export type TeamEmployeeTypeDto = {
 export type TeamDto = {
     id?: number;
     teamName: string;
-    employeeTypes: TeamEmployeeTypeDto[];
+    teamEmployeeTypes: TeamEmployeeTypeDto[];
 };
 
 export const defaultTeamDto = ():TeamDto => ({
-    employeeTypes:[],
+    teamEmployeeTypes:[],
     teamName: ""
 });
 

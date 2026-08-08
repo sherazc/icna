@@ -17,5 +17,5 @@ class Team(
     var teamName: String,
 
     @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
-    var employeeTypes: MutableSet<TeamEmployeeType> = mutableSetOf()
+    var teamEmployeeTypes: MutableSet<TeamEmployeeType> = mutableSetOf()
 )
