@@ -282,6 +282,12 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
+    teamsDelete: (companyId: number, teamId: number): Promise<boolean> => {
+      const endpoint = `${endpoints.epTeams(companyId)}/${teamId}`;
+      const request: ApiRequest = { endpoint, method: "DELETE" };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
 
   };
   return api;

@@ -76,6 +76,7 @@ class TeamService(
         }
     }
 
+    @Transactional
     fun deleteTeam(companyId: Long, teamId: Long): Boolean {
         teamEmployeeTypeService.deleteByTeamId(teamId)
         operationDayTeamService.deleteByTeamId(teamId)

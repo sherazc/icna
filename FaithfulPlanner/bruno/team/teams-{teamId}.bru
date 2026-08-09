@@ -1,0 +1,20 @@
+meta {
+  name: /teams/{teamId}
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{base_url}}/api/company/1/teams/40
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
