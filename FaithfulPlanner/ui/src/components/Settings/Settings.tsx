@@ -34,14 +34,6 @@ export default function Settings() {
     <div>
       <UnAuthRedirect />
       <ScreenHeader screenName="Settings" />
-
-      <Authenticated shouldHaveRoles={["ADMIN"]}>
-        <div className="cardsGrid">
-          <CompanyDetails />
-          <Theme />
-        </div>
-      </Authenticated>
-
       <Authenticated shouldHaveRoles={["ADMIN"]}>
         <div className="cardsGrid">
           <EmployeeGroupSettings />
@@ -62,6 +54,12 @@ export default function Settings() {
           <SwitchGroup initialUserProfile={userProfile} onSaveSuccess={onSuccessfulSaveUser}/>
         </div>
       </div>
+      <Authenticated shouldHaveRoles={["ADMIN"]}>
+        <div className="cardsGrid">
+          <CompanyDetails />
+          <Theme />
+        </div>
+      </Authenticated>
     </div>
   );
 }

@@ -13,7 +13,7 @@ import {
 } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import "./TeamSettings.css";
-import { touchString } from "../../service/utilities";
+import { touchNumber, touchString } from "../../service/utilities";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
 import { Modal } from "../common/Modal";
@@ -122,6 +122,34 @@ export const TeamSettings: React.FC<Props> = () => {
     }
   };
 
+  const onTeamNameChange = (teamId: number, teamName: string) => {
+    if (teamName.length > 100) {
+      return;
+    }
+    const teamsCopy = [...teams];
+    const foundTeams = teamsCopy.filter(t => t.id === teamId);
+    if (foundTeams.length > 0) {
+      foundTeams[0].teamName = teamName;
+      setTeams(teamsCopy);
+    }
+  };
+
+  const onChangeRequiredCount = (teamId: number, teamEmployeeTypeId: number, value: string) => {
+    const valueNumber: number = touchNumber(value);
+    if (valueNumber < 1 || valueNumber > 100) {
+      return;
+    }
+    const teamsCopy = [...teams];
+    const foundTeams = teamsCopy.filter(t => t.id === teamId);
+    if (foundTeams.length > 0) {
+      const filteredTetArray = foundTeams[0].teamEmployeeTypes.filter(tet => tet.id === teamEmployeeTypeId);
+      if (filteredTetArray.length > 0) {
+        filteredTetArray[0].requiredCount = touchNumber(value);
+      }
+      setTeams(teamsCopy);
+    }
+  };
+
   const createTeamEmployeeTypeCard = (teamId: number, teamEmployeeType: TeamEmployeeTypeDto) => (
     <div>
       <select>
@@ -133,7 +161,9 @@ export const TeamSettings: React.FC<Props> = () => {
           </option>
         ))}
       </select>
-      <input type="number" value={teamEmployeeType.requiredCount} />
+      <input type="number" value={teamEmployeeType.requiredCount} 
+        onChange={e => onChangeRequiredCount(teamId, teamEmployeeType.id ?? 0, e.target.value)}
+      />
       <button type="button" title="Remove" onClick={() => onRemoveType(teamId, teamEmployeeType.id ?? 0)}>✕</button>
     </div>
   );
@@ -142,7 +172,8 @@ export const TeamSettings: React.FC<Props> = () => {
     <div>
       <div>
         <div>
-          <input type="text" value={team.teamName} />
+          <input type="text" value={team.teamName} 
+          onChange={e => onTeamNameChange(team.id ?? 0, e.target.value)}/>
         </div>
         <div>
           <button type="button" title="Delete team"
