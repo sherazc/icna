@@ -43,14 +43,16 @@ class TeamService(
             }
         }
 
-
-
         // Save Team and its employee types
         val company = companyService.findById(companyId)
         return teamDtoList.map { teamDto ->
             val team: Team = getOrCreateTeam(teamDto, company)
             team.teamName = teamDto.teamName
             teamRepository.save(team)
+            /*
+            TODO: Look into this issue
+                It creates new ID of TeamEmployeeType every time it saves
+            */
             val teamEmployeeTypes: List<TeamEmployeeType> =
                 teamDto.teamEmployeeTypes.mapNotNull { teamEmployeeTypeService.save(team, it) }
 

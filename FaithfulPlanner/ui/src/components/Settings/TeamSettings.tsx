@@ -3,7 +3,6 @@ import {
   defaultTeamDto,
   FormState,
   type EmployeeGroupTypesDto,
-  type EmployeeTypeDto,
   type ErrorDto,
   type SelectOption,
   type TeamDto,
@@ -67,16 +66,38 @@ export const TeamSettings: React.FC<Props> = () => {
   };
 
   const createTeamEmployeeTypeCard = (teamEmployeeType: TeamEmployeeTypeDto) => (
-    <div>{teamEmployeeType.requiredCount}</div>
+    <div>
+      <select>
+        <option value="">Select Group</option>
+        {createEmployeeTypeOptions(allGroupTypes).map(option => (
+          <option key={option.key} value={option.key}
+            selected={touchString(option.key) === touchString(teamEmployeeType.employeeType.id)}>
+            {option.value}
+          </option>
+        ))}
+      </select>
+      <input type="number" value={teamEmployeeType.requiredCount} />
+      <button type="button" title="Remove">✕</button>
+    </div>
   );
 
   const createTeamCard = (team: TeamDto) => (
     <div>
-      <div>{team.teamName}</div>
+      <div>
+        <div>
+          {team.teamName}
+        </div>
+        <div>
+          <button type="button" title="Delete team">🗑</button>
+        </div>
+      </div>
       {team.teamEmployeeTypes && team.teamEmployeeTypes.length > 0 ?
         (team.teamEmployeeTypes.map(employeeType => createTeamEmployeeTypeCard(employeeType))) : (
           <div>No Team Employee types</div>
         )}
+        <div>
+          <button type="button" title="Add Employee Type">+ Add Type</button>
+        </div>
     </div>
   );
 
