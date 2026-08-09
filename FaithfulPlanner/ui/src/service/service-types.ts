@@ -234,6 +234,8 @@ export type TeamEmployeeTypeDto = {
     requiredCount: number;
 };
 
+export const defaultTeamEmployeeTypeDto = (): TeamEmployeeTypeDto => ({requiredCount: 1, employeeType: {typeName: ""}});
+
 export type TeamDto = {
     id?: number;
     teamName: string;

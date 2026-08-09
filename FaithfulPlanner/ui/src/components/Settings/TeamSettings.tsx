@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import {
   defaultTeamDto,
+  defaultTeamEmployeeTypeDto,
   FormState,
   ModalType,
   type EmployeeGroupTypesDto,
@@ -67,7 +68,7 @@ export const TeamSettings: React.FC<Props> = () => {
 
   const onAddTeam = () => {
     const teamNew = defaultTeamDto();
-    teamNew.id = tempId--;
+    teamNew.id = --tempId;
     const allTeams = [...teams];
     allTeams.push(teamNew);
     setTeams(allTeams);
@@ -100,7 +101,28 @@ export const TeamSettings: React.FC<Props> = () => {
     }
   };
 
-  const createTeamEmployeeTypeCard = (teamEmployeeType: TeamEmployeeTypeDto) => (
+  const onAddType = (teamId: number) => {
+    const teamsCopy = [...teams];
+    const foundTeams = teamsCopy.filter(t => t.id === teamId);
+    if (foundTeams.length > 0) {
+      const newTeamEmployeeType = defaultTeamEmployeeTypeDto();
+      newTeamEmployeeType.id = --tempId
+      foundTeams[0].teamEmployeeTypes.push(newTeamEmployeeType);
+      setTeams(teamsCopy);
+    }
+  };
+
+  const onRemoveType = (teamId: number, teamEmployeeTypeId: number) => {
+    const teamsCopy = [...teams];
+    const foundTeams = teamsCopy.filter(t => t.id === teamId);
+    if (foundTeams.length > 0) {
+      const filteredTetArray = foundTeams[0].teamEmployeeTypes.filter(tet => tet.id !== teamEmployeeTypeId);
+      foundTeams[0].teamEmployeeTypes = filteredTetArray;
+      setTeams(teamsCopy);
+    }
+  };
+
+  const createTeamEmployeeTypeCard = (teamId: number, teamEmployeeType: TeamEmployeeTypeDto) => (
     <div>
       <select>
         <option value="">Select Group</option>
@@ -112,7 +134,7 @@ export const TeamSettings: React.FC<Props> = () => {
         ))}
       </select>
       <input type="number" value={teamEmployeeType.requiredCount} />
-      <button type="button" title="Remove">✕</button>
+      <button type="button" title="Remove" onClick={() => onRemoveType(teamId, teamEmployeeType.id ?? 0)}>✕</button>
     </div>
   );
 
@@ -130,11 +152,11 @@ export const TeamSettings: React.FC<Props> = () => {
         </div>
       </div>
       {team.teamEmployeeTypes && team.teamEmployeeTypes.length > 0 ?
-        (team.teamEmployeeTypes.map(employeeType => createTeamEmployeeTypeCard(employeeType))) : (
+        (team.teamEmployeeTypes.map(employeeType => createTeamEmployeeTypeCard(team.id ?? 0, employeeType))) : (
           <div>Add team's required employee types</div>
         )}
       <div>
-        <button type="button" title="Add Employee Type">+ Add Type</button>
+        <button type="button" title="Add Employee Type" onClick={() => onAddType(team.id ?? 0)}>+ Add Type</button>
       </div>
     </div>
   );
