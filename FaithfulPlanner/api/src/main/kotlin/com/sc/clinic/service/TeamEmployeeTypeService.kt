@@ -13,7 +13,7 @@ class TeamEmployeeTypeService(
     val teamEmployeeTypeRepository: TeamEmployeeTypeRepository,
     val employeeTypeService: EmployeeTypeService
 ) {
-    fun deleteByTeamId(id: Long?): Long = id?.let { teamEmployeeTypeRepository.deleteByTeamId(it) } ?: 0L
+    fun deleteByTeamId(teamId: Long?): Long = teamId?.let { teamEmployeeTypeRepository.deleteByTeamId(it) } ?: 0L
 
     fun deleteIfNotExists(teamId: Long?, employeeTypeId: Long?, teamDtoList: List<TeamDto>) {
         if (teamId == null || employeeTypeId == null) return

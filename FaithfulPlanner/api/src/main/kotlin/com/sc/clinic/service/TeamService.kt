@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service
 class TeamService(
     private val teamRepository: TeamRepository,
     private val companyService: CompanyService,
-    private val teamEmployeeTypeService: TeamEmployeeTypeService
+    private val teamEmployeeTypeService: TeamEmployeeTypeService,
+    private val operationDayTeamService: OperationDayTeamService
 ) {
     fun getAllTeams(companyId: Long): List<Team> = teamRepository.findByCompanyId(companyId)
 
@@ -75,5 +76,10 @@ class TeamService(
         }
     }
 
-
+    fun deleteTeam(companyId: Long, teamId: Long): Boolean {
+        teamEmployeeTypeService.deleteByTeamId(teamId)
+        operationDayTeamService.deleteByTeamId(teamId)
+        teamRepository.deleteById(teamId)
+        return true
+    }
 }

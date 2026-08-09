@@ -3,6 +3,7 @@ package com.sc.clinic.controller
 import com.sc.clinic.dto.TeamDto
 import com.sc.clinic.service.TeamService
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,4 +25,8 @@ class TeamController(
     fun saveTeam(@PathVariable companyId: Long, @RequestBody teams: List<TeamDto>): List<TeamDto> =
         teamService.saveTeam(companyId, teams)
 
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
+    @DeleteMapping("/{teamId}")
+    fun deleteTeam(@PathVariable companyId: Long, @PathVariable teamId: Long): Boolean =
+        teamService.deleteTeam(companyId, teamId)
 }
