@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import {
   defaultTeamDto,
   FormState,
+  ModalType,
   type EmployeeGroupTypesDto,
   type ErrorDto,
+  type ModalConfig,
   type SelectOption,
   type TeamDto,
   type TeamEmployeeTypeDto
@@ -13,6 +15,7 @@ import "./TeamSettings.css";
 import { touchString } from "../../service/utilities";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
+import { Modal } from "../common/Modal";
 
 interface Props { }
 
@@ -25,6 +28,10 @@ export const TeamSettings: React.FC<Props> = () => {
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
   const [errors, setErrors] = useState<ErrorDto[]>([]);
 
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [modalConfig, setModalConfig] = useState<ModalConfig>({});
+  const [modalMessage, setModalMessage] = useState<string>("");
+
 
   const loadData = async (companyId: number) => {
     const teamsResponse = await clinicApis.teamsGet(companyId);
@@ -35,6 +42,7 @@ export const TeamSettings: React.FC<Props> = () => {
   };
 
   // will be used to create drop down of employee type
+  // TODO: if a team already have a employee type, then filter out that Employee Type
   const createEmployeeTypeOptions = (gTypes: EmployeeGroupTypesDto[]): SelectOption[] => {
     const options: SelectOption[] = []
     gTypes.forEach(gType => {
@@ -65,6 +73,33 @@ export const TeamSettings: React.FC<Props> = () => {
     setTeams(allTeams);
   };
 
+  const deleteTeam = (teamId: number) => {
+    const filteredTeams = teams.filter(a => a.id !== teamId);
+    setTeams(filteredTeams);
+  }
+
+  const onDeleteTeam = (teamId?: number) => {
+    if (teamId === undefined || teamId === null) {
+      return;
+    }
+    if (teamId < 0) {
+      deleteTeam(teamId);
+    } else {
+      setModalConfig({
+        title: "Delete Team",
+        modalType: ModalType.WARNING,
+        yesLabel: "Ok",
+        yesFunction: () => {
+          deleteTeam(teamId);
+          setModalShow(false);
+        },
+        noLabel: "Cancel"
+      });
+      setModalMessage("Are you sure you want to delete? This is will also remove from any operation day it is assigned to.");
+      setModalShow(true);
+    }
+  };
+
   const createTeamEmployeeTypeCard = (teamEmployeeType: TeamEmployeeTypeDto) => (
     <div>
       <select>
@@ -85,19 +120,22 @@ export const TeamSettings: React.FC<Props> = () => {
     <div>
       <div>
         <div>
-          {team.teamName}
+          <input type="text" value={team.teamName} />
         </div>
         <div>
-          <button type="button" title="Delete team">🗑</button>
+          <button type="button" title="Delete team"
+            onClick={() => onDeleteTeam(team.id)}>
+            🗑
+          </button>
         </div>
       </div>
       {team.teamEmployeeTypes && team.teamEmployeeTypes.length > 0 ?
         (team.teamEmployeeTypes.map(employeeType => createTeamEmployeeTypeCard(employeeType))) : (
-          <div>No Team Employee types</div>
+          <div>Add team's required employee types</div>
         )}
-        <div>
-          <button type="button" title="Add Employee Type">+ Add Type</button>
-        </div>
+      <div>
+        <button type="button" title="Add Employee Type">+ Add Type</button>
+      </div>
     </div>
   );
 
@@ -123,10 +161,13 @@ export const TeamSettings: React.FC<Props> = () => {
         </div>
         <Loading formState={formState} />
         <div className="settings-footer">
-          <button className="btn btnPrimary btn-lg" onClick={() => onSave()}>Save All Teams</button>
+          <button className="btn btnPrimary btn-lg" onClick={() => onSave()}>Save Teams</button>
         </div>
       </div>
 
+      <Modal setShow={setModalShow} show={modalShow} config={modalConfig}>
+        {modalMessage}
+      </Modal>
     </>
   );
 }
