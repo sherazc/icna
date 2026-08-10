@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import {
+  defaultEmployeeTypeDto,
   defaultTeamDto,
   defaultTeamEmployeeTypeDto,
   FormState,
   ModalType,
   type EmployeeGroupTypesDto,
+  type EmployeeTypeDto,
   type ErrorDto,
   type ModalConfig,
   type SelectOption,
@@ -150,9 +152,32 @@ export const TeamSettings: React.FC<Props> = () => {
     }
   };
 
+  const onChangeSelectEmployeeType = (teamId: number, teamEmployeeTypeId: number, value: string) => {
+    const teamsCopy = [...teams];
+    const foundTeams = teamsCopy.filter(t => t.id === teamId);
+    if (foundTeams.length > 0) {
+      const filteredTetArray = foundTeams[0].teamEmployeeTypes.filter(tet => tet.id === teamEmployeeTypeId);
+      if (filteredTetArray.length > 0) {
+        const allEmployeeTypes: EmployeeTypeDto[] = []
+        allGroupTypes.forEach(gt => allEmployeeTypes.push(...gt.employeeTypes));
+        const foundEmployeeType = allEmployeeTypes.find(et => et.id === touchNumber(value));
+        if (foundEmployeeType) {
+          filteredTetArray[0].employeeType = foundEmployeeType
+        } else {
+          filteredTetArray[0].employeeType = defaultEmployeeTypeDto();
+        }
+      }
+      setTeams(teamsCopy);
+    }
+  };
+
+  const onSave = async () => {
+    console.log("saving", new Date());
+  };
+
   const createTeamEmployeeTypeCard = (teamId: number, teamEmployeeType: TeamEmployeeTypeDto) => (
     <div>
-      <select>
+      <select onChange={e => onChangeSelectEmployeeType(teamId, teamEmployeeType.id ?? 0, e.target.value)}>
         <option value="">Select Group</option>
         {createEmployeeTypeOptions(allGroupTypes).map(option => (
           <option key={option.key} value={option.key}
@@ -191,10 +216,6 @@ export const TeamSettings: React.FC<Props> = () => {
       </div>
     </div>
   );
-
-  const onSave = async () => {
-    console.log("saving", new Date());
-  };
 
   return (
     <>
