@@ -26,3 +26,12 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: var(--spacing-20);
 }
+
+.input-empty {
+  background-color: var(--error-light);
+}
+
+.input-empty::placeholder {
+  color: var(--text-secondary);
+}
+

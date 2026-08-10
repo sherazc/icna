@@ -172,12 +172,17 @@ export const TeamSettings: React.FC<Props> = () => {
   };
 
   const onSave = async () => {
-    console.log("saving", new Date());
+    console.log("saving...", new Date());
+    // TODO loading
+    // TODO validate
+
+    const savedTeams = await clinicApis.teamsSave(authUserToken.companyId, teams);
+    setTeams(savedTeams)
   };
 
   const createTeamEmployeeTypeCard = (teamId: number, teamEmployeeType: TeamEmployeeTypeDto) => (
     <div>
-      <select onChange={e => onChangeSelectEmployeeType(teamId, teamEmployeeType.id ?? 0, e.target.value)}>
+      <select onChange={e => onChangeSelectEmployeeType(teamId, teamEmployeeType.id ?? 0, e.target.value)} className={teamEmployeeType.employeeType.id ? "" : "input-empty"}>
         <option value="">Select Group</option>
         {createEmployeeTypeOptions(allGroupTypes).map(option => (
           <option key={option.key} value={option.key}
@@ -186,7 +191,7 @@ export const TeamSettings: React.FC<Props> = () => {
           </option>
         ))}
       </select>
-      <input type="number" value={teamEmployeeType.requiredCount} 
+      <input type="number" value={teamEmployeeType.requiredCount}
         onChange={e => onChangeRequiredCount(teamId, teamEmployeeType.id ?? 0, e.target.value)}
       />
       <button type="button" title="Remove" onClick={() => onRemoveType(teamId, teamEmployeeType.id ?? 0)}>✕</button>
@@ -197,7 +202,7 @@ export const TeamSettings: React.FC<Props> = () => {
     <div>
       <div>
         <div>
-          <input type="text" value={team.teamName} 
+          <input type="text" value={team.teamName} placeholder="Team name" className={team.teamName.length < 1 ? "input-empty" : ""}
           onChange={e => onTeamNameChange(team.id ?? 0, e.target.value)}/>
         </div>
         <div>
