@@ -195,8 +195,10 @@ export const TeamSettings: React.FC<Props> = () => {
   };
 
   const createTeamEmployeeTypeCard = (teamId: number, teamEmployeeType: TeamEmployeeTypeDto) => (
-    <div>
-      <select onChange={e => onChangeSelectEmployeeType(teamId, teamEmployeeType.id ?? 0, e.target.value)} className={teamEmployeeType.employeeType.id ? "" : "input-empty"}>
+    <div key={teamEmployeeType.id} className="team-employee-type-item">
+      <select
+        onChange={e => onChangeSelectEmployeeType(teamId, teamEmployeeType.id ?? 0, e.target.value)}
+        className={teamEmployeeType.employeeType.id ? "team-type-select" : "team-type-select input-empty"}>
         <option value="">Select Group</option>
         {createEmployeeTypeOptions(allGroupTypes).map(option => (
           <option key={option.key} value={option.key}
@@ -206,32 +208,40 @@ export const TeamSettings: React.FC<Props> = () => {
         ))}
       </select>
       <input type="number" value={teamEmployeeType.requiredCount}
+        className="team-type-count-input"
         onChange={e => onChangeRequiredCount(teamId, teamEmployeeType.id ?? 0, e.target.value)}
       />
-      <button type="button" title="Remove" onClick={() => onRemoveType(teamId, teamEmployeeType.id ?? 0)}>✕</button>
+      <button className="btn btn-icon btn-remove" type="button" title="Remove"
+        onClick={() => onRemoveType(teamId, teamEmployeeType.id ?? 0)}>×</button>
     </div>
   );
 
   const createTeamCard = (team: TeamDto) => (
-    <div>
-      <div>
-        <div>
-          <input type="text" value={team.teamName} placeholder="Team name" className={team.teamName.length < 1 ? "input-empty" : ""}
+    <div key={team.id} className="team-card">
+      <div className="team-header">
+        <div className="team-title">
+          <input type="text" value={team.teamName} placeholder="Team name"
+            className={team.teamName.length < 1 ? "team-name-input input-empty" : "team-name-input"}
             onChange={e => onTeamNameChange(team.id ?? 0, e.target.value)} />
         </div>
-        <div>
-          <button type="button" title="Delete team"
+        <div className="team-actions">
+          <button className="btn btn-icon btn-delete" type="button" title="Delete team"
             onClick={() => onDeleteTeam(team.id)}>
             🗑
           </button>
         </div>
       </div>
-      {team.teamEmployeeTypes && team.teamEmployeeTypes.length > 0 ?
-        (team.teamEmployeeTypes.map(employeeType => createTeamEmployeeTypeCard(team.id ?? 0, employeeType))) : (
-          <div>Add team's required employee types</div>
+      <div className="employee-types-section">
+        <div className="section-label">Required Employee Types</div>
+        {team.teamEmployeeTypes && team.teamEmployeeTypes.length > 0 ? (
+          <div className="employee-types-list">
+            {team.teamEmployeeTypes.map(employeeType => createTeamEmployeeTypeCard(team.id ?? 0, employeeType))}
+          </div>
+        ) : (
+          <div className="empty-state">Add team's required employee types</div>
         )}
-      <div>
-        <button type="button" title="Add Employee Type" onClick={() => onAddType(team.id ?? 0)}>+ Add Type</button>
+        <button className="btn btn-secondary btn-sm btn-add-type" type="button" title="Add Employee Type"
+          onClick={() => onAddType(team.id ?? 0)}>+ Add Type</button>
       </div>
     </div>
   );
@@ -249,7 +259,10 @@ export const TeamSettings: React.FC<Props> = () => {
         <div className="groups-container">
           {teams && teams.length > 0 ?
             (teams.map(team => createTeamCard(team))) : (
-              <div>No Teams</div>
+              <div className="empty-state-container">
+                <p>No teams created yet</p>
+                <button className="btn btnPrimary" onClick={onAddTeam}>Create First Team</button>
+              </div>
             )}
         </div>
         <Loading formState={formState} />
