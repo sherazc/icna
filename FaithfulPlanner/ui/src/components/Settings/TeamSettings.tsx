@@ -19,6 +19,7 @@ import { touchNumber, touchString } from "../../service/utilities";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
 import { Modal } from "../common/Modal";
+import { toScErrorResponses } from "../../service/errors-helpers";
 
 interface Props { }
 
@@ -173,11 +174,24 @@ export const TeamSettings: React.FC<Props> = () => {
 
   const onSave = async () => {
     console.log("saving...", new Date());
-    // TODO loading
-    // TODO validate
-
-    const savedTeams = await clinicApis.teamsSave(authUserToken.companyId, teams);
-    setTeams(savedTeams)
+    setFormState(FormState.IN_PROGRESS);
+    const submitErrors: ErrorDto[] = [];
+    // submitErrors.push(...validateEmployeeGroupsForm(groups));
+    if (submitErrors.length < 1) {
+      try {
+        const savedTeams = await clinicApis.teamsSave(authUserToken.companyId, teams);
+        setTeams(savedTeams);
+        setFormState(FormState.SUCCESSFUL);
+      } catch (error) {
+        const apiErrors: ErrorDto[] = toScErrorResponses(error);
+        submitErrors.push(...apiErrors);
+        submitErrors.push({ message: "Failed to save teams." });
+        setFormState(FormState.FAILED);
+      }
+    } else {
+      setFormState(FormState.FAILED);
+    }
+    setErrors(submitErrors);
   };
 
   const createTeamEmployeeTypeCard = (teamId: number, teamEmployeeType: TeamEmployeeTypeDto) => (
@@ -203,7 +217,7 @@ export const TeamSettings: React.FC<Props> = () => {
       <div>
         <div>
           <input type="text" value={team.teamName} placeholder="Team name" className={team.teamName.length < 1 ? "input-empty" : ""}
-          onChange={e => onTeamNameChange(team.id ?? 0, e.target.value)}/>
+            onChange={e => onTeamNameChange(team.id ?? 0, e.target.value)} />
         </div>
         <div>
           <button type="button" title="Delete team"
