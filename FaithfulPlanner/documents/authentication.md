@@ -255,7 +255,7 @@ class LoginController(private val scTokenGeneratorService: ScTokenGeneratorServi
 
 ### 1.10 Refresh Token Mechanics
 
-Table `refresh_token` (`V1_0_6__refresh_token.sql`):
+Table `refresh_token` (`V1_0_0__user_auth.sql`):
 
 ```sql
 create table refresh_token (
