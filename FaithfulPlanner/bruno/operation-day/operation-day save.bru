@@ -19,15 +19,33 @@ body:json {
     "id": 1,
     "companyId": 1,
     "serviceDateString": "2026-01-24",
-    "notes": "Saturday clinic 123",
-    "employeeTypes": [
+    "notes": "Saturday clinic sdfsdf",
+    "requiredTeams": [
       {
         "id": 3,
-        "typeName": "Cardiologist"
-      },
-      {
-        "id": 7,
-        "typeName": "Dentist"
+        "team": {
+          "id": 45,
+          "teamName": "team 1",
+          "teamEmployeeTypes": [
+            {
+              "id": 220,
+              "employeeType": {
+                "id": 3,
+                "typeName": "Cardiologist"
+              },
+              "requiredCount": 1
+            },
+            {
+              "id": 221,
+              "employeeType": {
+                "id": 2,
+                "typeName": "Pediatrician"
+              },
+              "requiredCount": 2
+            }
+          ]
+        },
+        "requiredCount": 7
       }
     ]
   }

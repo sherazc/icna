@@ -33,13 +33,13 @@ class TeamEmployeeTypeService(
 
         var teamEmployeeType =
             teamEmployeeTypeRepository.findByTeamIdAndEmployeeTypeId(teamId, employeeTypeId)?.let { tet ->
-                tet.requiredCount = teamEmployeeTypeDto.requiredCount
+                tet.requiredEmployeeTypeCount = teamEmployeeTypeDto.requiredEmployeeTypeCount
                 tet
             }
 
         if (teamEmployeeType == null) {
             val employeeType: EmployeeType = employeeTypeService.findById(employeeTypeId) ?: return null
-            teamEmployeeType = TeamEmployeeType(null, team, employeeType, teamEmployeeTypeDto.requiredCount)
+            teamEmployeeType = TeamEmployeeType(null, team, employeeType, teamEmployeeTypeDto.requiredEmployeeTypeCount)
         }
 
         return teamEmployeeTypeRepository.save(teamEmployeeType)

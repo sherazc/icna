@@ -17,6 +17,6 @@ class OperationDayTeam(
     @JoinColumn(name = "team_id", nullable = false)
     var team: Team,
 
-    @Column(name = "required_count", nullable = false)
-    var requiredCount: Int
+    @Column(name = "required_team_count", nullable = false)
+    var requiredTeamCount: Int
 )

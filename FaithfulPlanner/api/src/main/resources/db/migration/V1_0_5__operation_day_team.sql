@@ -14,7 +14,7 @@ create table if not exists team_employee_type
     id                bigserial not null primary key,
     team_id           bigint    not null,
     employee_type_id  bigint    not null,
-    required_count    int       not null default 1,
+    required_employee_type_count    int       not null default 1,
     constraint fk_team_employee_type_team foreign key (team_id) references team (id),
     constraint fk_team_employee_type_employee_type foreign key (employee_type_id) references employee_type (id),
     constraint uk_team_employee_type unique (team_id, employee_type_id)
@@ -28,7 +28,7 @@ create table if not exists operation_day_team
     id               bigserial not null primary key,
     operation_day_id bigint    not null,
     team_id          bigint    not null,
-    required_count   int       not null default 1,
+    required_team_count   int       not null default 1,
     constraint fk_operation_day_team_operation_day foreign key (operation_day_id) references operation_day (id),
     constraint fk_operation_day_team_team foreign key (team_id) references team (id),
     constraint uk_operation_day_team unique (operation_day_id, team_id)

@@ -250,7 +250,7 @@ export const defaultTeamDto = ():TeamDto => ({
 export type OperationDayTeamDto = {
     id?: number;
     team: TeamDto;
-    requiredCount: number;
+    requiredTeamCount: number;
 };
 
 export type Pair = {

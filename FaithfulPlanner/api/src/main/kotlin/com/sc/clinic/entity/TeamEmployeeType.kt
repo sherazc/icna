@@ -17,6 +17,6 @@ class TeamEmployeeType(
     @JoinColumn(name = "employee_type_id", nullable = false)
     var employeeType: EmployeeType,
 
-    @Column(name = "required_count", nullable = false)
-    var requiredCount: Int
+    @Column(name = "required_employee_type_count", nullable = false)
+    var requiredEmployeeTypeCount: Int
 )

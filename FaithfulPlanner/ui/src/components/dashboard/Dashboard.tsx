@@ -3,8 +3,6 @@ import {
   defaultOpDayDetailDto,
   FormState,
   ModalType,
-  type EmployeeGroupTypesDto,
-  // type EmployeeTypeDto,
   type ErrorDto,
   type OpDayDetailDto,
   type OperationDayDto,
@@ -45,7 +43,6 @@ export default function Dashboard() {
   // const [allGroupTypes, setAllGroupTypes] = useState<EmployeeGroupTypesDto[]>([]);
   // And use this
   const [allTeams, setAllTeams] = useState<TeamDto[]>([]);
-
 
   // Delete Modal
   const [modalDeleteOpDayDetail, setModalDeleteOpDayDetail] = useState<OpDayDetailDto>(defaultOpDayDetailDto());

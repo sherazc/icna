@@ -2,8 +2,8 @@ package com.sc.clinic.dto
 
 import jakarta.validation.Valid
 
-data class RegistrationDto(
+class RegistrationDto(
     @field:Valid
-    val company: CompanyDto,
+    var company: CompanyDto,
     @field:Valid
-    val userProfile: UserProfileDto)
+    var userProfile: UserProfileDto)

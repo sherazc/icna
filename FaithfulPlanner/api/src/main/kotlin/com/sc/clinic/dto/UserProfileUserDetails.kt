@@ -5,8 +5,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class UserProfileUserDetails(
-    private val user: UserProfileDto,
-    private val roles: Collection<String>
+    var user: UserProfileDto,
+    var roles: Collection<String>
 ) : UserDetails {
 
     fun getCompanyId() = user.companyId

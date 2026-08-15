@@ -8,13 +8,9 @@ import com.sc.clinic.util.DateUtils
  * Used to list Operation days on Dashboard screen
  */
 open class OperationDayDto(
-    @param:JsonProperty("id")
     var id: Long?,
-    @param:JsonProperty("companyId")
     var companyId: Long,
-    @param:JsonProperty("serviceDateString")
     var serviceDateString: String,
-    @param:JsonProperty("notes")
     var notes: String?,
     var requiredTeams: List<OperationDayTeamDto> = mutableListOf()
 ) {
