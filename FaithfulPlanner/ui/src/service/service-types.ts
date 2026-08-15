@@ -231,10 +231,10 @@ export const defaultPasswordUpdateDto = (): PasswordUpdateDto => ({
 export type TeamEmployeeTypeDto = {
     id?: number;
     employeeType: EmployeeTypeDto;
-    requiredCount: number;
+    requiredEmployeeTypeCount: number;
 };
 
-export const defaultTeamEmployeeTypeDto = (): TeamEmployeeTypeDto => ({requiredCount: 1, employeeType: {typeName: ""}});
+export const defaultTeamEmployeeTypeDto = (): TeamEmployeeTypeDto => ({requiredEmployeeTypeCount: 1, employeeType: {typeName: ""}});
 
 export type TeamDto = {
     id?: number;

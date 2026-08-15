@@ -150,7 +150,7 @@ export default function Dashboard() {
         {team.teamEmployeeTypes.map(tet => (
           <div key={tet.id}>
             <div>{tet.employeeType.typeName}</div>
-            <div>{tet.requiredCount}</div>
+            <div>{tet.requiredEmployeeTypeCount}</div>
           </div>
         ))}
       </div>

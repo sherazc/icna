@@ -148,7 +148,7 @@ export const TeamSettings: React.FC<Props> = () => {
     if (foundTeams.length > 0) {
       const filteredTetArray = foundTeams[0].teamEmployeeTypes.filter(tet => tet.id === teamEmployeeTypeId);
       if (filteredTetArray.length > 0) {
-        filteredTetArray[0].requiredCount = touchNumber(value);
+        filteredTetArray[0].requiredEmployeeTypeCount = touchNumber(value);
       }
       setTeams(teamsCopy);
     }
@@ -208,7 +208,7 @@ export const TeamSettings: React.FC<Props> = () => {
           </option>
         ))}
       </select>
-      <input type="number" value={teamEmployeeType.requiredCount}
+      <input type="number" value={teamEmployeeType.requiredEmployeeTypeCount}
         className="team-type-count-input"
         onChange={e => onChangeRequiredCount(teamId, teamEmployeeType.id ?? 0, e.target.value)}
       />
