@@ -96,7 +96,15 @@ class ScTokenGeneratorService(
         roles: List<String>
     ): AuthUserTokenDto {
         val now = Instant.now()
-        val expiresAt = now.plus(1, ChronoUnit.HOURS)
+
+        /*
+        TODO: UI is not behaving properly.
+            When token is refreshed, it looses roles. And it is still authenticated.
+            Fix it and change expiration to 15 mins.
+            To test it change it to 1 minute and observe UI behavior.
+         */
+        // val expiresAt = now.plus(15, ChronoUnit.MINUTES)
+        val expiresAt = now.plus(365, ChronoUnit.DAYS)
         val userProfileId = userProfile.id!!
 
         val jwt = JwtClaimsSet.builder()

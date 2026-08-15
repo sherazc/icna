@@ -9,7 +9,7 @@ import {
   type EmployeeTypeDto,
   type ErrorDto,
   type ModalConfig,
-  type SelectOption,
+  type Pair,
   type TeamDto,
   type TeamEmployeeTypeDto
 } from "../../service/service-types";
@@ -47,13 +47,14 @@ export const TeamSettings: React.FC<Props> = () => {
 
   // will be used to create drop down of employee type
   // TODO: if a team already have a employee type, then filter out that Employee Type
-  const createEmployeeTypeOptions = (gTypes: EmployeeGroupTypesDto[]): SelectOption[] => {
-    const options: SelectOption[] = []
+  const createEmployeeTypeOptions = (gTypes: EmployeeGroupTypesDto[]): Pair[] => {
+    const options: Pair[] = []
     gTypes.forEach(gType => {
       const groupName = gType.groupName
       gType.employeeTypes.forEach(eType => {
         const eTypeId = eType.id;
         const eTypeName = eType.typeName;
+        
         options.push({
           key: touchString(eTypeId),
           value: `${groupName} - ${eTypeName}`

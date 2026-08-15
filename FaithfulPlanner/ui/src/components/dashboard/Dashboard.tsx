@@ -7,7 +7,8 @@ import {
   // type EmployeeTypeDto,
   type ErrorDto,
   type OpDayDetailDto,
-  type OperationDayDto
+  type OperationDayDto,
+  type TeamDto
 } from "../../service/service-types";
 import { UnAuthRedirect } from "../auth/UnAuthRedirect"
 import { ErrorField } from "../common/ErrorField";
@@ -40,7 +41,11 @@ export default function Dashboard() {
   const [showOpDayDetail, setShowOpDayDetail] = useState<boolean>(false);
   const [modalOpDayDetailFormState, setModalOpDayDetailFormState] = useState<FormState>(FormState.FRESH);
   const [modalOpDayDetailErrors, setModalOpDayDetailErrors] = useState<ErrorDto[]>([]);
-  const [allGroupTypes, setAllGroupTypes] = useState<EmployeeGroupTypesDto[]>([]);
+  // With team changes. Delete this
+  // const [allGroupTypes, setAllGroupTypes] = useState<EmployeeGroupTypesDto[]>([]);
+  // And use this
+  const [allTeams, setAllTeams] = useState<TeamDto[]>([]);
+
 
   // Delete Modal
   const [modalDeleteOpDayDetail, setModalDeleteOpDayDetail] = useState<OpDayDetailDto>(defaultOpDayDetailDto());
@@ -82,31 +87,31 @@ export default function Dashboard() {
   // const isEmployeeTypeSelected = (selectedEmployeeTypes: EmployeeTypeDto[], employeeType: EmployeeTypeDto): boolean =>
   //   selectedEmployeeTypes.findIndex(t => t.id === employeeType.id) > -1;
 
-/*
-  const onEmployeeTypeChange = (
-    // employeeType: EmployeeTypeDto, 
-    isChecked: boolean) => {
-
-    setModalOpDayDetail(previousOpDayDetail => {
-      // const currentTypes = [...previousOpDayDetail.requiredEmployeeTypes];
-      if (isChecked) {
-        // Add type if not already present
-        // if (!currentTypes.some(t => t.id === employeeType.id)) {
-        //   currentTypes.push(employeeType);
-        // }
-      } else {
-        // Remove type if unchecked
-        return {
-          ...previousOpDayDetail,
-          // requiredEmployeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
+  /*
+    const onEmployeeTypeChange = (
+      // employeeType: EmployeeTypeDto, 
+      isChecked: boolean) => {
+  
+      setModalOpDayDetail(previousOpDayDetail => {
+        // const currentTypes = [...previousOpDayDetail.requiredEmployeeTypes];
+        if (isChecked) {
+          // Add type if not already present
+          // if (!currentTypes.some(t => t.id === employeeType.id)) {
+          //   currentTypes.push(employeeType);
+          // }
+        } else {
+          // Remove type if unchecked
+          return {
+            ...previousOpDayDetail,
+            // requiredEmployeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
+          };
+        }
+        return { ...previousOpDayDetail, 
+          // requiredEmployeeTypes: currentTypes 
         };
-      }
-      return { ...previousOpDayDetail, 
-        // requiredEmployeeTypes: currentTypes 
-      };
-    });
-  };
-*/
+      });
+    };
+  */
 
   /*
   const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
@@ -137,6 +142,24 @@ export default function Dashboard() {
     );
   };
 */
+
+  const buildTeamColumn = (team: TeamDto) => (
+    <div>
+      <div>
+        {team.teamName}
+        <input type="checkbox" />
+      </div>
+      <div>
+        {team.teamEmployeeTypes.map(tet => (
+          <div key={tet.id}>
+            <div>{tet.employeeType.typeName}</div>
+            <div>{tet.requiredCount}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setModalOpDayDetail(prevData => ({ ...prevData, [id]: value }));
@@ -148,6 +171,8 @@ export default function Dashboard() {
     } else {
       setModalOpDayDetail({ ...defaultOpDayDetailDto(), companyId: authUserToken.companyId });
     }
+
+    /*
     if (allGroupTypes.length < 1) {
       // Loading All Employee Group time for the first time
       setModalOpDayDetailFormState(FormState.IN_PROGRESS);
@@ -158,6 +183,18 @@ export default function Dashboard() {
     } else {
       setModalOpDayDetailFormState(FormState.FRESH);
     }
+    */
+    if (allTeams.length < 1) {
+      // Loading all teams on first edit
+      setModalOpDayDetailFormState(FormState.IN_PROGRESS);
+      clinicApis.teamsGet(authUserToken.companyId).then(teamsResponse => {
+        setAllTeams(teamsResponse);
+        setModalOpDayDetailFormState(FormState.FRESH);
+      });
+    } else {
+      setModalOpDayDetailFormState(FormState.FRESH);
+    }
+
     setModalOpDayDetailErrors([]);
     setShowOpDayDetail(true);
   };
@@ -285,7 +322,7 @@ export default function Dashboard() {
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Type</th>
+                  <th>Team</th>
                   {opDayDetails[0].groups && opDayDetails[0].groups.map((group) => (
                     <th key={group.id}>{`${group.groupName}`}</th>
                   ))}
@@ -305,7 +342,7 @@ export default function Dashboard() {
                     </td>
                     <td>
                       <small className="smallText">
-                      {/*                       
+                        {/*                       
                         {opDayDetail.requiredEmployeeTypes && opDayDetail.requiredEmployeeTypes.map(et => (
                           <>{et.typeName}<br/></>
                         ))}
@@ -317,8 +354,8 @@ export default function Dashboard() {
                         {group.users.length}
                         {group.users.length > 0 &&
                           <small className="smallText">
-                            {group.users.map(u => (<>{u.firstName} {u.lastName}<br/></>))}
-                            </small>
+                            {group.users.map(u => (<>{u.firstName} {u.lastName}<br /></>))}
+                          </small>
                         }
                       </td>
                     ))}
@@ -400,13 +437,9 @@ export default function Dashboard() {
               value={modalOpDayDetail.notes} placeholder="Notes" />
             <ErrorField errors={modalOpDayDetailErrors} fieldName="notes" />
           </div>
-          {allGroupTypes.map(groupType => (
-            <div key={groupType.id}>
-              <h4>{groupType.groupName}</h4>
-              {/*
-              
-              {buildColumns(groupType, modalOpDayDetail.requiredEmployeeTypes)}
-              */}
+          {allTeams.map(t => (
+            <div key={t.id}>
+              {buildTeamColumn(t)}
             </div>
           ))}
         </form>

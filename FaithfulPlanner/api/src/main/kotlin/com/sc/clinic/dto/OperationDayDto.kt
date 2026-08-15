@@ -7,7 +7,7 @@ import com.sc.clinic.util.DateUtils
 /**
  * Used to list Operation days on Dashboard screen
  */
-open class OperationDayDto (
+open class OperationDayDto(
     @param:JsonProperty("id")
     var id: Long?,
     @param:JsonProperty("companyId")
@@ -17,8 +17,8 @@ open class OperationDayDto (
     @param:JsonProperty("notes")
     var notes: String?,
     var requiredTeams: List<OperationDayTeamDto> = mutableListOf()
-){
-    constructor(operationDay: OperationDay):this (
+) {
+    constructor(operationDay: OperationDay) : this(
         operationDay.id,
         operationDay.company.id!!,
         DateUtils.dateToIso(operationDay.serviceDate),

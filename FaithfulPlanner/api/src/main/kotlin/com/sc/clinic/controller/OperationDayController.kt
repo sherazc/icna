@@ -21,7 +21,7 @@ class OperationDayController(private val operationDayService: OperationDayServic
     fun save(
         @PathVariable companyId: Long,
         @RequestBody operationDayDto: OperationDayDto
-    ) = operationDayService.save(companyId,operationDayDto)
+    ) = operationDayService.save(companyId, operationDayDto)
 
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     @GetMapping
@@ -32,12 +32,12 @@ class OperationDayController(private val operationDayService: OperationDayServic
     fun getByDate(
         @PathVariable companyId: Long,
         @RequestParam(name = "date-string") dateString: String
-    ) = operationDayService.getByDate(companyId,dateString)
+    ) = operationDayService.getByDate(companyId, dateString)
 
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN)")
     @DeleteMapping("/{operationDayId}")
     fun delete(
         @PathVariable companyId: Long,
         @PathVariable operationDayId: Long
-    ) = operationDayService.delete(companyId,operationDayId)
+    ) = operationDayService.delete(companyId, operationDayId)
 }

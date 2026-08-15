@@ -253,7 +253,7 @@ export type OperationDayTeamDto = {
     requiredCount: number;
 };
 
-export type SelectOption = {
+export type Pair = {
     key: string;
     value: string;
 }
