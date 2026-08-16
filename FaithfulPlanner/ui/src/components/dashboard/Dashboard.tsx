@@ -25,6 +25,7 @@ import { isoToDayOfWeek, isoToMonthDayYear } from "../../service/DateService";
 // import { useNavigate } from "react-router-dom";
 import { Authenticated } from "../auth/Authenticated";
 
+let tempId = -1;
 export default function Dashboard() {
   // const navigate = useNavigate();
   const [{ authUserToken, clinicApis, employeeGroups }] = useContext(AppContext);
@@ -141,27 +142,66 @@ export default function Dashboard() {
   };
 */
 
-  const buildTeamColumn = (team: TeamDto, requiredTeams: OperationDayTeamDto[]) => {
-    const requiredTeam: OperationDayTeamDto | undefined = requiredTeams.find(rt => rt.team.id === team.id);
-
+  const buildTeamColumn = (team: TeamDto, opDayDetail: OpDayDetailDto) => {
+    const requiredTeam: OperationDayTeamDto | undefined = opDayDetail.requiredTeams.find(rt => rt.team.id === team.id);
     return (
       <div>
-      <div>
-        {team.teamName}
-        <input type="checkbox" checked={requiredTeam !== undefined}/>
-        <input type="number" placeholder="Number of teams" value={requiredTeam?.requiredTeamCount}/>
+        <div>
+          {team.teamName}
+          <input type="checkbox" checked={requiredTeam !== undefined} onChange={e => onChangeRequiredTeam(team, e.target.checked, opDayDetail)} />
+          <input type="number"
+            disabled={requiredTeam === undefined}
+            value={requiredTeam?.requiredTeamCount}
+            onChange={e => onChangeRequiredTeamCount(team, e.target.value, opDayDetail)}
+            placeholder="Number of teams" />
+        </div>
+        {/* Make this div accordion */}
+        <div>
+          {team.teamEmployeeTypes.map(tet => (
+            <div key={tet.id}>
+              <div>{tet.employeeType.typeName}</div>
+              <div>{tet.requiredEmployeeTypeCount}</div>
+            </div>
+          ))}
+        </div>
       </div>
-      <div>
-        {team.teamEmployeeTypes.map(tet => (
-          <div key={tet.id}>
-            <div>{tet.employeeType.typeName}</div>
-            <div>{tet.requiredEmployeeTypeCount}</div>
-          </div>
-        ))}
-      </div>
-    </div>
     );
   };
+
+  const onChangeRequiredTeam = (team: TeamDto, checked: boolean, opDayDetail: OpDayDetailDto) => {
+    const newOpDayDetail: OpDayDetailDto = { ...opDayDetail };
+    if (checked) {
+      const operationDayTeam: OperationDayTeamDto = {
+        id: --tempId,
+        requiredTeamCount: 1,
+        team: team
+      };
+      newOpDayDetail.requiredTeams = [...newOpDayDetail.requiredTeams];
+      newOpDayDetail.requiredTeams.push(operationDayTeam);
+    } else {
+      newOpDayDetail.requiredTeams = newOpDayDetail.requiredTeams.filter(rt => rt.team.id !== team.id);
+    }
+    setModalOpDayDetail(newOpDayDetail);
+  }
+
+
+  const onChangeRequiredTeamCount = (team: TeamDto, value: string, opDayDetail: OpDayDetailDto) => {
+
+    console.log(team);
+    console.log(value);
+    console.log(opDayDetail);
+
+    const newOpDayDetail: OpDayDetailDto = { ...opDayDetail };
+    newOpDayDetail.requiredTeams = [...newOpDayDetail.requiredTeams];
+    const opDayTeam: OperationDayTeamDto | undefined = newOpDayDetail.requiredTeams.find(rt => rt.team.id === team.id);
+    if (opDayTeam) {
+      const valueNumber = touchNumber(value);
+      opDayTeam.requiredTeamCount = valueNumber < 1 ? 1 : valueNumber
+    }
+    console.log("newOpDayDetail", newOpDayDetail);
+    setModalOpDayDetail(newOpDayDetail);
+  }
+
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -442,7 +482,7 @@ export default function Dashboard() {
           </div>
           {allTeams.map(t => (
             <div key={t.id}>
-              {buildTeamColumn(t, modalOpDayDetail.requiredTeams)}
+              {buildTeamColumn(t, modalOpDayDetail)}
             </div>
           ))}
         </form>
