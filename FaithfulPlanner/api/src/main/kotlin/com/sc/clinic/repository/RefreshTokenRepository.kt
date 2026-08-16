@@ -14,4 +14,6 @@ interface RefreshTokenRepository : JpaRepository<RefreshToken, Long> {
     @Modifying
     @Query("delete from RefreshToken rt where rt.expiresAt < :expiredBefore or rt.revokedAt is not null")
     fun deleteExpiredOrRevoked(expiredBefore: LocalDateTime): Int
+
+    fun deleteByUserProfileId(userProfileId: Long): Int
 }

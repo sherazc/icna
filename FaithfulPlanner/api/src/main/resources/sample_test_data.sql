@@ -161,3 +161,28 @@ INSERT INTO schedule (id, operation_day_id, user_profile_id)
 VALUES (4, 1, 17);
 
 SELECT setval(pg_get_serial_sequence('schedule', 'id'), (SELECT MAX(id) FROM schedule));
+
+
+INSERT INTO team (id,company_id,team_name) VALUES
+(1,1,'Staff'),
+(2,1,'Cardiology'),
+(3,1,'General Practitioner');
+
+SELECT setval(pg_get_serial_sequence('team', 'id'), (SELECT MAX(id) FROM team));
+
+INSERT INTO team_employee_type (id,team_id,employee_type_id,required_employee_type_count) VALUES
+(1,1,15,1),
+(2,1,10,2),
+(3,1,16,1),
+(4,2,3,1),
+(5,2,9,2),
+(6,2,1,2),
+(7,3,15,1),
+(8,3,9,1);
+
+SELECT setval(pg_get_serial_sequence('team_employee_type', 'id'), (SELECT MAX(id) FROM team_employee_type));
+
+INSERT INTO operation_day_team (id,operation_day_id,team_id,required_team_count) VALUES
+    (1,1,1,2),
+    (2,1,2,1);
+SELECT setval(pg_get_serial_sequence('operation_day_team', 'id'), (SELECT MAX(id) FROM operation_day_team));

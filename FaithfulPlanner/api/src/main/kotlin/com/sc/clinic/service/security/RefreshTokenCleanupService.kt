@@ -20,4 +20,10 @@ class RefreshTokenCleanupService(private val refreshTokenRepository: RefreshToke
         val deletedCount = refreshTokenRepository.deleteExpiredOrRevoked(LocalDateTime.now())
         logger.info("Purged {} stale refresh tokens.", deletedCount)
     }
+
+    fun purgeUserTokens(userProfileId: Long): Int {
+        val deletedCount = refreshTokenRepository.deleteByUserProfileId(userProfileId)
+        logger.info("Purged {} refresh tokens for userProfileId={}.", deletedCount, userProfileId)
+        return deletedCount
+    }
 }

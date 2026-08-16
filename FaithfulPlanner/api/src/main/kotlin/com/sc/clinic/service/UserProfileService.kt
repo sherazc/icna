@@ -11,6 +11,7 @@ import com.sc.clinic.exception.ScGlobalExceptionHandler
 import com.sc.clinic.repository.UserProfileRepository
 import com.sc.clinic.service.model.AuthRole
 import com.sc.clinic.service.security.PasswordValidator
+import com.sc.clinic.service.security.RefreshTokenCleanupService
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -34,6 +35,7 @@ class UserProfileService(
     private val companyService: CompanyService,
     private val scheduleService: ScheduleService,
     private val passwordValidator: PasswordValidator,
+    private val refreshTokenCleanupService: RefreshTokenCleanupService,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(ScGlobalExceptionHandler::class.java)
@@ -147,6 +149,8 @@ class UserProfileService(
         logger.debug("Deleting user. {}", userProfileId)
         val deleteCountSchedule = scheduleService.deleteUserAllSchedules(userProfileId)
         logger.info("Deleted schedules. UserProfileId={}, Deleted Count={}", userProfileId, deleteCountSchedule)
+        val deleteCountTokens = refreshTokenCleanupService.purgeUserTokens(userProfileId)
+        logger.info("Deleted refresh tokens. UserProfileId={}, Deleted Count={}", userProfileId, deleteCountTokens)
 
         getUser(userProfileId)
             ?.let { up ->
@@ -155,7 +159,7 @@ class UserProfileService(
                 saveUser(up)
                 userProfileRepository.delete(up)
             }
-        return true;
+        return true
     }
 
     fun getUserDto(userProfileId: Long): UserProfileDto? {
