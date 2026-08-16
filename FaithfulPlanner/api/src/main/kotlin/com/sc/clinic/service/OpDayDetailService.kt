@@ -85,7 +85,7 @@ class OpDayDetailService(
                     up.lastName ?: "",
                     up.phoneNumber ?: ""
                 )
-                populateType(up.employeeTypesDto, oddUser.type)
+                populateType(up.employeeTypes, oddUser.type)
                 oddUsers.add(oddUser)
             }
     }

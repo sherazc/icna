@@ -120,7 +120,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
     <tr key={employee.id}>
       <td>{employee.firstName} {employee.lastName}</td>
       <td style={{maxWidth: 250}}>
-        {employee.employeeTypes.length > 0 && createEmployeeTypes(employee.employeeTypes)}
+        {employee.employeeTypes && employee.employeeTypes.length > 0 && createEmployeeTypes(employee.employeeTypes)}
       </td>
       <td>{employee.email}</td>
       <td>{employee.phoneNumber}</td>

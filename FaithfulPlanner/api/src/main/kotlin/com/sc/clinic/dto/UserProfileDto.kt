@@ -15,7 +15,7 @@ open class UserProfileDto(
     var lastName: String? = null,
     var phoneNumber: String? = null,
     var employeeGroupId: Long?,
-    var employeeTypesDto: List<EmployeeTypeDto> = mutableListOf()
+    var employeeTypes: List<EmployeeTypeDto> = mutableListOf()
 ) {
     constructor(userProfile: UserProfile) : this(
         userProfile.id,
