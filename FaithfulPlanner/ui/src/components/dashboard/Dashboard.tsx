@@ -3,6 +3,7 @@ import {
   defaultOpDayDetailDto,
   FormState,
   ModalType,
+  type EmployeeGroupTypesDto,
   type ErrorDto,
   type OpDayDetailDto,
   type OperationDayDto,
@@ -41,9 +42,7 @@ export default function Dashboard() {
   const [showOpDayDetail, setShowOpDayDetail] = useState<boolean>(false);
   const [modalOpDayDetailFormState, setModalOpDayDetailFormState] = useState<FormState>(FormState.FRESH);
   const [modalOpDayDetailErrors, setModalOpDayDetailErrors] = useState<ErrorDto[]>([]);
-  // With team changes. Delete this
-  // const [allGroupTypes, setAllGroupTypes] = useState<EmployeeGroupTypesDto[]>([]);
-  // And use this
+  const [allGroupTypes, setAllGroupTypes] = useState<EmployeeGroupTypesDto[]>([]);
   const [allTeams, setAllTeams] = useState<TeamDto[]>([]);
 
   // Delete Modal
@@ -51,6 +50,17 @@ export default function Dashboard() {
   const [modalDeleteShow, setModalDeleteShow] = useState<boolean>(false);
   const [modalDeleteFormState, setModalODeleteFormState] = useState<FormState>(FormState.FRESH);
   const [modalDeleteErrors, setModalDeleteErrors] = useState<ErrorDto[]>([]);
+
+  // Team employee types accordion (Create/Edit modal)
+  const [expandedTeamIds, setExpandedTeamIds] = useState<number[]>([]);
+
+  const onToggleTeamExpanded = (teamId: number) => {
+    setExpandedTeamIds(previousIds =>
+      previousIds.includes(teamId)
+        ? previousIds.filter(id => id !== teamId)
+        : [...previousIds, teamId]
+    );
+  };
 
   const getSelectedDetail = (index: number): OpDayDetailDto | undefined => {
     if (index > -1 && index < opDayDetails.length) {
@@ -83,86 +93,44 @@ export default function Dashboard() {
     setModalDeleteErrors(submitErrors);
   };
 
-  // const isEmployeeTypeSelected = (selectedEmployeeTypes: EmployeeTypeDto[], employeeType: EmployeeTypeDto): boolean =>
-  //   selectedEmployeeTypes.findIndex(t => t.id === employeeType.id) > -1;
-
-  /*
-    const onEmployeeTypeChange = (
-      // employeeType: EmployeeTypeDto, 
-      isChecked: boolean) => {
-  
-      setModalOpDayDetail(previousOpDayDetail => {
-        // const currentTypes = [...previousOpDayDetail.requiredEmployeeTypes];
-        if (isChecked) {
-          // Add type if not already present
-          // if (!currentTypes.some(t => t.id === employeeType.id)) {
-          //   currentTypes.push(employeeType);
-          // }
-        } else {
-          // Remove type if unchecked
-          return {
-            ...previousOpDayDetail,
-            // requiredEmployeeTypes: currentTypes.filter(t => t.id !== employeeType.id)
-          };
-        }
-        return { ...previousOpDayDetail, 
-          // requiredEmployeeTypes: currentTypes 
-        };
-      });
-    };
-  */
-
-  /*
-  const buildColumn = (types: EmployeeTypeDto[], selectedTypes: EmployeeTypeDto[]) => (
-    types.map(t => (
-      <div key={t.id} className="columnItem">
-        <label className="checkboxLabel">
-          <input
-            type="checkbox"
-            id={`type-${t.id}`}
-            checked={isEmployeeTypeSelected(selectedTypes, t)}
-            onChange={(e) => onEmployeeTypeChange?.(t, e.target.checked)} />
-          <span>{t.typeName}</span>
-        </label>
-      </div>
-    ))
-  )
-
-  const buildColumns = (types: EmployeeGroupTypesDto, selectedTypes: EmployeeTypeDto[]) => {
-    const middle = Math.ceil(types.employeeTypes.length / 2);
-    const column1 = types.employeeTypes.slice(0, middle);
-    const column2 = types.employeeTypes.slice(middle);
-
-    return (
-      <div className="columnsContainer">
-        <div className="column">{buildColumn(column1, selectedTypes)}</div>
-        <div className="column">{buildColumn(column2, selectedTypes)}</div>
-      </div>
-    );
-  };
-*/
-
   const buildTeamColumn = (team: TeamDto, opDayDetail: OpDayDetailDto) => {
     const requiredTeam: OperationDayTeamDto | undefined = opDayDetail.requiredTeams.find(rt => rt.team.id === team.id);
+    const teamId = touchNumber(team.id);
+    const isRequired = requiredTeam !== undefined;
+    const isExpanded = expandedTeamIds.includes(teamId);
     return (
-      <div>
-        <div>
-          {team.teamName}
-          <input type="checkbox" checked={requiredTeam !== undefined} onChange={e => onChangeRequiredTeam(team, e.target.checked, opDayDetail)} />
+      <div className={`opTeamCard${isRequired ? " opTeamCardActive" : ""}`}>
+        <div className="opTeamCardHeader">
+          <label className="checkboxLabel opTeamCheckboxLabel">
+            <input type="checkbox" checked={isRequired} onChange={e => onChangeRequiredTeam(team, e.target.checked, opDayDetail)} />
+            <span>{team.teamName}</span>
+          </label>
           <input type="number"
-            disabled={requiredTeam === undefined}
-            value={requiredTeam?.requiredTeamCount}
+            className="opTeamCountInput"
+            min={1}
+            disabled={!isRequired}
+            value={requiredTeam?.requiredTeamCount ?? ""}
             onChange={e => onChangeRequiredTeamCount(team, e.target.value, opDayDetail)}
-            placeholder="Number of teams" />
+            placeholder="# of teams" />
+          <button
+            type="button"
+            className="opTeamAccordionToggle"
+            aria-expanded={isExpanded}
+            onClick={() => onToggleTeamExpanded(teamId)}>
+            <span className={`opTeamAccordionIcon${isExpanded ? " opTeamAccordionIconOpen" : ""}`}>▸</span>
+          </button>
         </div>
-        {/* Make this div accordion */}
-        <div>
-          {team.teamEmployeeTypes.map(tet => (
-            <div key={tet.id}>
-              <div>{tet.employeeType.typeName}</div>
-              <div>{tet.requiredEmployeeTypeCount}</div>
-            </div>
-          ))}
+        <div className={`opTeamAccordionBody${isExpanded ? " opTeamAccordionBodyOpen" : ""}`}>
+          <div className="opTeamAccordionBodyInner">
+            {team.teamEmployeeTypes.length > 0 ? team.teamEmployeeTypes.map(tet => (
+              <div key={tet.id} className="opTeamEmployeeTypeRow">
+                <span className="opTeamEmployeeTypeName">{`${tet.employeeType.typeName}`}</span>
+                <span className="badge badgePrimary">{tet.requiredEmployeeTypeCount}</span>
+              </div>
+            )) : (
+              <div className="opTeamEmployeeTypeEmpty">No employee types configured for this team.</div>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -182,15 +150,9 @@ export default function Dashboard() {
       newOpDayDetail.requiredTeams = newOpDayDetail.requiredTeams.filter(rt => rt.team.id !== team.id);
     }
     setModalOpDayDetail(newOpDayDetail);
-  }
-
+  };
 
   const onChangeRequiredTeamCount = (team: TeamDto, value: string, opDayDetail: OpDayDetailDto) => {
-
-    console.log(team);
-    console.log(value);
-    console.log(opDayDetail);
-
     const newOpDayDetail: OpDayDetailDto = { ...opDayDetail };
     newOpDayDetail.requiredTeams = [...newOpDayDetail.requiredTeams];
     const opDayTeam: OperationDayTeamDto | undefined = newOpDayDetail.requiredTeams.find(rt => rt.team.id === team.id);
@@ -198,17 +160,15 @@ export default function Dashboard() {
       const valueNumber = touchNumber(value);
       opDayTeam.requiredTeamCount = valueNumber < 1 ? 1 : valueNumber
     }
-    console.log("newOpDayDetail", newOpDayDetail);
     setModalOpDayDetail(newOpDayDetail);
   }
-
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setModalOpDayDetail(prevData => ({ ...prevData, [id]: value }));
   };
 
-  const onCreateEditOpDayDetail = (opDayDetail?: OpDayDetailDto) => {
+  const onCreateEditOpDayDetail = async (opDayDetail?: OpDayDetailDto) => {
     if (opDayDetail) {
       setModalOpDayDetail(opDayDetail);
     } else {
@@ -227,13 +187,14 @@ export default function Dashboard() {
       setModalOpDayDetailFormState(FormState.FRESH);
     }
     */
-    if (allTeams.length < 1) {
+    if (allTeams.length < 1 || allGroupTypes.length < 1) {
       // Loading all teams on first edit
       setModalOpDayDetailFormState(FormState.IN_PROGRESS);
-      clinicApis.teamsGet(authUserToken.companyId).then(teamsResponse => {
-        setAllTeams(teamsResponse);
-        setModalOpDayDetailFormState(FormState.FRESH);
-      });
+      const employeeGroupTypesResponse = await clinicApis.getEmployeeGroupsTypes(authUserToken.companyId);
+      setAllGroupTypes(employeeGroupTypesResponse);
+      const allTeamsResponse = await clinicApis.teamsGet(authUserToken.companyId);
+      setAllTeams(allTeamsResponse);
+      setModalOpDayDetailFormState(FormState.FRESH);
     } else {
       setModalOpDayDetailFormState(FormState.FRESH);
     }
@@ -480,11 +441,16 @@ export default function Dashboard() {
               value={modalOpDayDetail.notes} placeholder="Notes" />
             <ErrorField errors={modalOpDayDetailErrors} fieldName="notes" />
           </div>
-          {allTeams.map(t => (
-            <div key={t.id}>
-              {buildTeamColumn(t, modalOpDayDetail)}
+          <div className="formGroup">
+            <label>Teams</label>
+            <div className="opTeamsList">
+              {allTeams.map(t => (
+                <div key={t.id}>
+                  {buildTeamColumn(t, modalOpDayDetail)}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </form>
       </Modal>
     </div>

@@ -31,3 +31,149 @@
   gap: var(--spacing-20);
   margin-top: var(--spacing-20);
 }
+
+/* Teams accordion (Create/Edit Operation Date modal) */
+.opTeamsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+}
+
+.opTeamCard {
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  overflow: hidden;
+}
+
+.opTeamCardActive {
+  border-color: var(--primary-light);
+  background-color: var(--bg-primary);
+}
+
+.opTeamCardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  padding: var(--spacing-10) var(--spacing-15);
+}
+
+.opTeamCheckboxLabel {
+  flex: 1;
+  gap: var(--spacing-12);
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.opTeamCheckboxLabel input[type="checkbox"] {
+  margin-right: var(--spacing-12);
+}
+
+.opTeamCheckboxLabel span {
+  font-weight: var(--font-weight-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opTeamCardHeader .opTeamCountInput {
+  width: 110px;
+  height: auto;
+  flex-shrink: 0;
+  padding: var(--spacing-8) var(--spacing-10);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-xs);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.opTeamCardHeader .opTeamCountInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-ultra-light);
+}
+
+.opTeamCardHeader .opTeamCountInput:disabled {
+  background-color: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.opTeamAccordionToggle {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--border-radius-xs);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.opTeamAccordionToggle:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.opTeamAccordionIcon {
+  display: inline-flex;
+  transition: transform var(--transition-fast);
+  font-size: var(--font-size-sm);
+}
+
+.opTeamAccordionIconOpen {
+  transform: rotate(90deg);
+}
+
+.opTeamAccordionBody {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transition-base);
+}
+
+.opTeamAccordionBodyOpen {
+  grid-template-rows: 1fr;
+}
+
+.opTeamAccordionBodyInner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  padding: 0 var(--spacing-15);
+}
+
+.opTeamAccordionBodyOpen .opTeamAccordionBodyInner {
+  padding: 0 var(--spacing-15) var(--spacing-12);
+}
+
+.opTeamEmployeeTypeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-10);
+  padding: var(--spacing-8) var(--spacing-12);
+  background-color: var(--bg-primary);
+  border: var(--border-width) solid var(--border-light);
+  border-radius: var(--border-radius-xs);
+}
+
+.opTeamEmployeeTypeName {
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.opTeamEmployeeTypeEmpty {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  padding: var(--spacing-8) var(--spacing-4);
+}
