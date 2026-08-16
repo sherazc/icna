@@ -2,7 +2,7 @@ package com.sc.clinic.dto
 
 import com.sc.clinic.entity.TeamEmployeeType
 
-class TeamEmployeeTypeDto(
+data class TeamEmployeeTypeDto(
     var id: Long?,
     var employeeType: EmployeeTypeDto,
     var requiredEmployeeTypeCount: Int

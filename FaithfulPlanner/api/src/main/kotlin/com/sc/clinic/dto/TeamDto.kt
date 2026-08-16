@@ -1,13 +1,14 @@
 package com.sc.clinic.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.sc.clinic.entity.Team
 import com.sc.clinic.entity.TeamEmployeeType
 
-class TeamDto(
+data class TeamDto (
     var id: Long?,
     var teamName: String,
     var teamEmployeeTypes: List<TeamEmployeeTypeDto> = mutableListOf()
-) {
+){
     constructor(team: Team) : this(
         team.id,
         team.teamName,

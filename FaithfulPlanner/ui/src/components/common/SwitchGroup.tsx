@@ -61,7 +61,7 @@ export const SwitchGroup: React.FC<Props> = ({
       <Loading formState={formState} />
       {formState === FormState.SUCCESSFUL && "Saved!"}
 
-      {userProfile.employeeTypes.length > 0 &&
+      {userProfile.employeeTypes && userProfile.employeeTypes.length > 0 &&
         <div>
           <div className="warning-section">
             <strong>Warning: </strong>
