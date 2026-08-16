@@ -6,6 +6,7 @@ import {
   type ErrorDto,
   type OpDayDetailDto,
   type OperationDayDto,
+  type OperationDayTeamDto,
   type TeamDto
 } from "../../service/service-types";
 import { UnAuthRedirect } from "../auth/UnAuthRedirect"
@@ -140,11 +141,15 @@ export default function Dashboard() {
   };
 */
 
-  const buildTeamColumn = (team: TeamDto) => (
-    <div>
+  const buildTeamColumn = (team: TeamDto, requiredTeams: OperationDayTeamDto[]) => {
+    const requiredTeam: OperationDayTeamDto | undefined = requiredTeams.find(rt => rt.team.id === team.id);
+
+    return (
+      <div>
       <div>
         {team.teamName}
-        <input type="checkbox" />
+        <input type="checkbox" checked={requiredTeam !== undefined}/>
+        <input type="number" placeholder="Number of teams" value={requiredTeam?.requiredTeamCount}/>
       </div>
       <div>
         {team.teamEmployeeTypes.map(tet => (
@@ -155,7 +160,8 @@ export default function Dashboard() {
         ))}
       </div>
     </div>
-  );
+    );
+  };
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -436,7 +442,7 @@ export default function Dashboard() {
           </div>
           {allTeams.map(t => (
             <div key={t.id}>
-              {buildTeamColumn(t)}
+              {buildTeamColumn(t, modalOpDayDetail.requiredTeams)}
             </div>
           ))}
         </form>
