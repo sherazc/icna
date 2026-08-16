@@ -57,7 +57,7 @@ export const TeamSettings: React.FC<Props> = () => {
         
         options.push({
           key: touchString(eTypeId),
-          value: `${groupName} - ${eTypeName}`
+          value: `${eTypeName} - ${groupName}`
         });
       })
     });

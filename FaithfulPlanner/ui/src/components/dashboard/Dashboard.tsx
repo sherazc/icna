@@ -124,7 +124,7 @@ export default function Dashboard() {
           <div className="opTeamAccordionBodyInner">
             {team.teamEmployeeTypes.length > 0 ? team.teamEmployeeTypes.map(tet => (
               <div key={tet.id} className="opTeamEmployeeTypeRow">
-                <span className="opTeamEmployeeTypeName">{`${tet.employeeType.typeName}`}</span>
+                <span className="opTeamEmployeeTypeName">{`${tet.employeeType.typeName} - (Add Group Name)`}</span>
                 <span className="badge badgePrimary">{tet.requiredEmployeeTypeCount}</span>
               </div>
             )) : (
@@ -175,18 +175,6 @@ export default function Dashboard() {
       setModalOpDayDetail({ ...defaultOpDayDetailDto(), companyId: authUserToken.companyId });
     }
 
-    /*
-    if (allGroupTypes.length < 1) {
-      // Loading All Employee Group time for the first time
-      setModalOpDayDetailFormState(FormState.IN_PROGRESS);
-      clinicApis.getEmployeeGroupsTypes(authUserToken.companyId).then(gTypes => {
-        setAllGroupTypes(gTypes)
-        setModalOpDayDetailFormState(FormState.FRESH);
-      });
-    } else {
-      setModalOpDayDetailFormState(FormState.FRESH);
-    }
-    */
     if (allTeams.length < 1 || allGroupTypes.length < 1) {
       // Loading all teams on first edit
       setModalOpDayDetailFormState(FormState.IN_PROGRESS);
@@ -346,11 +334,7 @@ export default function Dashboard() {
                     </td>
                     <td>
                       <small className="smallText">
-                        {/*                       
-                        {opDayDetail.requiredEmployeeTypes && opDayDetail.requiredEmployeeTypes.map(et => (
-                          <>{et.typeName}<br/></>
-                        ))}
-                      */}
+                        {opDayDetail.requiredTeams.map(rt => <>{rt.team.teamName}<br/></>)}
                       </small>
                     </td>
                     {opDayDetail.groups && opDayDetail.groups.map((group) => (
