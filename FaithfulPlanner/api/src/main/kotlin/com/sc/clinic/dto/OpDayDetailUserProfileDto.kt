@@ -9,5 +9,5 @@ data class OpDayDetailUserProfileDto (
     var firstName: String = "",
     var lastName: String = "",
     var phoneNumber: String = "",
-    var type: MutableList<EmployeeTypeDto> = mutableListOf()
+    var types: MutableList<EmployeeTypeDto> = mutableListOf()
 )

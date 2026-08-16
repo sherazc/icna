@@ -147,7 +147,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
               <div className="flex flex-start gap-4 flex-1">
                 <span className="personName">{u.firstName} {u.lastName}</span>
                 <span className="personRole">
-                  {u.types.map(t => t.typeName).join(", ")}
+                  {u.types && u.types.map(t => t.typeName).join(", ")}
                 </span>
               </div>
               <button type="button" className="personRemoveBtn" title="Remove"

@@ -45,7 +45,7 @@ class OpDayDetailService(
             .findById(operationDayId)
             .map { OperationDayDto(it) }
 
-        return if (operationDayOptional.isEmpty) {
+        val operationDayDetails =  if (operationDayOptional.isEmpty) {
             null
         } else {
             val groups = employeeGroupService.getGroupsDto(companyId);
@@ -59,6 +59,7 @@ class OpDayDetailService(
             populateGroups(companyId, groups, odd)
             odd
         }
+        return operationDayDetails
     }
 
     private fun populateGroups(
@@ -85,7 +86,7 @@ class OpDayDetailService(
                     up.lastName ?: "",
                     up.phoneNumber ?: ""
                 )
-                populateType(up.employeeTypes, oddUser.type)
+                populateType(up.employeeTypes, oddUser.types)
                 oddUsers.add(oddUser)
             }
     }
