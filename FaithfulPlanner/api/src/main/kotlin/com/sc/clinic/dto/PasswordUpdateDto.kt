@@ -1,6 +1,6 @@
 package com.sc.clinic.dto
 
-class PasswordUpdateDto(
+data class PasswordUpdateDto(
     var userProfileId: Long,
     /**
      * currentPassword is optional because this DTO is also used for forget password.

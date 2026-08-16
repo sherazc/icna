@@ -3,7 +3,7 @@ package com.sc.clinic.dto
 import com.sc.clinic.entity.EmployeeGroup
 import com.sc.clinic.entity.EmployeeType
 
-class EmployeeGroupTypesDto(
+data class EmployeeGroupTypesDto(
     var id: Long?,
     var groupName: String,
     var employeeTypes: List<EmployeeTypeDto> = mutableListOf()

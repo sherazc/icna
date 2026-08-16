@@ -2,7 +2,7 @@ package com.sc.clinic.dto
 
 import jakarta.validation.constraints.NotBlank
 
-class RefreshTokenRequestDto(
+data class RefreshTokenRequestDto(
     @field:NotBlank(message = "refreshToken is required.")
     var refreshToken: String
 )

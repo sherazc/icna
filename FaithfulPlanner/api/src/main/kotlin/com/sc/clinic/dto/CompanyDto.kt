@@ -3,7 +3,7 @@ package com.sc.clinic.dto
 import com.sc.clinic.entity.Company
 import jakarta.validation.constraints.Size
 
-class CompanyDto(
+data class CompanyDto(
     var id: Long?,
     @field:Size(min = 3, max = 250, message = "Company name should be between 3 and 250 characters long")
     var companyName: String,

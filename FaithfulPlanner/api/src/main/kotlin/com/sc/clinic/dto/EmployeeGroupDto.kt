@@ -1,6 +1,6 @@
 package com.sc.clinic.dto
 
-class EmployeeGroupDto(
+data class EmployeeGroupDto(
     var id: Long?,
     var groupName: String
 )

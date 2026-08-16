@@ -2,7 +2,7 @@ package com.sc.clinic.dto
 
 import jakarta.validation.Valid
 
-class RegistrationDto(
+data class RegistrationDto(
     @field:Valid
     var company: CompanyDto,
     @field:Valid

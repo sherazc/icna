@@ -2,7 +2,7 @@ package com.sc.clinic.dto
 
 import java.time.LocalDateTime
 
-class AuthUserTokenDto(
+data class AuthUserTokenDto(
     var userProfileId: Long,
     var companyId: Long,
     var companyName: String,

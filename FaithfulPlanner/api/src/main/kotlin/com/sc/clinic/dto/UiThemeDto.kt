@@ -1,6 +1,6 @@
 package com.sc.clinic.dto
 
-class UiThemeDto(
+data class UiThemeDto(
     var id: Long,
     var displayName: String,
     var displayColorHex: String,

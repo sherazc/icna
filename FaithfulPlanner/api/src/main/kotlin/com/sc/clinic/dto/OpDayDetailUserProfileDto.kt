@@ -2,7 +2,7 @@ package com.sc.clinic.dto
 
 import jakarta.validation.constraints.Email
 
-class OpDayDetailUserProfileDto (
+data class OpDayDetailUserProfileDto (
     var id: Long = 0,
     @field:Email
     var email: String = "",

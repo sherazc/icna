@@ -1,9 +1,8 @@
 package com.sc.clinic.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.sc.clinic.entity.OperationDayTeam
 
-class OperationDayTeamDto(
+data class OperationDayTeamDto(
     var id: Long?,
     var team: TeamDto,
     var requiredTeamCount: Int

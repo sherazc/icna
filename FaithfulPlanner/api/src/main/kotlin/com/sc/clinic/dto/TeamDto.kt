@@ -1,6 +1,5 @@
 package com.sc.clinic.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.sc.clinic.entity.Team
 import com.sc.clinic.entity.TeamEmployeeType
 
