@@ -83,4 +83,6 @@ class TeamService(
         teamRepository.deleteById(teamId)
         return true
     }
+
+    fun findById(teamId: Long?): Team? = teamId?.let { teamRepository.findById(it).orElse(null) }
 }
