@@ -1,9 +1,9 @@
 package com.sc.clinic.service
 
 import com.sc.clinic.dto.OperationDayDto
+import com.sc.clinic.dto.OperationDayTeamDto
 import com.sc.clinic.entity.OperationDay
 import com.sc.clinic.exception.ScException
-import com.sc.clinic.exception.ScGlobalExceptionHandler
 import com.sc.clinic.repository.OperationDayRepository
 import com.sc.clinic.util.DateUtils
 import jakarta.transaction.Transactional
@@ -14,30 +14,32 @@ import java.time.LocalDate
 @Service
 class OperationDayService(
     private val scheduleService: ScheduleService,
-    private val operationRepository: OperationDayRepository,
+    private val operationDayRepository: OperationDayRepository,
     private val companyService: CompanyService,
-    private val employeeTypeService: EmployeeTypeService
+    private val operationDayTeamService: OperationDayTeamService
 ) {
 
     companion object {
-        private val logger = LoggerFactory.getLogger(ScGlobalExceptionHandler::class.java)
+        private val logger = LoggerFactory.getLogger(OperationDayService::class.java)
     }
 
+    @Transactional
     fun save(companyId: Long, operationDayDto: OperationDayDto): OperationDayDto {
         logger.debug("Saving OperationDay. CompanyId:${companyId}, OperationDay:${operationDayDto.serviceDateString}")
 
         val serviceDate: LocalDate = DateUtils.isoToDate(operationDayDto.serviceDateString)
             ?: throw ScException("Invalid operation date format: ${operationDayDto.serviceDateString}")
 
-        val existingOperationDays = operationRepository.findByCompanyIdAndOperationDay(companyId, serviceDate)
+        val existingOperationDays = operationDayRepository.findByCompanyIdAndOperationDay(companyId, serviceDate)
 
         if ( existingOperationDays.isNotEmpty() && operationDayDto.id != existingOperationDays.get(0).id) {
             throw ScException("Operation date already exists ${DateUtils.isoToUs(operationDayDto.serviceDateString)}")
         }
 
-        val operationDay: OperationDay = if (operationDayDto.id != null) {
-            val foundOperationDay: OperationDay = operationRepository.findById(operationDayDto.id!!)
-                .orElseThrow { ScException("Failed to find Operation Date by Id: ${operationDayDto.id}") }
+        val operationDayDtoId = operationDayDto.id
+        val operationDay: OperationDay = if (operationDayDtoId != null) {
+            val foundOperationDay: OperationDay = operationDayRepository.findById(operationDayDtoId)
+                .orElseThrow { ScException("Failed to find Operation Date by Id: $operationDayDtoId") }
             foundOperationDay.serviceDate = serviceDate
             foundOperationDay.notes = operationDayDto.notes
             foundOperationDay
@@ -46,17 +48,20 @@ class OperationDayService(
             OperationDay(null, company, serviceDate, operationDayDto.notes)
         }
 
-        // Make relation between operation day and teams
-        // operationDay.employeeTypes = employeeTypeService.employeeTypesByDto(operationDayDto.requiredEmployeeTypes)
+        // Save entities
+        val savedOperationDay = operationDayRepository.save(operationDay)
+        val savedOperationDayTeams = operationDayTeamService.save(savedOperationDay, operationDayDto.requiredOperationDayTeams)
 
-        val savedOperationDay = operationRepository.save(operationDay)
+        // Convert to DTOs
+        val savedOperationDayDto = OperationDayDto(savedOperationDay)
+        savedOperationDayDto.requiredOperationDayTeams = savedOperationDayTeams.map { OperationDayTeamDto(it) }.toList()
         logger.debug("Successfully saved OperationDay. Id:${operationDay.id}")
-        return OperationDayDto(savedOperationDay)
+        return savedOperationDayDto
     }
 
     fun getByDate(companyId: Long, dateString: String): List<OperationDayDto> {
         return DateUtils.isoToDate(dateString)
-            ?.let { operationRepository.findByCompanyIdAndOperationDay(companyId, it) }
+            ?.let { operationDayRepository.findByCompanyIdAndOperationDay(companyId, it) }
             ?: listOf()
     }
 
@@ -65,10 +70,10 @@ class OperationDayService(
         logger.info("Deleting Operation Date. OperationDayId = {}", operationDayId)
         val deletedSchedules = scheduleService.deleteOperationDayAllSchedules(operationDayId)
         logger.info("Deleted Operation {} schedules of operationDayId {}", deletedSchedules, operationDayId)
-        operationRepository.deleteById(operationDayId)
+        operationDayRepository.deleteById(operationDayId)
         return true
     }
 
     fun getByCompanyId(companyId: Long): List<OperationDayDto> =
-        operationRepository.getByCompanyId(companyId)
+        operationDayRepository.getByCompanyId(companyId)
 }

@@ -13,8 +13,8 @@ export const operationDayDtoToOpDayDetailDto = (operationDay: OperationDayDto, e
   opDayDetail.serviceDateString = touchString(operationDay.serviceDateString)
   opDayDetail.serviceDateFormatted = isoToMonthDayYear(opDayDetail.serviceDateString);
   opDayDetail.serviceDateDayOfWeek = isoToDayOfWeek(opDayDetail.serviceDateString);
-  if (operationDay.requiredTeams) {
-    opDayDetail.requiredTeams = [...operationDay.requiredTeams];
+  if (operationDay.requiredOperationDayTeams) {
+    opDayDetail.requiredOperationDayTeams = [...operationDay.requiredOperationDayTeams];
   }
 
   employeeGroups.forEach(eg => {
@@ -33,8 +33,8 @@ export const opDayDetailDtoToOperationDayDto = (opDayDetail: OpDayDetailDto): Op
   operationDay.companyId = opDayDetail.companyId
   operationDay.notes = opDayDetail.notes
   operationDay.serviceDateString = touchString(opDayDetail.serviceDateString)
-  if (opDayDetail.requiredTeams) {
-    operationDay.requiredTeams = [...opDayDetail.requiredTeams];
+  if (opDayDetail.requiredOperationDayTeams) {
+    operationDay.requiredOperationDayTeams = [...opDayDetail.requiredOperationDayTeams];
   }
   return operationDay;
 };

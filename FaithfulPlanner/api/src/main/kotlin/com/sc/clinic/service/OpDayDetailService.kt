@@ -33,7 +33,7 @@ class OpDayDetailService(
             .map { OperationDayDto(it) }
             .map { od ->
                 val odd = OpDayDetailDto(od.id ?: 0, od.companyId, od.serviceDateString, od.notes)
-                odd.requiredTeams = od.requiredTeams
+                odd.requiredOperationDayTeams = od.requiredOperationDayTeams
                 populateGroups(companyId, groups, odd)
                 odd
             }
@@ -55,7 +55,7 @@ class OpDayDetailService(
                 operationDay.companyId,
                 operationDay.serviceDateString,
                 operationDay.notes)
-            odd.requiredTeams = operationDay.requiredTeams
+            odd.requiredOperationDayTeams = operationDay.requiredOperationDayTeams
             populateGroups(companyId, groups, odd)
             odd
         }

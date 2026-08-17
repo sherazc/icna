@@ -94,7 +94,7 @@ export default function Dashboard() {
   };
 
   const buildTeamColumn = (team: TeamDto, opDayDetail: OpDayDetailDto) => {
-    const requiredTeam: OperationDayTeamDto | undefined = opDayDetail.requiredTeams.find(rt => rt.team.id === team.id);
+    const requiredTeam: OperationDayTeamDto | undefined = opDayDetail.requiredOperationDayTeams.find(rt => rt.team.id === team.id);
     const teamId = touchNumber(team.id);
     const isRequired = requiredTeam !== undefined;
     const isExpanded = expandedTeamIds.includes(teamId);
@@ -124,7 +124,8 @@ export default function Dashboard() {
           <div className="opTeamAccordionBodyInner">
             {team.teamEmployeeTypes.length > 0 ? team.teamEmployeeTypes.map(tet => (
               <div key={tet.id} className="opTeamEmployeeTypeRow">
-                <span className="opTeamEmployeeTypeName">{`${tet.employeeType.typeName} - (Add Group Name)`}</span>
+                {/* Use allGroupTypes to pull the group name. Search by tet.employeeType.id */}
+                <span className="opTeamEmployeeTypeName">{`${tet.employeeType.typeName} - (TBD - Add Group Name)`}</span>
                 <span className="badge badgePrimary">{tet.requiredEmployeeTypeCount}</span>
               </div>
             )) : (
@@ -144,18 +145,18 @@ export default function Dashboard() {
         requiredTeamCount: 1,
         team: team
       };
-      newOpDayDetail.requiredTeams = [...newOpDayDetail.requiredTeams];
-      newOpDayDetail.requiredTeams.push(operationDayTeam);
+      newOpDayDetail.requiredOperationDayTeams = [...newOpDayDetail.requiredOperationDayTeams];
+      newOpDayDetail.requiredOperationDayTeams.push(operationDayTeam);
     } else {
-      newOpDayDetail.requiredTeams = newOpDayDetail.requiredTeams.filter(rt => rt.team.id !== team.id);
+      newOpDayDetail.requiredOperationDayTeams = newOpDayDetail.requiredOperationDayTeams.filter(rt => rt.team.id !== team.id);
     }
     setModalOpDayDetail(newOpDayDetail);
   };
 
   const onChangeRequiredTeamCount = (team: TeamDto, value: string, opDayDetail: OpDayDetailDto) => {
     const newOpDayDetail: OpDayDetailDto = { ...opDayDetail };
-    newOpDayDetail.requiredTeams = [...newOpDayDetail.requiredTeams];
-    const opDayTeam: OperationDayTeamDto | undefined = newOpDayDetail.requiredTeams.find(rt => rt.team.id === team.id);
+    newOpDayDetail.requiredOperationDayTeams = [...newOpDayDetail.requiredOperationDayTeams];
+    const opDayTeam: OperationDayTeamDto | undefined = newOpDayDetail.requiredOperationDayTeams.find(rt => rt.team.id === team.id);
     if (opDayTeam) {
       const valueNumber = touchNumber(value);
       opDayTeam.requiredTeamCount = valueNumber < 1 ? 1 : valueNumber
@@ -334,7 +335,7 @@ export default function Dashboard() {
                     </td>
                     <td>
                       <small className="smallText">
-                        {opDayDetail.requiredTeams.map(rt => <>{rt.team.teamName}<br/></>)}
+                        {opDayDetail.requiredOperationDayTeams.map(rt => <>{rt.team.teamName}<br/></>)}
                       </small>
                     </td>
                     {opDayDetail.groups && opDayDetail.groups.map((group) => (

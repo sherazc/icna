@@ -21,5 +21,5 @@ class OperationDay(
     var notes: String?,
 
     @OneToMany(mappedBy = "operationDay", fetch = FetchType.LAZY)
-    var requiredTeams: MutableSet<OperationDayTeam> = mutableSetOf()
+    var requiredOperationDayTeams: MutableSet<OperationDayTeam> = mutableSetOf()
 )
