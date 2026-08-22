@@ -1,0 +1,112 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="Lxu2FqMJ1QTze6LDHm1Q">
+    <mxGraphModel dx="4988" dy="2820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;" value="" vertex="1">
+          <mxGeometry height="180" width="260" x="40" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-2" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Test Team 1" vertex="1">
+          <mxGeometry height="30" width="80" x="60" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;" value="" vertex="1">
+          <mxGeometry height="180" width="260" x="450" y="335" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Test Team 1" vertex="1">
+          <mxGeometry height="30" width="80" x="480" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Dentist" vertex="1">
+          <mxGeometry height="30" width="60" x="70" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Cardiologist" vertex="1">
+          <mxGeometry height="30" width="60" x="70" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Dentist" vertex="1">
+          <mxGeometry height="30" width="60" x="70" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Dentist" vertex="1">
+          <mxGeometry height="30" width="60" x="475" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Cardiologist" vertex="1">
+          <mxGeometry height="30" width="60" x="475" y="405" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Dentist" vertex="1">
+          <mxGeometry height="30" width="60" x="475" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Sarah Johnson" vertex="1">
+          <mxGeometry height="30" width="100" x="160" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Sarah Johnson" vertex="1">
+          <mxGeometry height="30" width="100" x="160" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="John Smith" vertex="1">
+          <mxGeometry height="30" width="100" x="160" y="385" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="scenario: If a person has multiple employee types" vertex="1">
+          <mxGeometry height="30" width="295" x="215" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;" value="" vertex="1">
+          <mxGeometry height="180" width="260" x="50" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Test Team 2" vertex="1">
+          <mxGeometry height="30" width="80" x="70" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Dentist" vertex="1">
+          <mxGeometry height="30" width="60" x="80" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Sarah Johnson" vertex="1">
+          <mxGeometry height="30" width="100" x="170" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;" value="" vertex="1">
+          <mxGeometry height="180" width="260" x="450" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-26" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Test Team 3" vertex="1">
+          <mxGeometry height="30" width="80" x="470" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Cardiologist" vertex="1">
+          <mxGeometry height="30" width="60" x="480" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-28" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Sarah Johnson" vertex="1">
+          <mxGeometry height="30" width="100" x="570" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="mSHW3lMRk2SBCaJYwRYn-29" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Sarah Johnson is a Dentist and a Cardiologist" vertex="1">
+          <mxGeometry height="30" width="260" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Day 1: Need 2 &quot;Test Team 1&quot;" vertex="1">
+          <mxGeometry height="30" width="190" x="50" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Test Team 1 = 2 Dentist, 1 Cardiologist" vertex="1">
+          <mxGeometry height="30" width="220" x="520" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Test Team 2 = 1 Dentist" vertex="1">
+          <mxGeometry height="30" width="220" x="520" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Test Team 3 = 1 Cardiologist" vertex="1">
+          <mxGeometry height="30" width="220" x="520" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Sarah Johnson signed up" vertex="1">
+          <mxGeometry height="30" width="230" x="50" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Day 2: Need 1 &quot;Test Team 2&quot; and 1 &quot;Test Team 3&quot;" vertex="1">
+          <mxGeometry height="30" width="320" x="60" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Sarah Johnson signed up" vertex="1">
+          <mxGeometry height="30" width="230" x="60" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Teams Definitions" vertex="1">
+          <mxGeometry height="30" width="120" x="500" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="John Smith is a Dentist" vertex="1">
+          <mxGeometry height="30" width="230" x="40" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="John Smith signed up" vertex="1">
+          <mxGeometry height="30" width="230" x="50" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="b9MI_Ug9L2sifzPbpvGz-21" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Employees" vertex="1">
+          <mxGeometry height="30" width="120" x="40" y="90" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

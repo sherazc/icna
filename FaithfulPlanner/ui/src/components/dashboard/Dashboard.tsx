@@ -381,6 +381,7 @@ export default function Dashboard() {
                 companyId={touchNumber(opDayDetails[opDayDetailSelected].companyId)}
                 operationDayId={touchNumber(opDayDetails[opDayDetailSelected].id)}
                 group={g}
+                requiredOperationDayTeams={opDayDetails[opDayDetailSelected].requiredOperationDayTeams}
                 reloadOpDayDetail={reloadOpDayDetail} />)}
           </div>
         </div>

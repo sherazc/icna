@@ -1,9 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { 
-  FormState, 
-  type OpDayDetailEmployeeGroupDto, 
-  type ScheduleDto, 
-  type UserProfileDto 
+import {
+  FormState,
+  type EmployeeTypeDto,
+  type OpDayDetailEmployeeGroupDto,
+  type OpDayDetailUserProfileDto,
+  type OperationDayTeamDto,
+  type ScheduleDto,
+  type UserProfileDto
 } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import { touchNumber, touchString } from "../../service/utilities";
@@ -13,10 +16,11 @@ interface Props {
   companyId: number,
   group: OpDayDetailEmployeeGroupDto,
   operationDayId: number,
+  requiredOperationDayTeams: OperationDayTeamDto[],
   reloadOpDayDetail: (companyId: number, operationDayId: number) => void
 }
 
-export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group, reloadOpDayDetail}) => {
+export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group, reloadOpDayDetail, requiredOperationDayTeams }) => {
   const [{ clinicApis }] = useContext(AppContext);
   const inputRef = useRef<HTMLInputElement>(null);
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
@@ -54,18 +58,56 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
     }
   };
 
-  const getFilteredUnscheduledUsers = (users: UserProfileDto[], f: string): UserProfileDto[] => users.filter(u => {
-    const first = touchString(u.firstName).toLowerCase();
-    const last = touchString(u.lastName).toLowerCase();
-    const full = `${first} ${last}`;
-    const filterSmall = f.toLowerCase();
+  const getFilteredUnscheduledUsers = (
+    unscheduledUsersArray: UserProfileDto[],
+    scheduledUsersArray: OpDayDetailUserProfileDto[],
+    filterString: string,
+    requiredOpTeams: OperationDayTeamDto[]): UserProfileDto[] => unscheduledUsersArray.filter(unscheduledUser => {
 
-    return first.indexOf(filterSmall) > -1
-      || last.indexOf(filterSmall) > -1
-      || full.indexOf(filterSmall) > -1
-  });
+      const first = touchString(unscheduledUser.firstName).toLowerCase();
+      const last = touchString(unscheduledUser.lastName).toLowerCase();
+      const full = `${first} ${last}`;
+      const filterSmall = filterString.toLowerCase();
 
-  const populateDropDown = (users: UserProfileDto[], f: string) => {
+      // console.log("unscheduledUsersArray", unscheduledUsersArray);
+      // console.log("scheduledUsersArray", scheduledUsersArray);
+      // console.log("filterString", filterString);
+      // console.log("requiredOpTeams", requiredOpTeams);
+
+      const nameMatches = first.indexOf(filterSmall) > -1
+        || last.indexOf(filterSmall) > -1
+        || full.indexOf(filterSmall) > -1;
+
+
+      /*
+      1. find required employee types
+      2. find full-filled employee types
+      3. find un full-filled employee types
+      4. check if unscheduledUser could fall into un full-filled employee types
+      */
+
+      // 1. find required employee types
+      const requiredEmployeeTypes: EmployeeTypeDto[] = []
+      requiredOpTeams.forEach(requiredOpTeam => {
+        for (let i = 0; i < requiredOpTeam.requiredTeamCount; i++) {
+          requiredOpTeam.team.teamEmployeeTypes.forEach(teamEmployeeType => {
+            for(let j = 0; j < teamEmployeeType.requiredEmployeeTypeCount; j++) {
+              requiredEmployeeTypes.push(teamEmployeeType.employeeType);
+            }
+          });
+        }
+      });
+
+      console.log(requiredEmployeeTypes);
+
+      const scheduledUserEmployeeTypesArray: EmployeeTypeDto[][] = scheduledUsersArray.map(scheduledUser => scheduledUser.types);
+      // console.log(scheduledUserEmployeeTypesArray);
+
+
+      return nameMatches
+    });
+
+  const populateDropDown = (users: UserProfileDto[], filterString: string) => {
     if (unscheduledUsersState === FormState.FAILED) {
       return <div className="p-12 text-secondary text-center">Failed to load.</div>;
     }
@@ -73,7 +115,8 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
     if (unscheduledUsersState === FormState.IN_PROGRESS || unscheduledUsersState === FormState.FRESH) {
       return <div className="p-12 text-secondary text-center">Loading...</div>;
     }
-    const filteredUsers = getFilteredUnscheduledUsers(users, f);
+
+    const filteredUsers = getFilteredUnscheduledUsers(users, group.users, filterString, requiredOperationDayTeams);
     if (unscheduledUsersState === FormState.SUCCESSFUL && filteredUsers.length > 0) {
       return filteredUsers.map(u => (
         <div key={u.id} className="searchDropdownItem">
@@ -82,7 +125,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
             <div className="dropdownItemRole">{u.employeeTypes.map(t => t.typeName).join(", ")}</div>
           </div>
           <button type="button" className="dropdownItemAddBtn"
-          onClick={() => onScheduleUser(companyId, operationDayId, touchNumber(u.id))}>Add</button>
+            onClick={() => onScheduleUser(companyId, operationDayId, touchNumber(u.id))}>Add</button>
         </div>
       ));
     } else {
@@ -91,7 +134,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
   };
 
   const onScheduleUser = async (companyId: number, operationDayId: number, userProfileId: number) => {
-    const schedule:ScheduleDto = {operationDayId, userProfileId};
+    const schedule: ScheduleDto = { operationDayId, userProfileId };
     await clinicApis.scheduleUser(schedule);
     await reloadOpDayDetail(companyId, operationDayId);
     resetDropDown();
@@ -122,8 +165,8 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
             ref={inputRef}
             value={filter}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter(e.target.value)}
-            // Because of this Add button does not work. Find another solution.
-            // onBlur={() => setDropDownOpen(false)}
+          // Because of this Add button does not work. Find another solution.
+          // onBlur={() => setDropDownOpen(false)}
           />
           <div id="provider-dropdown" className={`searchDropdown ${dropDownOpen ? "show" : ""}`}>
             {populateDropDown(unscheduledUsers, filter)}
@@ -151,7 +194,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
                 </span>
               </div>
               <button type="button" className="personRemoveBtn" title="Remove"
-              onClick={() => onUnscheduleUser(companyId, operationDayId, u.id)}>✕</button>
+                onClick={() => onUnscheduleUser(companyId, operationDayId, u.id)}>✕</button>
             </li>
           ))}
         </ul>

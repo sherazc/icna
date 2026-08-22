@@ -15,40 +15,100 @@ auth:bearer {
 }
 
 body:json {
-  {
-    "id": 1,
-    "companyId": 1,
-    "serviceDateString": "2026-01-24",
-    "notes": "Saturday clinic sdfsdf",
-    "requiredTeams": [
-      {
-        "id": 3,
-        "team": {
-          "id": 45,
-          "teamName": "team 1",
-          "teamEmployeeTypes": [
-            {
-              "id": 220,
-              "employeeType": {
-                "id": 3,
-                "typeName": "Cardiologist"
+   {
+      "id": 1,
+      "companyId": 1,
+      "serviceDateString": "2026-01-24",
+      "notes": "Saturday clinic",
+      "requiredOperationDayTeams": [
+        {
+          "id": 5,
+          "team": {
+            "id": 1,
+            "teamName": "Staff",
+            "teamEmployeeTypes": [
+              {
+                "id": 13,
+                "employeeType": {
+                  "id": 15,
+                  "typeName": "Administrative Staff"
+                },
+                "requiredEmployeeTypeCount": 1
               },
-              "requiredCount": 1
-            },
-            {
-              "id": 221,
-              "employeeType": {
-                "id": 2,
-                "typeName": "Pediatrician"
+              {
+                "id": 14,
+                "employeeType": {
+                  "id": 16,
+                  "typeName": "Billing Specialist"
+                },
+                "requiredEmployeeTypeCount": 1
               },
-              "requiredCount": 2
-            }
-          ]
+              {
+                "id": 15,
+                "employeeType": {
+                  "id": 10,
+                  "typeName": "Receptionist"
+                },
+                "requiredEmployeeTypeCount": 2
+              }
+            ]
+          },
+          "requiredTeamCount": 6
         },
-        "requiredCount": 7
-      }
-    ]
-  }
+        {
+          "id": 4,
+          "team": {
+            "id": 3,
+            "teamName": "General Practitioner",
+            "teamEmployeeTypes": [
+              {
+                "id": 11,
+                "employeeType": {
+                  "id": 15,
+                  "typeName": "Administrative Staff"
+                },
+                "requiredEmployeeTypeCount": 1
+              },
+              {
+                "id": 12,
+                "employeeType": {
+                  "id": 9,
+                  "typeName": "Nurse"
+                },
+                "requiredEmployeeTypeCount": 1
+              }
+            ]
+          },
+          "requiredTeamCount": 3
+        },
+        {
+          "id": 3,
+          "team": {
+            "id": 2,
+            "teamName": "Cardiology",
+            "teamEmployeeTypes": [
+              {
+                "id": 9,
+                "employeeType": {
+                  "id": 3,
+                  "typeName": "Cardiologist"
+                },
+                "requiredEmployeeTypeCount": 1
+              },
+              {
+                "id": 10,
+                "employeeType": {
+                  "id": 9,
+                  "typeName": "Nurse"
+                },
+                "requiredEmployeeTypeCount": 2
+              }
+            ]
+          },
+          "requiredTeamCount": 12
+        }
+      ]
+    }
 }
 
 settings {
