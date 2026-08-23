@@ -25,6 +25,7 @@ import "./Dashboard.css"
 import { isoToDayOfWeek, isoToMonthDayYear } from "../../service/DateService";
 // import { useNavigate } from "react-router-dom";
 import { Authenticated } from "../auth/Authenticated";
+import { DashboardTeams } from "./DashboardTeams";
 
 let tempId = -1;
 export default function Dashboard() {
@@ -285,6 +286,9 @@ export default function Dashboard() {
     }
   }, [employeeGroups]);
   */
+
+  const selectedDetails = getSelectedDetail(opDayDetailSelected);
+
   return (
     <div id="dashboard">
       <UnAuthRedirect />
@@ -335,7 +339,9 @@ export default function Dashboard() {
                     </td>
                     <td>
                       <small className="smallText">
-                        {opDayDetail.requiredOperationDayTeams.map(rt => <>{rt.team.teamName}<br/></>)}
+                        {opDayDetail.requiredOperationDayTeams
+                          .sort((rt1, rt2) => rt1.team.teamName.localeCompare(rt2.team.teamName))
+                          .map(rt => <>{rt.team.teamName} ({rt.requiredTeamCount})<br/></>)}
                       </small>
                     </td>
                     {opDayDetail.groups && opDayDetail.groups.map((group) => (
@@ -366,16 +372,16 @@ export default function Dashboard() {
       </div>
 
       {/* Day Details */}
-      {getSelectedDetail(opDayDetailSelected) && (
+      {selectedDetails && (
         <div className="card dashboardDayDetails">
           <div className="flex flex-start gap-1fullWidth">
             <h3 className="m-fullWidth">
-              Day Details: {getSelectedDetail(opDayDetailSelected)?.serviceDateDayOfWeek} {getSelectedDetail(opDayDetailSelected)?.serviceDateFormatted}
+              Day Details: {selectedDetails.serviceDateDayOfWeek} {getSelectedDetail(opDayDetailSelected)?.serviceDateFormatted}
             </h3>
             <span className="badge badgeSuccess hidden"></span>
           </div>
           <div className="detailsGrid">
-            {getSelectedDetail(opDayDetailSelected)?.groups.map(g =>
+            {selectedDetails.groups.map(g =>
               <AssignedUsers
                 key={g.id}
                 companyId={touchNumber(opDayDetails[opDayDetailSelected].companyId)}
@@ -384,6 +390,7 @@ export default function Dashboard() {
                 requiredOperationDayTeams={opDayDetails[opDayDetailSelected].requiredOperationDayTeams}
                 reloadOpDayDetail={reloadOpDayDetail} />)}
           </div>
+          <DashboardTeams opDayDetail={selectedDetails} />
         </div>
       )}
       {/* Delete Modal */}
