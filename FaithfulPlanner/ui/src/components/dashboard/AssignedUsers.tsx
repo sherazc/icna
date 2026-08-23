@@ -69,24 +69,12 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
       const full = `${first} ${last}`;
       const filterSmall = filterString.toLowerCase();
 
-      // console.log("unscheduledUsersArray", unscheduledUsersArray);
-      // console.log("scheduledUsersArray", scheduledUsersArray);
-      // console.log("filterString", filterString);
-      // console.log("requiredOpTeams", requiredOpTeams);
-
       const nameMatches = first.indexOf(filterSmall) > -1
         || last.indexOf(filterSmall) > -1
         || full.indexOf(filterSmall) > -1;
 
 
-      /*
-      1. find required employee types
-      2. find full-filled employee types
-      3. find un full-filled employee types
-      4. check if unscheduledUser could fall into un full-filled employee types
-      */
-
-      // 1. find required employee types
+      // find required employee types
       const requiredEmployeeTypes: EmployeeTypeDto[] = []
       requiredOpTeams.forEach(requiredOpTeam => {
         for (let i = 0; i < requiredOpTeam.requiredTeamCount; i++) {
@@ -98,13 +86,29 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
         }
       });
 
-      console.log(requiredEmployeeTypes);
+      // Create sorted available slots (copy of requiredEmployeeTypes)
+      const etSlots: EmployeeTypeDto[] = [...requiredEmployeeTypes]
+        .sort((s1, s2) => s1.typeName.localeCompare(s2.typeName));
 
-      const scheduledUserEmployeeTypesArray: EmployeeTypeDto[][] = scheduledUsersArray.map(scheduledUser => scheduledUser.types);
-      // console.log(scheduledUserEmployeeTypesArray);
+      // Scheduled employee types
+      const userEtsArray: EmployeeTypeDto[][] = scheduledUsersArray
+          .map(scheduledUser => scheduledUser.types)
+          .filter((types: EmployeeTypeDto[]) => types.length > 0)
+          .sort((a, b) => a.length - b.length);
 
+      // Remove from slots that are already scheduled.
+      userEtsArray.forEach(userEts => {
+        const index = etSlots.findIndex(et => userEts.findIndex(userEt => et.id === userEt.id) > -1);
+        if (index > -1) {
+          etSlots.splice(index, 1);
+        }
+      });
 
-      return nameMatches
+      // Could unscheduled user be assigned in available slot
+      const couldUnscheduledUserBeAssignedInSlot = unscheduledUser.employeeTypes
+          .findIndex(unScheduledEt => etSlots.findIndex(etSlot => unScheduledEt.id === etSlot.id) > -1) > -1;
+      
+      return nameMatches && couldUnscheduledUserBeAssignedInSlot;
     });
 
   const populateDropDown = (users: UserProfileDto[], filterString: string) => {
