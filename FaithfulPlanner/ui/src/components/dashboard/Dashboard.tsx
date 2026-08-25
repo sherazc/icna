@@ -341,7 +341,7 @@ export default function Dashboard() {
                       <small className="smallText">
                         {opDayDetail.requiredOperationDayTeams
                           .sort((rt1, rt2) => rt1.team.teamName.localeCompare(rt2.team.teamName))
-                          .map(rt => <>{rt.team.teamName} ({rt.requiredTeamCount})<br/></>)}
+                          .map(rt => <span key={rt.team.id + rt.team.teamName}>{rt.team.teamName} ({rt.requiredTeamCount})<br/></span>)}
                       </small>
                     </td>
                     {opDayDetail.groups && opDayDetail.groups.map((group) => (
@@ -349,7 +349,7 @@ export default function Dashboard() {
                         {group.users.length}
                         {group.users.length > 0 &&
                           <small className="smallText">
-                            {group.users.map(u => (<>{u.firstName} {u.lastName}<br /></>))}
+                            {group.users.map(u => (<span key={u.id}>{u.firstName} {u.lastName}<br /></span>))}
                           </small>
                         }
                       </td>
