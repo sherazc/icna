@@ -256,5 +256,14 @@ export type OperationDayTeamDto = {
 export type Pair = {
     key: string;
     value: string;
-}
+};
 
+export type TeamView = {
+  teamName: string;
+  spots: TeamViewSpot[];
+};
+
+export type TeamViewSpot = {
+  employeeType: EmployeeTypeDto;
+  user?: OpDayDetailUserProfileDto;
+};
