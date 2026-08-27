@@ -70,6 +70,8 @@ class OperationDayService(
         logger.info("Deleting Operation Date. OperationDayId = {}", operationDayId)
         val deletedSchedules = scheduleService.deleteOperationDayAllSchedules(operationDayId)
         logger.info("Deleted Operation {} schedules of operationDayId {}", deletedSchedules, operationDayId)
+        val deletedByOperationDay = operationDayTeamService.deleteByOperationDayId(operationDayId)
+        logger.info("Deleted Operation {} operation day team of operationDayId {}", deletedByOperationDay, operationDayId)
         operationDayRepository.deleteById(operationDayId)
         return true
     }

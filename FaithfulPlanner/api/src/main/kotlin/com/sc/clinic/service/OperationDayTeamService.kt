@@ -20,6 +20,7 @@ class OperationDayTeamService(
     }
 
     fun deleteByTeamId(teamId: Long?): Long = teamId?.let { operationDayTeamRepository.deleteByTeamId(it) } ?: 0L
+    fun deleteByOperationDayId(operationDayId: Long?): Long = operationDayId?.let { operationDayTeamRepository.deleteByOperationDayId(it) } ?: 0L
 
     fun save(operationDay: OperationDay, requiredOperationDayTeams: List<OperationDayTeamDto>): List<OperationDayTeam> {
 
