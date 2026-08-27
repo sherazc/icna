@@ -45,14 +45,21 @@ export const extractRequiredTeamsFromOpDayDetail = (opDayDetail: OpDayDetailDto)
 };
 
 export const putUsersInTeamViewSpots = (teamViews: TeamView[], users: OpDayDetailUserProfileDto[]) => {
+  let placedUserCount = 0;
   teamViews.forEach(rtv => {
     rtv.spots.forEach(s => {
       const userIndex = users.findIndex(u => u.types.findIndex(t => t.id === s.employeeType.id) > -1);
       if (userIndex > -1) {
-        const user:OpDayDetailUserProfileDto = users[userIndex];
+        const user: OpDayDetailUserProfileDto = users[userIndex];
         s.user = user;
         users.splice(userIndex, 1);
+        placedUserCount++;
       }
     });
   });
+  return placedUserCount;
 };
+
+export const countTeamViewSpot = (teamViews: TeamView[]): number => teamViews
+  .map(t => t.spots.length)
+  .reduce((total, spotLength) => total + spotLength, 0);
