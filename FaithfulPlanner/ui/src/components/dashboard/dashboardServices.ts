@@ -1,12 +1,16 @@
-import type { 
-  OpDayDetailDto, 
-  OpDayDetailUserProfileDto, 
-  TeamViewSpot, 
-  TeamDto, 
-  TeamView 
+import type {
+  OpDayDetailDto,
+  OpDayDetailUserProfileDto,
+  TeamViewSpot,
+  TeamDto,
+  TeamView
 } from "../../service/service-types";
 
-export const teamToTeamView = (team: TeamDto): TeamView => {
+export const teamsToTeamViews = (teams: TeamDto[]): TeamView[] =>
+  teams.map(t => teamToTeamView(t)).sort((tv1, tv2) => tv1.teamName.localeCompare(tv2.teamName));
+
+
+const teamToTeamView = (team: TeamDto): TeamView => {
   const spots: TeamViewSpot[] = [];
 
   team.teamEmployeeTypes.forEach(tet => {
@@ -38,4 +42,17 @@ export const extractRequiredTeamsFromOpDayDetail = (opDayDetail: OpDayDetailDto)
     }
   });
   return requiredTeams;
+};
+
+export const putUsersInTeamViewSpots = (teamViews: TeamView[], users: OpDayDetailUserProfileDto[]) => {
+  teamViews.forEach(rtv => {
+    rtv.spots.forEach(s => {
+      const userIndex = users.findIndex(u => u.types.findIndex(t => t.id === s.employeeType.id) > -1);
+      if (userIndex > -1) {
+        const user:OpDayDetailUserProfileDto = users[userIndex];
+        s.user = user;
+        users.splice(userIndex, 1);
+      }
+    });
+  });
 };

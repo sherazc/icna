@@ -1,13 +1,14 @@
-import type { 
-  OpDayDetailDto, 
-  OpDayDetailUserProfileDto, 
-  TeamDto, 
-  TeamView 
+import type {
+  OpDayDetailDto,
+  OpDayDetailUserProfileDto,
+  TeamDto,
+  TeamView
 } from "../../service/service-types";
-import { 
-  extractAssignedUsersFromOpDayDetail, 
-  extractRequiredTeamsFromOpDayDetail, 
-  teamToTeamView 
+import {
+  extractAssignedUsersFromOpDayDetail,
+  extractRequiredTeamsFromOpDayDetail,
+  putUsersInTeamViewSpots,
+  teamsToTeamViews
 } from "./dashboardServices";
 
 interface Props {
@@ -21,10 +22,14 @@ export const DashboardTeams: React.FC<Props> = ({ opDayDetail }) => {
 
   const usersToPutInTeamViewSpots: OpDayDetailUserProfileDto[] = extractAssignedUsersFromOpDayDetail(opDayDetail);
   const requiredTeams: TeamDto[] = extractRequiredTeamsFromOpDayDetail(opDayDetail);
-  const requiredTeamViews: TeamView[] = requiredTeams.map(t => teamToTeamView(t));
+  const requiredTeamViews: TeamView[] = teamsToTeamViews(requiredTeams);
 
+  putUsersInTeamViewSpots(requiredTeamViews, usersToPutInTeamViewSpots);
 
-  console.log(requiredTeamViews);
+  
+
+  console.log("requiredTeamViews", requiredTeamViews);
+  console.log("usersToPutInTeamViewSpots", usersToPutInTeamViewSpots);
 
   return (
     <div>
