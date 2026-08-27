@@ -215,9 +215,7 @@ export default function Dashboard() {
               op.notes = savedOperationDay.notes;
               op.serviceDateDayOfWeek = isoToDayOfWeek(touchString(savedOperationDay.serviceDateString));
               op.serviceDateFormatted = isoToMonthDayYear(touchString(savedOperationDay.serviceDateString));
-              // if (savedOperationDay.requiredEmployeeTypes) {
-              //   op.requiredEmployeeTypes = [...savedOperationDay.requiredEmployeeTypes];
-              // }
+              op.requiredOperationDayTeams = savedOperationDay.requiredOperationDayTeams;
             }
           })
         } else {
