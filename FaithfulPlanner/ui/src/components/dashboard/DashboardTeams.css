@@ -1,1 +1,125 @@
+.teams {
+  margin-top: var(--spacing-30);
+  padding-top: var(--spacing-20);
+  border-top: var(--border-width) solid var(--border-light);
+}
 
+.teamsHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  margin-bottom: var(--spacing-15);
+}
+
+.teamsTitle {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.teamsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-20);
+}
+
+.teamCard {
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-15);
+  background: var(--bg-secondary);
+}
+
+.teamCardExtra {
+  border-style: dashed;
+}
+
+.teamCardTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  margin: 0 0 var(--spacing-12) 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.spotList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.spot {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-10);
+  padding: var(--spacing-10) var(--spacing-12);
+  border: var(--border-width) solid var(--border-light);
+  border-radius: var(--border-radius-sm);
+  background: var(--bg-primary);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.spotFilled {
+  border-color: var(--success-light);
+}
+
+.spotEmpty {
+  border-style: dashed;
+  border-color: var(--border-dark);
+  background: var(--bg-tertiary);
+}
+
+.spotIcon {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-tight);
+  flex-shrink: 0;
+}
+
+.spotBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.spotType {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-tertiary);
+}
+
+.spotUser {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.spotOpen {
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  color: var(--text-tertiary);
+}
+
+.spotRoles {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  margin-left: var(--spacing-8);
+}
+
+.spotRole {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  background: var(--primary-ultra-light);
+  padding: var(--spacing-2) var(--spacing-8);
+  border-radius: var(--border-radius-full);
+}

@@ -22,65 +22,79 @@ export const DashboardTeams: React.FC<Props> = ({ opDayDetail }) => {
     return <></>;
   }
 
-  const usersToPutInTeamViewSpots: OpDayDetailUserProfileDto[] = extractAssignedUsersFromOpDayDetail(opDayDetail);
+  const extraUsers: OpDayDetailUserProfileDto[] = extractAssignedUsersFromOpDayDetail(opDayDetail);
   const requiredTeams: TeamDto[] = extractRequiredTeamsFromOpDayDetail(opDayDetail);
   const requiredTeamViews: TeamView[] = teamsToTeamViews(requiredTeams);
 
-  const placedUserCount = putUsersInTeamViewSpots(requiredTeamViews, usersToPutInTeamViewSpots);
-
+  const placedUserCount = putUsersInTeamViewSpots(requiredTeamViews, extraUsers);
   const totalRequired = countTeamViewSpot(requiredTeamViews);
 
-  console.log(placedUserCount);
+  const isComplete = placedUserCount >= totalRequired;
 
   return (
-    <div>
-      <h3>Teams</h3>
-      <div>{placedUserCount}/{totalRequired}</div>
+    <div className="teams">
+      <div className="teamsHeader">
+        <h3 className="teamsTitle">Teams</h3>
+        <span className={`badge ${isComplete ? "badgeSuccess" : "badgeWarning"}`}>
+          {placedUserCount}/{totalRequired} filled
+        </span>
+      </div>
 
-      {/* Assigned Users */}
-      {requiredTeamViews.map((rtv, index) => (
-        <div key={index} style={{ border: "1px solid gray" }}>
-          <h4>{rtv.teamName}</h4>
-          {rtv.spots.map((stv, i) => (
-            <div key={i}>
-              <div>
-                {stv.employeeType.typeName}
-              </div>
-              {!stv.user && (
-                <div>_</div>
-              )}
-
-              {stv.user && (
-                <div>
-                  {stv.user.firstName} {stv.user.lastName}
-                  (
-                  {stv.user.types.map(ut => (
-                    <span key={ut.id}>{ut.typeName},</span>
-                  ))}
-                  )
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      ))}
-      {/* Extra users */}
-      {usersToPutInTeamViewSpots && usersToPutInTeamViewSpots.length > 0 && (
-        <div style={{ border: "1px solid gray" }}>
-          <h4>Extra Users ({usersToPutInTeamViewSpots.length})</h4>
-          {usersToPutInTeamViewSpots.map(u => (
-            <div>
-              {u.firstName} {u.lastName}
-              (
-              {u.types.map(ut => (
-                <span key={ut.id}>{ut.typeName},</span>
+      <div className="teamsGrid">
+        {requiredTeamViews.map((rtv, index) => (
+          <div className="teamCard" key={index}>
+            <h4 className="teamCardTitle">{rtv.teamName}</h4>
+            <ul className="spotList">
+              {rtv.spots.map((stv, i) => (
+                <li className={`spot ${stv.user ? "spotFilled" : "spotEmpty"}`} key={i}>
+                  <span className="spotIcon" aria-hidden="true">{stv.user ? "✅" : "⭕"}</span>
+                  <div className="spotBody">
+                    <span className="spotType">{stv.employeeType.typeName}</span>
+                    {stv.user ? (
+                      <span className="spotUser">
+                        {stv.user.firstName} {stv.user.lastName}
+                        <span className="spotRoles">
+                          {stv.user.types.map(ut => (
+                            <span className="spotRole" key={ut.id}>{ut.typeName}</span>
+                          ))}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="spotOpen">Open spot</span>
+                    )}
+                  </div>
+                </li>
               ))}
-              )
-            </div>
-          ))}
-        </div>
-      )}
+            </ul>
+          </div>
+        ))}
+
+        {extraUsers && extraUsers.length > 0 && (
+          <div className="teamCard teamCardExtra">
+            <h4 className="teamCardTitle">
+              Extra Users
+              <span className="badge badgePrimary">{extraUsers.length}</span>
+            </h4>
+            <ul className="spotList">
+              {extraUsers.map(u => (
+                <li className="spot spotExtra" key={u.id}>
+                  <span className="spotIcon" aria-hidden="true">🙋</span>
+                  <div className="spotBody">
+                    <span className="spotUser">
+                      {u.firstName} {u.lastName}
+                      <span className="spotRoles">
+                        {u.types.map(ut => (
+                          <span className="spotRole" key={ut.id}>{ut.typeName}</span>
+                        ))}
+                      </span>
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
-
