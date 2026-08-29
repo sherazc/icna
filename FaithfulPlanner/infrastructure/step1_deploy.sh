@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# source env_multipass
 source env_pi
 
 ssh -i ~/.ssh/id_rsa \

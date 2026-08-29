@@ -1,0 +1,4 @@
+app_name=clinic
+app_server_ip=10.0.0.181
+app_server_user=ubuntu
+app_server_path=/home/ubuntu/dev/
