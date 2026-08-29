@@ -10,6 +10,7 @@ sudo docker build . -t $app_name
 
 echo Run app container
 docker run -it \
+  --network clinic-net \
   --name $app_name \
   -p 8080:8080 \
   -d $app_name

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# source env_multipass
-source env_pi
+source env_multipass
+# source env_pi
 
 ssh -i ~/.ssh/id_rsa \
   "$app_server_user@$app_server_ip" \

@@ -6,8 +6,9 @@ dataDir=$container_disks/$db_name
 
 echo Clean up DB
 docker stop $db_name
+sleep 30
 docker rm -f $db_name
-sudo rm -rf $dataDir
+# sudo rm -rf $dataDir
 mkdir -p $dataDir
 
 sleep 3
@@ -16,6 +17,7 @@ echo Run DB container
 docker run \
   --detach \
   --name=$db_name \
+  --network clinic-net \
   -p 5432:5432 \
   --env="POSTGRES_PASSWORD=$db_password" \
   --env="POSTGRES_DB=$db_name" \
@@ -23,6 +25,5 @@ docker run \
   -v $dataDir:/var/lib/postgresql \
   postgres:latest
 
-sleep 20
+sleep 30
 echo "DB container finished!"
-
