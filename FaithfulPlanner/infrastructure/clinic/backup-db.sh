@@ -25,8 +25,19 @@ echo "Wrote $backup_file"
 # Hardcoded export command
 # Export to SQL
 docker exec -e PGPASSWORD="password" "clinic_db" \
-   pg_dump -U "clinic_user" -d "clinic_db" --insert > clinic_db_backup.sql
+   pg_dump -U "clinic_user" -d "clinic_db" \
+   --insert --clean --if-exists > clinic_db_backup.sql
 
 # Export to zip
 docker exec -e PGPASSWORD="password" "clinic_db" \
-   pg_dump -U "clinic_user" -d "clinic_db" --insert | gzip > clinic_db_backup.sql.gz
+   pg_dump -U "clinic_user" -d "clinic_db" \
+   --insert --clean --if-exists | gzip > clinic_db_backup.sql.gz
+
+# Hardcoded import command
+docker exec -i -e PGPASSWORD="password" "clinic_db" \
+   psql -U "clinic_user" -d "clinic_db" < clinic_db_backup.sql
+
+
+
+scp -r -i ~/.ssh/id_rsa \
+  sheraz@10.0.0.20:clinic_db_backup.sql.gz .
