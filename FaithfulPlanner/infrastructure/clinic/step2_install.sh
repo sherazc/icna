@@ -5,6 +5,6 @@ docker network create clinic-net
 sudo systemctl start docker
 # Uncomment this to recreate database .container.
 ./script-postgres-container.sh
-./clinic_container.sh
+./script-clinic-container.sh
 
 echo ====[ Successfully installed started clinic service. ]====
