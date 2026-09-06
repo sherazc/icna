@@ -17,7 +17,8 @@ mkdir -p "$backup_dir"
 backup_file="$backup_dir/${db_name}-$(date +%Y%m%d-%H%M%S).sql.gz"
 
 docker exec -e PGPASSWORD="$db_password" "$db_name" \
-  pg_dump -U "$db_user" -d "$db_name" | gzip > "$backup_file"
+  pg_dump -U "$db_user" -d "$db_name" \
+  --insert --clean --if-exists | gzip > "$backup_file"
 
 echo "Wrote $backup_file"
 
