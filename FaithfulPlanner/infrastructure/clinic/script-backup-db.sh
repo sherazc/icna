@@ -38,7 +38,6 @@ echo "Wrote $backup_file"
 # docker exec -i -e PGPASSWORD="password" "clinic_db" \
 #    psql -U "clinic_user" -d "clinic_db" < clinic_db_backup.sql
 
-
 # ZIP import
 # gunzip -c clinic_db_backup.sql.gz | docker \
 #    exec -i clinic_db psql -U clinic_user -d clinic_db
@@ -46,3 +45,7 @@ echo "Wrote $backup_file"
 # Hardcoded copy command
 # scp -r -i ~/.ssh/id_rsa \
 #   sheraz@10.0.0.20:clinic_db_backup.sql.gz .
+
+# Verify ZIP content
+# gunzip -c clinic_db_backup.sql.gz | less
+# gunzip -c clinic_db_backup.sql.gz | head -40

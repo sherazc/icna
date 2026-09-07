@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Creates cron job for script-backup-db.sh
 set -e -o pipefail
 
 # cron runs with a bare PATH, so tools like `docker` may not be found. Fix that.
@@ -7,6 +8,17 @@ export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
 # Run from this script's own folder so .env paths resolve correctly.
 cd "$(dirname "$0")"
 source .env
+
+mkdir -p "$backup_dir"
+log="$backup_dir/cron.log"
+
+# limits the size of cron.log file size. Keeps last 500 lines
+[ -f "$log" ] && tail -n 500 "$log" > "$log.tmp" && mv "$log.tmp" "$log"
+
+# Redirects this script's stdout and stderr in cron.log
+exec >> "$log" 2>&1
+
+echo "----- run at $(date) -----"
 
 # --- Settings -------------------------------------------------------------
 schedule="*/5 * * * *"          # every 5 minutes (for testing)
