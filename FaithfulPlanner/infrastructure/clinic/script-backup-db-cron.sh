@@ -21,8 +21,8 @@ exec >> "$log" 2>&1
 echo "----- run at $(date) -----"
 
 # --- Settings -------------------------------------------------------------
-schedule="*/5 * * * *"          # every 5 minutes (for testing)
-# schedule="0 1 * * *"          # every night at 1:00 AM (use this later)
+# schedule="*/5 * * * *"          # every 5 minutes (for testing)
+schedule="0 1 * * *"          # every night at 1:00 AM (for production)
 
 keep=15                         # number of backup files to keep
 
