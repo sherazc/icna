@@ -6,9 +6,7 @@ import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 
 @Component
-class EmailTemplateEngine(
-    @Qualifier("emailTemplateEngine") private val templateEngine: TemplateEngine,
-) {
+class EmailTemplateEngine(private val templateEngine: TemplateEngine) {
     fun render(templateName: String, attributes: Map<String, String>): String {
         val context = Context().apply { setVariables(attributes) }
         return templateEngine.process(templateName, context)

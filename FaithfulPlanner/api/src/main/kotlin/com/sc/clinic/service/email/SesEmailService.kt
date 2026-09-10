@@ -17,7 +17,13 @@ class SesEmailService(
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    override fun send(from: String, to: String, subject: String, templateName: String, attributes: Map<String, String>) {
+    override fun send(
+        from: String,
+        to: String,
+        subject: String,
+        templateName: String,
+        attributes: Map<String, String>
+    ) {
         try {
             val body = templateEngine.render(templateName, attributes)
             val request = SendEmailRequest.builder()
