@@ -1,6 +1,5 @@
 package com.sc.clinic.service.email
 
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context

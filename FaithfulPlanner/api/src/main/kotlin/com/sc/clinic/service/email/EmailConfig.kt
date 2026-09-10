@@ -19,8 +19,8 @@ class EmailConfig {
             .region(Region.of(region))
             .build()
 
-    @Bean("emailTemplateEngine")
-    fun emailTemplateEngine(): TemplateEngine {
+    @Bean("emailThymeleafEngine")
+    fun emailThymeleafEngine(): TemplateEngine {
         val resolver = ClassLoaderTemplateResolver().apply {
             prefix = "email_templates/"
             suffix = ".html"

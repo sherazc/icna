@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class EmailTemplateEngineTest {
 
-    private val engine = EmailTemplateEngine(EmailConfig().emailTemplateEngine())
+    private val engine = EmailTemplateEngine(EmailConfig().emailThymeleafEngine())
 
     @Test
     fun `renders email_verify with name and verify link`() {
