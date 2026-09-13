@@ -123,6 +123,18 @@ export default function CompanyRegistration() {
           <ErrorField errors={errors} fieldName="company.companyName" />
         </div>
         <div className="formGroup">
+          <label htmlFor="slugName">URL name</label>
+          <input type="text" id="slugName" placeholder="Enter organization slug"
+            onChange={onChangeCompanyText} size={100} />
+          <small className="formHelpText">
+            Used in your organization's link, e.g.
+            <div>
+              {window.location.origin}/{registrationDto.company.slugName ? registrationDto.company.slugName : "company_url"}
+            </div>
+          </small>
+          <ErrorField errors={errors} fieldName="company.slugName" />
+        </div>
+        <div className="formGroup">
           <label htmlFor="email">Admin Email</label>
           <input type="email" id="email" placeholder="Admin email"
             onChange={onChangeUserProfileText} />

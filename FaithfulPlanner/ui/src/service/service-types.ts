@@ -64,11 +64,13 @@ export const defaultRegistrationDto = (): RegistrationDto => ({
 export type CompanyDto = {
     id?: number,
     companyName: string,
+    slugName: string,
     active?: boolean,
 };
 
 export const defaultCompanyDto = (): CompanyDto => ({
     companyName: "",
+    slugName: "",
 });
 
 export type UserProfileDto = {

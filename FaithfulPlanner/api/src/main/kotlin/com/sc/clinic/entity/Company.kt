@@ -13,7 +13,7 @@ class Company(
     var companyName: String,
 
     @Column(name = "slug_name", unique = true)
-    var slugName: String?,
+    var slugName: String,
 
     @Column(name = "ui_theme_id", nullable = true)
     var uiThemeId: Long?,

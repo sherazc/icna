@@ -8,7 +8,7 @@ data class CompanyDto(
     @field:Size(min = 3, max = 250, message = "Company name should be between 3 and 250 characters long")
     var companyName: String,
     @field:Size(max = 250, message = "Slug name should be at most 250 characters long")
-    var slugName: String?,
+    var slugName: String,
     var uiThemeId: Long?,
     var active: Boolean?,
 ) {
