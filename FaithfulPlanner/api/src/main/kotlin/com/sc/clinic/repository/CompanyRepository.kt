@@ -11,7 +11,7 @@ import java.util.*
 interface CompanyRepository : JpaRepository<Company, Long> {
     @Query(
         """
-        select new com.sc.clinic.dto.CompanyDto(c.id, c.companyName, c.uiThemeId, c.active) 
+        select new com.sc.clinic.dto.CompanyDto(c.id, c.companyName, c.slugName, c.uiThemeId, c.active)
         from Company c
         where c.active = true 
         order by c.companyName """

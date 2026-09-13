@@ -12,6 +12,9 @@ class Company(
     @Column(name = "company_name", nullable = false)
     var companyName: String,
 
+    @Column(name = "slug_name", unique = true)
+    var slugName: String?,
+
     @Column(name = "ui_theme_id", nullable = true)
     var uiThemeId: Long?,
 
