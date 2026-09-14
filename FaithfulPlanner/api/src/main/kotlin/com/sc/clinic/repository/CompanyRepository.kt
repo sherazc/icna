@@ -5,7 +5,6 @@ import com.sc.clinic.entity.Company
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 interface CompanyRepository : JpaRepository<Company, Long> {
@@ -19,5 +18,7 @@ interface CompanyRepository : JpaRepository<Company, Long> {
     fun findActive(): List<CompanyDto>
 
     fun findByCompanyNameIgnoreCase(companyName: String): List<Company>
+
+    fun existsBySlugName(slug: String): Boolean
 }
 

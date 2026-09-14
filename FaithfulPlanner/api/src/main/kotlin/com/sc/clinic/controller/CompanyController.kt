@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -25,4 +26,7 @@ class CompanyController(private val companyService: CompanyService) {
         hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN) """
     )
     fun saveCompany(@RequestBody company: CompanyDto) = CompanyDto(companyService.saveCompany(company))
+
+    @GetMapping("/api/company/slug-exists")
+    fun existsBySlugName(@RequestParam slug: String) = companyService.existsBySlugName(slug)
 }
