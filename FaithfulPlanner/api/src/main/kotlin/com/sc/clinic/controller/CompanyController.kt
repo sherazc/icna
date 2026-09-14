@@ -2,8 +2,10 @@ package com.sc.clinic.controller
 
 import com.sc.clinic.service.CompanyService
 import com.sc.clinic.dto.CompanyDto
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -29,4 +31,7 @@ class CompanyController(private val companyService: CompanyService) {
 
     @GetMapping("/api/company/slug-exists")
     fun existsBySlugName(@RequestParam slug: String) = companyService.existsBySlugName(slug)
+
+    @GetMapping("/api/company/slug/{slug}")
+    fun findBySlugName(@PathVariable slug: String) = companyService.findBySlugName(slug) ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
 }

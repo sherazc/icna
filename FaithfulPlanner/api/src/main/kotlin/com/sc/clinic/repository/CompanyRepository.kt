@@ -20,5 +20,7 @@ interface CompanyRepository : JpaRepository<Company, Long> {
     fun findByCompanyNameIgnoreCase(companyName: String): List<Company>
 
     fun existsBySlugName(slug: String): Boolean
+
+    fun findBySlugName(slug: String): Company?
 }
 

@@ -1,9 +1,9 @@
 -- Insert 3 companies (Muslim clinics) with explicit IDs
-INSERT INTO company (id, company_name, ui_theme_id, active)
+INSERT INTO company (id, company_name, slug_name, ui_theme_id, active)
 VALUES
-    (1, 'Al-Shifa Health Clinic', 10, true),
-    (2, 'Rahma Medical Center', 20, true),
-    (3, 'Barakah Community Clinic', 30, true);
+    (1, 'Al-Shifa Health Clinic', 'alshifa', 10, true),
+    (2, 'Rahma Medical Center', 'rahma', 20, true),
+    (3, 'Barakah Community Clinic', 'barakah', 30, true);
 
 -- Insert users for Al-Shifa Health Clinic (company_id = 1) with explicit IDs
 INSERT INTO user_profile (id, email, user_password, company_id)

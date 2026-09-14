@@ -56,4 +56,6 @@ class CompanyService(private val companyRepository: CompanyRepository) {
         companyRepository.findById(companyId).orElseThrow { ScException("companyId", "Company not found. $companyId") }
 
     fun existsBySlugName(slug: String) = companyRepository.existsBySlugName(slug)
+
+    fun findBySlugName(slug: String) = companyRepository.findBySlugName(slug) ?.let { CompanyDto(it) }
 }
