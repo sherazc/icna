@@ -1,16 +1,17 @@
-import type { 
-  AuthUserTokenDto, 
-  Company, 
-  EmployeeGroupDto, 
-  EmployeeGroupTypesDto, 
-  LoginRequest, 
-  OpDayDetailDto, 
-  OperationDayDto, 
-  PasswordUpdateDto, 
-  RegistrationDto, 
-  ScheduleDto, 
-  TeamDto, 
-  UserProfileDto 
+import type {
+  AuthUserTokenDto,
+  Company,
+  CompanyDto,
+  EmployeeGroupDto,
+  EmployeeGroupTypesDto,
+  LoginRequest,
+  OpDayDetailDto,
+  OperationDayDto,
+  PasswordUpdateDto,
+  RegistrationDto,
+  ScheduleDto,
+  TeamDto,
+  UserProfileDto
 } from "../service-types";
 import { touchString } from "../utilities";
 import {
@@ -28,6 +29,8 @@ const CONTENT_JSON_HEADER = (): ApiHeaders => [["Content-Type", "application/jso
 export const clinicEndpoints = () => {
   return {
     epCompany: () => `${baseUrl}/api/company`,
+    epCompanySlugExists: (slug: string) => `${baseUrl}/api/company/slug-exists?slug=${encodeURIComponent(slug)}`,
+    epCompanyBySlug: (slug: string) => `${baseUrl}/api/company/slug/${encodeURIComponent(slug)}`,
     epLoginToken: () => `${baseUrl}/api/login/token`,
     epLoginRefresh: () => `${baseUrl}/api/login/refresh`,
     epSaveRegistration: () => `${baseUrl}/api/registration`,
@@ -49,6 +52,18 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
   const api = {
     getAllCompanies: (): Promise<Company[]> => {
       const endpoint = endpoints.epCompany();
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    companySlugExists: (slug: string): Promise<boolean> => {
+      const endpoint = endpoints.epCompanySlugExists(slug);
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    getCompanyBySlug: (slug: string): Promise<CompanyDto> => {
+      const endpoint = endpoints.epCompanyBySlug(slug);
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
