@@ -29,9 +29,10 @@ class CompanyController(private val companyService: CompanyService) {
     )
     fun saveCompany(@RequestBody company: CompanyDto) = CompanyDto(companyService.saveCompany(company))
 
-    @GetMapping("/api/company/slug-exists")
-    fun existsBySlugName(@RequestParam slug: String) = companyService.existsBySlugName(slug)
+    @GetMapping("/slug-exists")
+    fun existsBySlugName(@RequestParam(required = true) slug: String) = companyService.existsBySlugName(slug)
 
-    @GetMapping("/api/company/slug/{slug}")
-    fun findBySlugName(@PathVariable slug: String) = companyService.findBySlugName(slug) ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
+    @GetMapping("/slug/{slug}")
+    fun findBySlugName(@PathVariable slug: String) =
+        companyService.findBySlugName(slug)?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
 }

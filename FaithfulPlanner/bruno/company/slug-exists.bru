@@ -1,0 +1,21 @@
+meta {
+  name: /slug-exists
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/api/company/slug-exists?slug=alshifa
+  body: none
+  auth: inherit
+}
+
+params:query {
+  slug: alshifa
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  forwardAuthorizationHeader: false
+}
