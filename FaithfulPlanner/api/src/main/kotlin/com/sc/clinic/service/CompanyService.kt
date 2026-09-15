@@ -19,8 +19,21 @@ class CompanyService(private val companyRepository: CompanyRepository) {
     }
 
     fun validate(company: CompanyDto) {
-        if (company.id == null && isCompanyNameExists(company.companyName)) {
+        val companyId = company.id
+        if (companyId == null && isCompanyNameExists(company.companyName)) {
             throw ScBadRequestException("company.companyName", "Company name already exists. ${company.companyName}")
+        }
+
+        if (companyId != null && companyRepository.existsByIdNotAndCompanyNameIgnoreCase(companyId, company.companyName)) {
+            throw ScBadRequestException("company.companyName", "Company name already exists. ${company.companyName}")
+        }
+
+        if (companyId == null && existsBySlugName(company.slugName)) {
+            throw ScBadRequestException("company.slugName", "Company url already exists. ${company.slugName}")
+        }
+
+        if (companyId != null && companyRepository.existsByIdNotAndCompanyNameIgnoreCase(companyId, company.companyName)) {
+            throw ScBadRequestException("company.slugName", "Company url already exists. ${company.slugName}")
         }
     }
 
@@ -55,7 +68,7 @@ class CompanyService(private val companyRepository: CompanyRepository) {
     fun findById(companyId: Long): Company =
         companyRepository.findById(companyId).orElseThrow { ScException("companyId", "Company not found. $companyId") }
 
-    fun existsBySlugName(slug: String) = companyRepository.existsBySlugName(slug)
+    fun existsBySlugName(slug: String) = companyRepository.existsBySlugNameIgnoreCase(slug)
 
-    fun findBySlugName(slug: String) = companyRepository.findBySlugName(slug) ?.let { CompanyDto(it) }
+    fun findBySlugName(slug: String) = companyRepository.findBySlugNameIgnoreCase(slug) ?.let { CompanyDto(it) }
 }

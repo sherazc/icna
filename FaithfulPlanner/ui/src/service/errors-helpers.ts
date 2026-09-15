@@ -29,6 +29,13 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Erro
     });
   }
 
+  if (isBlankString(registrationDto.company.slugName)) {
+    addFieldError(errors, {
+      field: "company.slugName",
+      message: "Invalid URL",
+    });
+  }
+
   if (isBlankString(registrationDto.userProfile.email) || !EMAIL_REGEX.test(registrationDto.userProfile.email)) {
     addFieldError(errors, {
       field: "userProfile.email",
