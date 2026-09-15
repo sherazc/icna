@@ -17,7 +17,8 @@ export default function AppNav() {
   };
 
   const isActive = (path: string) => {
-    return location.pathname === path ? "active" : "";
+    const isInPath = location.pathname.indexOf(path) > -1
+    return isInPath ? "active" : "";
   };
 
   return (
@@ -47,7 +48,7 @@ export default function AppNav() {
         <ul className="navMenu">
           <Authenticated authenticated={false}>
             <li className="navItem">
-              <Link to="/login" className={`navLink ${isActive("/login")} ${isActive("/")}`} onClick={closeMobileMenu}>
+              <Link to="/login" className={`navLink ${isActive("/login")} ${location.pathname === "/" ? "active" : ""}`} onClick={closeMobileMenu}>
                 Login
               </Link>
             </li>
