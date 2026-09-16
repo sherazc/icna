@@ -10,7 +10,7 @@ import { createAuthHeader, clinicApis as clinicApisFunction } from "../../servic
 
 export default function Login() {
   const navigate = useNavigate();
-  const [{ companies, clinicApis }, dispatch] = useContext(AppContext);
+  const [{ companies, clinicApis, companySlugName }, dispatch] = useContext(AppContext);
 
   const [loginRequest, setLoginRequest] = useState<LoginRequest>(defaultLoginRequest());
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
@@ -56,7 +56,7 @@ export default function Login() {
   return (
     <div id="login">
       <div className="slimContainer">
-        <h1>FaithfulPlanner</h1>
+        <h1>FaithfulPlanner {companySlugName.companyName}</h1>
         <ErrorForm formState={formState} defaultError="Login failed. Please check your credentials and try again"/>
         <Loading formState={formState}/>
         <form onSubmit={handleSubmit}>

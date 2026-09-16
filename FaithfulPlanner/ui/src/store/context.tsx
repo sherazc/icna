@@ -2,9 +2,11 @@ import React, {createContext, useReducer} from "react";
 import {type LoadingAction, loadingMessagesReducer} from "./loadingMessageReducer";
 import {type AuthUserAction, authUserReducer} from "./authUserReducer";
 import {
+    defaultCompanyDto,
     type AuthUserTokenDto,
     type ClinicApisType,
     type Company,
+    type CompanyDto,
     type EmployeeGroupDto
 } from "../service/service-types";
 import { clinicApis, createAuthHeader } from "../service/api/ApiClinic";
@@ -13,6 +15,7 @@ import { companyReducer, type CompanyAction } from "./companyReducer";
 import { employeeGroupReducer, type EmployeeGroupAction } from "./employeeGroupsReducer";
 import { loadAuthUserToken } from "../service/token-storage";
 import { isValidAuthUserToken } from "../service/authentication-services";
+import { companySlugNameReducer, type CompanySlugNameAction } from "./companySlugNameReducer";
 
 export type Action = {
     type: string;
@@ -33,6 +36,7 @@ type RootStateType = {
     clinicApis: ClinicApisType;
     companies: Company[];
     employeeGroups: EmployeeGroupDto[]
+    companySlugName: CompanyDto;
 }
 
 
@@ -45,7 +49,8 @@ const initialAppState: RootStateType = {
         ? clinicApis(createAuthHeader(persistedAuthUserToken))
         : clinicApis(),
     companies: [],
-    employeeGroups: []
+    employeeGroups: [],
+    companySlugName: defaultCompanyDto()
 }
 
 const AppContext = createContext<[
@@ -56,15 +61,16 @@ const AppContext = createContext<[
     () => null
 ]);
 
-type RootAction = LoadingAction | AuthUserAction | ClinicApisAction | CompanyAction | EmployeeGroupAction;
+type RootAction = LoadingAction | AuthUserAction | ClinicApisAction | CompanyAction | EmployeeGroupAction | CompanySlugNameAction;
 
 // Combines all the reducers
-const mainReducer = ({loadingMessages, authUserToken, clinicApis, companies, employeeGroups}: RootStateType, action: RootAction) => ({
+const mainReducer = ({loadingMessages, authUserToken, clinicApis, companies, employeeGroups, companySlugName}: RootStateType, action: RootAction) => ({
     loadingMessages: loadingMessagesReducer(loadingMessages, action as LoadingAction),
     authUserToken: authUserReducer(authUserToken, action as AuthUserAction),
     clinicApis: clinicApisReducer(clinicApis, action as ClinicApisAction),
     companies: companyReducer(companies, action as CompanyAction),
     employeeGroups: employeeGroupReducer(employeeGroups, action as EmployeeGroupAction),
+    companySlugName: companySlugNameReducer(companySlugName, action as CompanySlugNameAction)
 
 });
 

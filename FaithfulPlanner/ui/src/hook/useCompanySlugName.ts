@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../store/context";
+import { ActionNameCompanySlugName } from "../store/companySlugNameReducer";
 
 export const useCompanySlugName = () => {
  
@@ -16,7 +17,7 @@ export const useCompanySlugName = () => {
       
       try {
         const company = await clinicApis.getCompanyBySlug(companySlugName);
-        console.log(company);
+        dispatch({type: ActionNameCompanySlugName.companySlugName, payload: company});
       } catch (error) {
         console.log(`Company not found by slugName = ${companySlugName}`)
       }
