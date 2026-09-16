@@ -8,6 +8,10 @@ export const useCompanySlugName = () => {
   const [{ clinicApis }, dispatch] = useContext(AppContext);
 
   const loadData = async () => {
+    // Check if slugCompany is already loaded. if true then do not load it
+    // Check if slugCompany is different. If true then logout and redirect to /:companySlugName/login
+    // analysis if /login should redirect to /dashboard
+    // analysis how to redirect to auth page after successful login. Currently it is being done in <UnAuthRedirect/>
     if (companySlugName && companySlugName.length > 0) {
       
       try {
