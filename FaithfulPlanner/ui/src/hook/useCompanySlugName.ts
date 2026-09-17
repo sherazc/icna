@@ -5,7 +5,7 @@ import { ActionNameCompanySlugName } from "../store/companySlugNameReducer";
 
 export const useCompanySlugName = () => {
  
-  const { companySlugName } = useParams();
+  const { companySlugNameUrl } = useParams();
   const [{ clinicApis }, dispatch] = useContext(AppContext);
 
   const loadData = async () => {
@@ -13,18 +13,18 @@ export const useCompanySlugName = () => {
     // Check if slugCompany is different. If true then logout and redirect to /:companySlugName/login
     // analysis if /login should redirect to /dashboard
     // analysis how to redirect to auth page after successful login. Currently it is being done in <UnAuthRedirect/>
-    if (companySlugName && companySlugName.length > 0) {
+    if (companySlugNameUrl && companySlugNameUrl.length > 0) {
       
       try {
-        const company = await clinicApis.getCompanyBySlug(companySlugName);
-        dispatch({type: ActionNameCompanySlugName.companySlugName, payload: company});
+        const company = await clinicApis.getCompanyBySlug(companySlugNameUrl);
+        dispatch({type: ActionNameCompanySlugName.companySlugNameUrl, payload: company});
       } catch (error) {
-        console.log(`Company not found by slugName = ${companySlugName}`)
+        console.log(`Company not found by slugName = ${companySlugNameUrl}`)
       }
     }
   }
 
   useEffect(() => {
     loadData()
-  }, [companySlugName]);
+  }, [companySlugNameUrl]);
 }

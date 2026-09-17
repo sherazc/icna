@@ -62,8 +62,8 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    getCompanyBySlug: (slug: string): Promise<CompanyDto> => {
-      const endpoint = endpoints.epCompanyBySlug(slug);
+    getCompanyBySlug: (companySlugNameUrl: string): Promise<CompanyDto> => {
+      const endpoint = endpoints.epCompanyBySlug(companySlugNameUrl);
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);

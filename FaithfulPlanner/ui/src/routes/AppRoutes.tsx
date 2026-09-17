@@ -20,7 +20,7 @@ export default function AppRoutes() {
         <Route index element={<Login/>}/>
         <Route path="/company-registration" element={<CompanyRegistration/>}/>
         <Route path="/login" element={<Login/>}/>
-        <Route path=":companySlugName/login" element={<Login/>}/>
+        <Route path=":companySlugNameUrl/login" element={<Login/>}/>
         
 
         {/* Not used pages. Copy paste template pages from UI design */}

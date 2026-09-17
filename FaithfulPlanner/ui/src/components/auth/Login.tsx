@@ -23,7 +23,11 @@ export default function Login() {
   const login = async () => {
     setFormState(FormState.IN_PROGRESS);
     try {
+      if (containsCompanySlugName && companySlugName.id) {
+        loginRequest.companyId = "" + companySlugName.id
+      }
       const authUserTokenDto = await clinicApis.login(loginRequest);
+      console.log(authUserTokenDto)
       dispatch({
         type: ActionNameAuthUser.authUserLogin,
         payload: authUserTokenDto

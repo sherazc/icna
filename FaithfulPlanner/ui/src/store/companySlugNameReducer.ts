@@ -1,7 +1,7 @@
 import { defaultCompanyDto, type CompanyDto } from "../service/service-types";
 
 export enum ActionNameCompanySlugName {
-    companySlugName = "companySlugNameLogin",
+    companySlugNameUrl = "companySlugNameLogin",
 }
 
 type ActionPayload = CompanyDto;
@@ -13,7 +13,7 @@ export type CompanySlugNameAction = {
 
 export const companySlugNameReducer = (companySlugName: CompanyDto, action: CompanySlugNameAction): CompanyDto => {
     switch (action.type) {
-        case ActionNameCompanySlugName.companySlugName: {
+        case ActionNameCompanySlugName.companySlugNameUrl: {
             return action.payload ? action.payload : defaultCompanyDto();
         }
         default:
