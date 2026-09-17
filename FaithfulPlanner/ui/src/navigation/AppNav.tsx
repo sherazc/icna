@@ -1,9 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Authenticated } from "../components/auth/Authenticated";
 import { useEmployeeGroups } from "../hook/useEmployeeGroups";
+import { AppContext } from "../store/context";
 
 export default function AppNav() {
+  const [{ companySlugName }] = useContext(AppContext);
+  const containsCompanySlugName = companySlugName.id && companySlugName.id > 0;
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const employeeGroups = useEmployeeGroups()
@@ -41,7 +44,7 @@ export default function AppNav() {
       {/* Sidebar */}
       <div className={`sidebar ${mobileMenuOpen ? "active" : ""}`} id="sidebar">
         <div className="sidebarHeader">
-          <h1>FaithfulPlanner</h1>
+          <h1>{containsCompanySlugName ? companySlugName.companyName : "FaithfulPlanner"}</h1>
         </div>
 
 
@@ -53,14 +56,15 @@ export default function AppNav() {
               </Link>
             </li>
           </Authenticated>
-          <Authenticated authenticated={false}>
-            <li className="navItem">
-              <Link to="/company-registration" className={`navLink ${isActive("/company-registration")}`} onClick={closeMobileMenu}>
-                Register Organization
-              </Link>
-            </li>
-          </Authenticated>
-
+          {!containsCompanySlugName && (
+            <Authenticated authenticated={false}>
+              <li className="navItem">
+                <Link to="/company-registration" className={`navLink ${isActive("/company-registration")}`} onClick={closeMobileMenu}>
+                  Register Organization
+                </Link>
+              </li>
+            </Authenticated>
+          )}
           {/*
           <li className="navItem">
             <Link to="/org-selection" className={`navLink ${isActive("/org-selection")}`} onClick={closeMobileMenu}>

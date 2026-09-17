@@ -5,15 +5,15 @@ import { ActionNameAuthUser } from "../../store/authUserReducer";
 import { useNavigate } from "react-router-dom";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
-import {ActionNameClinicApis} from "../../store/clinicApisReducer";
+import { ActionNameClinicApis } from "../../store/clinicApisReducer";
 import { createAuthHeader, clinicApis as clinicApisFunction } from "../../service/api/ApiClinic";
 
 export default function Login() {
   const navigate = useNavigate();
   const [{ companies, clinicApis, companySlugName }, dispatch] = useContext(AppContext);
-
   const [loginRequest, setLoginRequest] = useState<LoginRequest>(defaultLoginRequest());
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
+  const containsCompanySlugName = companySlugName.id && companySlugName.id > 0;
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -29,8 +29,8 @@ export default function Login() {
         payload: authUserTokenDto
       });
       dispatch({
-          type: ActionNameClinicApis.updateClinicApis,
-          payload: clinicApisFunction(createAuthHeader(authUserTokenDto)) // TODO: in the error interceptor, detect if it is unauth. Navigate to /
+        type: ActionNameClinicApis.updateClinicApis,
+        payload: clinicApisFunction(createAuthHeader(authUserTokenDto)) // TODO: in the error interceptor, detect if it is unauth. Navigate to /
       });
       setFormState(FormState.SUCCESSFUL);
     } catch (error) {
@@ -56,33 +56,39 @@ export default function Login() {
   return (
     <div id="login">
       <div className="slimContainer">
-        <h1>FaithfulPlanner {companySlugName.companyName}</h1>
-        <ErrorForm formState={formState} defaultError="Login failed. Please check your credentials and try again"/>
-        <Loading formState={formState}/>
+        <h1>{containsCompanySlugName ? companySlugName.companyName : "FaithfulPlanner"}</h1>
+        <ErrorForm formState={formState} defaultError="Login failed. Please check your credentials and try again" />
+        <Loading formState={formState} />
         <form onSubmit={handleSubmit}>
-          <div className="formGroup">
-            <label htmlFor="companyId">Organization</label>
-            <select id="companyId" onChange={onChangeSelect} required>
-              <option value="">Select your organization</option>
-              {companies.map((company) => (
-                <option key={company.id} value={company.id}>{company.companyName}</option>
-              ))}
-            </select>
-          </div>
+          {!containsCompanySlugName && (
+            <div className="formGroup">
+              <label htmlFor="companyId">Organization</label>
+              <select id="companyId" onChange={onChangeSelect} required>
+                <option value="">Select your organization</option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.id}>{company.companyName}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <div className="formGroup">
             <label htmlFor="email">Email Address</label>
-            <input type="email" id="email" placeholder="Enter your email" required 
-            onChange={onChangeText} />
+            <input type="email" id="email" placeholder="Enter your email" required
+              onChange={onChangeText} />
           </div>
           <div className="formGroup">
             <label htmlFor="userPassword">Password</label>
-            <input type="password" id="userPassword" placeholder="Enter your password" required 
-            onChange={onChangeText} />
+            <input type="password" id="userPassword" placeholder="Enter your password" required
+              onChange={onChangeText} />
           </div>
-          
           <div className="formActions">
             <button type="submit" className="btn btnPrimary" disabled={formState === FormState.IN_PROGRESS}>Login</button>
-            <button type="button" className="btn btnSecondary" onClick={() => navigate("/company-registration")}>Register Organization</button>
+            {!containsCompanySlugName && (
+              <button type="button" className="btn btnSecondary" onClick={() => navigate("/company-registration")}>
+                Register Organization
+              </button>
+            )}
           </div>
         </form>
       </div>
