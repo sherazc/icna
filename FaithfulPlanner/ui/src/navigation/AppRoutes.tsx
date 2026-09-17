@@ -11,13 +11,14 @@ import Notifications from "../components/Notifications";
 import Settings from "../components/Settings/Settings";
 import VolunteerReports from "../components/VolunteerReports";
 import { EmployeeGroup } from "../components/EmployeeGroup";
+import { Index } from "../components/Index";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Layout01/>}>
         {/* Unauthenticated views */}
-        <Route index element={<Login/>}/>
+        <Route index element={<Index/>}/>
         <Route path="/company-registration" element={<CompanyRegistration/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path=":companySlugNameUrl/login" element={<Login/>}/>
@@ -33,9 +34,9 @@ export default function AppRoutes() {
 
 
         {/* Authenticated views */}
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="/employee-group/:employeeGroupId" element={<EmployeeGroup/>}/>
-        <Route path="/settings" element={<Settings/>}/>
+        <Route path=":companySlugNameUrl/dashboard" element={<Dashboard/>}/>
+        <Route path=":companySlugNameUrl/employee-group/:employeeGroupId" element={<EmployeeGroup/>}/>
+        <Route path=":companySlugNameUrl/settings" element={<Settings/>}/>
 
       </Route>
     </Routes>

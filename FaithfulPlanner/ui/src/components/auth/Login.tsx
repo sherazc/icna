@@ -27,7 +27,6 @@ export default function Login() {
         loginRequest.companyId = "" + companySlugName.id
       }
       const authUserTokenDto = await clinicApis.login(loginRequest);
-      console.log(authUserTokenDto)
       dispatch({
         type: ActionNameAuthUser.authUserLogin,
         payload: authUserTokenDto
@@ -60,7 +59,7 @@ export default function Login() {
   return (
     <div id="login">
       <div className="slimContainer">
-        <h1>{containsCompanySlugName ? companySlugName.companyName : "FaithfulPlanner"}</h1>
+        <h1>{containsCompanySlugName ? companySlugName.companyName : "Faithful Planner"}</h1>
         <ErrorForm formState={formState} defaultError="Login failed. Please check your credentials and try again" />
         <Loading formState={formState} />
         <form onSubmit={handleSubmit}>

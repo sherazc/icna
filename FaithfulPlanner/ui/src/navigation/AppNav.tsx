@@ -52,7 +52,7 @@ export default function AppNav() {
       {/* Sidebar */}
       <div className={`sidebar ${mobileMenuOpen ? "active" : ""}`} id="sidebar">
         <div className="sidebarHeader">
-          <h1>{containsCompanySlugName ? companySlugName.companyName : "FaithfulPlanner"}</h1>
+          <h1>{containsCompanySlugName ? companySlugName.companyName : "Faithful Planner"}</h1>
         </div>
 
 
@@ -83,7 +83,7 @@ export default function AppNav() {
           {employeeGroups.length > 0 && (
             <Authenticated>
               <li className="navItem">
-                <Link to="/dashboard" className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
+                <Link to={prefixCompanySlugNameUrl("/dashboard")} className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
                   Dashboard
                 </Link>
               </li>
@@ -100,7 +100,7 @@ export default function AppNav() {
             {employeeGroups && employeeGroups.length > 0 && employeeGroups.map((employeeGroup, index) => {
               const link = `/employee-group/${employeeGroup.id}`
               return <li className="navItem" key={index}>
-                <Link to={link} className={`navLink ${isActive(link)}`} onClick={closeMobileMenu}>
+                <Link to={prefixCompanySlugNameUrl(link)} className={`navLink ${isActive(link)}`} onClick={closeMobileMenu}>
                   {employeeGroup.groupName}
                 </Link>
               </li>
@@ -130,7 +130,7 @@ export default function AppNav() {
 
           <Authenticated>
             <li className="navItem">
-              <Link to="/settings" className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
+              <Link to={prefixCompanySlugNameUrl("/settings")}  className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
                 Settings
               </Link>
             </li>
