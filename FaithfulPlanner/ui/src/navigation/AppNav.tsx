@@ -24,6 +24,14 @@ export default function AppNav() {
     return isInPath ? "active" : "";
   };
 
+  const prefixCompanySlugNameUrl = (url: string): string => {
+    if (companySlugName && companySlugName.id && companySlugName.slugName && companySlugName.slugName.length > 0) {
+      return `/${companySlugName.slugName}${url}`
+    } else {
+      return url
+    }
+  }
+
   return (
     <>
       {/* Hamburger Menu Button */}
@@ -51,7 +59,7 @@ export default function AppNav() {
         <ul className="navMenu">
           <Authenticated authenticated={false}>
             <li className="navItem">
-              <Link to="/login" className={`navLink ${isActive("/login")} ${location.pathname === "/" ? "active" : ""}`} onClick={closeMobileMenu}>
+              <Link to={prefixCompanySlugNameUrl("/login")} className={`navLink ${isActive("/login")} ${location.pathname === "/" ? "active" : ""}`} onClick={closeMobileMenu}>
                 Login
               </Link>
             </li>
@@ -73,13 +81,13 @@ export default function AppNav() {
           </li>
 */}
           {employeeGroups.length > 0 && (
-          <Authenticated>
-            <li className="navItem">
-              <Link to="/dashboard" className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
-                Dashboard
-              </Link>
-            </li>
-          </Authenticated>
+            <Authenticated>
+              <li className="navItem">
+                <Link to="/dashboard" className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
+                  Dashboard
+                </Link>
+              </li>
+            </Authenticated>
           )}
           {/*
           <li className="navItem superAdminOnly">
