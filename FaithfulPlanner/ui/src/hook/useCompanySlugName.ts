@@ -1,11 +1,10 @@
 import { useContext, useEffect } from "react";
-import { useLocation, useParams, type Location } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { AppContext } from "../store/context";
 import { ActionNameCompanySlugName } from "../store/companySlugNameReducer";
-import type { AuthUserTokenDto, CompanyDto } from "../service/service-types";
 
 export const useCompanySlugName = () => {
- 
+
   const { companySlugNameUrl } = useParams();
   const location = useLocation();
   const [{ clinicApis, authUserToken, companySlugName }, dispatch] = useContext(AppContext);
@@ -24,36 +23,40 @@ export const useCompanySlugName = () => {
     // analysis if /login should redirect to /dashboard
     // analysis how to redirect to auth page after successful login. Currently it is being done in <UnAuthRedirect/>
     if (companySlugNameUrl && companySlugNameUrl.length > 0) {
-      
+
       try {
-        console.log("Calling slugname api")
         const company = await clinicApis.getCompanyBySlug(companySlugNameUrl);
-        dispatch({type: ActionNameCompanySlugName.companySlugNameUrl, payload: company});
+        dispatch({ type: ActionNameCompanySlugName.companySlugNameUrl, payload: company });
       } catch (error) {
         console.log(`Company not found by slugName = ${companySlugNameUrl}`)
       }
     }
   };
 
-  const navigateIfNeeded = async (log: Location<any>, auToken: AuthUserTokenDto, compSlugName: CompanyDto) => {
-    let compSlugNameLoaded = compSlugName;
-    if ((!compSlugNameLoaded || !compSlugNameLoaded.id) && auToken.companyId > 0 && auToken.token) {
-      // companySlugNameLoaded = 
-    }
-
-    if (log.pathname) {
-
-    }
-    console.log("location", log);
-    console.log("auToken", auToken);
-    console.log("companySlugName", compSlugName);
-  }
-
   useEffect(() => {
     loadData()
   }, [companySlugNameUrl]);
-  
+
   useEffect(() => {
-    navigateIfNeeded(location, authUserToken, companySlugName)
+
+
+    const navigateIfNeeded = async () => {
+      let companySlugNameLoaded = companySlugName;
+      if ((!companySlugNameLoaded || !companySlugNameLoaded.id) && authUserToken.companyId > 0 && authUserToken.token) {
+        companySlugNameLoaded = await clinicApis.getCompanyById(authUserToken.companyId);
+        dispatch({type: ActionNameCompanySlugName.companySlugNameUrl, payload: companySlugNameLoaded})
+      }
+
+      if (location.pathname) {
+
+      }
+      console.log("location", location);
+      console.log("auToken", authUserToken);
+      console.log("companySlugName", companySlugName);
+
+    };
+
+    navigateIfNeeded();
+
   }, [location, authUserToken, companySlugName]);
 };
