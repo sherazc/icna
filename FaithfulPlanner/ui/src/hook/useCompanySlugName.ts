@@ -1,7 +1,8 @@
 import { useContext, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, type Location } from "react-router-dom";
 import { AppContext } from "../store/context";
 import { ActionNameCompanySlugName } from "../store/companySlugNameReducer";
+import type { AuthUserTokenDto, CompanyDto } from "../service/service-types";
 
 export const useCompanySlugName = () => {
  
@@ -32,20 +33,27 @@ export const useCompanySlugName = () => {
         console.log(`Company not found by slugName = ${companySlugNameUrl}`)
       }
     }
+  };
+
+  const navigateIfNeeded = async (log: Location<any>, auToken: AuthUserTokenDto, compSlugName: CompanyDto) => {
+    let compSlugNameLoaded = compSlugName;
+    if ((!compSlugNameLoaded || !compSlugNameLoaded.id) && auToken.companyId > 0 && auToken.token) {
+      // companySlugNameLoaded = 
+    }
+
+    if (log.pathname) {
+
+    }
+    console.log("location", log);
+    console.log("auToken", auToken);
+    console.log("companySlugName", compSlugName);
   }
 
   useEffect(() => {
     loadData()
   }, [companySlugNameUrl]);
-
-
   
   useEffect(() => {
-    console.log("location", location);
-    console.log("authUserToken", authUserToken);
-    console.log("companySlugName", companySlugName);
+    navigateIfNeeded(location, authUserToken, companySlugName)
   }, [location, authUserToken, companySlugName]);
-
-
-
-}
+};

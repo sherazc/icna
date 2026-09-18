@@ -29,6 +29,7 @@ const CONTENT_JSON_HEADER = (): ApiHeaders => [["Content-Type", "application/jso
 export const clinicEndpoints = () => {
   return {
     epCompany: () => `${baseUrl}/api/company`,
+    epCompanyById: (companyId: number) => `${baseUrl}/api/company/${companyId}`,
     epCompanySlugExists: (slug: string) => `${baseUrl}/api/company/slug-exists?slug=${encodeURIComponent(slug)}`,
     epCompanyBySlug: (slug: string) => `${baseUrl}/api/company/slug/${encodeURIComponent(slug)}`,
     epLoginToken: () => `${baseUrl}/api/login/token`,
@@ -52,6 +53,12 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
   const api = {
     getAllCompanies: (): Promise<Company[]> => {
       const endpoint = endpoints.epCompany();
+      const request: ApiRequest = { endpoint };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
+    getCompanyById: (companyId: number): Promise<CompanyDto> => {
+      const endpoint = endpoints.epCompanyById(companyId);
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
