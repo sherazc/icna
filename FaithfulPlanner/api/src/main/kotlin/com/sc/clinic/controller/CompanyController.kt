@@ -19,6 +19,9 @@ class CompanyController(private val companyService: CompanyService) {
     @GetMapping
     fun getAllCompanies() = companyService.getAllActive()
 
+    @GetMapping("/{companyId}")
+    fun findById(@PathVariable companyId: Long) = companyService.findByIdNullable(companyId)
+            ?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
 
     @PutMapping
     @PreAuthorize(

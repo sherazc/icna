@@ -65,6 +65,9 @@ class CompanyService(private val companyRepository: CompanyRepository) {
 
     fun isCompanyNameExists(companyName: String): Boolean = findCompanyByName(companyName) != null
 
+
+    fun findByIdNullable(companyId: Long): Company? = companyRepository.findById(companyId).orElse(null)
+
     fun findById(companyId: Long): Company =
         companyRepository.findById(companyId).orElseThrow { ScException("companyId", "Company not found. $companyId") }
 
