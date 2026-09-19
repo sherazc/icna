@@ -2,11 +2,12 @@ import { useContext } from "react";
 import { AppContext } from "../store/context";
 
 interface Props { }
-export const Index: React.FC<Props> = () => {
-  const [{ companySlugName }] = useContext(AppContext);
+export const CompanyHome: React.FC<Props> = () => {
+  const [{ authUserToken, companySlugName }] = useContext(AppContext);
+
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-      <h1>{companySlugName.companyName ? companySlugName.companyName : "Faithful Planner"}</h1>
+      <h1>{companySlugName.companyName}</h1>
     </div>
   );
 }

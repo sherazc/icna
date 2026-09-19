@@ -12,6 +12,7 @@ import Settings from "../components/Settings/Settings";
 import VolunteerReports from "../components/VolunteerReports";
 import { EmployeeGroup } from "../components/EmployeeGroup";
 import { Index } from "../components/Index";
+import { CompanyHome } from "../components/CompanyHome";
 
 export default function AppRoutes() {
   return (
@@ -37,6 +38,7 @@ export default function AppRoutes() {
         <Route path=":companySlugNameUrl/dashboard" element={<Dashboard/>}/>
         <Route path=":companySlugNameUrl/employee-group/:employeeGroupId" element={<EmployeeGroup/>}/>
         <Route path=":companySlugNameUrl/settings" element={<Settings/>}/>
+        <Route path=":companySlugNameUrl" element={<CompanyHome/>}/>
 
       </Route>
     </Routes>

@@ -46,37 +46,32 @@ export const useCompanySlugName = () => {
     const navigateIfNeeded = async () => {
       let companySlugNameLoaded = companySlugName;
       if ((!companySlugNameLoaded || !companySlugNameLoaded.id) && isAuthenticated(true, authUserToken)) {
-        console.log("============= await clinicApis.getCompanyById(authUserToken.companyId)");
         companySlugNameLoaded = await clinicApis.getCompanyById(authUserToken.companyId);
         dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlSet, payload: companySlugNameLoaded })
       }
 
       if (companySlugNameUrl && companySlugNameUrl.length > 0 && companySlugNameLoaded.slugName.length > 0 && companySlugNameLoaded.slugName !== companySlugNameUrl) {
-
-        
-
-
         dispatch({ type: ActionNameAuthUser.authUserLogout });
         dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlRemove });
         navigate(`/${companySlugNameUrl}/login`);
       }
 
       console.log("companySlugNameUrl", companySlugNameUrl);
-        console.log("location", location);
-        console.log("auToken", authUserToken);
-        console.log("companySlugName", companySlugNameLoaded);
-        console.log("=============");
+      console.log("location", location);
+      console.log("auToken", authUserToken);
+      console.log("companySlugName", companySlugNameLoaded);
+      console.log("=============");
 
 
       // if (isAuthenticated(true, authUserToken)
       //     && companySlugNameLoaded.id && companySlugNameLoaded.id > 0
       //     && companySlugNameLoaded.id !== authUserToken.companyId
       //     && companySlugNameLoaded.slugName) {
-        
-        // dispatch({ type: ActionNameAuthUser.authUserLogout });
-        // navigate(`${companySlugNameLoaded.slugName}/login`)
+
+      // dispatch({ type: ActionNameAuthUser.authUserLogout });
+      // navigate(`${companySlugNameLoaded.slugName}/login`)
       // } 
-      
+
       // else if (location.pathname && location.pathname === "/" && companySlugNameLoaded.id && companySlugNameLoaded.id > 0) {
       //   if (isAuthenticated(true, authUserToken)) {
       //     navigate(`${companySlugNameLoaded.slugName}/dashboard`)
@@ -85,7 +80,7 @@ export const useCompanySlugName = () => {
       //   }
 
       // }
-      
+
 
     };
 

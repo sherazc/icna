@@ -44,18 +44,15 @@ export default function AppNav() {
       </button>
 
       {/* Sidebar Overlay */}
-      <div
-        className={`sidebarOverlay ${mobileMenuOpen ? "active" : ""}`}
-        onClick={closeMobileMenu}
-      ></div>
+      <div className={`sidebarOverlay ${mobileMenuOpen ? "active" : ""}`} onClick={closeMobileMenu}></div>
 
       {/* Sidebar */}
       <div className={`sidebar ${mobileMenuOpen ? "active" : ""}`} id="sidebar">
         <div className="sidebarHeader">
-          <h1>{containsCompanySlugName ? companySlugName.companyName : "Faithful Planner"}</h1>
+          <Link to={prefixCompanySlugNameUrl("/")} style={{ textDecoration: "none" }} onClick={closeMobileMenu}>
+            <h1>{containsCompanySlugName ? companySlugName.companyName : "Faithful Planner"}</h1>
+          </Link>
         </div>
-
-
         <ul className="navMenu">
           <Authenticated authenticated={false}>
             <li className="navItem">
@@ -130,7 +127,7 @@ export default function AppNav() {
 
           <Authenticated>
             <li className="navItem">
-              <Link to={prefixCompanySlugNameUrl("/settings")}  className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
+              <Link to={prefixCompanySlugNameUrl("/settings")} className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
                 Settings
               </Link>
             </li>
