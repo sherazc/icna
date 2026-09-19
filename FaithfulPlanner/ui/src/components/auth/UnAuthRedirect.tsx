@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { AppContext } from "../../store/context";
 import type { AuthRole } from '../../service/service-types';
 import { isAuthenticated } from '../../service/authentication-services';
+import { prefixCompanySlugNameUrl } from '../../service/navigation-service';
 
 interface Props {
     authenticated?: boolean;
@@ -11,11 +12,11 @@ interface Props {
 }
 
 export const UnAuthRedirect: FC<Props> = ({authenticated, shouldHaveRoles, shouldHaveAnyRoles }) => {
-    const [{ authUserToken }] = useContext(AppContext);
+    const [{ authUserToken, companySlugName }] = useContext(AppContext);
     const showContent = isAuthenticated(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles);
     return (
         <>
-            {!showContent && <Navigate to="/" />}
+            {!showContent && <Navigate to={prefixCompanySlugNameUrl(companySlugName, "/login")} />}
         </>
     );
 };

@@ -17,10 +17,7 @@ export const ScreenHeader: React.FC<Props> = ({ screenName, children }) => {
     dispatch({
       type: ActionNameAuthUser.authUserLogout
     });
-
-    // console.log(prefixCompanySlugNameUrl(companySlugName, "/"))
-    // navigate(prefixCompanySlugNameUrl(companySlugName, "/"));
-    navigate("/alshifa/login");
+    navigate(prefixCompanySlugNameUrl(companySlugName, "/"));
   }
 
   return (

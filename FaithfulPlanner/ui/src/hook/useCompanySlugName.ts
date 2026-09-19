@@ -43,16 +43,13 @@ export const useCompanySlugName = () => {
 
   useEffect(() => {
     const navigateIfNeeded = async () => {
-      console.log("here1")
       let companySlugNameLoaded = companySlugName;
       if ((!companySlugNameLoaded || !companySlugNameLoaded.id) && isAuthenticated(true, authUserToken)) {
-        console.log("here2")
         companySlugNameLoaded = await clinicApis.getCompanyById(authUserToken.companyId);
         dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlSet, payload: companySlugNameLoaded })
       }
 
       if (companySlugNameUrl && companySlugNameUrl.length > 0 && companySlugNameLoaded.slugName.length > 0 && companySlugNameLoaded.slugName !== companySlugNameUrl) {
-        console.log("here3")
         dispatch({ type: ActionNameAuthUser.authUserLogout });
         dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlRemove });
         navigate(prefixCompanySlugNameUrl(companySlugNameLoaded, "/login"));

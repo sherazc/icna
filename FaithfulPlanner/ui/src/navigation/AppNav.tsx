@@ -4,9 +4,10 @@ import { Authenticated } from "../components/auth/Authenticated";
 import { useEmployeeGroups } from "../hook/useEmployeeGroups";
 import { AppContext } from "../store/context";
 import { prefixCompanySlugNameUrl } from "../service/navigation-service";
+import { isAuthenticated } from "../service/authentication-services";
 
 export default function AppNav() {
-  const [{ companySlugName }] = useContext(AppContext);
+  const [{ companySlugName, authUserToken }] = useContext(AppContext);
   const containsCompanySlugName = companySlugName.id && companySlugName.id > 0;
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
@@ -25,6 +26,9 @@ export default function AppNav() {
     return isInPath ? "active" : "";
   };
 
+
+  const rootUrl = isAuthenticated(true, authUserToken) ? prefixCompanySlugNameUrl(companySlugName, "/") : prefixCompanySlugNameUrl(companySlugName, "/login");
+
   return (
     <>
       {/* Hamburger Menu Button */}
@@ -42,7 +46,7 @@ export default function AppNav() {
       {/* Sidebar */}
       <div className={`sidebar ${mobileMenuOpen ? "active" : ""}`} id="sidebar">
         <div className="sidebarHeader">
-          <Link to={prefixCompanySlugNameUrl(companySlugName, "/")} style={{ textDecoration: "none" }} onClick={closeMobileMenu}>
+          <Link to={rootUrl} style={{ textDecoration: "none" }} onClick={closeMobileMenu}>
             <h1>{containsCompanySlugName ? companySlugName.companyName : "Faithful Planner"}</h1>
           </Link>
         </div>
