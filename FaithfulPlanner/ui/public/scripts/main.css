@@ -277,6 +277,17 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.linkButton {
+  display: inline-block;
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.linkButton:hover {
+  color: var(--primary-dark);
+}
+
 /* Screen Sections */
 .screen {
   display: none;

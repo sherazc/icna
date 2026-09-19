@@ -2,12 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { defaultLoginRequest, FormState, type LoginRequest } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import { ActionNameAuthUser } from "../../store/authUserReducer";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
 import { ActionNameClinicApis } from "../../store/clinicApisReducer";
 import { createAuthHeader, clinicApis as clinicApisFunction } from "../../service/api/ApiClinic";
 import { ActionNameCompanySlugName } from "../../store/companySlugNameReducer";
+import "./Login.css";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -52,6 +53,11 @@ export default function Login() {
     const { id, value } = event.target;
     setLoginRequest(prevData => ({ ...prevData, [id]: value }));
   };
+
+  const onLoginDifferentOrg = () => {
+    dispatch({type: ActionNameCompanySlugName.companySlugNameUrlRemove});
+    navigate("/login");
+  }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -101,6 +107,12 @@ export default function Login() {
               </button>
             )}
           </div>
+
+          {containsCompanySlugName && (
+            <div>
+              <span className="linkButton" onClick={onLoginDifferentOrg}>← Login to different organization</span>
+            </div>
+          )}
         </form>
       </div>
     </div>
