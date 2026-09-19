@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { AppContext } from "../../store/context";
 import { ActionNameAuthUser } from "../../store/authUserReducer";
 import { useNavigate } from "react-router-dom";
+import { prefixCompanySlugNameUrl } from "../../service/navigation-service";
 
 interface Props {
   screenName: string;
@@ -9,14 +10,17 @@ interface Props {
 }
 
 export const ScreenHeader: React.FC<Props> = ({ screenName, children }) => {
-  const [{ authUserToken }, dispatch] = useContext(AppContext);
+  const [{ authUserToken, companySlugName }, dispatch] = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch({
       type: ActionNameAuthUser.authUserLogout
     });
-    navigate("/");
+
+    // console.log(prefixCompanySlugNameUrl(companySlugName, "/"))
+    // navigate(prefixCompanySlugNameUrl(companySlugName, "/"));
+    navigate("/alshifa/login");
   }
 
   return (

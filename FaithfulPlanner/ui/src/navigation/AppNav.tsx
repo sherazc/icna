@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { Authenticated } from "../components/auth/Authenticated";
 import { useEmployeeGroups } from "../hook/useEmployeeGroups";
 import { AppContext } from "../store/context";
+import { prefixCompanySlugNameUrl } from "../service/navigation-service";
 
 export default function AppNav() {
   const [{ companySlugName }] = useContext(AppContext);
@@ -24,14 +25,6 @@ export default function AppNav() {
     return isInPath ? "active" : "";
   };
 
-  const prefixCompanySlugNameUrl = (url: string): string => {
-    if (companySlugName && companySlugName.id && companySlugName.slugName && companySlugName.slugName.length > 0) {
-      return `/${companySlugName.slugName}${url}`
-    } else {
-      return url
-    }
-  }
-
   return (
     <>
       {/* Hamburger Menu Button */}
@@ -49,14 +42,14 @@ export default function AppNav() {
       {/* Sidebar */}
       <div className={`sidebar ${mobileMenuOpen ? "active" : ""}`} id="sidebar">
         <div className="sidebarHeader">
-          <Link to={prefixCompanySlugNameUrl("/")} style={{ textDecoration: "none" }} onClick={closeMobileMenu}>
+          <Link to={prefixCompanySlugNameUrl(companySlugName, "/")} style={{ textDecoration: "none" }} onClick={closeMobileMenu}>
             <h1>{containsCompanySlugName ? companySlugName.companyName : "Faithful Planner"}</h1>
           </Link>
         </div>
         <ul className="navMenu">
           <Authenticated authenticated={false}>
             <li className="navItem">
-              <Link to={prefixCompanySlugNameUrl("/login")} className={`navLink ${isActive("/login")} ${location.pathname === "/" ? "active" : ""}`} onClick={closeMobileMenu}>
+              <Link to={prefixCompanySlugNameUrl(companySlugName, "/login")} className={`navLink ${isActive("/login")} ${location.pathname === "/" ? "active" : ""}`} onClick={closeMobileMenu}>
                 Login
               </Link>
             </li>
@@ -80,7 +73,7 @@ export default function AppNav() {
           {employeeGroups.length > 0 && (
             <Authenticated>
               <li className="navItem">
-                <Link to={prefixCompanySlugNameUrl("/dashboard")} className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
+                <Link to={prefixCompanySlugNameUrl(companySlugName, "/dashboard")} className={`navLink ${isActive("/dashboard")}`} onClick={closeMobileMenu}>
                   Dashboard
                 </Link>
               </li>
@@ -97,7 +90,7 @@ export default function AppNav() {
             {employeeGroups && employeeGroups.length > 0 && employeeGroups.map((employeeGroup, index) => {
               const link = `/employee-group/${employeeGroup.id}`
               return <li className="navItem" key={index}>
-                <Link to={prefixCompanySlugNameUrl(link)} className={`navLink ${isActive(link)}`} onClick={closeMobileMenu}>
+                <Link to={prefixCompanySlugNameUrl(companySlugName, link)} className={`navLink ${isActive(link)}`} onClick={closeMobileMenu}>
                   {employeeGroup.groupName}
                 </Link>
               </li>

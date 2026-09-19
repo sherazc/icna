@@ -8,10 +8,11 @@ import { AppContext } from "../store/context";
 import { ErrorForm } from "./common/ErrorForm";
 import { Loading } from "./common/Loading";
 import { ActionNameCompany } from "../store/companyReducer";
+import { prefixCompanySlugNameUrl } from "../service/navigation-service";
 
 export default function CompanyRegistration() {
   const navigate = useNavigate();
-  const [{ clinicApis }, dispatch] = useContext(AppContext);
+  const [{ clinicApis, companySlugName }, dispatch] = useContext(AppContext);
   const [registrationDto, setRegistrationDto] = useState<RegistrationDto>(defaultRegistrationDto());
   const [errors, setErrors] = useState<ErrorDto[]>([]);
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
@@ -172,7 +173,7 @@ export default function CompanyRegistration() {
         </div>
         <div className="formActions">
           <button type="submit" className="btn btnPrimary">Register Organization</button>
-          <button type="button" className="btn btnSecondary" onClick={() => navigate("/login")}>Back to Login</button>
+          <button type="button" className="btn btnSecondary" onClick={() => navigate(prefixCompanySlugNameUrl(companySlugName, "/login"))}>Back to Login</button>
         </div>
       </form>
     </div>
@@ -184,7 +185,7 @@ export default function CompanyRegistration() {
       <div>
         Register Confirmation
       </div>
-      <button type="button" className="btn btnPrimary" onClick={() => navigate("/login")}>Back to Login</button>
+      <button type="button" className="btn btnPrimary" onClick={() => navigate(prefixCompanySlugNameUrl(companySlugName, "/login"))}>Back to Login</button>
     </div>
   );
 

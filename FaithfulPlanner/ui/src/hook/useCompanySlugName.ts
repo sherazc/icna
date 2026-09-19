@@ -4,6 +4,7 @@ import { AppContext } from "../store/context";
 import { ActionNameCompanySlugName } from "../store/companySlugNameReducer";
 import { isAuthenticated } from "../service/authentication-services";
 import { ActionNameAuthUser } from "../store/authUserReducer";
+import { prefixCompanySlugNameUrl } from "../service/navigation-service";
 
 export const useCompanySlugName = () => {
 
@@ -41,26 +42,27 @@ export const useCompanySlugName = () => {
   }, [companySlugNameUrl]);
 
   useEffect(() => {
-
-
     const navigateIfNeeded = async () => {
+      console.log("here1")
       let companySlugNameLoaded = companySlugName;
       if ((!companySlugNameLoaded || !companySlugNameLoaded.id) && isAuthenticated(true, authUserToken)) {
+        console.log("here2")
         companySlugNameLoaded = await clinicApis.getCompanyById(authUserToken.companyId);
         dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlSet, payload: companySlugNameLoaded })
       }
 
       if (companySlugNameUrl && companySlugNameUrl.length > 0 && companySlugNameLoaded.slugName.length > 0 && companySlugNameLoaded.slugName !== companySlugNameUrl) {
+        console.log("here3")
         dispatch({ type: ActionNameAuthUser.authUserLogout });
         dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlRemove });
-        navigate(`/${companySlugNameUrl}/login`);
+        navigate(prefixCompanySlugNameUrl(companySlugNameLoaded, "/login"));
       }
 
-      console.log("companySlugNameUrl", companySlugNameUrl);
-      console.log("location", location);
-      console.log("auToken", authUserToken);
-      console.log("companySlugName", companySlugNameLoaded);
-      console.log("=============");
+      // console.log("companySlugNameUrl", companySlugNameUrl);
+      // console.log("location", location);
+      // console.log("auToken", authUserToken);
+      // console.log("companySlugName", companySlugNameLoaded);
+      // console.log("=============");
 
 
       // if (isAuthenticated(true, authUserToken)
