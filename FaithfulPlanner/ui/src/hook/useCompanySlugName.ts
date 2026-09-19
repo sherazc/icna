@@ -1,12 +1,15 @@
 import { useContext, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../store/context";
 import { ActionNameCompanySlugName } from "../store/companySlugNameReducer";
+import { isAuthenticated } from "../service/authentication-services";
+import { ActionNameAuthUser } from "../store/authUserReducer";
 
 export const useCompanySlugName = () => {
 
   const { companySlugNameUrl } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const [{ clinicApis, authUserToken, companySlugName }, dispatch] = useContext(AppContext);
 
 
@@ -26,7 +29,7 @@ export const useCompanySlugName = () => {
 
       try {
         const company = await clinicApis.getCompanyBySlug(companySlugNameUrl);
-        dispatch({ type: ActionNameCompanySlugName.companySlugNameUrl, payload: company });
+        dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlSet, payload: company });
       } catch (error) {
         console.log(`Company not found by slugName = ${companySlugNameUrl}`)
       }
@@ -42,21 +45,51 @@ export const useCompanySlugName = () => {
 
     const navigateIfNeeded = async () => {
       let companySlugNameLoaded = companySlugName;
-      if ((!companySlugNameLoaded || !companySlugNameLoaded.id) && authUserToken.companyId > 0 && authUserToken.token) {
+      if ((!companySlugNameLoaded || !companySlugNameLoaded.id) && isAuthenticated(true, authUserToken)) {
+        console.log("============= await clinicApis.getCompanyById(authUserToken.companyId)");
         companySlugNameLoaded = await clinicApis.getCompanyById(authUserToken.companyId);
-        dispatch({type: ActionNameCompanySlugName.companySlugNameUrl, payload: companySlugNameLoaded})
+        dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlSet, payload: companySlugNameLoaded })
       }
 
-      if (location.pathname) {
+      if (companySlugNameUrl && companySlugNameUrl.length > 0 && companySlugNameLoaded.slugName.length > 0 && companySlugNameLoaded.slugName !== companySlugNameUrl) {
 
+        
+
+
+        dispatch({ type: ActionNameAuthUser.authUserLogout });
+        dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlRemove });
+        navigate(`/${companySlugNameUrl}/login`);
       }
-      console.log("location", location);
-      console.log("auToken", authUserToken);
-      console.log("companySlugName", companySlugName);
+
+      console.log("companySlugNameUrl", companySlugNameUrl);
+        console.log("location", location);
+        console.log("auToken", authUserToken);
+        console.log("companySlugName", companySlugNameLoaded);
+        console.log("=============");
+
+
+      // if (isAuthenticated(true, authUserToken)
+      //     && companySlugNameLoaded.id && companySlugNameLoaded.id > 0
+      //     && companySlugNameLoaded.id !== authUserToken.companyId
+      //     && companySlugNameLoaded.slugName) {
+        
+        // dispatch({ type: ActionNameAuthUser.authUserLogout });
+        // navigate(`${companySlugNameLoaded.slugName}/login`)
+      // } 
+      
+      // else if (location.pathname && location.pathname === "/" && companySlugNameLoaded.id && companySlugNameLoaded.id > 0) {
+      //   if (isAuthenticated(true, authUserToken)) {
+      //     navigate(`${companySlugNameLoaded.slugName}/dashboard`)
+      //   } else {
+      //     navigate(`${companySlugNameLoaded.slugName}/login`)
+      //   }
+
+      // }
+      
 
     };
 
     navigateIfNeeded();
 
-  }, [location, authUserToken, companySlugName]);
+  }, [location, authUserToken, companySlugName, companySlugNameUrl]);
 };

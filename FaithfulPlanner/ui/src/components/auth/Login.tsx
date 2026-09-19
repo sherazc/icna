@@ -7,6 +7,7 @@ import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
 import { ActionNameClinicApis } from "../../store/clinicApisReducer";
 import { createAuthHeader, clinicApis as clinicApisFunction } from "../../service/api/ApiClinic";
+import { ActionNameCompanySlugName } from "../../store/companySlugNameReducer";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -27,6 +28,11 @@ export default function Login() {
         loginRequest.companyId = "" + companySlugName.id
       }
       const authUserTokenDto = await clinicApis.login(loginRequest);
+      const companySlugNameResponse = await clinicApis.getCompanyById(authUserTokenDto.companyId);
+      dispatch({
+        type: ActionNameCompanySlugName.companySlugNameUrlSet,
+        payload: companySlugNameResponse
+      });
       dispatch({
         type: ActionNameAuthUser.authUserLogin,
         payload: authUserTokenDto
@@ -53,8 +59,10 @@ export default function Login() {
   }
 
   useEffect(() => {
-    if (formState === FormState.SUCCESSFUL) navigate("/dashboard");
-  }, [formState, navigate]);
+    if (formState === FormState.SUCCESSFUL && companySlugName.slugName) {
+      navigate(`/${companySlugName.slugName}/dashboard`);
+    };
+  }, [formState, navigate, companySlugName]);
 
   return (
     <div id="login">
