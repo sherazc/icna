@@ -24,10 +24,13 @@ export const UnAuthRedirect: FC<Props> = ({ authenticated, shouldHaveRoles, shou
   useEffect(() => {
     if (!showContent && loginSuccessRedirectUrl.length < 1) {
       const relativeUrl = location.pathname + location.search;
-      console.log("set loginSuccessRedirectUrl", relativeUrl);
       dispatch({ type: ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlSet, payload: relativeUrl });
     }
   }, [showContent, loginSuccessRedirectUrl, location]);
+
+  if (!showContent) {
+    console.log("Not show content", prefixCompanySlugNameUrl(companySlugName, "/login"));
+  }
 
   return (
     <>
