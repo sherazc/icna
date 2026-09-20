@@ -67,6 +67,7 @@ export default function Login() {
 
   useEffect(() => {
     if (formState === FormState.SUCCESSFUL && companySlugName.slugName) {
+      console.log("get loginSuccessRedirectUrl", loginSuccessRedirectUrl);
       if (loginSuccessRedirectUrl.length > 0) {
         navigate(loginSuccessRedirectUrl);
       } else {
