@@ -13,15 +13,15 @@ interface Props {
 }
 
 export const UnAuthRedirect: FC<Props> = ({ authenticated, shouldHaveRoles, shouldHaveAnyRoles }) => {
-    const [{ authUserToken, companySlugName }, dispatch] = useContext(AppContext);
+    const [{ authUserToken, companySlugName, loginSuccessRedirectUrl }, dispatch] = useContext(AppContext);
     const location = useLocation();
     const showContent = isAuthenticated(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles);
 
     const relativeUrl = location.pathname + location.search;
     console.log(relativeUrl);
 
-    if (!showContent) {
-        dispatch({ type: ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlSet, payload: relativeUrl });
+    if (!showContent && loginSuccessRedirectUrl.length < 1) {
+        // dispatch({ type: ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlSet, payload: relativeUrl });
     }
 
     return (
