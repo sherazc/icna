@@ -1,3 +1,5 @@
+import { touchString } from "../service/utilities";
+
 export enum ActionNameLoginSuccessRedirectUrl {
     loginSuccessRedirectUrlSet = "loginSuccessRedirectUrlSet",
     loginSuccessRedirectUrlRemove = "loginSuccessRedirectUrlRemove"
@@ -13,8 +15,8 @@ export type LoginSuccessRedirectUrlAction = {
 export const loginSuccessRedirectUrlReducer = (loginSuccessRedirectUrl: string, action: LoginSuccessRedirectUrlAction): string => {
     switch (action.type) {
         case ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlSet: {
-            return loginSuccessRedirectUrl;
-        } 
+            return touchString(action.payload);
+        }
         case ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlRemove: {
             return "";
         }
