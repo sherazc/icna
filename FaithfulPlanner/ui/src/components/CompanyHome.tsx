@@ -3,7 +3,7 @@ import { AppContext } from "../store/context";
 
 interface Props { }
 export const CompanyHome: React.FC<Props> = () => {
-  const [{ authUserToken, companySlugName }] = useContext(AppContext);
+  const [{ companySlugName }] = useContext(AppContext);
 
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>

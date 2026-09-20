@@ -124,7 +124,7 @@ export default function AppNav() {
 
           <Authenticated>
             <li className="navItem">
-              <Link to={prefixCompanySlugNameUrl("/settings")} className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
+              <Link to={prefixCompanySlugNameUrl(companySlugName, "/settings")} className={`navLink ${isActive("/settings")}`} onClick={closeMobileMenu}>
                 Settings
               </Link>
             </li>
