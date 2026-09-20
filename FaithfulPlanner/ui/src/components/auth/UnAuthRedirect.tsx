@@ -4,6 +4,7 @@ import { AppContext } from "../../store/context";
 import type { AuthRole } from '../../service/service-types';
 import { isAuthenticated } from '../../service/authentication-services';
 import { prefixCompanySlugNameUrl } from '../../service/navigation-service';
+import { ActionNameLoginSuccessRedirectUrl } from '../../store/loginSuccessRedirectUrlReducer';
 
 interface Props {
     authenticated?: boolean;
@@ -11,13 +12,17 @@ interface Props {
     shouldHaveAnyRoles?: AuthRole[];
 }
 
-export const UnAuthRedirect: FC<Props> = ({authenticated, shouldHaveRoles, shouldHaveAnyRoles }) => {
-    const [{ authUserToken, companySlugName }] = useContext(AppContext);
+export const UnAuthRedirect: FC<Props> = ({ authenticated, shouldHaveRoles, shouldHaveAnyRoles }) => {
+    const [{ authUserToken, companySlugName }, dispatch] = useContext(AppContext);
     const location = useLocation();
     const showContent = isAuthenticated(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles);
 
     const relativeUrl = location.pathname + location.search;
     console.log(relativeUrl);
+
+    if (!showContent) {
+        dispatch({ type: ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlSet, payload: relativeUrl });
+    }
 
     return (
         <>
