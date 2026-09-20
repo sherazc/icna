@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { defaultLoginRequest, FormState, type LoginRequest } from "../../service/service-types";
 import { AppContext } from "../../store/context";
 import { ActionNameAuthUser } from "../../store/authUserReducer";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ErrorForm } from "../common/ErrorForm";
 import { Loading } from "../common/Loading";
 import { ActionNameClinicApis } from "../../store/clinicApisReducer";

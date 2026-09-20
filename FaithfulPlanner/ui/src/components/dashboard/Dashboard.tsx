@@ -26,14 +26,17 @@ import { isoToDayOfWeek, isoToMonthDayYear } from "../../service/DateService";
 // import { useNavigate } from "react-router-dom";
 import { Authenticated } from "../auth/Authenticated";
 import { DashboardTeams } from "./DashboardTeams";
+import { useSearchParams } from "react-router-dom";
 
 let tempId = -1;
 export default function Dashboard() {
   // const navigate = useNavigate();
   const [{ authUserToken, clinicApis, employeeGroups }] = useContext(AppContext);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchOpDayDetailSelected = searchParams.get("opDayDetailSelected");
 
   // Selected OpDayDetail index
-  const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
+  const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(searchOpDayDetailSelected === null ? -1 : touchNumber(searchOpDayDetailSelected));
 
   // All OpDayDetail array
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
@@ -266,6 +269,12 @@ export default function Dashboard() {
     loadOpDetails(touchNumber(authUserToken.companyId));
   }, [authUserToken]);
 
+  useEffect(() => {
+    if (searchOpDayDetailSelected !== null) {
+      setOpDayDetailSelected(touchNumber(searchOpDayDetailSelected));
+    }
+  }, [searchOpDayDetailSelected]);
+
   /**
    * This is put in place for the new Company that have no employee group.
    * 
@@ -329,7 +338,7 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {opDayDetails.map((opDayDetail, index) => (
-                  <tr key={opDayDetail.id} onClick={() => setOpDayDetailSelected(index)} className={opDayDetailSelected === index ? "selected" : ""}>
+                  <tr key={opDayDetail.id} onClick={() => setSearchParams({"opDayDetailSelected": "" + index})} className={opDayDetailSelected === index ? "selected" : ""}>
                     <td>
                       {opDayDetail.serviceDateDayOfWeek},
                       <br />
