@@ -19,7 +19,6 @@ export const useCompanySlugName = () => {
       try {
         const company = await clinicApis.getCompanyBySlug(companySlugNameUrl);
         dispatch({ type: ActionNameCompanySlugName.companySlugNameUrlSet, payload: company });
-        console.log("loaded company slug", company);
       } catch (error) {
         console.log(`Company not found by slugName = ${companySlugNameUrl}`)
       }

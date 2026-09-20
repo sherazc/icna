@@ -1,9 +1,8 @@
 import { type FC, useContext, useEffect, useState } from 'react';
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 import { AppContext } from "../../store/context";
 import type { AuthRole } from '../../service/service-types';
 import { isAuthenticated } from '../../service/authentication-services';
-import { prefixCompanySlugNameUrl } from '../../service/navigation-service';
 import { ActionNameLoginSuccessRedirectUrl } from '../../store/loginSuccessRedirectUrlReducer';
 
 interface Props {
@@ -13,8 +12,9 @@ interface Props {
 }
 
 export const UnAuthRedirect: FC<Props> = ({ authenticated, shouldHaveRoles, shouldHaveAnyRoles }) => {
-  const [{ authUserToken, companySlugName, loginSuccessRedirectUrl }, dispatch] = useContext(AppContext);
+  const [{ authUserToken, loginSuccessRedirectUrl }, dispatch] = useContext(AppContext);
   const location = useLocation();
+  const { companySlugNameUrl } = useParams();
   const [showContent, setShowContent] = useState<boolean>(true);
 
   useEffect(() => {
@@ -28,13 +28,11 @@ export const UnAuthRedirect: FC<Props> = ({ authenticated, shouldHaveRoles, shou
     }
   }, [showContent, loginSuccessRedirectUrl, location]);
 
-  if (!showContent) {
-    console.log("Not show content", prefixCompanySlugNameUrl(companySlugName, "/login"));
-  }
+  const loginUrl = companySlugNameUrl && companySlugNameUrl.length > 0 ? `/${companySlugNameUrl}/login` : "/login";
 
   return (
     <>
-      {!showContent && <Navigate to={prefixCompanySlugNameUrl(companySlugName, "/login")} />}
+      {!showContent && <Navigate to={loginUrl} />}
     </>
   );
 };
