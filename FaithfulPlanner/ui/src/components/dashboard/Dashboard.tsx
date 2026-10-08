@@ -273,19 +273,14 @@ export default function Dashboard() {
     if (searchOpDayDetailSelectedId !== null) {
       const searchOpDayDetailSelectedIdNumber = touchNumber(searchOpDayDetailSelectedId);
 
-      let index = -1;
       for(let i = 0; i< opDayDetails.length; i++) {
         if (opDayDetails[i].id === searchOpDayDetailSelectedIdNumber) {
-          index = i;
-          break;
+          setOpDayDetailSelected(i);
+        
         }
       }
-
-      if (index > -1) {
-        setOpDayDetailSelected(index);
-      }
     }
-  }, [searchOpDayDetailSelectedId]);
+  }, [searchOpDayDetailSelectedId, opDayDetails]);
 
   /**
    * This is put in place for the new Company that have no employee group.
