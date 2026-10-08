@@ -33,10 +33,10 @@ export default function Dashboard() {
   // const navigate = useNavigate();
   const [{ authUserToken, clinicApis, employeeGroups }] = useContext(AppContext);
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchOpDayDetailSelected = searchParams.get("opDayDetailSelected");
+  const searchOpDayDetailSelectedId = searchParams.get("opDayDetailSelectedId");
 
   // Selected OpDayDetail index
-  const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(searchOpDayDetailSelected === null ? -1 : touchNumber(searchOpDayDetailSelected));
+  const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
 
   // All OpDayDetail array
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
@@ -270,10 +270,22 @@ export default function Dashboard() {
   }, [authUserToken]);
 
   useEffect(() => {
-    if (searchOpDayDetailSelected !== null) {
-      setOpDayDetailSelected(touchNumber(searchOpDayDetailSelected));
+    if (searchOpDayDetailSelectedId !== null) {
+      const searchOpDayDetailSelectedIdNumber = touchNumber(searchOpDayDetailSelectedId);
+
+      let index = -1;
+      for(let i = 0; i< opDayDetails.length; i++) {
+        if (opDayDetails[i].id === searchOpDayDetailSelectedIdNumber) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index > -1) {
+        setOpDayDetailSelected(index);
+      }
     }
-  }, [searchOpDayDetailSelected]);
+  }, [searchOpDayDetailSelectedId]);
 
   /**
    * This is put in place for the new Company that have no employee group.
@@ -338,7 +350,7 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {opDayDetails.map((opDayDetail, index) => (
-                  <tr key={opDayDetail.id} onClick={() => setSearchParams({"opDayDetailSelected": "" + index})} className={opDayDetailSelected === index ? "selected" : ""}>
+                  <tr key={opDayDetail.id} onClick={() => setSearchParams({"opDayDetailSelectedId": "" + opDayDetail.id})} className={opDayDetailSelected === index ? "selected" : ""}>
                     <td>
                       {opDayDetail.serviceDateDayOfWeek},
                       <br />
