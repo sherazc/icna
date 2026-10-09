@@ -70,7 +70,7 @@ export default function Login() {
     if (formState === FormState.SUCCESSFUL && companySlugName.slugName) {
       if (loginSuccessRedirectUrl.length > 0) {
         navigate(loginSuccessRedirectUrl);
-        dispatch({type: ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlRemove})
+        // dispatch({type: ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlRemove});
       } else {
         navigate(prefixCompanySlugNameUrl(companySlugName, "/dashboard"));
       }
