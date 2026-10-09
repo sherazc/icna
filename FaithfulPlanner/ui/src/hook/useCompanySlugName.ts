@@ -6,6 +6,13 @@ import { isAuthenticated } from "../service/authentication-services";
 import { ActionNameAuthUser } from "../store/authUserReducer";
 import { prefixCompanySlugNameUrl } from "../service/navigation-service";
 
+/**
+ * If companySlugName exists in URL then, this hook loads company in companySlugName in application context.
+ * 
+ * If session user is authenticated and session user's company do not match with companySlugName then this hook
+ * logs out authenticated user and redirect to companySlugNameUrl/login
+ */
+
 export const useCompanySlugName = () => {
 
   const { companySlugNameUrl } = useParams();
