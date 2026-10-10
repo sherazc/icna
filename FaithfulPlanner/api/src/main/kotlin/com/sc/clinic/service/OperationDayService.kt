@@ -56,9 +56,9 @@ class OperationDayService(
         val savedOperationDayTeams = operationDayTeamService.save(savedOperationDay, operationDayDto.requiredOperationDayTeams)
 
         asyncEmailService.send(
-            "sheraz@shifaatlanta.com",
+            "Faithful Planner Admin <shifa@shifaatlanta.com>",
             "stariqch@gmail.com",
-            "Event Created 3",
+            "Event Created 5",
             "event_created_user_notification",
             mapOf("userProfileFirstName" to "Abrar"))
 
