@@ -5,6 +5,7 @@ import com.sc.clinic.dto.OperationDayTeamDto
 import com.sc.clinic.entity.OperationDay
 import com.sc.clinic.exception.ScException
 import com.sc.clinic.repository.OperationDayRepository
+import com.sc.clinic.service.email.AsyncEmailService
 import com.sc.clinic.util.DateUtils
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
@@ -16,7 +17,8 @@ class OperationDayService(
     private val scheduleService: ScheduleService,
     private val operationDayRepository: OperationDayRepository,
     private val companyService: CompanyService,
-    private val operationDayTeamService: OperationDayTeamService
+    private val operationDayTeamService: OperationDayTeamService,
+    private val asyncEmailService: AsyncEmailService
 ) {
 
     companion object {
@@ -27,15 +29,16 @@ class OperationDayService(
     fun save(companyId: Long, operationDayDto: OperationDayDto): OperationDayDto {
         logger.debug("Saving OperationDay. CompanyId:${companyId}, OperationDay:${operationDayDto.serviceDateString}")
 
+        // Validate
         val serviceDate: LocalDate = DateUtils.isoToDate(operationDayDto.serviceDateString)
             ?: throw ScException("Invalid operation date format: ${operationDayDto.serviceDateString}")
 
         val existingOperationDays = operationDayRepository.findByCompanyIdAndOperationDay(companyId, serviceDate)
-
         if ( existingOperationDays.isNotEmpty() && operationDayDto.id != existingOperationDays.get(0).id) {
             throw ScException("Operation date already exists ${DateUtils.isoToUs(operationDayDto.serviceDateString)}")
         }
 
+        // Create OperationDay Object
         val operationDayDtoId = operationDayDto.id
         val operationDay: OperationDay = if (operationDayDtoId != null) {
             val foundOperationDay: OperationDay = operationDayRepository.findById(operationDayDtoId)
@@ -48,11 +51,18 @@ class OperationDayService(
             OperationDay(null, company, serviceDate, operationDayDto.notes)
         }
 
-        // Save entities
+        // Save
         val savedOperationDay = operationDayRepository.save(operationDay)
         val savedOperationDayTeams = operationDayTeamService.save(savedOperationDay, operationDayDto.requiredOperationDayTeams)
 
-        // Convert to DTOs
+        asyncEmailService.send(
+            "sheraz@shifaatlanta.com",
+            "stariqch@gmail.com",
+            "Event Created 2",
+            "event_created_user_notification",
+            mapOf())
+
+        // Convert response DTOs
         val savedOperationDayDto = OperationDayDto(savedOperationDay)
         savedOperationDayDto.requiredOperationDayTeams = savedOperationDayTeams.map { OperationDayTeamDto(it) }.toList()
         logger.debug("Successfully saved OperationDay. Id:${operationDay.id}")
