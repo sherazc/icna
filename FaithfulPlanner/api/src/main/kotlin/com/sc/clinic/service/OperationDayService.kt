@@ -5,7 +5,7 @@ import com.sc.clinic.dto.OperationDayTeamDto
 import com.sc.clinic.entity.OperationDay
 import com.sc.clinic.exception.ScException
 import com.sc.clinic.repository.OperationDayRepository
-import com.sc.clinic.service.email.AsyncEmailService
+import com.sc.clinic.service.notification.OperationDayCreateNotification
 import com.sc.clinic.util.DateUtils
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
@@ -18,7 +18,7 @@ class OperationDayService(
     private val operationDayRepository: OperationDayRepository,
     private val companyService: CompanyService,
     private val operationDayTeamService: OperationDayTeamService,
-    private val asyncEmailService: AsyncEmailService
+    private val operationDayCreateNotification: OperationDayCreateNotification,
 ) {
 
     companion object {
@@ -55,12 +55,7 @@ class OperationDayService(
         val savedOperationDay = operationDayRepository.save(operationDay)
         val savedOperationDayTeams = operationDayTeamService.save(savedOperationDay, operationDayDto.requiredOperationDayTeams)
 
-        asyncEmailService.send(
-            "Faithful Planner Admin <shifa@shifaatlanta.com>",
-            "stariqch@gmail.com",
-            "Event Created 5",
-            "event_created_user_notification",
-            mapOf("userProfileFirstName" to "Abrar"))
+        operationDayCreateNotification.sendNotification(savedOperationDay)
 
         // Convert response DTOs
         val savedOperationDayDto = OperationDayDto(savedOperationDay)

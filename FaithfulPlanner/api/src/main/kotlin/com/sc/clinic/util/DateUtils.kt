@@ -13,6 +13,8 @@ object DateUtils {
 
     fun dateToIso(date: LocalDate?): String = date?.format(ISO_LOCAL_DATE_FORMATTER) ?: ""
 
+    fun dateToDisplayDate(date: LocalDate?): String = date?.format(US_DATE_FORMATTER) ?: ""
+
     fun isoToDate(value: String?): LocalDate? {
         if (value.isNullOrBlank()) return null
         return try {
