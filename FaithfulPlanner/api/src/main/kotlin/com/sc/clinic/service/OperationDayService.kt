@@ -58,9 +58,9 @@ class OperationDayService(
         asyncEmailService.send(
             "sheraz@shifaatlanta.com",
             "stariqch@gmail.com",
-            "Event Created 2",
+            "Event Created 3",
             "event_created_user_notification",
-            mapOf())
+            mapOf("userProfileFirstName" to "Abrar"))
 
         // Convert response DTOs
         val savedOperationDayDto = OperationDayDto(savedOperationDay)
