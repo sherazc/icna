@@ -8,13 +8,23 @@ class EmailTemplateEngineTest {
     private val engine = EmailTemplateEngine(EmailConfig().emailThymeleafEngine())
 
     @Test
-    fun `renders email_verify with name and verify link`() {
+    fun `renders operation_day_create_user_notification with name date and sign up link`() {
+        val signUpLink = "https://faithfulplanner.com/clinic/dashboard?opDayDetailSelectedId=1"
         val html = engine.render(
-            "email_verify",
-            mapOf("name" to "Sheraz", "verify_link" to "https://faithfulplanner.com/verify?code=abc123"),
+            "operation_day_create_user_notification",
+            mapOf(
+                "userProfileFirstName" to "Sheraz",
+                "userProfileLastName" to "Tariq",
+                "companyName" to "Shifa Clinic",
+                "operationDayDisplayDate" to "Saturday, January 1, 2026",
+                "signUpLink" to signUpLink,
+                "baseUrl" to "https://faithfulplanner.com",
+            ),
         )
 
         assertTrue(html.contains("Sheraz"))
-        assertTrue(html.contains("https://faithfulplanner.com/verify?code=abc123"))
+        assertTrue(html.contains("Shifa Clinic"))
+        assertTrue(html.contains("Saturday, January 1, 2026"))
+        assertTrue(html.contains(signUpLink))
     }
 }
