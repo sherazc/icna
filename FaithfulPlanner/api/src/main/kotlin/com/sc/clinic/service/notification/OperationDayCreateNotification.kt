@@ -4,7 +4,6 @@ import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.OperationDay
 import com.sc.clinic.service.UserProfileService
 import com.sc.clinic.service.email.AsyncEmailService
-import com.sc.clinic.service.model.JwtClaim
 import com.sc.clinic.util.DateUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -40,6 +39,7 @@ class OperationDayCreateNotification(
             "userProfileFirstName" to (user.firstName ?: ""),
             "userProfileLastName" to (user.lastName ?: ""),
             "signUpLink" to signUpLink,
+            "baseUrl" to baseUrl,
             "operationDayDisplayDate" to operationDayDisplayDate,
             "operationDayDisplaySmall" to operationDayDisplaySmall,
             "companyName" to operationDay.company.companyName
@@ -52,7 +52,6 @@ class OperationDayCreateNotification(
             "operation_day_create_user_notification",
             attributes
         )
-
     }
 
     private fun createSignUpLink(operationDay: OperationDay) =
