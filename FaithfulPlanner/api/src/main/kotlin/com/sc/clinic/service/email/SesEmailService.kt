@@ -1,6 +1,7 @@
 package com.sc.clinic.service.email
 
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import software.amazon.awssdk.services.ses.SesClient
 import software.amazon.awssdk.services.ses.model.Body
@@ -13,6 +14,8 @@ import software.amazon.awssdk.services.ses.model.SendEmailRequest
 class SesEmailService(
     private val sesClient: SesClient,
     private val templateEngine: EmailTemplateEngine,
+    @param:Value($$"${fp.email.enabled}")
+    private val emailEnabled: Boolean
 ) : EmailService {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -24,6 +27,11 @@ class SesEmailService(
         templateName: String,
         attributes: Map<String, String>
     ) {
+        if (!emailEnabled) {
+            log.warn("Send email disabled. Not sending to $from to $to")
+            return
+        }
+
         try {
             val body = templateEngine.render(templateName, attributes)
             val request = SendEmailRequest.builder()

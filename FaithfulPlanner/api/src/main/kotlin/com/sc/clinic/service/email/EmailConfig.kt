@@ -14,7 +14,7 @@ import software.amazon.awssdk.services.ses.SesClient
 class EmailConfig {
 
     @Bean
-    fun sesClient(@Value("\${aws.ses.region}") region: String): SesClient =
+    fun sesClient(@Value($$"${fp.email.aws.ses.region}") region: String): SesClient =
         SesClient.builder()
             .region(Region.of(region))
             .build()
