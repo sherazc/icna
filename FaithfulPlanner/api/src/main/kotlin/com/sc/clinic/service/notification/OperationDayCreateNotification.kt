@@ -4,6 +4,8 @@ import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.OperationDay
 import com.sc.clinic.service.UserProfileService
 import com.sc.clinic.service.email.AsyncEmailService
+import com.sc.clinic.service.model.JwtClaim
+import com.sc.clinic.util.DateUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -27,24 +29,30 @@ class OperationDayCreateNotification(
         }
         userProfileService.getAllActive(companyId).forEach { user -> sendUserNotification(operationDay, user) }
 
-        asyncEmailService.send(
-            "Faithful Planner Admin <shifa@shifaatlanta.com>",
-            "stariqch@gmail.com",
-            "Event Created 5",
-            "event_created_user_notification",
-            mapOf("userProfileFirstName" to "Abrar")
-        )
     }
 
     private fun sendUserNotification(operationDay: OperationDay, user: UserProfileDto) {
-        // localhost:5173/alshifa/dashboard?opDayDetailSelectedId=2
         val signUpLink = createSignUpLink(operationDay)
-        val attribute = mapOf<String, String>(
+        val operationDayDisplayDate = DateUtils.dateToDisplayDate(operationDay.serviceDate)
+        val operationDayDisplaySmall = DateUtils.dateToUsDate(operationDay.serviceDate)
+
+        val attributes = mapOf(
             "userProfileFirstName" to (user.firstName ?: ""),
             "userProfileLastName" to (user.lastName ?: ""),
-            "signUpLink" to signUpLink
+            "signUpLink" to signUpLink,
+            "operationDayDisplayDate" to operationDayDisplayDate,
+            "operationDayDisplaySmall" to operationDayDisplaySmall,
+            "companyName" to operationDay.company.companyName
         )
-        TODO("Not yet implemented")
+
+        asyncEmailService.send(
+            "Faithful Planner Admin <shifa@shifaatlanta.com>",
+            user.email,
+            "Date added - $operationDayDisplaySmall",
+            "operation_day_create_user_notification",
+            attributes
+        )
+
     }
 
     private fun createSignUpLink(operationDay: OperationDay) =

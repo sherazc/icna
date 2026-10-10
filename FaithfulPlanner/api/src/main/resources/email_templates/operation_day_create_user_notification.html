@@ -3,14 +3,14 @@
 <body>
 <div style="background-color: #b8c16e; padding: 10px; font-size: 16px">
     <div style="background-color: #b8c16e; line-height: 80px; color: #fcfcfc; font-size: 30px; text-align: center;">
-        Event Created
+        Date added - <span th:text="${operationDayDisplayDate}">01/01/2026</span>
     </div>
     <div style="background-color: #fcfcfc; color: #1d1d1d;border-radius: 2px; padding: 20px">
-        Hi <span th:text="${userProfileFirstName}">there</span>,
+        Hi <span th:text="${userProfileFirstName}">FirstName</span> <span th:text="${userProfileLastName}">LastName</span>,
         <p>
-            Event is created. 
+            Date added
         </p>
-        <button>Signup</button>
+        <a th:href="${signUpLink}">Signup</button>
     </div>
     <div style="background-color: #b8c16e; color: #fcfcfc; font-size: 12px; text-align: center; line-height: 50px">
         <a style="color: #fcfcfc;" href="https://time.shifaatlanta.com/">time.shifaatlanta.com/</a>

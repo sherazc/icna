@@ -10,10 +10,13 @@ object DateUtils {
     private val US_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
     private val MONTH_DAY_YEAR_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
     private val DAY_OF_WEEK_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE")
+    private val DAY_MONTH_DATE_YEAR_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE MMM dd, yyyy")
 
     fun dateToIso(date: LocalDate?): String = date?.format(ISO_LOCAL_DATE_FORMATTER) ?: ""
 
-    fun dateToDisplayDate(date: LocalDate?): String = date?.format(US_DATE_FORMATTER) ?: ""
+    fun dateToDisplayDate(date: LocalDate?): String = date?.format(DAY_MONTH_DATE_YEAR_FORMATTER) ?: ""
+
+    fun dateToUsDate(date: LocalDate?): String = date?.format(US_DATE_FORMATTER) ?: ""
 
     fun isoToDate(value: String?): LocalDate? {
         if (value.isNullOrBlank()) return null
