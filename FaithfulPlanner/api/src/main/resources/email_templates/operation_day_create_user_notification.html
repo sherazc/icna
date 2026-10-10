@@ -1,20 +1,70 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
-<div style="background-color: #b8c16e; padding: 10px; font-size: 16px">
-    <div style="background-color: #b8c16e; line-height: 80px; color: #fcfcfc; font-size: 30px; text-align: center;">
-        Date added - <span th:text="${operationDayDisplayDate}">01/01/2026</span>
-    </div>
-    <div style="background-color: #fcfcfc; color: #1d1d1d;border-radius: 2px; padding: 20px">
-        Hi <span th:text="${userProfileFirstName}">FirstName</span> <span th:text="${userProfileLastName}">LastName</span>,
-        <p>
-            <span th:text="${companyName}">Company Name</span> added date.
-        </p>
-        <a th:href="${signUpLink}">Signup</button>
-    </div>
-    <div style="background-color: #b8c16e; color: #fcfcfc; font-size: 12px; text-align: center; line-height: 50px">
-        <a style="color: #fcfcfc;" th:href="${baseUrl}"><span th:text="${baseUrl}">http://localhost:8080</span></a>
-    </div>
-</div>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New date added</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f1f3e4;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f1f3e4;">
+    <tr>
+        <td align="center" style="padding: 24px 12px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                   style="max-width: 560px; background-color: #ffffff; border-radius: 8px; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                <tr>
+                    <td align="center" style="background-color: #8f9a3c; padding: 32px 24px;">
+                        <div style="color: #e6ebc4; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">
+                            New date available
+                        </div>
+                        <div style="color: #ffffff; font-size: 28px; line-height: 36px; font-weight: 700; margin-top: 8px;"
+                             th:text="${operationDayDisplayDate}">
+                            Saturday, January 1, 2026
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 32px 32px 8px 32px; color: #1d1d1d; font-size: 16px; line-height: 26px;">
+                        <p style="margin: 0 0 16px 0;">
+                            Assalamu Alaikum
+                            <span th:text="${userProfileFirstName}">FirstName</span>,
+                        </p>
+                        <p style="margin: 0 0 16px 0;">
+                            <strong th:text="${companyName}">Company Name</strong> has just added a new date to the
+                            schedule:
+                            <strong th:text="${operationDayDisplayDate}">Saturday, January 1, 2026</strong>.
+                        </p>
+                        <p style="margin: 0 0 16px 0;">
+                            Spots are filled on a first-come, first-served basis, so if you're able to volunteer,
+                            we'd love to have you. Take a look at the available roles and reserve your spot
+                            while it's still open.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding: 8px 32px 32px 32px;">
+                        <a th:href="${signUpLink}" href="#"
+                           style="display: inline-block; background-color: #8f9a3c; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 36px; border-radius: 6px;">
+                            View &amp; Sign Up
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 0 32px 32px 32px; color: #6b6b6b; font-size: 13px; line-height: 20px;">
+                        If the button doesn't work, copy and paste this link into your browser:<br>
+                        <a th:href="${signUpLink}" href="#" style="color: #6f7a2a; word-break: break-all;"
+                           th:text="${signUpLink}">https://example.com/signup</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="background-color: #f7f8ee; border-top: 1px solid #e6e9d2; padding: 20px 24px; color: #6b6b6b; font-size: 12px; line-height: 20px;">
+                        Thank you for serving with <span th:text="${companyName}">Company Name</span>.<br>
+                        <a style="color: #6f7a2a; text-decoration: none;" th:href="${baseUrl}" href="#"><span
+                                th:text="${baseUrl}">http://localhost:8080</span></a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
