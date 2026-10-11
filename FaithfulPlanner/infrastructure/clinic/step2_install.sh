@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -e -o pipefail
 docker network create clinic-net
 
 sudo systemctl start docker

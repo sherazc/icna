@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -e -o pipefail
 source env_multipass
 # source env_pi
 

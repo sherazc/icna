@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e -o pipefail
 echo "Creating DB container..."
 
 source .env
