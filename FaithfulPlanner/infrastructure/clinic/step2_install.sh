@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-set -e -o pipefail
 docker network create clinic-net
-
+set -e -o pipefail
 sudo systemctl start docker
 # Uncomment this to recreate database .container.
 ./script-postgres-container.sh
