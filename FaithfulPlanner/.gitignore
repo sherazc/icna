@@ -2,3 +2,6 @@
 static
 container_disks
 backup
+
+*.log
+logs

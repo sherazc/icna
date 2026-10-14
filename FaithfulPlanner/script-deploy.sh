@@ -7,4 +7,3 @@ cd infrastructure
 ./step1_deploy.sh
 cd ..
 
-conn-pi
