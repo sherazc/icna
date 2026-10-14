@@ -29,6 +29,16 @@ import { DashboardTeams } from "./DashboardTeams";
 import { useSearchParams } from "react-router-dom";
 
 let tempId = -1;
+
+const DEFAULT_FILTER_DAYS = 21;
+const offsetDateString = (days: number): string => {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
+};
+
 export default function Dashboard() {
   // const navigate = useNavigate();
   const [{ authUserToken, clinicApis, employeeGroups }] = useContext(AppContext);
@@ -37,6 +47,10 @@ export default function Dashboard() {
 
   // Selected OpDayDetail index
   const [opDayDetailSelected, setOpDayDetailSelected] = useState<number>(-1);
+
+  // Date filter
+  const [afterDateString, setAfterDateString] = useState<string>(() => offsetDateString(-DEFAULT_FILTER_DAYS));
+  const [beforeDateString, setBeforeDateString] = useState<string>(() => offsetDateString(DEFAULT_FILTER_DAYS));
 
   // All OpDayDetail array
   const [opDayDetails, setOpDayDetails] = useState<OpDayDetailDto[]>([]);
@@ -243,10 +257,6 @@ export default function Dashboard() {
   };
 
   const loadOpDetails = async (companyId: number) => {
-    // Create filter for it.
-    const afterDateString = "2024-01-01";
-    const beforeDateString = "2028-01-01";
-
     const opDayDetailsResponse = await clinicApis.opDayDetailFind(companyId, beforeDateString, afterDateString);
     setOpDayDetails(opDayDetailsResponse);
   };
@@ -267,7 +277,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     loadOpDetails(touchNumber(authUserToken.companyId));
-  }, [authUserToken]);
+  }, [authUserToken, afterDateString, beforeDateString]);
 
   useEffect(() => {
     if (searchOpDayDetailSelectedId !== null) {
@@ -313,6 +323,18 @@ export default function Dashboard() {
           )}
         </Authenticated>
       </ScreenHeader>
+      <div className="dashboardFilter">
+        <div className="formGroup">
+          <label htmlFor="filterAfterDate">From</label>
+          <input id="filterAfterDate" type="date" value={afterDateString} max={beforeDateString || undefined}
+            onChange={e => setAfterDateString(e.target.value)} />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="filterBeforeDate">To</label>
+          <input id="filterBeforeDate" type="date" value={beforeDateString} min={afterDateString || undefined}
+            onChange={e => setBeforeDateString(e.target.value)} />
+        </div>
+      </div>
       <div className="tableContainer">
         {employeeGroups.length < 1 && (
           <div className="padding-20">

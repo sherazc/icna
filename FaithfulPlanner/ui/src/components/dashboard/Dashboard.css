@@ -177,3 +177,15 @@
   font-style: italic;
   padding: var(--spacing-8) var(--spacing-4);
 }
+
+.dashboardFilter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 0 0 1rem 0;
+}
+
+.dashboardFilter .formGroup {
+  margin-bottom: 0;
+}
