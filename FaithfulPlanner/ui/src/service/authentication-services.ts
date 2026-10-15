@@ -11,6 +11,14 @@ export function isContainsAllRoles(authUserToken: AuthUserTokenDto, shouldHaveRo
     return filteredRoles.length === shouldHaveRoles.length;
 }
 
+export function isSelfOrContainsAnyRoles(userProfileId: number | undefined, authUserToken: AuthUserTokenDto, shouldHaveAnyRoles: AuthRole[]) {
+    if (userProfileId) {
+        return userProfileId === authUserToken.userProfileId || isContainsAnyRoles(authUserToken, shouldHaveAnyRoles);
+    } else {
+        return isContainsAnyRoles(authUserToken, shouldHaveAnyRoles);
+    }
+    
+}
 
 export function isContainsAnyRoles(authUserToken: AuthUserTokenDto, shouldHaveAnyRoles: AuthRole[]) {
     if (shouldHaveAnyRoles.length < 1) {

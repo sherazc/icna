@@ -11,6 +11,7 @@ import {
 import { AppContext } from "../../store/context";
 import { touchNumber, touchString } from "../../service/utilities";
 import "./AssignedUsers.css";
+import { isContainsAnyRoles, isSelfOrContainsAnyRoles } from "../../service/authentication-services";
 
 interface Props {
   companyId: number,
@@ -21,7 +22,7 @@ interface Props {
 }
 
 export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group, reloadOpDayDetail, requiredOperationDayTeams }) => {
-  const [{ clinicApis }] = useContext(AppContext);
+  const [{ clinicApis, authUserToken }] = useContext(AppContext);
   const inputRef = useRef<HTMLInputElement>(null);
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
   const [unscheduledUsers, setUnscheduledUsers] = useState<UserProfileDto[]>([]);
@@ -122,7 +123,9 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
 
     const filteredUsers = getFilteredUnscheduledUsers(users, group.users, filterString, requiredOperationDayTeams);
     if (unscheduledUsersState === FormState.SUCCESSFUL && filteredUsers.length > 0) {
-      return filteredUsers.map(u => (
+      return filteredUsers
+      .filter(u => isSelfOrContainsAnyRoles(u.id, authUserToken, ["ADMIN", "MASTER"])) 
+      .map(u => (
         <div key={u.id} className="searchDropdownItem">
           <div className="dropdownItemInfo">
             <div className="dropdownItemName">{u.firstName} {u.lastName}</div>

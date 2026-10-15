@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e -o pipefail
-source env_multipass
-# source env_pi
+# source env_multipass
+source env_pi
 
 ssh -i ~/.ssh/id_rsa \
   "$app_server_user@$app_server_ip" \
@@ -14,6 +14,7 @@ scp -r -i ~/.ssh/id_rsa \
 
 # Copy app
 scp -r -i ~/.ssh/id_rsa \
+
   ../api/build/libs/api-1.0.jar \
   $app_server_user@$app_server_ip:$app_server_path/$app_name/$app_name.jar
 

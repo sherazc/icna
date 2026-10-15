@@ -25,6 +25,7 @@ export const ScreenHeader: React.FC<Props> = ({ screenName, children }) => {
       <h2>{screenName} <span className="orgBadge" id="currentOrgBadge">{authUserToken.companyName}</span></h2>
       <div className="headerActions">
         {children}
+        {authUserToken.subject}
         <button className="btn btnLogout" onClick={handleLogout}>Logout</button>
       </div>
     </div>

@@ -40,19 +40,22 @@ export default function Settings() {
         </div>
       </Authenticated>
 
-      {/* <Authenticated shouldHaveRoles={["ADMIN", "BASIC_USER"]}> */}
+      <Authenticated shouldHaveRoles={["ADMIN"]}>
         <div className="cardsGrid">
           <TeamSettings />
         </div>
-      {/* </Authenticated> */}
+      </Authenticated>
 
       <div className="cardsGrid">
         <MyProfile initialUserProfile={userProfile} onSaveSuccess={onSuccessfulSaveUser}/>
         <MyPassword />
-        <div className="card">
-          <h3>My Group</h3>
-          <SwitchGroup initialUserProfile={userProfile} onSaveSuccess={onSuccessfulSaveUser}/>
-        </div>
+        
+        <Authenticated shouldHaveRoles={["ADMIN"]}>
+          <div className="card">
+            <h3>My Group</h3>
+            <SwitchGroup initialUserProfile={userProfile} onSaveSuccess={onSuccessfulSaveUser}/>
+          </div>
+        </Authenticated>
       </div>
       <Authenticated shouldHaveRoles={["ADMIN"]}>
         <div className="cardsGrid">
