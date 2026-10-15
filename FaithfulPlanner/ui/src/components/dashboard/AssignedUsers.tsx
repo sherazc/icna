@@ -12,6 +12,7 @@ import { AppContext } from "../../store/context";
 import { touchNumber, touchString } from "../../service/utilities";
 import "./AssignedUsers.css";
 import { isContainsAnyRoles, isSelfOrContainsAnyRoles } from "../../service/authentication-services";
+import { Authenticated } from "../auth/Authenticated";
 
 interface Props {
   companyId: number,
@@ -200,8 +201,10 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
                   {u.types && u.types.map(t => t.typeName).join(", ")}
                 </span>
               </div>
-              <button type="button" className="personRemoveBtn" title="Remove"
-                onClick={() => onUnscheduleUser(companyId, operationDayId, u.id)}>✕</button>
+              <Authenticated selfUserProfileId={u.id} shouldHaveAnyRoles={["ADMIN"]}>
+                <button type="button" className="personRemoveBtn" title="Remove"
+                  onClick={() => onUnscheduleUser(companyId, operationDayId, u.id)}>✕</button>
+                </Authenticated>
             </li>
           ))}
         </ul>

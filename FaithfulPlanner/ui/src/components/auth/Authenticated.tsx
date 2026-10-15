@@ -10,13 +10,20 @@ interface Props {
     children: React.ReactNode;
     shouldHaveRoles?: AuthRole[];
     shouldHaveAnyRoles?: AuthRole[];
+    selfUserProfileId?: number;
 }
 
 export const Authenticated: React.FC<Props> = (
     {authenticated, children,
-    shouldHaveRoles, shouldHaveAnyRoles }) => {
+    shouldHaveRoles, shouldHaveAnyRoles , selfUserProfileId}) => {
 
     const [ {authUserToken}] = useContext(AppContext);
-    const showContent = isAuthenticated(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles);
+    let showContent: boolean;
+    if (selfUserProfileId) {
+        showContent = selfUserProfileId === authUserToken.userProfileId 
+            || isAuthenticated(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles);
+    } else {
+        showContent = isAuthenticated(authenticated, authUserToken, shouldHaveRoles, shouldHaveAnyRoles)
+    }
     return showContent ? <>{children}</> : <></>;
 };
