@@ -2,28 +2,61 @@
   align-items: center;
 }
 
-.userChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 12px 4px 4px;
+.userName {
+  min-width: 0;
+  padding: 6px 14px;
   background: var(--gray-100);
   border: 1px solid var(--gray-200);
   border-radius: 999px;
   color: var(--gray-700);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm, 0.85rem);
   font-weight: var(--font-weight-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.userAvatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--border-radius-full);
-  background: var(--primary);
-  color: var(--text-on-primary);
-  font-size: var(--font-size-xs);
-  text-transform: uppercase;
+@media (max-width: 1024px) {
+  .header {
+    flex-wrap: wrap;
+    gap: var(--spacing-15);
+    padding: var(--spacing-15) var(--spacing-20);
+  }
+
+  .header h2 {
+    font-size: var(--font-size-2xl, 1.4rem);
+  }
+
+  .headerActions {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--spacing-10);
+  }
+
+  .userName {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .headerActions {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+
+  .userName {
+    flex: 1 1 0;
+    max-width: none;
+  }
+
+  .headerActions .btn {
+    padding: var(--spacing-8, 8px) var(--spacing-15);
+    white-space: nowrap;
+  }
 }
