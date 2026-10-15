@@ -1,0 +1,29 @@
+.headerActions {
+  align-items: center;
+}
+
+.userChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 999px;
+  color: var(--gray-700);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+}
+
+.userAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--border-radius-full);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+}
