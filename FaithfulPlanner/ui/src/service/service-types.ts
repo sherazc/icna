@@ -1,12 +1,25 @@
 import type { clinicApis } from "./api/ApiClinic";
 import { touchString } from "./utilities";
 
-export type Company = {
+// export type Company = {
+//     id?: number,
+//     companyName: string,
+//     uiThemeId?: number,
+//     active: boolean
+// };
+
+export type CompanyDto = {
     id?: number,
     companyName: string,
     uiThemeId?: number,
-    active: boolean
+    active?: boolean,
+    slugName: string,
 };
+
+export const defaultCompanyDto = (): CompanyDto => ({
+    companyName: "",
+    slugName: "",
+});
 
 export type LoginRequest = {
     companyId: string,
@@ -61,17 +74,6 @@ export const defaultRegistrationDto = (): RegistrationDto => ({
     userProfile: defaultUserProfileDto()
 });
 
-export type CompanyDto = {
-    id?: number,
-    companyName: string,
-    slugName: string,
-    active?: boolean,
-};
-
-export const defaultCompanyDto = (): CompanyDto => ({
-    companyName: "",
-    slugName: "",
-});
 
 export type UserProfileDto = {
     id?: number,

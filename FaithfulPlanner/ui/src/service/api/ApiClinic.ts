@@ -1,6 +1,5 @@
 import type {
   AuthUserTokenDto,
-  Company,
   CompanyDto,
   EmployeeGroupDto,
   EmployeeGroupTypesDto,
@@ -50,7 +49,7 @@ export const clinicEndpoints = () => {
 export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: InterceptorCallBacks) => {
   const endpoints = clinicEndpoints();
   const api = {
-    getAllCompanies: (): Promise<Company[]> => {
+    getAllCompanies: (): Promise<CompanyDto[]> => {
       const endpoint = endpoints.epCompany();
       const request: ApiRequest = { endpoint };
       addHeadersInRequest(request, commonHeaders);
@@ -62,7 +61,7 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
-    updateCompany: (company: Company): Promise<Company> => {
+    updateCompany: (company: CompanyDto): Promise<CompanyDto> => {
       const endpoint = endpoints.epCompany();
       const request: ApiRequest = {
         endpoint,

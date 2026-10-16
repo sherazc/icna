@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../store/context";
 import { ActionNameCompany } from "../../store/companyReducer";
-import { FormState, type Company, type ErrorDto } from "../../service/service-types";
+import { FormState, type CompanyDto, type ErrorDto } from "../../service/service-types";
 import { ErrorField } from "../common/ErrorField";
 import { Loading } from "../common/Loading";
 import { ErrorForm } from "../common/ErrorForm";
@@ -14,7 +14,7 @@ const THEME_OPTIONS = [
 
 export const CompanyDetails = () => {
   const [{ authUserToken, clinicApis, companies }, dispatch] = useContext(AppContext);
-  const [company, setCompany] = useState<Company | undefined>();
+  const [company, setCompany] = useState<CompanyDto | undefined>();
   const [formErrors, setFormErrors] = useState<ErrorDto[]>([]);
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
 

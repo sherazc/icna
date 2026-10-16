@@ -11,7 +11,7 @@ import {
 import { AppContext } from "../../store/context";
 import { touchNumber, touchString } from "../../service/utilities";
 import "./AssignedUsers.css";
-import { isContainsAnyRoles, isSelfOrContainsAnyRoles } from "../../service/authentication-services";
+import { isSelfOrContainsAnyRoles } from "../../service/authentication-services";
 import { Authenticated } from "../auth/Authenticated";
 
 interface Props {

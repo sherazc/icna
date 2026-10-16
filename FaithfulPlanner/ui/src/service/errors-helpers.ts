@@ -1,5 +1,5 @@
 import { isoDateToJsDate } from "./DateService";
-import type { Company, EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, OperationDayDto, PasswordUpdateDto, RegistrationDto, UserProfileDto } from "./service-types";
+import type { CompanyDto, EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, OperationDayDto, PasswordUpdateDto, RegistrationDto, UserProfileDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -45,7 +45,7 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Erro
   return errors;
 };
 
-export const validateCompanyDetailsForm = (company: Company): ErrorDto[] => {
+export const validateCompanyDetailsForm = (company: CompanyDto): ErrorDto[] => {
   const errors: ErrorDto[] = [];
 
   if (isBlankString(company.companyName)) {
