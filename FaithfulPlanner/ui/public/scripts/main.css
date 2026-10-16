@@ -136,6 +136,15 @@ html, body {
   padding: 0;
 }
 
+:where(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+:where(input, textarea)::placeholder {
+  color: var(--text-tertiary);
+}
+
 body {
   display: flex;
 }

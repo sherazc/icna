@@ -9,6 +9,9 @@ export const UI_THEMES: Record<UiTheme, UiThemeConfig> = {
     [UiTheme.ORANGE]: { label: "Orange", file: "orange-theme.css" },
     [UiTheme.PURPLE]: { label: "Purple", file: "purple-theme.css" },
     [UiTheme.RED]: { label: "Red", file: "red-theme.css" },
+    [UiTheme.DARK_GRAY]: { label: "Dark Gray", file: "dark-gray-theme.css" },
+    [UiTheme.DARK_GREEN]: { label: "Dark Green", file: "dark-green-theme.css" },
+    [UiTheme.DARK_AMBER]: { label: "Dark Amber", file: "dark-amber-theme.css" },
 };
 
 export const UI_THEME_OPTIONS = Object.entries(UI_THEMES).map(([id, theme]) => ({

@@ -1,0 +1,125 @@
+/* FaithfulPlanner Theme: Dark Amber Theme */
+/* Warm brown-black dark mode with amber accents */
+/* Cozy, warm and easy on the eyes - ideal for evening use */
+
+:root {
+    color-scheme: dark;
+
+    /* Primary Color Palette - Amber (adapted for dark mode) */
+    --primary: #fbbf24;
+    --primary-dark: #f59e0b;
+    --primary-light: #fcd34d;
+    --primary-ultra-light: #4a3410;
+
+    /* Semantic Colors - Dark adapted */
+    --success: #4ade80;
+    --success-light: #14532d;
+    --warning: #fb923c;
+    --warning-light: #7c2d12;
+    --error: #f87171;
+    --error-light: #7f1d1d;
+    --error-dark: #dc2626;
+    --error-hover: #fca5a5;
+    --on-error-light: #fecaca;
+    --info: #60a5fa;
+    --info-light: #1e3a8a;
+
+    /* Neutral Colors - Dark palette */
+    --gray-50: #17120c;
+    --gray-100: #241c13;
+    --gray-200: #3a2d1d;
+    --gray-300: #55432b;
+    --gray-400: #85704f;
+    --gray-500: #b8a07c;
+    --gray-600: #d8c7ab;
+    --gray-700: #ebe0cc;
+    --gray-800: #f6efe2;
+    --gray-900: #fbf7ef;
+
+    /* Background Colors - Dark mode */
+    --bg-primary: #17120c;
+    --bg-secondary: #241c13;
+    --bg-tertiary: #3a2d1d;
+    --bg-hover: #3f2f14;
+
+    /* Text Colors - Light text on dark */
+    --text-primary: #f6efe2;
+    --text-secondary: #d8c7ab;
+    --text-tertiary: #b8a07c;
+    --text-light: #85704f;
+    --text-on-primary: #17120c;
+
+    /* Border Colors & Styles */
+    --border-color: #3a2d1d;
+    --border-light: #241c13;
+    --border-dark: #55432b;
+    --border-width: 1px;
+    --border-radius-xs: 4px;
+    --border-radius-sm: 6px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 10px;
+    --border-radius-xl: 12px;
+    --border-radius-full: 50%;
+
+    /* Shadows - Dark mode optimized */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 10px 40px rgba(0, 0, 0, 0.7);
+    --shadow-dropdown: 0 4px 6px rgba(0, 0, 0, 0.5);
+    --shadow-raised: 0 4px 15px rgba(0, 0, 0, 0.6);
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+
+    /* Typography */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-xs: 11px;
+    --font-size-sm: 12px;
+    --font-size-base: 14px;
+    --font-size-md: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 28px;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.4;
+    --line-height-normal: 1.6;
+    --line-height-relaxed: 1.8;
+
+    /* Spacing Scale */
+    --spacing-2: 2px;
+    --spacing-4: 4px;
+    --spacing-5: 5px;
+    --spacing-8: 8px;
+    --spacing-10: 10px;
+    --spacing-12: 12px;
+    --spacing-15: 15px;
+    --spacing-20: 20px;
+    --spacing-30: 30px;
+    --spacing-40: 40px;
+
+    /* Layout */
+    --sidebar-width: 250px;
+    --modal-max-width: 500px;
+    --header-height: 60px;
+    --button-height: 40px;
+    --input-height: 40px;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Z-index Scale */
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-modal-backdrop: 400;
+    --z-modal: 500;
+    --z-notification: 600;
+}

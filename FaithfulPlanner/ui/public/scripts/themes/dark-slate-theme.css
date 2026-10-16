@@ -3,6 +3,8 @@
 /* Premium, sophisticated, and professional - ideal for specialized medical centers */
 
 :root {
+    color-scheme: dark;
+
     /* Primary Color Palette - Purple (adapted for dark mode) */
     --primary: #a78bfa;
     --primary-dark: #8b5cf6;

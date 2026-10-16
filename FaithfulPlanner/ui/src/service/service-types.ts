@@ -23,6 +23,9 @@ export enum UiTheme {
     ORANGE = 6,
     PURPLE = 7,
     RED = 8,
+    DARK_GRAY = 9,
+    DARK_GREEN = 10,
+    DARK_AMBER = 11,
 };
 
 export type UiThemeConfig = {

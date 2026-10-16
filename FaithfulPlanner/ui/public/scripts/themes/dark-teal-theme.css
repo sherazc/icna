@@ -3,6 +3,8 @@
 /* Modern, energetic, and healthcare-focused - ideal for progressive clinics */
 
 :root {
+    color-scheme: dark;
+
     /* Primary Color Palette - Teal/Cyan (adapted for dark mode) */
     --primary: #14b8a6;
     --primary-dark: #0d9488;
