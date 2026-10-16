@@ -6,11 +6,7 @@ import { Loading } from "../common/Loading";
 import { ErrorForm } from "../common/ErrorForm";
 import { toScErrorResponses, validateCompanyDetailsForm } from "../../service/errors-helpers";
 import { ActionNameCompanySlugName } from "../../store/companySlugNameReducer";
-
-const THEME_OPTIONS = [
-  { id: 1, name: "Light" },
-  { id: 2, name: "Dark" },
-];
+import { UI_THEME_OPTIONS } from "../../service/theme-service";
 
 export const CompanyDetails = () => {
   const [{ clinicApis, companySlugName }, dispatch] = useContext(AppContext);
@@ -78,7 +74,7 @@ export const CompanyDetails = () => {
             <label htmlFor="uiThemeId">Theme</label>
             <select id="uiThemeId" value={company.uiThemeId ?? ""} onChange={onChangeTheme}>
               <option value="">Default</option>
-              {THEME_OPTIONS.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+              {UI_THEME_OPTIONS.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
             </select>
             <ErrorField errors={formErrors} fieldName="uiThemeId" />
           </div>
