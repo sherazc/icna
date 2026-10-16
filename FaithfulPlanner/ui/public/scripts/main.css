@@ -43,6 +43,9 @@
   --warning-light: #fef3c7;
   --error: #ef4444;
   --error-light: #fee2e2;
+  --error-dark: #c41e3a;
+  --error-hover: #fc8181;
+  --on-error-light: #991b1b;
   --info: #3b82f6;
   --info-light: #dbeafe;
 
@@ -64,6 +67,9 @@
   --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
   --shadow-xl: 0 10px 40px rgba(0, 0, 0, 0.2);
+  --shadow-dropdown: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-raised: 0 4px 15px rgba(0, 0, 0, 0.15);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
 
   /* Typography */
   --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -273,7 +279,7 @@ body {
 }
 
 .btnLogout:hover {
-  background: #c41e3a;
+  background: var(--error-dark);
   box-shadow: var(--shadow-md);
 }
 
@@ -449,7 +455,7 @@ body {
 }
 
 .personRemoveBtn:hover {
-  color: var(--error, #dc3545);
+  color: var(--error);
 }
 
 .searchInput {
@@ -486,7 +492,7 @@ body {
   max-height: 300px;
   overflow-y: auto;
   z-index: 10;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-dropdown);
   display: none;
 }
 
@@ -542,7 +548,7 @@ body {
 }
 
 .dropdownItemAddBtn:hover {
-  background-color: var(--primary-dark, #5568d3);
+  background-color: var(--primary-dark);
 }
 
 .searchWrapper {
@@ -580,12 +586,12 @@ body {
 }
 
 .dropdownToggleBtn:hover {
-  background-color: var(--primary-dark, #5568d3);
+  background-color: var(--primary-dark);
 }
 
 .noAssignments {
   text-align: center;
-  color: #999;
+  color: var(--text-tertiary);
   font-style: italic;
   padding: var(--spacing-15);
   background: var(--bg-secondary);
@@ -686,7 +692,7 @@ body {
 /* Remove/Delete Button */
 .btnRemove {
   background: var(--error-light);
-  color: #991b1b;
+  color: var(--on-error-light);
   border: none;
   padding: var(--spacing-4) var(--spacing-12);
   border-radius: var(--border-radius-xs);
@@ -697,7 +703,7 @@ body {
 }
 
 .btnRemove:hover {
-  background: #fc8181;
+  background: var(--error-hover);
   color: var(--text-on-primary);
 }
 
@@ -722,9 +728,9 @@ body {
 
 /* Table Styles */
 .tableContainer {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   margin-bottom: 30px;
   width: 100%;
   max-height: 600px;
@@ -1041,17 +1047,17 @@ tbody tr.selected:hover {
   top: 20px;
   right: 20px;
   z-index: 1001;
-  background: white;
+  background: var(--bg-primary);
   border: none;
   border-radius: 8px;
   padding: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .hamburgerBtn:hover {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-raised);
 }
 
 .hamburgerIcon {
@@ -1109,7 +1115,7 @@ tbody tr.selected:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay-bg);
   z-index: var(--z-modal-backdrop);
   opacity: 0;
   transition: opacity var(--transition-base);
@@ -1447,7 +1453,7 @@ tbody tr.selected:hover {
 
 .settingsSectionTitle {
   margin: 20px 0 10px 0;
-  color: #333;
+  color: var(--text-primary);
   font-size: 16px;
 }
 

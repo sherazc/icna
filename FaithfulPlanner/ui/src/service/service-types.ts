@@ -14,6 +14,22 @@ export const defaultCompanyDto = (): CompanyDto => ({
     slugName: "",
 });
 
+export enum UiTheme {
+    BLUE = 1,
+    DARK = 2,
+    DARK_SLATE = 3,
+    DARK_TEAL = 4,
+    GREEN = 5,
+    ORANGE = 6,
+    PURPLE = 7,
+    RED = 8,
+};
+
+export type UiThemeConfig = {
+    label: string;
+    file: string;
+};
+
 export type LoginRequest = {
     companyId: string,
     email: string,

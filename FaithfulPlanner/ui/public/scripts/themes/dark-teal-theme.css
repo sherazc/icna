@@ -16,6 +16,9 @@
     --warning-light: #78350f;
     --error: #f87171;
     --error-light: #7f1d1d;
+    --error-dark: #dc2626;
+    --error-hover: #fca5a5;
+    --on-error-light: #fecaca;
     --info: #14b8a6;
     --info-light: #134e4a;
 
@@ -62,6 +65,9 @@
     --shadow-md: 0 2px 10px rgba(20, 184, 166, 0.25);
     --shadow-lg: 0 10px 25px rgba(20, 184, 166, 0.3);
     --shadow-xl: 0 10px 40px rgba(20, 184, 166, 0.35);
+    --shadow-dropdown: 0 4px 6px rgba(20, 184, 166, 0.25);
+    --shadow-raised: 0 4px 15px rgba(20, 184, 166, 0.3);
+    --overlay-bg: rgba(0, 0, 0, 0.7);
 
     /* Typography */
     --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
