@@ -7,7 +7,6 @@ import { CompanyDetails } from "./CompanyDetails";
 import { EmployeeGroupSettings } from "./EmployeeGroupSettings";
 import { MyPassword } from "./MyPassword";
 import { MyProfile } from "./MyProfile";
-import { Theme } from "./Theme";
 import { AppContext } from "../../store/context";
 import { defaultUserProfileDto, type UserProfileDto } from "../../service/service-types";
 import { TeamSettings } from "./TeamSettings";
@@ -60,7 +59,6 @@ export default function Settings() {
       <Authenticated shouldHaveRoles={["ADMIN"]}>
         <div className="cardsGrid">
           <CompanyDetails />
-          <Theme />
         </div>
       </Authenticated>
     </div>

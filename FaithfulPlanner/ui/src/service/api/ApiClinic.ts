@@ -62,6 +62,17 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
+    updateCompany: (company: Company): Promise<Company> => {
+      const endpoint = endpoints.epCompany();
+      const request: ApiRequest = {
+        endpoint,
+        method: "PUT",
+        payload: company,
+        headers: CONTENT_JSON_HEADER()
+      };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
     companySlugExists: (slug: string): Promise<boolean> => {
       const endpoint = endpoints.epCompanySlugExists(slug);
       const request: ApiRequest = { endpoint };

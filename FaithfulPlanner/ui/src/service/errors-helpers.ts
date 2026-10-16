@@ -1,5 +1,5 @@
 import { isoDateToJsDate } from "./DateService";
-import type { EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, OperationDayDto, PasswordUpdateDto, RegistrationDto, UserProfileDto } from "./service-types";
+import type { Company, EmployeeGroupTypesDto, EmployeeTypeDto, ErrorDto, OperationDayDto, PasswordUpdateDto, RegistrationDto, UserProfileDto } from "./service-types";
 import { isBlankString } from "./utilities";
 
 const EMAIL_REGEX: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -42,6 +42,19 @@ export const validateRegistrationForm = (registrationDto: RegistrationDto): Erro
       message: "Invalid email address",
     });
   }
+  return errors;
+};
+
+export const validateCompanyDetailsForm = (company: Company): ErrorDto[] => {
+  const errors: ErrorDto[] = [];
+
+  if (isBlankString(company.companyName)) {
+    addFieldError(errors, {
+      field: "companyName",
+      message: "Invalid organization name.",
+    });
+  }
+
   return errors;
 };
 
