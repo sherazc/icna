@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../store/context";
-import { ActionNameCompanies } from "../../store/companyReducer";
 import { FormState, type CompanyDto, type ErrorDto } from "../../service/service-types";
 import { ErrorField } from "../common/ErrorField";
 import { Loading } from "../common/Loading";
 import { ErrorForm } from "../common/ErrorForm";
 import { toScErrorResponses, validateCompanyDetailsForm } from "../../service/errors-helpers";
+import { ActionNameCompanySlugName } from "../../store/companySlugNameReducer";
 
 const THEME_OPTIONS = [
   { id: 1, name: "Light" },
@@ -13,23 +13,20 @@ const THEME_OPTIONS = [
 ];
 
 export const CompanyDetails = () => {
-  const [{ authUserToken, clinicApis, companies }, dispatch] = useContext(AppContext);
+  const [{ clinicApis, companySlugName }, dispatch] = useContext(AppContext);
   const [company, setCompany] = useState<CompanyDto | undefined>();
   const [formErrors, setFormErrors] = useState<ErrorDto[]>([]);
   const [formState, setFormState] = useState<FormState>(FormState.FRESH);
-
-  useEffect(() => {
-    const found = companies.find(c => c.id === Number(authUserToken.companyId));
-    if (found) {
-      setCompany(found);
-    }
-  }, [companies, authUserToken.companyId]);
 
   const onChangeTheme = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     setCompany(prev => prev && ({ ...prev, uiThemeId: value ? Number(value) : undefined }));
     setFormState(FormState.FRESH);
   };
+
+  useEffect(() => {
+    setCompany(companySlugName);
+  }, [companySlugName]);
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -47,8 +44,8 @@ export const CompanyDetails = () => {
       try {
         const saved = await clinicApis.updateCompany(company);
         dispatch({
-          type: ActionNameCompanies.setCompanies,
-          payload: companies.map(c => c.id === saved.id ? saved : c)
+          type: ActionNameCompanySlugName.companySlugNameUrlSet,
+          payload: saved
         });
         setFormState(FormState.SUCCESSFUL);
       } catch (error) {
@@ -65,7 +62,6 @@ export const CompanyDetails = () => {
   return (
     <div className="card">
       <h3>Company Details</h3>
-      {formState === FormState.SUCCESSFUL && "Successfully updated company details"}
       <ErrorForm formState={formState} errors={formErrors} />
       <Loading formState={formState} />
       {company &&
@@ -76,7 +72,7 @@ export const CompanyDetails = () => {
               onChange={onChangeText}
               value={company.companyName}
             />
-            <ErrorField errors={formErrors} fieldName="companyName" />
+            <ErrorField errors={formErrors} fieldName="company.companyName" />
           </div>
           <div className="formGroup">
             <label htmlFor="uiThemeId">Theme</label>

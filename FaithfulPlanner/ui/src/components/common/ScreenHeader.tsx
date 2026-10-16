@@ -23,7 +23,7 @@ export const ScreenHeader: React.FC<Props> = ({ screenName, children }) => {
 
   return (
     <div className="header">
-      <h2>{screenName} <span className="orgBadge" id="currentOrgBadge">{authUserToken.companyName}</span></h2>
+      <h2>{screenName} <span className="orgBadge" id="currentOrgBadge">{companySlugName.companyName}</span></h2>
       <div className="headerActions">
         {children}
         <span className="userName" title={authUserToken.subject}>{authUserToken.subject}</span>
