@@ -7,7 +7,7 @@ import { toScErrorResponses, validateRegistrationForm } from "../service/errors-
 import { AppContext } from "../store/context";
 import { ErrorForm } from "./common/ErrorForm";
 import { Loading } from "./common/Loading";
-import { ActionNameCompany } from "../store/companyReducer";
+import { ActionNameCompanies } from "../store/companyReducer";
 import { prefixCompanySlugNameUrl } from "../service/navigation-service";
 
 export default function CompanyRegistration() {
@@ -97,7 +97,7 @@ export default function CompanyRegistration() {
   const refreshCompanies = async () => {
     try {
       dispatch({
-        type: ActionNameCompany.setCompanies,
+        type: ActionNameCompanies.setCompanies,
         payload: await clinicApis.getAllCompanies()
       })
     } catch (error) {

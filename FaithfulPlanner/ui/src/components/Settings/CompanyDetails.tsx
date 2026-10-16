@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../store/context";
-import { ActionNameCompany } from "../../store/companyReducer";
+import { ActionNameCompanies } from "../../store/companyReducer";
 import { FormState, type CompanyDto, type ErrorDto } from "../../service/service-types";
 import { ErrorField } from "../common/ErrorField";
 import { Loading } from "../common/Loading";
@@ -47,7 +47,7 @@ export const CompanyDetails = () => {
       try {
         const saved = await clinicApis.updateCompany(company);
         dispatch({
-          type: ActionNameCompany.setCompanies,
+          type: ActionNameCompanies.setCompanies,
           payload: companies.map(c => c.id === saved.id ? saved : c)
         });
         setFormState(FormState.SUCCESSFUL);

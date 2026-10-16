@@ -1,13 +1,6 @@
 import type { clinicApis } from "./api/ApiClinic";
 import { touchString } from "./utilities";
 
-// export type Company = {
-//     id?: number,
-//     companyName: string,
-//     uiThemeId?: number,
-//     active: boolean
-// };
-
 export type CompanyDto = {
     id?: number,
     companyName: string,

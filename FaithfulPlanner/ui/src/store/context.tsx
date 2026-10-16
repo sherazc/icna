@@ -5,18 +5,17 @@ import {
     defaultCompanyDto,
     type AuthUserTokenDto,
     type ClinicApisType,
-    type Company,
     type CompanyDto,
     type EmployeeGroupDto
 } from "../service/service-types";
 import { clinicApis, createAuthHeader } from "../service/api/ApiClinic";
 import { clinicApisReducer, type ClinicApisAction } from "./clinicApisReducer";
-import { companyReducer, type CompanyAction } from "./companyReducer";
 import { employeeGroupReducer, type EmployeeGroupAction } from "./employeeGroupsReducer";
 import { loadAuthUserToken } from "../service/token-storage";
 import { isValidAuthUserToken } from "../service/authentication-services";
 import { companySlugNameReducer, type CompanySlugNameAction } from "./companySlugNameReducer";
 import { loginSuccessRedirectUrlReducer, type LoginSuccessRedirectUrlAction } from "./loginSuccessRedirectUrlReducer";
+import { companiesReducer, type CompaniesAction } from "./companyReducer";
 
 export type Action = {
     type: string;
@@ -35,7 +34,7 @@ type RootStateType = {
     loadingMessages: LoadingMessage[];
     authUserToken: AuthUserTokenDto;
     clinicApis: ClinicApisType;
-    companies: Company[];
+    companies: CompanyDto[];
     employeeGroups: EmployeeGroupDto[]
     companySlugName: CompanyDto;
     loginSuccessRedirectUrl: string;
@@ -66,7 +65,7 @@ const AppContext = createContext<[
 type RootAction = LoadingAction
     | AuthUserAction
     | ClinicApisAction
-    | CompanyAction
+    | CompaniesAction
     | EmployeeGroupAction
     | CompanySlugNameAction
     | LoginSuccessRedirectUrlAction;
@@ -76,7 +75,7 @@ const mainReducer = ({ loadingMessages, authUserToken, clinicApis, companies, em
     loadingMessages: loadingMessagesReducer(loadingMessages, action as LoadingAction),
     authUserToken: authUserReducer(authUserToken, action as AuthUserAction),
     clinicApis: clinicApisReducer(clinicApis, action as ClinicApisAction),
-    companies: companyReducer(companies, action as CompanyAction),
+    companies: companiesReducer(companies, action as CompaniesAction),
     employeeGroups: employeeGroupReducer(employeeGroups, action as EmployeeGroupAction),
     companySlugName: companySlugNameReducer(companySlugName, action as CompanySlugNameAction),
     loginSuccessRedirectUrl: loginSuccessRedirectUrlReducer(loginSuccessRedirectUrl, action as LoginSuccessRedirectUrlAction)

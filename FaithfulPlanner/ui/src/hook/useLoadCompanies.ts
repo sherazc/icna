@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../store/context";
-import { ActionNameCompany } from "../store/companyReducer";
+import { ActionNameCompanies } from "../store/companyReducer";
 
 export const useLoadCompanies = () => {
   const [{ clinicApis }, dispatch] = useContext(AppContext);
@@ -15,6 +15,6 @@ export const useLoadCompanies = () => {
 
   const loadCompanies = async () => {
     const fetchedCompanies = await clinicApis.getAllCompanies();
-    dispatch({ type: ActionNameCompany.setCompanies, payload: fetchedCompanies });
+    dispatch({ type: ActionNameCompanies.setCompanies, payload: fetchedCompanies });
   }
 }
