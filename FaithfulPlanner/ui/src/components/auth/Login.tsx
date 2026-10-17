@@ -10,6 +10,7 @@ import { createAuthHeader, clinicApis as clinicApisFunction } from "../../servic
 import { ActionNameCompanySlugName } from "../../store/companySlugNameReducer";
 import "./Login.css";
 import { prefixCompanySlugNameUrl } from "../../service/navigation-service";
+import { ActionNameLoginSuccessRedirectUrl } from "../../store/loginSuccessRedirectUrlReducer";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -68,8 +69,8 @@ export default function Login() {
   useEffect(() => {
     if (formState === FormState.SUCCESSFUL && companySlugName.slugName) {
       if (loginSuccessRedirectUrl.length > 0) {
+        dispatch({type: ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlRemove});
         navigate(loginSuccessRedirectUrl);
-        // dispatch({type: ActionNameLoginSuccessRedirectUrl.loginSuccessRedirectUrlRemove});
       } else {
         navigate(prefixCompanySlugNameUrl(companySlugName, "/dashboard"));
       }
