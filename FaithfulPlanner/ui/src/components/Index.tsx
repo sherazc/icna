@@ -29,14 +29,6 @@ const sampleDays = [
 export const Index: React.FC = () => {
   return (
     <div className="landing">
-      <header className="landingNav">
-        <span className="landingBrand">Faithful Planner</span>
-        <div className="landingNavActions">
-          <Link to="/login" className="lpBtn lpBtnGhost">Log in</Link>
-          <Link to="/company-registration" className="lpBtn lpBtnSolid">Sign up</Link>
-        </div>
-      </header>
-
       <section className="landingHero">
         <div className="heroBlob heroBlobA" />
         <div className="heroBlob heroBlobB" />
@@ -117,8 +109,6 @@ export const Index: React.FC = () => {
           <Link to="/login" className="lpBtn lpBtnLine lpBtnLg">Log in</Link>
         </div>
       </section>
-
-      <footer className="landingFooter">© {new Date().getFullYear()} Faithful Planner</footer>
     </div>
   );
 }

@@ -1,0 +1,8 @@
+.screenFooterMain {
+  margin-top: auto;
+  padding: 24px;
+  text-align: center;
+  color: #5d5a7a;
+  font-size: .9rem;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}

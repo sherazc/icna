@@ -9,12 +9,8 @@
   --lp-accent: #ff7a59;
   --lp-green: #22c58b;
   --lp-line: #e3dffa;  --lp-gutter: clamp(20px, 8vw, 128px);
-  flex: 1 0 auto;
   width: 100%;
   min-width: 0;
-  height: auto;
-  align-self: flex-start;
-  min-height: 100vh;
   background: var(--lp-bg);
   color: var(--lp-ink);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -23,30 +19,6 @@
 }
 
 .landing h1, .landing h2, .landing h3, .landing p { margin: 0; }
-
-.landingNav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px calc(var(--lp-gutter) + 5vw);
-  background: rgba(251, 250, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--lp-line);
-}
-
-.landingBrand {
-  font-weight: 800;
-  font-size: 1.25rem;
-  background: linear-gradient(90deg, var(--lp-primary), var(--lp-primary-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.landingNavActions { display: flex; gap: 10px; }
 
 .lpBtn {
   display: inline-block;
@@ -249,13 +221,6 @@
 .landingCta h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; }
 .landingCta p { margin-top: 12px; font-size: 1.15rem; opacity: .92; }
 .ctaActions { justify-content: center; }
-
-.landingFooter {
-  padding: 24px;
-  text-align: center;
-  color: var(--lp-muted);
-  font-size: .9rem;
-}
 
 @media (max-width: 860px) {
   .landingHero { grid-template-columns: 1fr; gap: 36px; }

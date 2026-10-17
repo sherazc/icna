@@ -1,0 +1,50 @@
+.screenHeaderMain {
+  --sh-primary: #6d4aff;
+  --sh-primary-2: #3b82f6;
+  --sh-alt: #f1eefe;
+  --sh-line: #e3dffa;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px calc(clamp(20px, 8vw, 128px) + 5vw);
+  background: rgba(251, 250, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--sh-line);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.screenHeaderMainBrand {
+  font-weight: 800;
+  font-size: 1.25rem;
+  text-decoration: none;
+  background: linear-gradient(90deg, var(--sh-primary), var(--sh-primary-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.screenHeaderMainActions { display: flex; gap: 10px; }
+
+.screenHeaderMainBtn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  text-align: center;
+}
+.screenHeaderMainBtn:hover { transform: translateY(-2px); }
+.screenHeaderMainBtnSolid {
+  color: #fff;
+  background: linear-gradient(135deg, var(--sh-primary), var(--sh-primary-2));
+  box-shadow: 0 8px 22px rgba(109, 74, 255, .35);
+}
+.screenHeaderMainBtnSolid:hover { box-shadow: 0 12px 28px rgba(109, 74, 255, .5); }
+.screenHeaderMainBtnGhost { color: var(--sh-primary); }
+.screenHeaderMainBtnGhost:hover { background: var(--sh-alt); }
+
+@media (max-width: 480px) {
+  .screenHeaderMainBtn { padding: 9px 14px; }
+}

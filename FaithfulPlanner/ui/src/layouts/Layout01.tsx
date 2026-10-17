@@ -4,6 +4,7 @@ import { useLoadCompanies } from "../hook/useLoadCompanies";
 import { useAuthRefreshCoordinator } from "../hook/useAuthRefreshCoordinator";
 import { useCompanySlugName } from "../hook/useCompanySlugName";
 import { useApplyCompanyTheme } from "../hook/useApplyCompanyTheme";
+import { ScreenFooterMain } from "../components/common/ScreenFooterMain";
 
 export default function Layout01() {
   useLoadCompanies();
@@ -13,7 +14,10 @@ export default function Layout01() {
   return (
     <div className="appContainer">
       <AppNav/>
-      <div className="mainContent"><Outlet/></div>
+      <div className="mainContent">
+        <Outlet/>
+        <ScreenFooterMain/>
+      </div>
     </div>
   );
 }
