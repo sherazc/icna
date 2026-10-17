@@ -58,15 +58,6 @@ export default function AppNav() {
               </Link>
             </li>
           </Authenticated>
-          {!containsCompanySlugName && (
-            <Authenticated authenticated={false}>
-              <li className="navItem">
-                <Link to="/company-registration" className={`navLink ${isActive("/company-registration")}`} onClick={closeMobileMenu}>
-                  Register Organization
-                </Link>
-              </li>
-            </Authenticated>
-          )}
           {/*
           <li className="navItem">
             <Link to="/org-selection" className={`navLink ${isActive("/org-selection")}`} onClick={closeMobileMenu}>

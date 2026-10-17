@@ -196,7 +196,7 @@ export default function CompanyRegistration() {
       <span className="regConfirmIcon">✓</span>
       <h2>Your organization is registered</h2>
       <p className="regCardLead">You can now log in with the administrator email and password you just created.</p>
-      <button type="button" className="btn btnPrimary" onClick={() => navigate(prefixCompanySlugNameUrl(companySlugName, "/login"))}>Continue to Login</button>
+      <button type="button" className="btn btnPrimary" onClick={() => navigate( `/${registrationDto.company.slugName}/login`)}>Continue to Login</button>
     </div>
   );
 
