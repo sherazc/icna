@@ -1,12 +1,10 @@
-import { useContext } from "react";
-import { AppContext } from "../store/context";
+import "./Index.css"
 
 interface Props { }
 export const Index: React.FC<Props> = () => {
-  const [{ companySlugName }] = useContext(AppContext);
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-      <h1>{companySlugName.companyName ? companySlugName.companyName : "Faithful Planner"}</h1>
+      <h1>Faithful Planner</h1>
     </div>
   );
 }
