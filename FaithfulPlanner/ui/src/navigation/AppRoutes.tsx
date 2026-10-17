@@ -14,11 +14,12 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<Layout02NoAuthFull/>}>
         <Route index element={<Index/>}/>
+        <Route path="/company-registration" element={<CompanyRegistration/>}/>
       </Route>
 
       <Route path="/" element={<Layout01/>}>
         {/* Unauthenticated views */}
-        <Route path="/company-registration" element={<CompanyRegistration/>}/>
+        
         <Route path="/login" element={<Login/>}/>
         <Route path=":companySlugNameUrl/login" element={<Login/>}/>
         
