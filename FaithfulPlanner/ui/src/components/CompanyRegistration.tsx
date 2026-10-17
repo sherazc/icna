@@ -9,6 +9,7 @@ import { ErrorForm } from "./common/ErrorForm";
 import { Loading } from "./common/Loading";
 import { ActionNameCompanies } from "../store/companyReducer";
 import { prefixCompanySlugNameUrl } from "../service/navigation-service";
+import "./CompanyRegistration.css"
 
 export default function CompanyRegistration() {
   const navigate = useNavigate();
@@ -112,11 +113,13 @@ export default function CompanyRegistration() {
   }, [formState]);
 
   const createRegistrationForm = () => (
-    <div className="slimContainer">
-      <h1>Register Organization</h1>
+    <div className="regCard">
+      <h2>Register your organization</h2>
+      <p className="regCardLead">Tell us about your organization and the administrator who will manage it.</p>
       <ErrorForm formState={formState} errors={errors} />
       <Loading formState={formState} />
       <form onSubmit={handleSubmit}>
+        <h3 className="regSectionTitle">Organization</h3>
         <div className="formGroup">
           <label htmlFor="companyName">Organization Name</label>
           <input type="text" id="companyName" placeholder="Enter organization name"
@@ -129,49 +132,58 @@ export default function CompanyRegistration() {
             onChange={onChangeCompanyText} size={100} />
           <small className="formHelpText">
             Used in your organization's link, e.g.
-            <div>
+            <div className="regUrlPreview">
               {window.location.origin}/{registrationDto.company.slugName ? registrationDto.company.slugName : "company_url"}
             </div>
           </small>
           <ErrorField errors={errors} fieldName="company.slugName" />
         </div>
-        <div className="formGroup">
-          <label htmlFor="email">Admin Email</label>
-          <input type="email" id="email" placeholder="Admin email"
-            onChange={onChangeUserProfileText} />
-          <ErrorField errors={errors} fieldName="userProfile.email" />
+
+        <h3 className="regSectionTitle">Administrator</h3>
+        <div className="regRow">
+          <div className="formGroup">
+            <label htmlFor="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="Admin first name"
+              onChange={onChangeUserProfileText} />
+            <ErrorField errors={errors} fieldName="userProfile.firstName" />
+          </div>
+          <div className="formGroup">
+            <label htmlFor="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Admin last name"
+              onChange={onChangeUserProfileText} />
+            <ErrorField errors={errors} fieldName="userProfile.lastName" />
+          </div>
         </div>
-        <div className="formGroup">
-          <label htmlFor="passwordField">Password</label>
-          <input type="password" id="passwordField" placeholder="Enter your password"
-            onChange={onChangeText} />
-          <ErrorField errors={errors} fieldName="passwordField" />
+        <div className="regRow">
+          <div className="formGroup">
+            <label htmlFor="email">Admin Email</label>
+            <input type="email" id="email" placeholder="Admin email"
+              onChange={onChangeUserProfileText} />
+            <ErrorField errors={errors} fieldName="userProfile.email" />
+          </div>
+          <div className="formGroup">
+            <label htmlFor="phoneNumber">Admin Phone Number</label>
+            <input type="text" id="phoneNumber" placeholder="Admin phone number"
+              onChange={onChangeUserProfileText} />
+            <ErrorField errors={errors} fieldName="userProfile.phoneNumber" />
+          </div>
         </div>
-        <div className="formGroup">
-          <label htmlFor="passwordConfirm">Confirm Password</label>
-          <input type="password" id="passwordConfirm" placeholder="Confirm password"
-            onChange={onChangeText} />
-          <ErrorField errors={errors} fieldName="passwordConfirm" />
+        <div className="regRow">
+          <div className="formGroup">
+            <label htmlFor="passwordField">Password</label>
+            <input type="password" id="passwordField" placeholder="Enter your password"
+              onChange={onChangeText} />
+            <ErrorField errors={errors} fieldName="passwordField" />
+          </div>
+          <div className="formGroup">
+            <label htmlFor="passwordConfirm">Confirm Password</label>
+            <input type="password" id="passwordConfirm" placeholder="Confirm password"
+              onChange={onChangeText} />
+            <ErrorField errors={errors} fieldName="passwordConfirm" />
+          </div>
         </div>
-        <div className="formGroup">
-          <label htmlFor="firstName">First Name</label>
-          <input type="text" id="firstName" placeholder="Admin first name"
-            onChange={onChangeUserProfileText} />
-          <ErrorField errors={errors} fieldName="userProfile.firstName" />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="lastName">Last Name</label>
-          <input type="text" id="lastName" placeholder="Admin last name"
-            onChange={onChangeUserProfileText} />
-          <ErrorField errors={errors} fieldName="userProfile.lastName" />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="phoneNumber">Admin Phone Number</label>
-          <input type="text" id="phoneNumber" placeholder="Admin phone number"
-            onChange={onChangeUserProfileText} />
-          <ErrorField errors={errors} fieldName="userProfile.phoneNumber" />
-        </div>
-        <div className="formActions">
+
+        <div className="regActions">
           <button type="submit" className="btn btnPrimary">Register Organization</button>
           <button type="button" className="btn btnSecondary" onClick={() => navigate(prefixCompanySlugNameUrl(companySlugName, "/login"))}>Back to Login</button>
         </div>
@@ -180,17 +192,27 @@ export default function CompanyRegistration() {
   );
 
   const createRegistrationConfirmation = () => (
-    <div className="slimContainer">
-      <h1>Register Confirmation</h1>
-      <div>
-        Register Confirmation
-      </div>
-      <button type="button" className="btn btnPrimary" onClick={() => navigate(prefixCompanySlugNameUrl(companySlugName, "/login"))}>Back to Login</button>
+    <div className="regCard regConfirmation">
+      <span className="regConfirmIcon">✓</span>
+      <h2>Your organization is registered</h2>
+      <p className="regCardLead">You can now log in with the administrator email and password you just created.</p>
+      <button type="button" className="btn btnPrimary" onClick={() => navigate(prefixCompanySlugNameUrl(companySlugName, "/login"))}>Continue to Login</button>
     </div>
   );
 
   return (
-    <div id="company-registration">
+    <div id="company-registration" className="regPage">
+      <div className="regBlob regBlobA" />
+      <div className="regBlob regBlobB" />
+      <aside className="regPitch">
+        <h1>Start scheduling in minutes</h1>
+        <p>Create your organization, then set up employee groups and teams and post the dates you need covered.</p>
+        <ul>
+          <li>Any dates, no fixed weekly pattern</li>
+          <li>Members sign up for the dates that suit them</li>
+          <li>See at a glance who is covering what</li>
+        </ul>
+      </aside>
       {formState != FormState.SUCCESSFUL && createRegistrationForm()}
       {formState == FormState.SUCCESSFUL && createRegistrationConfirmation()}
     </div>
