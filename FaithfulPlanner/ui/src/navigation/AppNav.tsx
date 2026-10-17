@@ -27,7 +27,7 @@ export default function AppNav() {
   };
 
 
-  const rootUrl = isAuthenticated(true, authUserToken) ? prefixCompanySlugNameUrl(companySlugName, "/") : prefixCompanySlugNameUrl(companySlugName, "/login");
+  const rootUrl = isAuthenticated(true, authUserToken) ? prefixCompanySlugNameUrl(companySlugName, "/") : "/";
 
   return (
     <>
