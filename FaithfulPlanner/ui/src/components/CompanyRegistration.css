@@ -88,6 +88,10 @@
   border-color: var(--rg-primary);
   box-shadow: 0 0 0 3px rgba(109, 74, 255, .2);
 }
+.regCard .formGroup label { font-size: 1.05rem; font-weight: 600; }
+.regCard .formGroup input { font-size: 1.1rem; padding: 12px 14px; }
+.regCard .formHelpText { font-size: .95rem; }
+.regCard .errorField { font-size: .95rem; }
 .regUrlPreview { margin-top: 4px; font-weight: 600; color: var(--rg-primary); word-break: break-all; }
 
 .regActions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
