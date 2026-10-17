@@ -15,14 +15,14 @@ export const defaultCompanyDto = (): CompanyDto => ({
 });
 
 export enum UiTheme {
-    BLUE = 1,
+    LIGHT_BLUE = 1,
     DARK = 2,
     DARK_SLATE = 3,
     DARK_TEAL = 4,
-    GREEN = 5,
-    ORANGE = 6,
-    PURPLE = 7,
-    RED = 8,
+    LIGHT_GREEN = 5,
+    LIGHT_ORANGE = 6,
+    LIGHT_PURPLE = 7,
+    LIGHT_RED = 8,
     DARK_GRAY = 9,
     DARK_GREEN = 10,
     DARK_AMBER = 11,

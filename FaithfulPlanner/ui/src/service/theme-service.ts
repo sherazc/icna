@@ -1,17 +1,17 @@
 import { UiTheme, type UiThemeConfig } from "./service-types";
 
 export const UI_THEMES: Record<UiTheme, UiThemeConfig> = {
-    [UiTheme.BLUE]: { label: "Blue", file: "blue-theme.css" },
     [UiTheme.DARK]: { label: "Dark", file: "dark-theme.css" },
+    [UiTheme.DARK_AMBER]: { label: "Dark Amber", file: "dark-amber-theme.css" },
     [UiTheme.DARK_SLATE]: { label: "Dark Slate", file: "dark-slate-theme.css" },
-    [UiTheme.DARK_TEAL]: { label: "Dark Teal", file: "dark-teal-theme.css" },
-    [UiTheme.GREEN]: { label: "Green", file: "green-theme.css" },
-    [UiTheme.ORANGE]: { label: "Orange", file: "orange-theme.css" },
-    [UiTheme.PURPLE]: { label: "Purple", file: "purple-theme.css" },
-    [UiTheme.RED]: { label: "Red", file: "red-theme.css" },
     [UiTheme.DARK_GRAY]: { label: "Dark Gray", file: "dark-gray-theme.css" },
     [UiTheme.DARK_GREEN]: { label: "Dark Green", file: "dark-green-theme.css" },
-    [UiTheme.DARK_AMBER]: { label: "Dark Amber", file: "dark-amber-theme.css" },
+    [UiTheme.DARK_TEAL]: { label: "Dark Teal", file: "dark-teal-theme.css" },
+    [UiTheme.LIGHT_BLUE]: { label: "Light Blue", file: "blue-theme.css" },
+    [UiTheme.LIGHT_GREEN]: { label: "Light Green", file: "green-theme.css" },
+    [UiTheme.LIGHT_ORANGE]: { label: "Light Orange", file: "orange-theme.css" },
+    [UiTheme.LIGHT_PURPLE]: { label: "Light Purple", file: "purple-theme.css" },
+    [UiTheme.LIGHT_RED]: { label: "Light Red", file: "red-theme.css" },
 };
 
 export const UI_THEME_OPTIONS = Object.entries(UI_THEMES).map(([id, theme]) => ({
