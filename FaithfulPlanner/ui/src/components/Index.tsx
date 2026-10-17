@@ -3,8 +3,9 @@ import "./Index.css"
 
 const steps = [
   { title: "Create your organization", text: "Sign up in a minute and set up your team, club, masjid, church or volunteer group." },
-  { title: "Post the dates that need people", text: "Pick any dates on the calendar. No fixed weekdays, no repeating pattern required." },
-  { title: "Members choose what works", text: "Everyone sees open dates and signs up for the ones they can actually make." },
+  { title: "Create employee groups and teams", text: "Organize your people into employee groups and teams so each one can be scheduled on its own." },
+  { title: "Post the dates that need people", text: "Pick any dates on the calendar for a group or team. No fixed weekdays, no repeating pattern required." },
+  { title: "Members choose what works", text: "Everyone sees the open dates for their groups and signs up for the ones they can actually make." },
   { title: "Stay on top of it", text: "See who is covering which date, spot gaps early and keep everyone informed." },
 ];
 
