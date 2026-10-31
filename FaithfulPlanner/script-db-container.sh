@@ -1,0 +1,1 @@
+./infrastructure/clinic/script-db-container.sh

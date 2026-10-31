@@ -59,8 +59,8 @@ Install application on the servers. It should be executed on the server
 Builds both /api and /ui. Copies built /ui in /api/src/main/resources/static.
 Uses Gradle to build /api/build/libs/api-#.#.jar executable jar.
 
-## /script-postgres-container.sh
-Link to /infrastructure/clinic/script-postgres-container.sh
+## /script-db-container.sh
+Link to /infrastructure/clinic/script-db-container.sh
 
 Used to create postgres db docker container for local testing and server app installation.
 

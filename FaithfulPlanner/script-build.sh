@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 # ln -s ./infrastructure/clinic/.env .env
-# ln -s ./infrastructure/clinic/script-postgres-container.sh script-postgres-container.sh
+# ln -s ./infrastructure/clinic/script-db-container.sh script-db-container.sh
 
 source .env
 

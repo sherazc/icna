@@ -1,1 +1,0 @@
-./infrastructure/clinic/script-postgres-container.sh
