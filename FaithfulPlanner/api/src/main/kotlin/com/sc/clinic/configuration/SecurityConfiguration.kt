@@ -44,7 +44,7 @@ class SecurityConfiguration(
             .cors {  }
             .csrf { it.disable() }
             .authorizeHttpRequests { it.anyRequest().permitAll() }
-            .headers { it.frameOptions { it.disable() } }
+            .headers { headersCustomizer -> headersCustomizer.frameOptions { frameOptionsCustomizer -> frameOptionsCustomizer.disable() } }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .oauth2ResourceServer { oauth2 -> oauth2.jwt { it.jwtAuthenticationConverter(getJwtAuthenticationConverter()) } }
             .httpBasic { }
@@ -53,8 +53,8 @@ class SecurityConfiguration(
 
     fun getJwtAuthenticationConverter(): Converter<Jwt, AbstractAuthenticationToken> {
         val converter = JwtAuthenticationConverter()
-        converter.setJwtGrantedAuthoritiesConverter {
-            it.getClaim<List<String>>("roles").map { SimpleGrantedAuthority(it) }
+        converter.setJwtGrantedAuthoritiesConverter { jwt ->
+            jwt.getClaimAsStringList("roles").map { role ->  SimpleGrantedAuthority(role) }
         }
         return converter
     }
