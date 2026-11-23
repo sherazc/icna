@@ -79,10 +79,11 @@ class TeamService(
 
         val operationDayLinkedToTeam = operationDayService.findByTeamId(teamId)
         if (operationDayLinkedToTeam.isNotEmpty()) {
-            val datesString: String = operationDayLinkedToTeam.joinToString {
-                op -> DateUtils.isoToUs(op.serviceDateString) }
+            val datesString: String = operationDayLinkedToTeam
+                .sortedBy { DateUtils.isoToDate(it.serviceDateString) }
+                .joinToString { op -> DateUtils.isoToUs(op.serviceDateString) }
 
-            val errorMessage = "${team.teamName} is used on $datesString"
+            val errorMessage = "Can not delete ${team.teamName}. It is used on $datesString."
             logger.error(errorMessage)
             throw ScException(errorMessage)
         }
