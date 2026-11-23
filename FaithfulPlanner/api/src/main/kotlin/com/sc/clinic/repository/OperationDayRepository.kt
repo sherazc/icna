@@ -28,6 +28,16 @@ interface OperationDayRepository : JpaRepository<OperationDay, Long>, JpaSpecifi
         order by od.serviceDate"""
     )
     fun getByCompanyId(companyId: Long): List<OperationDayDto>
+
+    @Query(
+        """
+        select new com.sc.clinic.dto.OperationDayDto(od) from OperationDay od 
+        join OperationDayTeam odt on od.id = odt.operationDay.id
+        join Team t on odt.team.id = t.id
+        where t.id = :teamId
+    """
+    )
+    fun findByTeamId(teamId: Long): List<OperationDayDto>
 }
 
 

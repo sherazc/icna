@@ -83,4 +83,6 @@ class OperationDayService(
 
     fun getByCompanyId(companyId: Long): List<OperationDayDto> =
         operationDayRepository.getByCompanyId(companyId)
+
+    fun findByTeamId(teamId: Long) = operationDayRepository.findByTeamId(teamId)
 }

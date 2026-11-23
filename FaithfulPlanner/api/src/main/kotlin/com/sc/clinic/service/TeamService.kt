@@ -13,7 +13,8 @@ class TeamService(
     private val teamRepository: TeamRepository,
     private val companyService: CompanyService,
     private val teamEmployeeTypeService: TeamEmployeeTypeService,
-    private val operationDayTeamService: OperationDayTeamService
+    private val operationDayTeamService: OperationDayTeamService,
+    private val operationDayService: OperationDayService
 ) {
     fun getAllTeams(companyId: Long): List<Team> = teamRepository.findByCompanyId(companyId)
 
@@ -37,10 +38,11 @@ class TeamService(
 
         // Delete Team - That user deleted
         existingTeams.forEach { existingTeam ->
+
             val noneExists = teamDtoList.none { tDto -> existingTeam.id == tDto.id }
             if (noneExists) {
                 teamEmployeeTypeService.deleteByTeamId(existingTeam.id) // Delete Team's Employee Types
-                existingTeam.id?.let { teamRepository.deleteById(it) } // Delete Team
+                deleteTeam(existingTeam)  // Delete Team
             }
         }
 
@@ -60,6 +62,18 @@ class TeamService(
             TeamDto(team, teamEmployeeTypes)
             // TeamDto(team, teamEmployeeTypes.sortedBy { it.employeeType.typeName })
         }// .sortedBy { it.teamName }
+    }
+
+    private fun deleteTeam(team: Team) {
+        val teamId = team.id
+        if (teamId != null) {
+            val operationDayLinkedToTeam = operationDayService.findByTeamId(teamId)
+            if (operationDayLinkedToTeam.isNotEmpty()) {
+
+            }
+        }
+        teamRepository.deleteById(teamId)
+        TODO("Not yet implemented")
     }
 
     private fun getOrCreateTeam(teamDto: TeamDto, company: Company): Team {
