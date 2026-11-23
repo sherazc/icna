@@ -7,6 +7,7 @@ import com.sc.clinic.entity.TeamEmployeeType
 import com.sc.clinic.exception.ScException
 import com.sc.clinic.exception.ScGlobalExceptionHandler
 import com.sc.clinic.repository.TeamRepository
+import com.sc.clinic.util.DateUtils
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -78,7 +79,9 @@ class TeamService(
 
         val operationDayLinkedToTeam = operationDayService.findByTeamId(teamId)
         if (operationDayLinkedToTeam.isNotEmpty()) {
-            val datesString: String = operationDayLinkedToTeam.joinToString(", ") { op -> op.serviceDateString }
+            val datesString: String = operationDayLinkedToTeam.joinToString {
+                op -> DateUtils.isoToUs(op.serviceDateString) }
+
             val errorMessage = "${team.teamName} is used on $datesString"
             logger.error(errorMessage)
             throw ScException(errorMessage)
