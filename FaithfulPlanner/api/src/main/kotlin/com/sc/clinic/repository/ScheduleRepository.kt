@@ -20,10 +20,29 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
 
     @Modifying
     @Query("""
-        INSERT INTO schedule(operation_day_id, user_profile_id)
-        VALUES (:operationDayId, :userProfileId)
+        INSERT INTO schedule(operation_day_id, user_profile_id, team_id, employee_type_id, team_instance_no)
+        VALUES (:operationDayId, :userProfileId, :teamId, :employeeTypeId, :teamInstanceNo)
     """, nativeQuery = true)
-    fun scheduleUser(operationDayId: Long, userProfileId: Long): Int
+    fun scheduleUser(
+        operationDayId: Long,
+        userProfileId: Long,
+        teamId: Long,
+        employeeTypeId: Long,
+        teamInstanceNo: Int
+    ): Int
+
+    @Query("""
+        select count(s) from Schedule s
+        where s.operationDay.id = :operationDayId
+        and s.team.id = :teamId
+        and s.teamInstanceNo = :teamInstanceNo
+        and s.employeeType.id = :employeeTypeId""")
+    fun countAssigned(
+        operationDayId: Long,
+        teamId: Long,
+        teamInstanceNo: Int,
+        employeeTypeId: Long
+    ): Long
 
     @Modifying
     @Query("""

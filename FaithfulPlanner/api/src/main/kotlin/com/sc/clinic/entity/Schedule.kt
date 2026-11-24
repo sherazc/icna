@@ -15,6 +15,17 @@ class Schedule(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_profile_id", nullable = false)
-    var userProfile: UserProfile
+    var userProfile: UserProfile,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
+    var team: Team,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_type_id", nullable = false)
+    var employeeType: EmployeeType,
+
+    @Column(name = "team_instance_no", nullable = false)
+    var teamInstanceNo: Int
 )
 
