@@ -77,11 +77,6 @@
   cursor: grabbing;
 }
 
-.spotDropTarget {
-  border-style: dashed;
-  border-color: var(--primary, #3b82f6);
-  background-color: rgba(59, 130, 246, 0.08);
-}
 
 .teams .errorMessage {
   margin: 0.5rem 0;
@@ -93,6 +88,20 @@
   border-style: dashed;
   border-color: var(--border-dark);
   background: var(--bg-tertiary);
+}
+
+/* Declared after .spotEmpty and more specific so it overrides the open-spot styles. */
+.spot.spotDropTarget {
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--primary);
+  background-color: var(--primary-ultra-light);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+}
+
+.spot.spotDropTarget .spotOpen {
+  color: var(--primary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .spotIcon {

@@ -112,7 +112,7 @@ export const DashboardTeams: React.FC<Props> = ({ opDayDetail, onMoveUser }) => 
                           </span>
                         </span>
                       ) : (
-                        <span className="spotOpen">Open spot</span>
+                        <span className="spotOpen">{isDropTarget ? "Drop here" : "Open spot"}</span>
                       )}
                     </div>
                   </li>
