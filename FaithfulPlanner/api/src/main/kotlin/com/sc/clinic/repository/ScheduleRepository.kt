@@ -72,4 +72,16 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
         where s.operationDay.id = :operationDayId
         and s.userProfile.id = :userProfileId""")
     fun findEntityByOperationAndUser(operationDayId: Long, userProfileId: Long): Schedule?
+
+    fun existsByTeamId(teamId: Long): Boolean
+
+    fun existsByTeamIdAndEmployeeTypeId(teamId: Long, employeeTypeId: Long): Boolean
+
+    fun existsByOperationDayIdAndTeamId(operationDayId: Long, teamId: Long): Boolean
+
+    fun existsByOperationDayIdAndTeamIdAndTeamInstanceNoGreaterThan(
+        operationDayId: Long,
+        teamId: Long,
+        teamInstanceNo: Int
+    ): Boolean
 }

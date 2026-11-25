@@ -5,24 +5,36 @@ import com.sc.clinic.dto.TeamEmployeeTypeDto
 import com.sc.clinic.entity.EmployeeType
 import com.sc.clinic.entity.Team
 import com.sc.clinic.entity.TeamEmployeeType
+import com.sc.clinic.exception.ScException
+import com.sc.clinic.repository.ScheduleRepository
 import com.sc.clinic.repository.TeamEmployeeTypeRepository
 import org.springframework.stereotype.Service
 
 @Service
 class TeamEmployeeTypeService(
     val teamEmployeeTypeRepository: TeamEmployeeTypeRepository,
-    val employeeTypeService: EmployeeTypeService
+    val employeeTypeService: EmployeeTypeService,
+    private val scheduleRepository: ScheduleRepository
 ) {
-    fun deleteByTeamId(teamId: Long?): Long = teamId?.let { teamEmployeeTypeRepository.deleteByTeamId(it) } ?: 0L
+    fun deleteByTeamId(teamId: Long?): Long {
+        if (teamId == null) return 0L
+        if (scheduleRepository.existsByTeamId(teamId)) {
+            throw ScException("Can not delete team. Users are scheduled on its spots. Unschedule them first.")
+        }
+        return teamEmployeeTypeRepository.deleteByTeamId(teamId)
+    }
 
     fun deleteIfNotExists(teamId: Long?, employeeTypeId: Long?, teamDtoList: List<TeamDto>) {
         if (teamId == null || employeeTypeId == null) return
 
         val employeeTypeFound = teamDtoList.any { teamDto ->
-            teamDto.teamEmployeeTypes.any { et -> teamId == teamDto.id && et.id == employeeTypeId }
+            teamDto.teamEmployeeTypes.any { et -> teamId == teamDto.id && et.employeeType.id == employeeTypeId }
         }
 
         if (!employeeTypeFound) {
+            if (scheduleRepository.existsByTeamIdAndEmployeeTypeId(teamId, employeeTypeId)) {
+                throw ScException("Can not remove an employee type from the team. Users are scheduled on its spots. Unschedule them first.")
+            }
             teamEmployeeTypeRepository.deleteByTeamIdAndEmployeeTypeId(teamId, employeeTypeId)
         }
     }

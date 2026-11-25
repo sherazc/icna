@@ -3,9 +3,13 @@ package com.sc.clinic.service
 import com.sc.clinic.dto.OperationDayTeamDto
 import com.sc.clinic.entity.OperationDay
 import com.sc.clinic.entity.OperationDayTeam
+import com.sc.clinic.entity.OperationDayTeamInstance
+import com.sc.clinic.entity.OperationDayTeamInstanceId
 import com.sc.clinic.entity.Team
 import com.sc.clinic.exception.ScException
+import com.sc.clinic.repository.OperationDayTeamInstanceRepository
 import com.sc.clinic.repository.OperationDayTeamRepository
+import com.sc.clinic.repository.ScheduleRepository
 import com.sc.clinic.repository.TeamRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -13,14 +17,28 @@ import org.springframework.stereotype.Service
 @Service
 class OperationDayTeamService(
     private val operationDayTeamRepository: OperationDayTeamRepository,
+    private val operationDayTeamInstanceRepository: OperationDayTeamInstanceRepository,
+    private val scheduleRepository: ScheduleRepository,
     private val teamRepository: TeamRepository
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(OperationDayTeamService::class.java)
     }
 
-    fun deleteByTeamId(teamId: Long?): Long = teamId?.let { operationDayTeamRepository.deleteByTeamId(it) } ?: 0L
-    fun deleteByOperationDayId(operationDayId: Long?): Long = operationDayId?.let { operationDayTeamRepository.deleteByOperationDayId(it) } ?: 0L
+    fun deleteByTeamId(teamId: Long?): Long {
+        if (teamId == null) return 0L
+        if (scheduleRepository.existsByTeamId(teamId)) {
+            throw ScException("Can not delete team. Users are scheduled on its spots. Unschedule them first.")
+        }
+        operationDayTeamInstanceRepository.deleteByIdTeamId(teamId)
+        return operationDayTeamRepository.deleteByTeamId(teamId)
+    }
+
+    fun deleteByOperationDayId(operationDayId: Long?): Long {
+        if (operationDayId == null) return 0L
+        operationDayTeamInstanceRepository.deleteByIdOperationDayId(operationDayId)
+        return operationDayTeamRepository.deleteByOperationDayId(operationDayId)
+    }
 
     fun save(operationDay: OperationDay, requiredOperationDayTeams: List<OperationDayTeamDto>): List<OperationDayTeam> {
 
@@ -31,7 +49,7 @@ class OperationDayTeamService(
         val userDeletedExistingOdt = existingOdtList.filter { existingOdt ->
             requiredOperationDayTeams.none { otherTeam -> existingOdt.id == otherTeam.id }
         }
-        userDeletedExistingOdt.forEach { odt ->  odt.id?.let { operationDayTeamRepository.deleteById(it) } }
+        userDeletedExistingOdt.forEach { odt -> removeOperationDayTeam(odt) }
 
         // Loop - Find or create
         val userCreateOrUpdatedOdtList: List<OperationDayTeam> = requiredOperationDayTeams.map {
@@ -39,7 +57,47 @@ class OperationDayTeamService(
         }
 
         // Save
-        return operationDayTeamRepository.saveAll(userCreateOrUpdatedOdtList)
+        val saved = operationDayTeamRepository.saveAll(userCreateOrUpdatedOdtList)
+        saved.forEach { syncInstances(it) }
+        return saved
+    }
+
+    private fun removeOperationDayTeam(odt: OperationDayTeam) {
+        val operationDayId = odt.operationDay.id ?: return
+        val teamId = odt.team.id ?: return
+        if (scheduleRepository.existsByOperationDayIdAndTeamId(operationDayId, teamId)) {
+            throw ScException("Can not remove ${odt.team.teamName} from the operation day. Users are scheduled on its spots. Unschedule them first.")
+        }
+        operationDayTeamInstanceRepository.deleteAll(
+            operationDayTeamInstanceRepository.findByIdOperationDayIdAndIdTeamId(operationDayId, teamId)
+        )
+        odt.id?.let { operationDayTeamRepository.deleteById(it) }
+    }
+
+    // One instance row per team instance number 1..requiredTeamCount
+    private fun syncInstances(odt: OperationDayTeam) {
+        val operationDayId = odt.operationDay.id ?: return
+        val teamId = odt.team.id ?: return
+        val instances = operationDayTeamInstanceRepository.findByIdOperationDayIdAndIdTeamId(operationDayId, teamId)
+        val existingInstanceNos = instances.map { it.id.instanceNo }.toSet()
+
+        (1..odt.requiredTeamCount)
+            .filter { it !in existingInstanceNos }
+            .forEach {
+                operationDayTeamInstanceRepository.save(
+                    OperationDayTeamInstance(OperationDayTeamInstanceId(operationDayId, teamId, it))
+                )
+            }
+
+        val removedInstances = instances.filter { it.id.instanceNo > odt.requiredTeamCount }
+        if (removedInstances.isNotEmpty() &&
+            scheduleRepository.existsByOperationDayIdAndTeamIdAndTeamInstanceNoGreaterThan(
+                operationDayId, teamId, odt.requiredTeamCount
+            )
+        ) {
+            throw ScException("Can not reduce the required teams for ${odt.team.teamName}. Users are scheduled on the team being removed. Unschedule them first.")
+        }
+        operationDayTeamInstanceRepository.deleteAll(removedInstances)
     }
 
     private fun findOrCreate(
