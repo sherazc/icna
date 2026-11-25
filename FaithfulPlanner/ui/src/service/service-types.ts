@@ -226,9 +226,9 @@ export type ScheduleDto = {
     id?: number,
     operationDayId: number,
     userProfileId: number,
-    teamId?: number,
-    employeeTypeId?: number,
-    teamInstanceNo?: number
+    teamId?: number | null,
+    employeeTypeId?: number | null,
+    teamInstanceNo?: number | null
 };
 
 export const defaultScheduleDto = (): ScheduleDto => ({

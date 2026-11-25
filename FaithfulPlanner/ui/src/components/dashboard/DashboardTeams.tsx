@@ -130,7 +130,11 @@ export const DashboardTeams: React.FC<Props> = ({ opDayDetail, onMoveUser }) => 
             </h4>
             <ul className="spotList">
               {unplacedUsers.map(u => (
-                <li className="spot spotExtra" key={u.id}>
+                <li className="spot spotExtra" key={u.id}
+                  draggable={canMove}
+                  title={canMove ? "Drag to an open spot with a matching type to place" : undefined}
+                  onDragStart={() => setDraggedUser(u)}
+                  onDragEnd={onDragEnd}>
                   <span className="spotIcon" aria-hidden="true">🙋</span>
                   <div className="spotBody">
                     <span className="spotUser">

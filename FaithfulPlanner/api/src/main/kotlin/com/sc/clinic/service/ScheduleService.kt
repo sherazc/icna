@@ -1,6 +1,7 @@
 package com.sc.clinic.service
 
 import com.sc.clinic.dto.ScheduleDto
+import com.sc.clinic.entity.Schedule
 import com.sc.clinic.entity.UserProfile
 import com.sc.clinic.exception.ScException
 import com.sc.clinic.exception.ScGlobalExceptionHandler
@@ -44,11 +45,10 @@ class ScheduleService(
      */
     @Transactional
     fun scheduleUser(schedule: ScheduleDto): ScheduleDto {
-        val existingSchedules =
-            scheduleRepository.findByOperationAndUser(schedule.operationDayId, schedule.userProfileId)
-        if (existingSchedules.isNotEmpty()) {
+        val existing = scheduleRepository.findEntityByOperationAndUser(schedule.operationDayId, schedule.userProfileId)
+        if (existing?.team != null) {
             logger.warn("User already scheduled. OperationDayId=${schedule.operationDayId}, UserProfileId=${schedule.userProfileId}")
-            return existingSchedules[0]
+            return toDto(existing, schedule.operationDayId, schedule.userProfileId)
         }
 
         val user = findUser(schedule.userProfileId)
@@ -61,11 +61,16 @@ class ScheduleService(
             requestedSpot
         }
 
-        scheduleRepository.scheduleUser(
-            schedule.operationDayId, schedule.userProfileId, spot.teamId, spot.employeeTypeId, spot.teamInstanceNo
-        )
-        return scheduleRepository.findByOperationAndUser(schedule.operationDayId, schedule.userProfileId)
-            .firstOrNull()
+        // An Extra User is already on the day without a spot, so their row is placed instead of inserted
+        if (existing == null) {
+            scheduleRepository.scheduleUser(
+                schedule.operationDayId, schedule.userProfileId, spot.teamId, spot.employeeTypeId, spot.teamInstanceNo
+            )
+        } else {
+            placeOn(existing, spot)
+        }
+        return scheduleRepository.findEntityByOperationAndUser(schedule.operationDayId, schedule.userProfileId)
+            ?.let { toDto(it, schedule.operationDayId, schedule.userProfileId) }
             ?: throw ScException("Failed Schedule User. OperationDayId=${schedule.operationDayId}, UserProfileId=${schedule.userProfileId}")
     }
 
@@ -76,24 +81,30 @@ class ScheduleService(
             ?: throw ScException("User is not scheduled. OperationDayId=${schedule.operationDayId}, UserProfileId=${schedule.userProfileId}")
         val target = spotOf(schedule)
 
-        val isSameSpot = current.team.id == target.teamId
-                && current.employeeType.id == target.employeeTypeId
+        val isSameSpot = current.team?.id == target.teamId
+                && current.employeeType?.id == target.employeeTypeId
                 && current.teamInstanceNo == target.teamInstanceNo
         if (!isSameSpot) {
             requireOpenSpot(schedule.operationDayId, current.userProfile, target)
-            current.team = teamRepository.findById(target.teamId)
-                .orElseThrow { ScException("Team not found. TeamId=${target.teamId}") }
-            current.employeeType = employeeTypeRepository.findById(target.employeeTypeId)
-                .orElseThrow { ScException("Employee type not found. EmployeeTypeId=${target.employeeTypeId}") }
-            current.teamInstanceNo = target.teamInstanceNo
-            scheduleRepository.saveAndFlush(current)
+            placeOn(current, target)
         }
 
-        return ScheduleDto(
-            current.id, schedule.operationDayId, schedule.userProfileId,
-            target.teamId, target.employeeTypeId, target.teamInstanceNo
-        )
+        return toDto(current, schedule.operationDayId, schedule.userProfileId)
     }
+
+    private fun placeOn(schedule: Schedule, spot: Spot) {
+        schedule.team = teamRepository.findById(spot.teamId)
+            .orElseThrow { ScException("Team not found. TeamId=${spot.teamId}") }
+        schedule.employeeType = employeeTypeRepository.findById(spot.employeeTypeId)
+            .orElseThrow { ScException("Employee type not found. EmployeeTypeId=${spot.employeeTypeId}") }
+        schedule.teamInstanceNo = spot.teamInstanceNo
+        scheduleRepository.saveAndFlush(schedule)
+    }
+
+    private fun toDto(schedule: Schedule, operationDayId: Long, userProfileId: Long) = ScheduleDto(
+        schedule.id, operationDayId, userProfileId,
+        schedule.team?.id, schedule.employeeType?.id, schedule.teamInstanceNo
+    )
 
     private fun findUser(userProfileId: Long): UserProfile =
         userProfileRepository.findById(userProfileId)

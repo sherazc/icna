@@ -18,14 +18,14 @@ class Schedule(
     var userProfile: UserProfile,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", nullable = false)
-    var team: Team,
+    @JoinColumn(name = "team_id")
+    var team: Team?,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_type_id", nullable = false)
-    var employeeType: EmployeeType,
+    @JoinColumn(name = "employee_type_id")
+    var employeeType: EmployeeType?,
 
-    @Column(name = "team_instance_no", nullable = false)
-    var teamInstanceNo: Int
+    @Column(name = "team_instance_no")
+    var teamInstanceNo: Int?
 )
 

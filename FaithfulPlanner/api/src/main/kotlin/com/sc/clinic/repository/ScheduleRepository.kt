@@ -73,15 +73,32 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
         and s.userProfile.id = :userProfileId""")
     fun findEntityByOperationAndUser(operationDayId: Long, userProfileId: Long): Schedule?
 
-    fun existsByTeamId(teamId: Long): Boolean
+    /** Keeps the user scheduled on the day but removes their spot, so they show under Extra Users. */
+    @Modifying
+    @Query("""
+        UPDATE schedule SET team_id = NULL, employee_type_id = NULL, team_instance_no = NULL
+        WHERE team_id = :teamId
+    """, nativeQuery = true)
+    fun unplaceByTeamId(teamId: Long): Int
 
-    fun existsByTeamIdAndEmployeeTypeId(teamId: Long, employeeTypeId: Long): Boolean
+    @Modifying
+    @Query("""
+        UPDATE schedule SET team_id = NULL, employee_type_id = NULL, team_instance_no = NULL
+        WHERE team_id = :teamId AND employee_type_id = :employeeTypeId
+    """, nativeQuery = true)
+    fun unplaceByTeamIdAndEmployeeTypeId(teamId: Long, employeeTypeId: Long): Int
 
-    fun existsByOperationDayIdAndTeamId(operationDayId: Long, teamId: Long): Boolean
+    @Modifying
+    @Query("""
+        UPDATE schedule SET team_id = NULL, employee_type_id = NULL, team_instance_no = NULL
+        WHERE operation_day_id = :operationDayId AND team_id = :teamId
+    """, nativeQuery = true)
+    fun unplaceByOperationDayIdAndTeamId(operationDayId: Long, teamId: Long): Int
 
-    fun existsByOperationDayIdAndTeamIdAndTeamInstanceNoGreaterThan(
-        operationDayId: Long,
-        teamId: Long,
-        teamInstanceNo: Int
-    ): Boolean
+    @Modifying
+    @Query("""
+        UPDATE schedule SET team_id = NULL, employee_type_id = NULL, team_instance_no = NULL
+        WHERE operation_day_id = :operationDayId AND team_id = :teamId AND team_instance_no > :teamInstanceNo
+    """, nativeQuery = true)
+    fun unplaceByOperationDayIdAndTeamIdAboveInstance(operationDayId: Long, teamId: Long, teamInstanceNo: Int): Int
 }

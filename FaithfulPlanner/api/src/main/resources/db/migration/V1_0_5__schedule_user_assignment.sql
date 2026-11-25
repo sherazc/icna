@@ -12,10 +12,17 @@ create table operation_day_team_instance
 );
 
 -- Assign a user to a specific team instance and employee type on an operation day.
+-- All three are null when the user is scheduled on the day but not placed on a spot (Extra Users).
 alter table schedule
-    add column team_id bigint not null,
-    add column employee_type_id bigint not null,
-    add column team_instance_no int not null;
+    add column team_id bigint,
+    add column employee_type_id bigint,
+    add column team_instance_no int;
+
+alter table schedule
+    add constraint ck_schedule_spot_all_or_none check (
+        (team_id is null and employee_type_id is null and team_instance_no is null)
+        or (team_id is not null and employee_type_id is not null and team_instance_no is not null)
+    );
 
 -- The team instance exists on that operation day (also ensures the team runs that day)
 alter table schedule

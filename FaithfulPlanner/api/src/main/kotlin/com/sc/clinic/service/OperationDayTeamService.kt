@@ -27,9 +27,7 @@ class OperationDayTeamService(
 
     fun deleteByTeamId(teamId: Long?): Long {
         if (teamId == null) return 0L
-        if (scheduleRepository.existsByTeamId(teamId)) {
-            throw ScException("Can not delete team. Users are scheduled on its spots. Unschedule them first.")
-        }
+        scheduleRepository.unplaceByTeamId(teamId)
         operationDayTeamInstanceRepository.deleteByIdTeamId(teamId)
         return operationDayTeamRepository.deleteByTeamId(teamId)
     }
@@ -65,9 +63,7 @@ class OperationDayTeamService(
     private fun removeOperationDayTeam(odt: OperationDayTeam) {
         val operationDayId = odt.operationDay.id ?: return
         val teamId = odt.team.id ?: return
-        if (scheduleRepository.existsByOperationDayIdAndTeamId(operationDayId, teamId)) {
-            throw ScException("Can not remove ${odt.team.teamName} from the operation day. Users are scheduled on its spots. Unschedule them first.")
-        }
+        scheduleRepository.unplaceByOperationDayIdAndTeamId(operationDayId, teamId)
         operationDayTeamInstanceRepository.deleteAll(
             operationDayTeamInstanceRepository.findByIdOperationDayIdAndIdTeamId(operationDayId, teamId)
         )
@@ -90,12 +86,10 @@ class OperationDayTeamService(
             }
 
         val removedInstances = instances.filter { it.id.instanceNo > odt.requiredTeamCount }
-        if (removedInstances.isNotEmpty() &&
-            scheduleRepository.existsByOperationDayIdAndTeamIdAndTeamInstanceNoGreaterThan(
+        if (removedInstances.isNotEmpty()) {
+            scheduleRepository.unplaceByOperationDayIdAndTeamIdAboveInstance(
                 operationDayId, teamId, odt.requiredTeamCount
             )
-        ) {
-            throw ScException("Can not reduce the required teams for ${odt.team.teamName}. Users are scheduled on the team being removed. Unschedule them first.")
         }
         operationDayTeamInstanceRepository.deleteAll(removedInstances)
     }
