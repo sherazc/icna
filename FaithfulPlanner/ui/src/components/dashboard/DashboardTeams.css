@@ -69,6 +69,26 @@
   border-color: var(--success-light);
 }
 
+.spot[draggable="true"] {
+  cursor: grab;
+}
+
+.spot[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.spotDropTarget {
+  border-style: dashed;
+  border-color: var(--primary, #3b82f6);
+  background-color: rgba(59, 130, 246, 0.08);
+}
+
+.teams .errorMessage {
+  margin: 0.5rem 0;
+  color: var(--danger, #b91c1c);
+  font-size: var(--font-size-base);
+}
+
 .spotEmpty {
   border-style: dashed;
   border-color: var(--border-dark);

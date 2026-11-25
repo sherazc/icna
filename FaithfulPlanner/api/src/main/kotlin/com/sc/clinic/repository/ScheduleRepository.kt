@@ -54,9 +54,22 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
 
     @Query("""
         select 
-        new com.sc.clinic.dto.ScheduleDto(s.id, s.operationDay.id, s.userProfile.id) 
+        new com.sc.clinic.dto.ScheduleDto(s.id, s.operationDay.id, s.userProfile.id, s.team.id, s.employeeType.id, s.teamInstanceNo) 
         from Schedule s
         where s.operationDay.id = :operationDayId
         and s.userProfile.id = :userProfileId""")
     fun findByOperationAndUser(operationDayId: Long, userProfileId: Long): List<ScheduleDto>
+
+    @Query("""
+        select 
+        new com.sc.clinic.dto.ScheduleDto(s.id, s.operationDay.id, s.userProfile.id, s.team.id, s.employeeType.id, s.teamInstanceNo) 
+        from Schedule s
+        where s.operationDay.id = :operationDayId""")
+    fun findByOperation(operationDayId: Long): List<ScheduleDto>
+
+    @Query("""
+        select s from Schedule s
+        where s.operationDay.id = :operationDayId
+        and s.userProfile.id = :userProfileId""")
+    fun findEntityByOperationAndUser(operationDayId: Long, userProfileId: Long): Schedule?
 }

@@ -1,35 +1,68 @@
+import { useContext, useState } from "react";
 import type {
   OpDayDetailDto,
   OpDayDetailUserProfileDto,
-  TeamDto,
-  TeamView
+  TeamView,
+  TeamViewSpot
 } from "../../service/service-types";
 import {
+  canDropUserOnSpot,
   countTeamViewSpot,
   extractAssignedUsersFromOpDayDetail,
-  extractRequiredTeamsFromOpDayDetail,
   putUsersInTeamViewSpots,
   teamsToTeamViews
 } from "./dashboardServices";
+import { AppContext } from "../../store/context";
+import { isContainsAnyRoles } from "../../service/authentication-services";
+import { touchNumber } from "../../service/utilities";
 import "./DashboardTeams.css"
 
 interface Props {
   opDayDetail: OpDayDetailDto,
+  onMoveUser: (operationDayId: number, userProfileId: number, spot: TeamViewSpot) => Promise<void>,
 }
 
-export const DashboardTeams: React.FC<Props> = ({ opDayDetail }) => {
+export const DashboardTeams: React.FC<Props> = ({ opDayDetail, onMoveUser }) => {
+  const [{ authUserToken }] = useContext(AppContext);
+  const [draggedUser, setDraggedUser] = useState<OpDayDetailUserProfileDto | null>(null);
+  const [dropTargetKey, setDropTargetKey] = useState<string | null>(null);
+  const [moveError, setMoveError] = useState<string>("");
+
   if (!opDayDetail.requiredOperationDayTeams || opDayDetail.requiredOperationDayTeams.length < 1) {
     return <></>;
   }
 
+  const canMove = isContainsAnyRoles(authUserToken, ["ADMIN", "MASTER"]);
   const extraUsers: OpDayDetailUserProfileDto[] = extractAssignedUsersFromOpDayDetail(opDayDetail);
-  const requiredTeams: TeamDto[] = extractRequiredTeamsFromOpDayDetail(opDayDetail);
-  const requiredTeamViews: TeamView[] = teamsToTeamViews(requiredTeams);
+  const requiredTeamViews: TeamView[] = teamsToTeamViews(opDayDetail.requiredOperationDayTeams);
 
-  const placedUserCount = putUsersInTeamViewSpots(requiredTeamViews, extraUsers);
+  const unplacedUsers = putUsersInTeamViewSpots(requiredTeamViews, extraUsers);
   const totalRequired = countTeamViewSpot(requiredTeamViews);
+  const placedUserCount = requiredTeamViews.flatMap(tv => tv.spots).filter(s => s.user).length;
 
   const isComplete = placedUserCount >= totalRequired;
+
+  const spotKey = (spot: TeamViewSpot) => `${spot.teamId}-${spot.teamInstanceNo}-${spot.employeeTypeId}`;
+
+  const onDragEnd = () => {
+    setDraggedUser(null);
+    setDropTargetKey(null);
+  };
+
+  const onDropOnSpot = async (spot: TeamViewSpot) => {
+    const user = draggedUser;
+    onDragEnd();
+    if (!user || !canDropUserOnSpot(user, spot)) {
+      return;
+    }
+    setMoveError("");
+    try {
+      await onMoveUser(touchNumber(opDayDetail.id), user.id, spot);
+    } catch (error) {
+      console.log(error);
+      setMoveError(`Could not move ${user.firstName} ${user.lastName} to ${spot.employeeType.typeName} spot.`);
+    }
+  };
 
   return (
     <div className="teams">
@@ -39,44 +72,64 @@ export const DashboardTeams: React.FC<Props> = ({ opDayDetail }) => {
           {placedUserCount}/{totalRequired} filled
         </span>
       </div>
+      {moveError && <div className="errorMessage">{moveError}</div>}
 
       <div className="teamsGrid">
-        {requiredTeamViews.map((rtv, index) => (
-          <div className="teamCard" key={index}>
-            <h4 className="teamCardTitle">{rtv.teamName}</h4>
+        {requiredTeamViews.map((rtv) => (
+          <div className="teamCard" key={`${rtv.teamId}-${rtv.teamInstanceNo}`}>
+            <h4 className="teamCardTitle">{rtv.teamName} #{rtv.teamInstanceNo}</h4>
             <ul className="spotList">
-              {rtv.spots.map((stv, i) => (
-                <li className={`spot ${stv.user ? "spotFilled" : "spotEmpty"}`} key={i}>
-                  <span className="spotIcon" aria-hidden="true">{stv.user ? "✅" : "⭕"}</span>
-                  <div className="spotBody">
-                    <span className="spotType">{stv.employeeType.typeName}</span>
-                    {stv.user ? (
-                      <span className="spotUser">
-                        {stv.user.firstName} {stv.user.lastName}
-                        <span className="spotRoles">
-                          {stv.user.types.map(ut => (
-                            <span className="spotRole" key={ut.id}>{ut.typeName}</span>
-                          ))}
+              {rtv.spots.map((stv, i) => {
+                const user = stv.user;
+                const isDropTarget = dropTargetKey === spotKey(stv) && draggedUser !== null && canDropUserOnSpot(draggedUser, stv);
+                return (
+                  <li className={`spot ${user ? "spotFilled" : "spotEmpty"} ${isDropTarget ? "spotDropTarget" : ""}`} key={i}
+                    draggable={canMove && !!user}
+                    title={canMove && user ? "Drag to an open spot with a matching type to move" : undefined}
+                    onDragStart={() => user && setDraggedUser(user)}
+                    onDragEnd={onDragEnd}
+                    onDragOver={(e) => {
+                      if (draggedUser && canDropUserOnSpot(draggedUser, stv)) {
+                        e.preventDefault();
+                        setDropTargetKey(spotKey(stv));
+                      }
+                    }}
+                    onDragLeave={() => setDropTargetKey(null)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      onDropOnSpot(stv);
+                    }}>
+                    <span className="spotIcon" aria-hidden="true">{user ? "✅" : "⭕"}</span>
+                    <div className="spotBody">
+                      <span className="spotType">{stv.employeeType.typeName}</span>
+                      {user ? (
+                        <span className="spotUser">
+                          {user.firstName} {user.lastName}
+                          <span className="spotRoles">
+                            {user.types.map(ut => (
+                              <span className="spotRole" key={ut.id}>{ut.typeName}</span>
+                            ))}
+                          </span>
                         </span>
-                      </span>
-                    ) : (
-                      <span className="spotOpen">Open spot</span>
-                    )}
-                  </div>
-                </li>
-              ))}
+                      ) : (
+                        <span className="spotOpen">Open spot</span>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
 
-        {extraUsers && extraUsers.length > 0 && (
+        {unplacedUsers && unplacedUsers.length > 0 && (
           <div className="teamCard teamCardExtra">
             <h4 className="teamCardTitle">
               Extra Users
-              <span className="badge badgePrimary">{extraUsers.length}</span>
+              <span className="badge badgePrimary">{unplacedUsers.length}</span>
             </h4>
             <ul className="spotList">
-              {extraUsers.map(u => (
+              {unplacedUsers.map(u => (
                 <li className="spot spotExtra" key={u.id}>
                   <span className="spotIcon" aria-hidden="true">🙋</span>
                   <div className="spotBody">

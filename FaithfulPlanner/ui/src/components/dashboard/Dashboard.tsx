@@ -8,7 +8,8 @@ import {
   type OpDayDetailDto,
   type OperationDayDto,
   type OperationDayTeamDto,
-  type TeamDto
+  type TeamDto,
+  type TeamViewSpot
 } from "../../service/service-types";
 import { UnAuthRedirect } from "../auth/UnAuthRedirect"
 import { ErrorField } from "../common/ErrorField";
@@ -275,6 +276,18 @@ export default function Dashboard() {
     reload();
   };
 
+  const onMoveUser = async (operationDayId: number, userProfileId: number, spot: TeamViewSpot) => {
+    await clinicApis.scheduleMoveUser({
+      operationDayId,
+      userProfileId,
+      teamId: spot.teamId,
+      employeeTypeId: spot.employeeTypeId,
+      teamInstanceNo: spot.teamInstanceNo
+    });
+    const opDayDetail = await clinicApis.opDayDetailGet(touchNumber(selectedDetails?.companyId), operationDayId);
+    setOpDayDetails(prev => prev.map(op => op.id === opDayDetail.id ? opDayDetail : op));
+  };
+
   useEffect(() => {
     loadOpDetails(touchNumber(authUserToken.companyId));
   }, [authUserToken, afterDateString, beforeDateString]);
@@ -426,7 +439,7 @@ export default function Dashboard() {
                 requiredOperationDayTeams={opDayDetails[opDayDetailSelected].requiredOperationDayTeams}
                 reloadOpDayDetail={reloadOpDayDetail} />)}
           </div>
-          <DashboardTeams opDayDetail={selectedDetails} />
+          <DashboardTeams opDayDetail={selectedDetails} onMoveUser={onMoveUser} />
         </div>
       )}
       {/* Delete Modal */}

@@ -143,26 +143,6 @@ VALUES
 
 SELECT setval(pg_get_serial_sequence('operation_day', 'id'), (SELECT MAX(id) FROM operation_day));
 
--- Sample schedule assignments
--- Assign user_profile 10 (John Smith - Provider) to first Saturday
-INSERT INTO schedule (id, operation_day_id, user_profile_id)
-VALUES (1, 1, 10);
-
--- Assign user_profile 11 (Sarah Johnson - Provider) to first Saturday
-INSERT INTO schedule (id, operation_day_id, user_profile_id)
-VALUES (2, 1, 11);
-
--- Assign user_profile 15 (Jennifer Davis - Volunteer) to first Saturday
-INSERT INTO schedule (id, operation_day_id, user_profile_id)
-VALUES (3, 1, 15);
-
--- Assign user_profile 17 (Jessica Wilson - Volunteer) to first Saturday
-INSERT INTO schedule (id, operation_day_id, user_profile_id)
-VALUES (4, 1, 17);
-
-SELECT setval(pg_get_serial_sequence('schedule', 'id'), (SELECT MAX(id) FROM schedule));
-
-
 INSERT INTO team (id,company_id,team_name) VALUES
 (1,1,'Staff'),
 (2,1,'Cardiology'),
@@ -186,3 +166,23 @@ INSERT INTO operation_day_team (id,operation_day_id,team_id,required_team_count)
     (1,1,1,2),
     (2,1,2,1);
 SELECT setval(pg_get_serial_sequence('operation_day_team', 'id'), (SELECT MAX(id) FROM operation_day_team));
+
+-- One team instance per required_team_count on each operation day
+-- Staff (required_team_count = 2) -> instances 1, 2; Cardiology (required_team_count = 1) -> instance 1
+INSERT INTO operation_day_team_instance (operation_day_id, team_id, instance_no)
+VALUES (1, 1, 1),
+       (1, 1, 2),
+       (1, 2, 1);
+
+-- Sample schedule assignments (each row is a spot: team, team instance, employee type)
+-- Each user can hold one spot per operation day. Spot capacity is enforced in code.
+INSERT INTO schedule (id, operation_day_id, user_profile_id, team_id, employee_type_id, team_instance_no)
+VALUES (1, 1, 10, 2, 1, 1),   -- John Smith (General Practitioner) -> Cardiology #1, GP spot
+       (2, 1, 14, 2, 1, 1),   -- David Jones (General Practitioner) -> Cardiology #1, GP spot
+       (3, 1, 12, 2, 3, 1),   -- Michael Williams (Cardiologist) -> Cardiology #1, Cardiologist spot
+       (4, 1, 15, 2, 9, 1),   -- Jennifer Davis (Nurse) -> Cardiology #1, Nurse spot
+       (5, 1, 16, 1, 10, 1),  -- Robert Miller (Receptionist) -> Staff #1, Receptionist spot
+       (6, 1, 22, 1, 16, 1),  -- Daniel Jackson (Billing Specialist) -> Staff #1, Billing spot
+       (7, 1, 21, 1, 15, 1);  -- Ashley Thomas (Administrative Staff) -> Staff #1, Administrative spot
+
+SELECT setval(pg_get_serial_sequence('schedule', 'id'), (SELECT MAX(id) FROM schedule));

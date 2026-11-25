@@ -209,7 +209,8 @@ export type OpDayDetailUserProfileDto = {
     firstName: string,
     lastName: string,
     phoneNumber: string,
-    types: EmployeeTypeDto[]
+    types: EmployeeTypeDto[],
+    assignment?: ScheduleDto
 };
 
 export const defaultOpDayDetailUserProfileDto = (): OpDayDetailUserProfileDto => ({
@@ -224,7 +225,10 @@ export const defaultOpDayDetailUserProfileDto = (): OpDayDetailUserProfileDto =>
 export type ScheduleDto = {
     id?: number,
     operationDayId: number,
-    userProfileId: number
+    userProfileId: number,
+    teamId?: number,
+    employeeTypeId?: number,
+    teamInstanceNo?: number
 };
 
 export const defaultScheduleDto = (): ScheduleDto => ({
@@ -274,12 +278,19 @@ export type Pair = {
     value: string;
 };
 
+/** One team instance (e.g. the second Cardiology team) on an operation day. */
 export type TeamView = {
+  teamId: number;
   teamName: string;
+  teamInstanceNo: number;
   spots: TeamViewSpot[];
 };
 
+/** One employee type line of a team instance. */
 export type TeamViewSpot = {
+  teamId: number;
+  teamInstanceNo: number;
+  employeeTypeId: number;
   employeeType: EmployeeTypeDto;
   user?: OpDayDetailUserProfileDto;
 };

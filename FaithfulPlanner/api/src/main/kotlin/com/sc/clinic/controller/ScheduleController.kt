@@ -13,6 +13,10 @@ class ScheduleController(private val scheduleService: ScheduleService) {
     @PostMapping
     fun scheduleUser(@RequestBody schedule: ScheduleDto) = scheduleService.scheduleUser(schedule)
 
+    @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).ADMIN, T(com.sc.clinic.service.model.AuthRole).MASTER)")
+    @PutMapping("/move")
+    fun moveUser(@RequestBody schedule: ScheduleDto) = scheduleService.moveUser(schedule)
+
     @PreAuthorize("hasAnyAuthority(T(com.sc.clinic.service.model.AuthRole).BASIC_USER)")
     @DeleteMapping("/operation-day/{operationDayId}/user-profile/{userProfileId}")
     fun unscheduleUser(@PathVariable operationDayId: Long, @PathVariable userProfileId: Long) =

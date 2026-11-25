@@ -289,6 +289,17 @@ export const clinicApis = (commonHeaders?: ApiHeaders, interceptorCbs?: Intercep
       addHeadersInRequest(request, commonHeaders);
       return callApiIntercept(request, interceptorCbs);
     },
+    scheduleMoveUser: (schedule: ScheduleDto): Promise<ScheduleDto> => {
+      const endpoint = `${endpoints.epSchedule()}/move`;
+      const request: ApiRequest = {
+        endpoint,
+        method: "PUT",
+        payload: schedule,
+        headers: CONTENT_JSON_HEADER()
+      };
+      addHeadersInRequest(request, commonHeaders);
+      return callApiIntercept(request, interceptorCbs);
+    },
     unscheduleUser: (operationDayId: number, userProfileId: number): Promise<boolean> => {
       let endpoint = endpoints.epSchedule();
       endpoint = `${endpoint}/operation-day/${operationDayId}/user-profile/${userProfileId}`

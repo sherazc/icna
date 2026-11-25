@@ -6,6 +6,7 @@ import com.sc.clinic.dto.OpDayDetailDto
 import com.sc.clinic.dto.OpDayDetailEmployeeGroupDto
 import com.sc.clinic.dto.OpDayDetailUserProfileDto
 import com.sc.clinic.dto.OperationDayDto
+import com.sc.clinic.dto.ScheduleDto
 import com.sc.clinic.repository.OperationDayRepository
 import com.sc.clinic.repository.OperationDaySpecification
 import com.sc.clinic.util.DateUtils
@@ -18,7 +19,8 @@ import kotlin.collections.map
 class OpDayDetailService(
     private val operationDayRepository: OperationDayRepository,
     private val employeeGroupService: EmployeeGroupService,
-    private val userProfileService: UserProfileService
+    private val userProfileService: UserProfileService,
+    private val scheduleService: ScheduleService
 ) {
     fun find(companyId: Long, before: String?, after: String?): List<OpDayDetailDto> {
         val beforeDate = DateUtils.isoToDate(before)
@@ -66,15 +68,17 @@ class OpDayDetailService(
         companyId: Long, groups: List<EmployeeGroupDto>,
         odd: OpDayDetailDto
     ) {
+        val assignments = scheduleService.findByOperationDay(odd.id ?: 0).associateBy { it.userProfileId }
         groups.forEach { g ->
             val oddGroup = OpDayDetailEmployeeGroupDto(g.id ?: 0, g.groupName)
-            populateEmployee(companyId, oddGroup.id, odd.id ?: 0, oddGroup.users)
+            populateEmployee(companyId, oddGroup.id, odd.id ?: 0, assignments, oddGroup.users)
             odd.groups.add(oddGroup)
         }
     }
 
     private fun populateEmployee(
         companyId: Long, groupId: Long, operationDayId: Long,
+        assignments: Map<Long, ScheduleDto>,
         oddUsers: MutableList<OpDayDetailUserProfileDto>
     ) {
         userProfileService.findGroupScheduledUsers(companyId, groupId, operationDayId, true)
@@ -84,7 +88,8 @@ class OpDayDetailService(
                     up.email,
                     up.firstName ?: "",
                     up.lastName ?: "",
-                    up.phoneNumber ?: ""
+                    up.phoneNumber ?: "",
+                    assignment = assignments[up.id]
                 )
                 populateType(up.employeeTypes, oddUser.types)
                 oddUsers.add(oddUser)

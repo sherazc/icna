@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query
 interface OperationDayTeamRepository: JpaRepository<OperationDayTeam, Long> {
     fun deleteByTeamId(teamId: Long): Long
     fun deleteByOperationDayId(operationDayId: Long): Long
+    fun findByOperationDayId(operationDayId: Long): List<OperationDayTeam>
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""

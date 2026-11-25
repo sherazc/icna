@@ -1,31 +1,38 @@
 import type {
   OpDayDetailDto,
   OpDayDetailUserProfileDto,
+  OperationDayTeamDto,
   TeamViewSpot,
-  TeamDto,
   TeamView
 } from "../../service/service-types";
 
-export const teamsToTeamViews = (teams: TeamDto[]): TeamView[] =>
-  teams.map(t => teamToTeamView(t)).sort((tv1, tv2) => tv1.teamName.localeCompare(tv2.teamName));
-
-
-const teamToTeamView = (team: TeamDto): TeamView => {
-  const spots: TeamViewSpot[] = [];
-
-  team.teamEmployeeTypes.forEach(tet => {
-    for (let i = 0; i < tet.requiredEmployeeTypeCount; i++) {
-      spots.push({ employeeType: tet.employeeType });
+/** Creates one team view per team instance (requiredTeamCount) with one spot per required employee type. */
+export const teamsToTeamViews = (requiredOperationDayTeams: OperationDayTeamDto[]): TeamView[] => {
+  const teamViews: TeamView[] = [];
+  requiredOperationDayTeams.forEach(odt => {
+    for (let teamInstanceNo = 1; teamInstanceNo <= odt.requiredTeamCount; teamInstanceNo++) {
+      const teamId = odt.team.id ?? 0;
+      const spots: TeamViewSpot[] = [];
+      odt.team.teamEmployeeTypes.forEach(tet => {
+        for (let i = 0; i < tet.requiredEmployeeTypeCount; i++) {
+          spots.push({
+            teamId,
+            teamInstanceNo,
+            employeeTypeId: tet.employeeType.id ?? 0,
+            employeeType: tet.employeeType
+          });
+        }
+      });
+      teamViews.push({
+        teamId,
+        teamName: odt.team.teamName,
+        teamInstanceNo,
+        spots: spots.sort((s1, s2) => s1.employeeType.typeName.localeCompare(s2.employeeType.typeName))
+      });
     }
   });
-
-  const sortedSpots = spots.sort((s1, s2) => s1.employeeType.typeName.localeCompare(s2.employeeType.typeName));
-
-  const teamView: TeamView = {
-    teamName: team.teamName,
-    spots: sortedSpots
-  }
-  return teamView;
+  return teamViews.sort((tv1, tv2) =>
+    tv1.teamName.localeCompare(tv2.teamName) || tv1.teamInstanceNo - tv2.teamInstanceNo);
 };
 
 export const extractAssignedUsersFromOpDayDetail = (opDayDetail: OpDayDetailDto): OpDayDetailUserProfileDto[] => {
@@ -34,32 +41,34 @@ export const extractAssignedUsersFromOpDayDetail = (opDayDetail: OpDayDetailDto)
   return users;
 };
 
-export const extractRequiredTeamsFromOpDayDetail = (opDayDetail: OpDayDetailDto): TeamDto[] => {
-  const requiredTeams: TeamDto[] = [];
-  opDayDetail.requiredOperationDayTeams.forEach(opDayTeam => {
-    for (let i = 0; i < opDayTeam.requiredTeamCount; i++) {
-      requiredTeams.push(opDayTeam.team);
+/**
+ * Places each assigned user in the spot saved for them (team, team instance and employee type).
+ * Returns the users that do not match any spot.
+ */
+export const putUsersInTeamViewSpots = (teamViews: TeamView[], users: OpDayDetailUserProfileDto[]): OpDayDetailUserProfileDto[] => {
+  const unplacedUsers: OpDayDetailUserProfileDto[] = [];
+  users.forEach(user => {
+    const assignment = user.assignment;
+    const spot = teamViews
+      .flatMap(tv => tv.spots)
+      .find(s => !s.user
+        && assignment !== undefined
+        && s.teamId === assignment.teamId
+        && s.teamInstanceNo === assignment.teamInstanceNo
+        && s.employeeTypeId === assignment.employeeTypeId);
+    if (spot) {
+      spot.user = user;
+    } else {
+      unplacedUsers.push(user);
     }
   });
-  return requiredTeams;
-};
-
-export const putUsersInTeamViewSpots = (teamViews: TeamView[], users: OpDayDetailUserProfileDto[]) => {
-  let placedUserCount = 0;
-  teamViews.forEach(rtv => {
-    rtv.spots.forEach(s => {
-      const userIndex = users.findIndex(u => u.types.findIndex(t => t.id === s.employeeType.id) > -1);
-      if (userIndex > -1) {
-        const user: OpDayDetailUserProfileDto = users[userIndex];
-        s.user = user;
-        users.splice(userIndex, 1);
-        placedUserCount++;
-      }
-    });
-  });
-  return placedUserCount;
+  return unplacedUsers;
 };
 
 export const countTeamViewSpot = (teamViews: TeamView[]): number => teamViews
   .map(t => t.spots.length)
   .reduce((total, spotLength) => total + spotLength, 0);
+
+/** An open spot accepts a user when the user holds the spot's employee type. */
+export const canDropUserOnSpot = (user: OpDayDetailUserProfileDto, spot: TeamViewSpot): boolean =>
+  !spot.user && user.types.some(t => t.id === spot.employeeTypeId);
