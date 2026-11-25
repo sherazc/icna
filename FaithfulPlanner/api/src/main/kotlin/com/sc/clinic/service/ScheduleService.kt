@@ -36,6 +36,12 @@ class ScheduleService(
     fun deleteOperationDayAllSchedules(operationDayId: Long): Int =
         scheduleRepository.deleteOperationDayAllSchedules(operationDayId)
 
+    /** Called before a user loses an employee type, so their spots of that type become Extra Users. */
+    @Transactional
+    fun unplaceUserEmployeeType(userProfileId: Long, employeeTypeId: Long) {
+        scheduleRepository.unplaceByUserProfileIdAndEmployeeTypeId(userProfileId, employeeTypeId)
+    }
+
     fun findByOperationDay(operationDayId: Long): List<ScheduleDto> =
         scheduleRepository.findByOperation(operationDayId)
 

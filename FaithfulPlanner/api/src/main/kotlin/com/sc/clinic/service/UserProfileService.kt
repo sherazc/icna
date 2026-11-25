@@ -4,6 +4,7 @@ import com.sc.clinic.dto.PasswordUpdateDto
 import com.sc.clinic.dto.UserProfileDto
 import com.sc.clinic.entity.Company
 import com.sc.clinic.entity.EmployeeGroup
+import com.sc.clinic.entity.EmployeeType
 import com.sc.clinic.entity.UserProfile
 import com.sc.clinic.exception.ScBadRequestException
 import com.sc.clinic.exception.ScException
@@ -58,16 +59,38 @@ class UserProfileService(
         return UserProfileDto(savedUser)
     }
 
+    @Transactional
     fun saveUserEmployee(companyId: Long, user: UserProfileDto): UserProfileDto {
         validate(user)
         val company: Company = companyService.findById(companyId)
         val group: EmployeeGroup? = user.employeeGroupId?.let { employeeGroupService.getGroup(it) }
         val userProfileEntity = getOrCreateUserProfileEntity(company, group, user)
         userRoleService.addRole(userProfileEntity, AuthRole.BASIC_USER)
-        userProfileEntity.employeeTypes = employeeTypeService.employeeTypesByDto(user.employeeTypes)
+        val newEmployeeTypes = employeeTypeService.employeeTypesByDto(user.employeeTypes)
+        replaceEmployeeTypes(userProfileEntity, newEmployeeTypes)
         val savedUser = saveUser(userProfileEntity)
         savedUser.userPassword = null
         return UserProfileDto(savedUser)
+    }
+
+    /**
+     * Spots of removed employee types are cleared first, or the schedule FK blocks the delete.
+     * The set is changed in place: replacing it would make Hibernate delete every M2M row, including kept ones.
+     */
+    private fun replaceEmployeeTypes(userProfile: UserProfile, newEmployeeTypes: Collection<EmployeeType>) {
+        val keepIds = newEmployeeTypes.mapNotNull { it.id }.toSet()
+        val userProfileId = userProfile.id
+        if (userProfileId != null) {
+            userProfile.employeeTypes
+                .mapNotNull { it.id }
+                .filter { it !in keepIds }
+                .forEach { scheduleService.unplaceUserEmployeeType(userProfileId, it) }
+        }
+        val current = userProfile.employeeTypes
+        current.removeIf { it.id !in keepIds }
+        newEmployeeTypes
+            .filter { type -> current.none { it.id == type.id } }
+            .forEach { current.add(it) }
     }
 
     private fun validate(userProfileDto: UserProfileDto) {
@@ -190,10 +213,11 @@ class UserProfileService(
 
     fun saveUser(userProfileEntity: UserProfile): UserProfile = userProfileRepository.save(userProfileEntity)
 
+    @Transactional
     fun switchGroup(groupId: Long?, userProfileId: Long): UserProfileDto {
         val userProfile = getUser(userProfileId) ?: throw ScException("User not found")
         val group: EmployeeGroup? = groupId ?.let{ employeeGroupService.getGroup(groupId) }
-        userProfile.employeeTypes = mutableSetOf()
+        replaceEmployeeTypes(userProfile, emptySet())
         userProfile.employeeGroup = group
         val savedUserProfile = saveUser(userProfile)
         val savedUserProfileDto = UserProfileDto(savedUserProfile)

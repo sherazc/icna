@@ -101,4 +101,11 @@ interface ScheduleRepository : JpaRepository<Schedule, Long> {
         WHERE operation_day_id = :operationDayId AND team_id = :teamId AND team_instance_no > :teamInstanceNo
     """, nativeQuery = true)
     fun unplaceByOperationDayIdAndTeamIdAboveInstance(operationDayId: Long, teamId: Long, teamInstanceNo: Int): Int
+
+    @Modifying
+    @Query("""
+        UPDATE schedule SET team_id = NULL, employee_type_id = NULL, team_instance_no = NULL
+        WHERE user_profile_id = :userProfileId AND employee_type_id = :employeeTypeId
+    """, nativeQuery = true)
+    fun unplaceByUserProfileIdAndEmployeeTypeId(userProfileId: Long, employeeTypeId: Long): Int
 }
