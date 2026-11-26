@@ -805,6 +805,17 @@ body {
   background: var(--gray-500);
 }
 
+/* Table sized to its content (no vertical scroll), horizontal scroll kept for narrow screens */
+.tableContainer.tableFitContent {
+  max-height: none;
+  overflow-y: visible;
+}
+
+.tableContainer.tableFitContent .tableScroll {
+  max-height: none;
+  overflow-y: visible;
+}
+
 /* Table Container Scrollbar */
 .tableContainer::-webkit-scrollbar {
   height: 8px;

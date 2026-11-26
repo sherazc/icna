@@ -44,6 +44,8 @@ export const EmployeeGroup: React.FC<Props> = () => {
   const [showSwitchGroupModal, setShowSwitchGroupModal] = useState<boolean>(false);
 
 
+  const [searchText, setSearchText] = useState<string>("");
+
   const [modalEmployeeDeleteState, setModalEmployeeDeleteFormState] = useState<FormState>(FormState.FRESH);
   const [modalEmployeeDeleteErrors, setModalEmployeeDeleteErrors] = useState<ErrorDto[]>([]);
 
@@ -112,6 +114,21 @@ export const EmployeeGroup: React.FC<Props> = () => {
     }
   }, [employeeGroupId, authUserToken]);
 
+  const matchesEmployeeSearch = (employee: UserProfileDto, query: string): boolean => {
+    const fields = [
+      `${employee.firstName ?? ""} ${employee.lastName ?? ""}`,
+      employee.employeeTypes.map(et => et.typeName).join(" "),
+      employee.email,
+      employee.phoneNumber ?? ""
+    ];
+    return fields.some(field => field.toLowerCase().includes(query));
+  };
+
+  const normalizedSearchText = searchText.trim().toLowerCase();
+  const filteredEmployees = normalizedSearchText === ""
+    ? employees
+    : employees.filter(employee => matchesEmployeeSearch(employee, normalizedSearchText));
+
   const createEmployeeTypes = (employeeTypes: EmployeeTypeDto[]): React.ReactNode => (
     <small className="smallText">{employeeTypes.map(et => et.typeName).join(", ")}</small>
   );
@@ -142,14 +159,30 @@ export const EmployeeGroup: React.FC<Props> = () => {
           <button className="btn btnPrimary" onClick={onNewEmployee}>+ New {employeeGroupTypes.groupName}</button>
         </Authenticated>
       </ScreenHeader>
-      <div className="tableContainer">
+      <div className="mb-15 searchWrapper">
+        <div className="searchInputContainer">
+          <input
+            type="text"
+            placeholder={`Search ${employeeGroupTypes.groupName} by name, type, email, or phone...`}
+            className="searchInput"
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="tableContainer tableFitContent">
 
         {employees.length < 1 && (
           <div className="padding-20">
             No {employeeGroupTypes.groupName} found. Click <a href="#" onClick={onNewEmployee}>New {employeeGroupTypes.groupName}</a>.
           </div>
         )}
-        {employees.length > 0 && (
+        {employees.length > 0 && filteredEmployees.length < 1 && (
+          <div className="padding-20">
+            No {employeeGroupTypes.groupName} match "{searchText.trim()}".
+          </div>
+        )}
+        {filteredEmployees.length > 0 && (
         <div className="tableScroll">
           <table>
             <thead>
@@ -164,7 +197,7 @@ export const EmployeeGroup: React.FC<Props> = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.map(employee => createEmployeeRow(employee))}
+              {filteredEmployees.map(employee => createEmployeeRow(employee))}
             </tbody>
           </table>
         </div>
