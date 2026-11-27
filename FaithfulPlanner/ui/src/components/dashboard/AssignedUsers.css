@@ -12,3 +12,53 @@
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
+.teamModalMessage {
+  margin: 0 0 var(--spacing-15) 0;
+  color: var(--text-secondary);
+}
+
+.teamChoiceList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.teamChoice {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-10);
+  padding: var(--spacing-10) var(--spacing-12);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.teamChoice:hover {
+  border-color: var(--primary-light);
+}
+
+.teamChoiceSelected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.teamChoiceName {
+  font-weight: var(--font-weight-semibold);
+}
+
+.teamChoiceType {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.teamChoiceCheck {
+  width: 20px;
+  color: var(--primary);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}

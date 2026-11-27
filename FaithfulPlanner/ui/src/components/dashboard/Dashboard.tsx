@@ -27,6 +27,7 @@ import { isoToDayOfWeek, isoToMonthDayYear } from "../../service/DateService";
 // import { useNavigate } from "react-router-dom";
 import { Authenticated } from "../auth/Authenticated";
 import { DashboardTeams } from "./DashboardTeams";
+import { extractAssignedUsersFromOpDayDetail } from "./dashboardServices";
 import { useSearchParams } from "react-router-dom";
 
 let tempId = -1;
@@ -437,6 +438,7 @@ export default function Dashboard() {
                 operationDayId={touchNumber(opDayDetails[opDayDetailSelected].id)}
                 group={g}
                 requiredOperationDayTeams={opDayDetails[opDayDetailSelected].requiredOperationDayTeams}
+                assignedUsers={extractAssignedUsersFromOpDayDetail(selectedDetails)}
                 reloadOpDayDetail={reloadOpDayDetail} />)}
           </div>
           <DashboardTeams opDayDetail={selectedDetails} onMoveUser={onMoveUser} />

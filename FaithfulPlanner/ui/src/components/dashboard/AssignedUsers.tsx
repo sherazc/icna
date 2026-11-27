@@ -1,11 +1,13 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import {
   FormState,
+  ModalType,
   type EmployeeTypeDto,
   type OpDayDetailEmployeeGroupDto,
   type OpDayDetailUserProfileDto,
   type OperationDayTeamDto,
   type ScheduleDto,
+  type TeamViewSpot,
   type UserProfileDto
 } from "../../service/service-types";
 import { AppContext } from "../../store/context";
@@ -13,22 +15,36 @@ import { touchNumber, touchString } from "../../service/utilities";
 import "./AssignedUsers.css";
 import { isSelfOrContainsAnyRoles } from "../../service/authentication-services";
 import { Authenticated } from "../auth/Authenticated";
+import { Modal } from "../common/Modal";
+import { putUsersInTeamViewSpots, teamsToTeamViews } from "./dashboardServices";
+
+interface TeamSpotOption {
+  key: string,
+  label: string,
+  spot: TeamViewSpot
+}
 
 interface Props {
   companyId: number,
   group: OpDayDetailEmployeeGroupDto,
   operationDayId: number,
   requiredOperationDayTeams: OperationDayTeamDto[],
+  assignedUsers: OpDayDetailUserProfileDto[],
   reloadOpDayDetail: (companyId: number, operationDayId: number) => void
 }
 
-export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group, reloadOpDayDetail, requiredOperationDayTeams }) => {
+export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, group, reloadOpDayDetail, requiredOperationDayTeams, assignedUsers }) => {
   const [{ clinicApis, authUserToken }] = useContext(AppContext);
   const inputRef = useRef<HTMLInputElement>(null);
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
   const [unscheduledUsers, setUnscheduledUsers] = useState<UserProfileDto[]>([]);
   const [filter, setFilter] = useState<string>("");
   const [unscheduledUsersState, setUnscheduledUsersState] = useState<FormState>(FormState.FRESH);
+
+  // Team selection modal, shown when the user could fill spots in more than one team
+  const [teamModalUser, setTeamModalUser] = useState<UserProfileDto | null>(null);
+  const [teamModalOptions, setTeamModalOptions] = useState<TeamSpotOption[]>([]);
+  const [teamModalSelectedKey, setTeamModalSelectedKey] = useState<string>("");
 
   const resetDropDown = () => {
     setDropDownOpen(false);
@@ -133,7 +149,7 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
             <div className="dropdownItemRole">{u.employeeTypes.map(t => t.typeName).join(", ")}</div>
           </div>
           <button type="button" className="dropdownItemAddBtn"
-            onClick={() => onScheduleUser(companyId, operationDayId, touchNumber(u.id))}>Add</button>
+            onClick={() => onClickAdd(u)}>Add</button>
         </div>
       ));
     } else {
@@ -141,8 +157,49 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
     }
   };
 
-  const onScheduleUser = async (companyId: number, operationDayId: number, userProfileId: number) => {
-    const schedule: ScheduleDto = { operationDayId, userProfileId };
+  // One option per team instance that has an open spot matching one of the user's employee types
+  const getTeamSpotOptions = (user: UserProfileDto): TeamSpotOption[] => {
+    const teamViews = teamsToTeamViews(requiredOperationDayTeams);
+    putUsersInTeamViewSpots(teamViews, assignedUsers);
+    const options: TeamSpotOption[] = [];
+    teamViews.forEach(teamView => {
+      const spot = teamView.spots.find(s => !s.user && user.employeeTypes.some(et => et.id === s.employeeTypeId));
+      if (spot) {
+        options.push({
+          key: `${spot.teamId}-${spot.teamInstanceNo}`,
+          label: `${teamView.teamName} #${teamView.teamInstanceNo}`,
+          spot
+        });
+      }
+    });
+    return options;
+  };
+
+  const onClickAdd = async (user: UserProfileDto) => {
+    const options = getTeamSpotOptions(user);
+    if (options.length > 1) {
+      setTeamModalUser(user);
+      setTeamModalOptions(options);
+      setTeamModalSelectedKey(options[0].key);
+      return;
+    }
+    await onScheduleUser(companyId, operationDayId, touchNumber(user.id), options[0]?.spot);
+  };
+
+  const onTeamModalAssign = async () => {
+    const option = teamModalOptions.find(o => o.key === teamModalSelectedKey);
+    if (!teamModalUser || !option) {
+      return;
+    }
+    const userProfileId = touchNumber(teamModalUser.id);
+    setTeamModalUser(null);
+    await onScheduleUser(companyId, operationDayId, userProfileId, option.spot);
+  };
+
+  const onScheduleUser = async (companyId: number, operationDayId: number, userProfileId: number, spot?: TeamViewSpot) => {
+    const schedule: ScheduleDto = spot
+      ? { operationDayId, userProfileId, teamId: spot.teamId, employeeTypeId: spot.employeeTypeId, teamInstanceNo: spot.teamInstanceNo }
+      : { operationDayId, userProfileId };
     await clinicApis.scheduleUser(schedule);
     await reloadOpDayDetail(companyId, operationDayId);
     resetDropDown();
@@ -209,6 +266,34 @@ export const AssignedUsers: React.FC<Props> = ({ companyId, operationDayId, grou
           ))}
         </ul>
       </div>
+      <Modal config={{
+        title: "Select Team",
+        yesFunction: onTeamModalAssign,
+        modalType: ModalType.DEFAULT,
+        yesLabel: "Assign",
+        noLabel: "Cancel"
+      }} show={teamModalUser !== null} setShow={(show) => !show && setTeamModalUser(null)}>
+        <div>
+          <p className="teamModalMessage">
+            <strong>{teamModalUser?.firstName} {teamModalUser?.lastName}</strong> is qualified for open spots
+            in {teamModalOptions.length} different teams on this day. Choose the team to assign them to.
+          </p>
+          <div className="teamChoiceList" role="radiogroup" aria-label="Team">
+            {teamModalOptions.map(o => {
+              const selected = teamModalSelectedKey === o.key;
+              return (
+                <button type="button" key={o.key} role="radio" aria-checked={selected}
+                  className={`teamChoice ${selected ? "teamChoiceSelected" : ""}`}
+                  onClick={() => setTeamModalSelectedKey(o.key)}>
+                  <span className="teamChoiceName">{o.label}</span>
+                  <span className="teamChoiceType">Open spot: {o.spot.employeeType.typeName}</span>
+                  <span className="teamChoiceCheck" aria-hidden="true">{selected ? "✓" : ""}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
